@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 
 const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
@@ -155,6 +156,10 @@ export default function Dashboard() {
             <div className="logo">
               <span className="logo-icon">🤖</span>
               <span className="logo-text">Brochbot</span>
+            </div>
+            <div className="view-toggle">
+              <span className="view-btn active">Kanban</span>
+              <Link href="/table" className="view-btn">Table</Link>
             </div>
           </div>
           <div className="header-right">
@@ -370,6 +375,33 @@ export default function Dashboard() {
         
         .header-left { display: flex; align-items: center; gap: 24px; }
         .header-right { display: flex; align-items: center; gap: 16px; }
+        
+        .view-toggle {
+          display: flex;
+          gap: 4px;
+          background: var(--accent-light);
+          padding: 4px;
+          border-radius: 8px;
+        }
+        
+        .view-btn {
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 13px;
+          text-decoration: none;
+          color: var(--text-secondary);
+          cursor: pointer;
+        }
+        
+        .view-btn.active {
+          background: var(--card);
+          color: var(--text);
+          box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .view-btn:hover:not(.active) {
+          color: var(--text);
+        }
         
         .logo {
           display: flex;
