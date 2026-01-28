@@ -1,6 +1,9 @@
 {
-  "name": "brochbot",
   "version": 2,
-  "public": false,
-  "cleanUrls": true
+  "buildCommand": "exit 0",
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/:path*", "destination": "/:path*.html" }
+  ]
 }
