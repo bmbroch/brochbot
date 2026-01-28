@@ -18,6 +18,14 @@ const COLUMNS = [
   { id: 'done', label: 'Done', color: '#22c55e' },
 ]
 
+const SCHEDULES = [
+  { id: '', label: 'No schedule' },
+  { id: 'daily_morning', label: '🌅 Daily (Morning)' },
+  { id: 'daily_evening', label: '🌙 Daily (Evening)' },
+  { id: 'weekly', label: '📅 Weekly' },
+  { id: 'monthly', label: '🗓️ Monthly' },
+]
+
 async function api(endpoint, options = {}) {
   const headers = {
     'apikey': SUPABASE_KEY,
@@ -50,7 +58,7 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
   const [formData, setFormData] = useState({
-    title: '', description: '', details: '', status: 'todo', priority: 'medium', category: 'life', due_date: ''
+    title: '', description: '', details: '', status: 'todo', priority: 'medium', category: 'life', due_date: '', schedule: ''
   })
 
   useEffect(() => { loadTasks() }, [])
@@ -90,14 +98,16 @@ export default function Dashboard() {
         status: task.status || 'todo',
         priority: task.priority || 'medium',
         category: task.category || 'life',
-        due_date: task.due_date || ''
+        due_date: task.due_date || '',
+        schedule: task.schedule || ''
       })
     } else {
       setEditingTask(null)
       setFormData({ 
         title: '', description: '', details: '', status: 'todo', priority: 'medium', 
         category: activeCategory === 'all' ? 'life' : activeCategory, 
-        due_date: '' 
+        due_date: '',
+        schedule: ''
       })
     }
     setShowModal(true)
@@ -109,6 +119,7 @@ export default function Dashboard() {
     if (!data.description) data.description = null
     if (!data.details) data.details = null
     if (!data.due_date) data.due_date = null
+    if (!data.schedule) data.schedule = null
 
     if (editingTask) {
       await api(`tasks?id=eq.${editingTask.id}`, { method: 'PATCH', body: JSON.stringify(data) })
@@ -194,6 +205,7 @@ export default function Dashboard() {
                       )}
                       <div className="task-footer">
                         <span className="task-category-label">{getCategoryLabel(task.category)}</span>
+                        {task.schedule && <span className="task-schedule">{SCHEDULES.find(s => s.id === task.schedule)?.label || task.schedule}</span>}
                         {task.due_date && <span className="task-due">📅 {task.due_date}</span>}
                       </div>
                       <div className="task-actions">
@@ -285,13 +297,21 @@ export default function Dashboard() {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label>Due Date</label>
-                    <input
-                      type="date"
-                      value={formData.due_date}
-                      onChange={e => setFormData({...formData, due_date: e.target.value})}
-                    />
+                    <label>Schedule</label>
+                    <select value={formData.schedule} onChange={e => setFormData({...formData, schedule: e.target.value})}>
+                      {SCHEDULES.map(s => (
+                        <option key={s.id} value={s.id}>{s.label}</option>
+                      ))}
+                    </select>
                   </div>
+                </div>
+                <div className="form-group">
+                  <label>Due Date</label>
+                  <input
+                    type="date"
+                    value={formData.due_date}
+                    onChange={e => setFormData({...formData, due_date: e.target.value})}
+                  />
                 </div>
                 <div className="form-actions">
                   <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
@@ -558,6 +578,14 @@ export default function Dashboard() {
           background: var(--accent-light);
           padding: 4px 8px;
           border-radius: 4px;
+        }
+        
+        .task-schedule {
+          background: #fef3c7;
+          color: #92400e;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 11px;
         }
         
         .task-actions {
