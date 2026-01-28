@@ -270,7 +270,7 @@ export default function Dashboard() {
                     value={formData.description}
                     onChange={e => setFormData({...formData, description: e.target.value})}
                     placeholder="Brief summary..."
-                    rows={2}
+                    rows={3}
                   />
                 </div>
                 <div className="form-group">
@@ -279,7 +279,8 @@ export default function Dashboard() {
                     value={formData.details}
                     onChange={e => setFormData({...formData, details: e.target.value})}
                     placeholder="Full context, steps, notes..."
-                    rows={4}
+                    rows={8}
+                    style={{fontFamily: 'monospace', fontSize: '13px'}}
                   />
                 </div>
                 <div className="form-row">
@@ -719,10 +720,10 @@ export default function Dashboard() {
           background: var(--card);
           border-radius: 16px;
           width: 100%;
-          max-width: 500px;
+          max-width: 700px;
           max-height: 90vh;
           overflow-y: auto;
-          padding: 24px;
+          padding: 32px;
           animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         }
