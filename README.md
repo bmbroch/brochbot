@@ -1,91 +1,132 @@
-# Brochbot Dashboard - Next.js
+# Brochbot - Task Tracker
 
-A beautiful, professional task dashboard built with Next.js, React, and modern web technologies.
+**URL:** [brochbot.com](https://brochbot.com)
 
-## 🚀 Features
+The central hub for tracking everything Brochbot should work on. This is the **source of truth** for Ben and Brochbot to manage tasks, workflows, and projects.
 
-- **Multi-page application** with routing
-- **API routes** for dynamic data
-- **Server-side rendering** for better SEO
-- **Beautiful UI** inspired by Airbnb/Vercel design
-- **Product tracking** for Interview Sidekick, Sales Echo, Cover Letter Copilot
-- **Task management** with Kanban board
-- **Competitor monitoring** dashboard
-- **Analytics integration** (ready for DataFast API)
+## 🎯 Purpose
 
-## 📁 Project Structure
+Ben adds tasks via the UI → Brochbot reads from the database and executes.
+
+- **Ben**: Add, edit, prioritize tasks through the web interface
+- **Brochbot**: Query the database to know what to work on next
+- **Shared**: Both can see the same data in real-time
+
+## 🔧 Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | Static HTML/CSS/JS |
+| Backend | Supabase (PostgreSQL) |
+| Hosting | Vercel |
+| Repo | github.com/bmbroch/brochbot |
+| Domain | brochbot.com |
+
+## 📊 Database (Supabase)
+
+**Project:** ibluforpuicmxzmevbmj
+
+### Tables
+
+**tasks** - Main task tracking
+- `id` (UUID) - Primary key
+- `title` (text) - Task name
+- `description` (text) - Brief summary
+- `details` (text) - Full details, steps, context
+- `status` (text) - todo / in_progress / done
+- `priority` (text) - high / medium / low
+- `category` (text) - Business category
+- `due_date` (date) - Optional deadline
+- `created_at` (timestamp)
+- `updated_at` (timestamp)
+
+**creators** - UGC creator tracking
+- `id`, `name`, `handle`, `platform`, `tiktok_handle`, `instagram_handle`, `email`, `active`
+
+**posts** - Creator content posts
+- `id`, `creator_id`, `platform`, `post_url`, `post_date`, `views`, `earnings`, `bonus_eligible_date`, `bonus_paid`
+
+**payment_tiers** - Earnings tiers
+- `id`, `tier_name`, `min_views`, `max_views`, `payout`
+
+**payments** - Payment records
+- `id`, `creator_id`, `amount`, `payment_date`, `notes`
+
+## 🌐 Pages
+
+| URL | Purpose |
+|-----|---------|
+| brochbot.com | Main task tracker |
+| /tasks.html | Tasks (same as main) |
+| /creator-payouts.html | UGC creator payment tracking |
+| /analytics.html | Analytics dashboard (placeholder) |
+| /competitors.html | Competitor tracking (placeholder) |
+
+## 🔌 API Access
+
+Brochbot can read/write via Supabase REST API:
+
+```bash
+# Read all tasks
+curl "https://ibluforpuicmxzmevbmj.supabase.co/rest/v1/tasks" \
+  -H "apikey: $SUPABASE_KEY" \
+  -H "Authorization: Bearer $SUPABASE_KEY"
+
+# Read only "todo" tasks
+curl "https://ibluforpuicmxzmevbmj.supabase.co/rest/v1/tasks?status=eq.todo" \
+  -H "apikey: $SUPABASE_KEY"
+```
+
+## 📁 File Structure
 
 ```
 brochbot/
-├── pages/
-│   ├── index.js          # Main dashboard
-│   ├── tasks.js          # Task management
-│   ├── analytics.js      # Analytics dashboard
-│   ├── competitors.js    # Competitor tracking
-│   └── api/
-│       └── tasks.js      # Tasks API endpoint
-├── components/
-│   ├── Header.js         # Navigation header
-│   ├── StatsGrid.js      # Statistics cards
-│   ├── ProductCards.js   # Product overview cards
-│   └── KanbanBoard.js    # Task board
-├── styles/
-│   └── globals.css       # Global styles
-├── public/
-│   └── favicon.txt       # Favicon
-└── next.config.js        # Next.js configuration
+├── index.html           # Main task tracker page
+├── tasks.html           # Tasks page
+├── creator-payouts.html # Creator payment tracking
+├── analytics.html       # Analytics (placeholder)
+├── competitors.html     # Competitors (placeholder)
+├── style.css            # Main stylesheet
+├── vercel.json          # Vercel config
+└── README.md            # This file
 ```
 
-## 🛠 Installation
+## 🚀 Deployment
 
-```bash
-npm install
-# or
-yarn install
-```
+Automatic via Vercel:
+1. Push to `main` branch on GitHub
+2. Vercel auto-deploys within ~60 seconds
+3. Live at brochbot.com
 
-## 🏃 Development
+## 📝 How It Works
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+1. **Ben adds a task** on brochbot.com
+   - Clicks "+ Add Task"
+   - Fills in title, details, priority, category
+   - Saves → stored in Supabase
 
-Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
+2. **Brochbot checks tasks**
+   - Queries Supabase API
+   - Reads task details
+   - Works on highest priority items
 
-## 🚢 Deployment
+3. **Updates flow both ways**
+   - Ben updates status via UI
+   - Brochbot can update via API
+   - Both see changes instantly
 
-### Deploy on Vercel
+## 🏷️ Task Categories
 
-The easiest way to deploy is using [Vercel](https://vercel.com):
+- **interview_sidekick** - Interview Sidekick product
+- **sales_echo** - Sales Echo product
+- **cover_letter** - Cover Letter Copilot product
+- **brochbot** - Brochbot itself
+- **automation** - General automations
 
-1. Push to GitHub (already done!)
-2. Import to Vercel
-3. Deploy with these settings:
-   - Framework Preset: **Next.js**
-   - Build Command: `npm run build`
-   - Output Directory: `.next`
+## 🔐 Credentials
 
-## 🎨 Tech Stack
-
-- **Next.js 14** - React framework
-- **React 18** - UI library
-- **CSS** - Styling with custom design system
-- **Vercel** - Deployment platform
-
-## 📊 Current Tasks
-
-- ✅ Morning briefing setup
-- ✅ Dashboard creation
-- 🚧 Competitor monitoring (FinalRound AI, Parakeet AI, LockedIn AI)
-- 📥 UGC creator payment tracker
-- 📥 DataFast analytics integration
-
-## 🔗 Live Demo
-
-Coming soon at: `brochbot.vercel.app`
+Stored securely in `/home/ubuntu/clawd/.secrets/supabase.env`
 
 ---
 
-Built by Brochbot 🤖
+Built by Brochbot 🤖 for Ben
