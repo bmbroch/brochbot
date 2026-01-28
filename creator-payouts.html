@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Payouts - Brochbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <style>
+        .creator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        
+        .creator-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .creator-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .creator-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: white;
+        }
+        
+        .creator-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .creator-handle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .creator-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--bg);
+            border-radius: 12px;
+        }
+        
+        .creator-stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .creator-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .creator-stat-value.earnings {
+            color: #22c55e;
+        }
+        
+        .posts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+        
+        .posts-table th,
+        .posts-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .posts-table th {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .posts-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-green {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+        
+        .badge-yellow {
+            background: rgba(234, 179, 8, 0.15);
+            color: #eab308;
+        }
+        
+        .badge-gray {
+            background: rgba(161, 161, 170, 0.15);
+            color: #a1a1aa;
+        }
+        
+        .tier-table {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .tier-table th,
+        .tier-table td {
+            padding: 14px 20px;
+        }
+        
+        .add-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        
+        .form-input,
+        .form-select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text);
+            font-size: 14px;
+        }
+        
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .empty-state-box {
+            text-align: center;
+            padding: 48px;
+            color: var(--text-muted);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">🤖</div>
+                    <span>Brochbot</span>
+                </a>
+                
+                <nav class="nav">
+                    <a href="/" class="nav-link">Dashboard</a>
+                    <a href="/tasks.html" class="nav-link">Tasks</a>
+                    <a href="/creator-payouts.html" class="nav-link active">Creator Payouts</a>
+                    <a href="/analytics.html" class="nav-link">Analytics</a>
+                </nav>
+                
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span>Live</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <section class="stats-section">
+            <div class="container">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-value" id="statCreators">-</div>
+                        <div class="stat-label">Active Creators</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">📱</div>
+                        <div class="stat-value" id="statPosts">-</div>
+                        <div class="stat-label">Posts This Month</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-value" id="statEarnings">-</div>
+                        <div class="stat-label">Total Earnings</div>
+                        <span class="stat-change" style="color: #22c55e;">Calculated from tiers</span>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">⏰</div>
+                        <div class="stat-value" id="statPending">-</div>
+                        <div class="stat-label">Bonuses Ready</div>
+                        <span class="stat-change">15-day eligibility</span>
+                    </div>
+                </div>
+                
+                <!-- Creators Section -->
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>👥</span>
+                        <span>Creators</span>
+                    </h2>
+                    <div class="section-actions">
+                        <button class="add-btn" onclick="openModal('creator')">+ Add Creator</button>
+                    </div>
+                </div>
+                
+                <div class="creator-grid" id="creatorsGrid">
+                    <div class="empty-state-box">Loading creators...</div>
+                </div>
+                
+                <!-- Recent Posts Section -->
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>📱</span>
+                        <span>Recent Posts</span>
+                    </h2>
+                    <div class="section-actions">
+                        <button class="add-btn" onclick="openModal('post')">+ Add Post</button>
+                    </div>
+                </div>
+                
+                <div class="tier-table">
+                    <table class="posts-table">
+                        <thead>
+                            <tr>
+                                <th>Creator</th>
+                                <th>Date</th>
+                                <th>Platform</th>
+                                <th>Views</th>
+                                <th>Tier</th>
+                                <th>Earnings</th>
+                                <th>Bonus Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="postsTable">
+                            <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">Loading posts...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Payment Tiers Section -->
+                <div class="section-header" style="margin-top: 48px;">
+                    <h2 class="section-title">
+                        <span>📊</span>
+                        <span>Payment Tiers</span>
+                    </h2>
+                </div>
+                
+                <div class="tier-table">
+                    <table class="posts-table">
+                        <thead>
+                            <tr>
+                                <th>Tier Name</th>
+                                <th>View Range</th>
+                                <th>Payout</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tiersTable">
+                            <tr><td colspan="3" style="text-align:center;padding:32px;color:var(--text-muted);">Loading tiers...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Add Post Modal -->
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Post</h3>
+                <button class="modal-close" onclick="closeModal('post')">&times;</button>
+            </div>
+            <form id="postForm" onsubmit="submitPost(event)">
+                <div class="form-group">
+                    <label class="form-label">Creator</label>
+                    <select class="form-select" id="postCreator" required></select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Platform</label>
+                        <select class="form-select" id="postPlatform" required>
+                            <option value="tiktok">TikTok</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="youtube">YouTube</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Post Date</label>
+                        <input type="date" class="form-input" id="postDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Post URL (optional)</label>
+                    <input type="url" class="form-input" id="postUrl" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Views</label>
+                    <input type="number" class="form-input" id="postViews" required min="0" value="0">
+                </div>
+                <button type="submit" class="add-btn" style="width:100%;justify-content:center;">Add Post</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Add Creator Modal -->
+    <div class="modal" id="creatorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Creator</h3>
+                <button class="modal-close" onclick="closeModal('creator')">&times;</button>
+            </div>
+            <form id="creatorForm" onsubmit="submitCreator(event)">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" id="creatorName" required placeholder="Nick">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Handle</label>
+                    <input type="text" class="form-input" id="creatorHandle" required placeholder="@sell.with.nick">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">TikTok Handle</label>
+                        <input type="text" class="form-input" id="creatorTiktok" placeholder="@handle">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Instagram Handle</label>
+                        <input type="text" class="form-input" id="creatorInstagram" placeholder="@handle">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email (optional)</label>
+                    <input type="email" class="form-input" id="creatorEmail" placeholder="creator@email.com">
+                </div>
+                <button type="submit" class="add-btn" style="width:100%;justify-content:center;">Add Creator</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T';
+        
+        let creators = [];
+        let posts = [];
+        let tiers = [];
+        
+        async function api(endpoint, options = {}) {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
+                ...options,
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': options.method === 'POST' ? 'return=representation' : undefined,
+                    ...options.headers
+                }
+            });
+            return res.json();
+        }
+        
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+        
+        function formatCurrency(num) {
+            return '$' + Number(num).toFixed(0);
+        }
+        
+        function getTier(views) {
+            for (const tier of [...tiers].sort((a, b) => b.min_views - a.min_views)) {
+                if (views >= tier.min_views) return tier;
+            }
+            return tiers[0];
+        }
+        
+        function calculateEarnings(views) {
+            const tier = getTier(views);
+            return tier ? tier.payout : 0;
+        }
+        
+        async function loadData() {
+            try {
+                [creators, posts, tiers] = await Promise.all([
+                    api('creators?active=eq.true'),
+                    api('posts?order=post_date.desc&limit=20'),
+                    api('payment_tiers?order=min_views.asc')
+                ]);
+                
+                renderStats();
+                renderCreators();
+                renderPosts();
+                renderTiers();
+                populateCreatorDropdown();
+            } catch (e) {
+                console.error('Failed to load data:', e);
+            }
+        }
+        
+        function renderStats() {
+            document.getElementById('statCreators').textContent = creators.length;
+            
+            const thisMonth = new Date().toISOString().slice(0, 7);
+            const monthPosts = posts.filter(p => p.post_date && p.post_date.startsWith(thisMonth));
+            document.getElementById('statPosts').textContent = monthPosts.length;
+            
+            const totalEarnings = posts.reduce((sum, p) => sum + (p.earnings || calculateEarnings(p.views || 0)), 0);
+            document.getElementById('statEarnings').textContent = formatCurrency(totalEarnings);
+            
+            const pending = posts.filter(p => {
+                if (p.bonus_paid) return false;
+                const eligible = new Date(p.post_date);
+                eligible.setDate(eligible.getDate() + 15);
+                return eligible <= new Date();
+            }).length;
+            document.getElementById('statPending').textContent = pending;
+        }
+        
+        function renderCreators() {
+            const grid = document.getElementById('creatorsGrid');
+            
+            if (creators.length === 0) {
+                grid.innerHTML = '<div class="empty-state-box">No creators yet. Add one to get started!</div>';
+                return;
+            }
+            
+            grid.innerHTML = creators.map(c => {
+                const creatorPosts = posts.filter(p => p.creator_id === c.id);
+                const totalViews = creatorPosts.reduce((sum, p) => sum + (p.views || 0), 0);
+                const earnings = creatorPosts.reduce((sum, p) => sum + (p.earnings || calculateEarnings(p.views || 0)), 0);
+                
+                return `
+                    <div class="creator-card">
+                        <div class="creator-header">
+                            <div class="creator-avatar">${c.name[0]}</div>
+                            <div class="creator-info">
+                                <h3>${c.name}</h3>
+                                <div class="creator-handle">${c.handle}</div>
+                            </div>
+                        </div>
+                        <div class="creator-stats">
+                            <div>
+                                <div class="creator-stat-value">${creatorPosts.length}</div>
+                                <div class="creator-stat-label">Posts</div>
+                            </div>
+                            <div>
+                                <div class="creator-stat-value">${formatNumber(totalViews)}</div>
+                                <div class="creator-stat-label">Total Views</div>
+                            </div>
+                            <div>
+                                <div class="creator-stat-value earnings">${formatCurrency(earnings)}</div>
+                                <div class="creator-stat-label">Earnings</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderPosts() {
+            const tbody = document.getElementById('postsTable');
+            
+            if (posts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">No posts yet. Add one to track earnings!</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = posts.map(p => {
+                const creator = creators.find(c => c.id === p.creator_id);
+                const tier = getTier(p.views || 0);
+                const earnings = p.earnings || calculateEarnings(p.views || 0);
+                
+                const eligibleDate = new Date(p.post_date);
+                eligibleDate.setDate(eligibleDate.getDate() + 15);
+                const bonusReady = eligibleDate <= new Date();
+                
+                return `
+                    <tr>
+                        <td>${creator ? creator.name : 'Unknown'}</td>
+                        <td>${p.post_date}</td>
+                        <td style="text-transform:capitalize;">${p.platform}</td>
+                        <td>${formatNumber(p.views || 0)}</td>
+                        <td><span class="badge badge-gray">${tier ? tier.tier_name : '-'}</span></td>
+                        <td style="color:#22c55e;font-weight:500;">${formatCurrency(earnings)}</td>
+                        <td>
+                            ${p.bonus_paid 
+                                ? '<span class="badge badge-green">Paid</span>' 
+                                : bonusReady 
+                                    ? '<span class="badge badge-yellow">Ready</span>'
+                                    : '<span class="badge badge-gray">Pending</span>'
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function renderTiers() {
+            const tbody = document.getElementById('tiersTable');
+            tbody.innerHTML = tiers.map(t => `
+                <tr>
+                    <td>${t.tier_name}</td>
+                    <td>${formatNumber(t.min_views)} - ${t.max_views ? formatNumber(t.max_views) : '∞'}</td>
+                    <td style="color:#22c55e;font-weight:500;">${formatCurrency(t.payout)}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function populateCreatorDropdown() {
+            const select = document.getElementById('postCreator');
+            select.innerHTML = creators.map(c => 
+                `<option value="${c.id}">${c.name} (${c.handle})</option>`
+            ).join('');
+        }
+        
+        function openModal(type) {
+            document.getElementById(type + 'Modal').classList.add('active');
+            if (type === 'post') {
+                document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
+            }
+        }
+        
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+        }
+        
+        async function submitPost(e) {
+            e.preventDefault();
+            const views = parseInt(document.getElementById('postViews').value);
+            const earnings = calculateEarnings(views);
+            const postDate = document.getElementById('postDate').value;
+            
+            const eligibleDate = new Date(postDate);
+            eligibleDate.setDate(eligibleDate.getDate() + 15);
+            
+            await api('posts', {
+                method: 'POST',
+                body: JSON.stringify({
+                    creator_id: document.getElementById('postCreator').value,
+                    platform: document.getElementById('postPlatform').value,
+                    post_date: postDate,
+                    post_url: document.getElementById('postUrl').value || null,
+                    views: views,
+                    earnings: earnings,
+                    bonus_eligible_date: eligibleDate.toISOString().split('T')[0]
+                })
+            });
+            
+            closeModal('post');
+            document.getElementById('postForm').reset();
+            loadData();
+        }
+        
+        async function submitCreator(e) {
+            e.preventDefault();
+            await api('creators', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: document.getElementById('creatorName').value,
+                    handle: document.getElementById('creatorHandle').value,
+                    tiktok_handle: document.getElementById('creatorTiktok').value || null,
+                    instagram_handle: document.getElementById('creatorInstagram').value || null,
+                    email: document.getElementById('creatorEmail').value || null
+                })
+            });
+            
+            closeModal('creator');
+            document.getElementById('creatorForm').reset();
+            loadData();
+        }
+        
+        // Close modals on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('active');
+            });
+        });
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>
