@@ -14,17 +14,8 @@ export default function Header() {
           </Link>
           
           <nav className="nav">
-            <Link href="/" className={router.pathname === '/' ? 'nav-link active' : 'nav-link'}>
-              Dashboard
-            </Link>
-            <Link href="/tasks" className={router.pathname === '/tasks' ? 'nav-link active' : 'nav-link'}>
-              Tasks
-            </Link>
-            <Link href="/analytics" className={router.pathname === '/analytics' ? 'nav-link active' : 'nav-link'}>
-              Analytics
-            </Link>
-            <Link href="/competitors" className={router.pathname === '/competitors' ? 'nav-link active' : 'nav-link'}>
-              Competitors
+            <Link href="/" className="nav-link active">
+              Priority Board
             </Link>
           </nav>
           
