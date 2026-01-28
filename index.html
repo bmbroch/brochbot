@@ -3,12 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brochbot Dashboard - Task Tracking</title>
+    <title>Tasks - Brochbot</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <style>
+        .tasks-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .task-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        
+        .filter-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .task-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .task-item:hover {
+            border-color: var(--accent);
+        }
+        
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            cursor: pointer;
+        }
+        
+        .task-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        
+        .task-checkbox:hover {
+            border-color: var(--accent);
+        }
+        
+        .task-checkbox.checked {
+            background: #22c55e;
+            border-color: #22c55e;
+        }
+        
+        .task-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+        }
+        
+        .task-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .task-title {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .task-item.done .task-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+        
+        .task-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .task-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .badge-high { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .badge-medium { background: rgba(234,179,8,0.15); color: #eab308; }
+        .badge-low { background: rgba(34,197,94,0.15); color: #22c55e; }
+        
+        .badge-todo { background: rgba(161,161,170,0.15); color: #a1a1aa; }
+        .badge-progress { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .badge-done { background: rgba(34,197,94,0.15); color: #22c55e; }
+        
+        .task-expand {
+            color: var(--text-muted);
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .task-item.expanded .task-expand {
+            transform: rotate(180deg);
+        }
+        
+        .task-details {
+            display: none;
+            padding: 0 20px 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 0;
+        }
+        
+        .task-item.expanded .task-details {
+            display: block;
+            padding-top: 16px;
+        }
+        
+        .detail-section {
+            margin-bottom: 16px;
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .detail-content {
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .detail-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-danger {
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+        
+        .btn:hover { opacity: 0.9; }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        
+        .modal.active { display: flex; }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .modal-title { font-size: 20px; font-weight: 600; }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .form-group { margin-bottom: 20px; }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state h3 {
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        
+        .stats-mini {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        
+        .stat-mini {
+            text-align: center;
+        }
+        
+        .stat-mini-value {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .stat-mini-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -20,10 +349,9 @@
                 </a>
                 
                 <nav class="nav">
-                    <a href="/" class="nav-link active">Dashboard</a>
-                    <a href="/tasks.html" class="nav-link">Tasks</a>
+                    <a href="/" class="nav-link">Dashboard</a>
+                    <a href="/tasks.html" class="nav-link active">Tasks</a>
                     <a href="/analytics.html" class="nav-link">Analytics</a>
-                    <a href="/creator-payouts.html" class="nav-link">Creator Payouts</a>
                     <a href="/competitors.html" class="nav-link">Competitors</a>
                 </nav>
                 
@@ -36,376 +364,366 @@
     </header>
     
     <main>
-        <!-- Stats Section -->
         <section class="stats-section">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">📊</div>
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">Total Tasks</div>
-                        <span class="stat-change">↑ 5 defined</span>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">🚧</div>
-                        <div class="stat-value">1</div>
-                        <div class="stat-label">In Progress</div>
-                        <span class="stat-change">Competitor monitoring</span>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">✅</div>
-                        <div class="stat-value">2</div>
-                        <div class="stat-label">Completed</div>
-                        <span class="stat-change">↑ Dashboard & briefing</span>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">⚡</div>
-                        <div class="stat-value">40%</div>
-                        <div class="stat-label">Progress Rate</div>
-                        <span class="stat-change">↑ Accelerating</span>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">🎯</div>
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">Priority Competitors</div>
-                        <span class="stat-change">FinalRound, Parakeet, LockedIn</span>
-                    </div>
-                </div>
-                
-                <!-- Products Section -->
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <span>🚀</span>
-                        <span>Product Overview</span>
-                    </h2>
-                    <div class="section-actions">
-                        <button class="btn-secondary">View All</button>
-                    </div>
-                </div>
-                
-                <div class="products-grid">
-                    <!-- Interview Sidekick -->
-                    <div class="product-card">
-                        <div class="product-header">
-                            <div class="product-info">
-                                <img src="https://interviewsidekick.com/favicon.ico" alt="Interview Sidekick" style="width: 24px; height: 24px; border-radius: 4px;">
-                                <h3 class="product-name">Interview Sidekick</h3>
-                            </div>
-                            <span class="product-menu">⋯</span>
-                        </div>
-                        
-                        <div class="product-stats">
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">To Do</span>
-                            </div>
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">Active</span>
-                            </div>
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">Done</span>
-                            </div>
-                        </div>
-                        
-                        <div class="progress-container">
-                            <div class="progress-header">
-                                <span class="progress-label">Completion</span>
-                                <span class="progress-value">0%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="task-list">
-                            <div class="empty-state">
-                                <span class="empty-text">No tasks yet</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Sales Echo -->
-                    <div class="product-card">
-                        <div class="product-header">
-                            <div class="product-info">
-                                <img src="https://sales-echo.com/favicon.ico" alt="Sales Echo" style="width: 24px; height: 24px; border-radius: 4px;">
-                                <h3 class="product-name">Sales Echo</h3>
-                            </div>
-                            <span class="product-menu">⋯</span>
-                        </div>
-                        
-                        <div class="product-stats">
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">To Do</span>
-                            </div>
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">Active</span>
-                            </div>
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">Done</span>
-                            </div>
-                        </div>
-                        
-                        <div class="progress-container">
-                            <div class="progress-header">
-                                <span class="progress-label">Completion</span>
-                                <span class="progress-value">0%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="task-list">
-                            <div class="empty-state">
-                                <span class="empty-text">No tasks yet</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Cover Letter Copilot -->
-                    <div class="product-card">
-                        <div class="product-header">
-                            <div class="product-info">
-                                <img src="https://coverlettercopilot.ai/favicon.ico" alt="Cover Letter Copilot" style="width: 24px; height: 24px; border-radius: 4px;">
-                                <h3 class="product-name">Cover Letter Copilot</h3>
-                            </div>
-                            <span class="product-menu">⋯</span>
-                        </div>
-                        
-                        <div class="product-stats">
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">To Do</span>
-                            </div>
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">Active</span>
-                            </div>
-                            <div class="product-stat">
-                                <span class="product-stat-value">0</span>
-                                <span class="product-stat-label">Done</span>
-                            </div>
-                        </div>
-                        
-                        <div class="progress-container">
-                            <div class="progress-header">
-                                <span class="progress-label">Completion</span>
-                                <span class="progress-value">0%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="task-list">
-                            <div class="empty-state">
-                                <span class="empty-text">No tasks yet</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Brochbot Automation -->
-                    <div class="product-card">
-                        <div class="product-header">
-                            <div class="product-info">
-                                <span class="product-emoji">🤖</span>
-                                <h3 class="product-name">Brochbot Automation</h3>
-                            </div>
-                            <span class="product-menu">⋯</span>
-                        </div>
-                        
-                        <div class="product-stats">
-                            <div class="product-stat">
-                                <span class="product-stat-value">2</span>
-                                <span class="product-stat-label">To Do</span>
-                            </div>
-                            <div class="product-stat">
-                                <span class="product-stat-value">1</span>
-                                <span class="product-stat-label">Active</span>
-                            </div>
-                            <div class="product-stat">
-                                <span class="product-stat-value">2</span>
-                                <span class="product-stat-label">Done</span>
-                            </div>
-                        </div>
-                        
-                        <div class="progress-container">
-                            <div class="progress-header">
-                                <span class="progress-label">Completion</span>
-                                <span class="progress-value">40%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 40%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="task-list">
-                            <div class="task-item">
-                                <span class="task-status-indicator progress"></span>
-                                <span class="task-id">#1</span>
-                                <span class="task-title">Competitor monitoring (FinalRound, Parakeet, LockedIn)</span>
-                            </div>
-                            <div class="task-item">
-                                <span class="task-status-indicator todo"></span>
-                                <span class="task-id">#2</span>
-                                <span class="task-title">UGC creator payment tracker (Nick's sheet)</span>
-                            </div>
-                            <div class="task-item">
-                                <span class="task-status-indicator todo"></span>
-                                <span class="task-id">#3</span>
-                                <span class="task-title">DataFast analytics integration</span>
-                            </div>
-                            <div class="task-item">
-                                <span class="task-status-indicator done"></span>
-                                <span class="task-id">✓</span>
-                                <span class="task-title">Morning briefing at 7 AM Cape Town</span>
-                            </div>
-                            <div class="task-item">
-                                <span class="task-status-indicator done"></span>
-                                <span class="task-id">✓</span>
-                                <span class="task-title">Brochbot dashboard</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Kanban Board -->
-        <section class="kanban-section">
-            <div class="container">
+            <div class="container tasks-container">
                 <div class="section-header">
                     <h2 class="section-title">
                         <span>📋</span>
-                        <span>Task Board</span>
+                        <span>Tasks</span>
                     </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" onclick="openModal()">+ Add Task</button>
+                    </div>
                 </div>
                 
-                <div class="kanban-board">
-                    <!-- To Do Column -->
-                    <div class="kanban-column">
-                        <div class="kanban-header todo">
-                            <div class="kanban-title">
-                                <span>📥</span>
-                                <span>To Do</span>
-                            </div>
-                            <span class="kanban-count">2</span>
-                        </div>
-                        
-                        <div class="kanban-tasks">
-                            <div class="kanban-task">
-                                <div class="kanban-task-title">Create UGC creator payment tracker integrated with Nick's Google Sheet</div>
-                                <div class="kanban-task-meta">
-                                    <span class="kanban-task-product">🤖 Automation</span>
-                                    <span class="kanban-task-id">#2</span>
-                                </div>
-                            </div>
-                            
-                            <div class="kanban-task">
-                                <div class="kanban-task-title">Connect DataFast analytics for daily traffic reports</div>
-                                <div class="kanban-task-meta">
-                                    <span class="kanban-task-product">🤖 Automation</span>
-                                    <span class="kanban-task-id">#3</span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="stats-mini">
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="statTodo">0</div>
+                        <div class="stat-mini-label">To Do</div>
                     </div>
-                    
-                    <!-- In Progress Column -->
-                    <div class="kanban-column">
-                        <div class="kanban-header progress">
-                            <div class="kanban-title">
-                                <span>🚧</span>
-                                <span>In Progress</span>
-                            </div>
-                            <span class="kanban-count">1</span>
-                        </div>
-                        
-                        <div class="kanban-tasks">
-                            <div class="kanban-task">
-                                <div class="kanban-task-title">Build competitor monitoring for FinalRound AI, Parakeet AI, and LockedIn AI</div>
-                                <div class="kanban-task-meta">
-                                    <span class="kanban-task-product">🎯 Priority</span>
-                                    <span class="kanban-task-id">#1</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="statProgress">0</div>
+                        <div class="stat-mini-label">In Progress</div>
                     </div>
-                    
-                    <!-- Done Column -->
-                    <div class="kanban-column">
-                        <div class="kanban-header done">
-                            <div class="kanban-title">
-                                <span>✅</span>
-                                <span>Done</span>
-                            </div>
-                            <span class="kanban-count">2</span>
-                        </div>
-                        
-                        <div class="kanban-tasks">
-                            <div class="kanban-task">
-                                <div class="kanban-task-title">Set up morning briefing at 7 AM Cape Town time</div>
-                                <div class="kanban-task-meta">
-                                    <span class="kanban-task-product">🤖 System</span>
-                                    <span class="kanban-task-id">#1</span>
-                                </div>
-                            </div>
-                            
-                            <div class="kanban-task">
-                                <div class="kanban-task-title">Create Brochbot dashboard</div>
-                                <div class="kanban-task-meta">
-                                    <span class="kanban-task-product">🤖 System</span>
-                                    <span class="kanban-task-id">#9</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="statDone">0</div>
+                        <div class="stat-mini-label">Done</div>
+                    </div>
+                </div>
+                
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="todo">To Do</button>
+                    <button class="filter-btn" data-filter="in_progress">In Progress</button>
+                    <button class="filter-btn" data-filter="done">Done</button>
+                    <button class="filter-btn" data-filter="high">🔴 High Priority</button>
+                </div>
+                
+                <div class="task-list" id="taskList">
+                    <div class="empty-state">
+                        <h3>Loading tasks...</h3>
                     </div>
                 </div>
             </div>
         </section>
     </main>
     
+    <!-- Add/Edit Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add Task</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="taskForm" onsubmit="submitTask(event)">
+                <input type="hidden" id="taskId">
+                
+                <div class="form-group">
+                    <label class="form-label">Title *</label>
+                    <input type="text" class="form-input" id="taskTitle" required placeholder="What needs to be done?">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" id="taskDescription" placeholder="Brief summary..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Details</label>
+                    <textarea class="form-textarea" id="taskDetails" style="min-height:150px;" placeholder="Full details, steps, notes, context...&#10;&#10;This is where you can write everything Brochbot needs to know to complete this task."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="taskStatus">
+                            <option value="todo">To Do</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="done">Done</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Priority</label>
+                        <select class="form-select" id="taskPriority">
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" id="taskCategory">
+                            <option value="">None</option>
+                            <option value="interview_sidekick">Interview Sidekick</option>
+                            <option value="sales_echo">Sales Echo</option>
+                            <option value="cover_letter">Cover Letter Copilot</option>
+                            <option value="brochbot">Brochbot</option>
+                            <option value="automation">Automation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Due Date</label>
+                        <input type="date" class="form-input" id="taskDueDate">
+                    </div>
+                </div>
+                
+                <div style="display:flex;gap:12px;margin-top:24px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;">Save Task</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Add smooth animations on load
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.stat-card, .product-card, .kanban-task');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 50);
-            });
-        });
+        const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T';
         
-        // Update time
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { 
-                hour: 'numeric', 
-                minute: '2-digit',
-                hour12: true 
+        let tasks = [];
+        let currentFilter = 'all';
+        
+        async function api(endpoint, options = {}) {
+            const headers = {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+            };
+            if (options.method === 'POST') headers['Prefer'] = 'return=representation';
+            if (options.method === 'PATCH') headers['Prefer'] = 'return=representation';
+            
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
+                ...options,
+                headers: { ...headers, ...options.headers }
             });
-            const statusBadge = document.querySelector('.status-badge span:last-child');
-            if (statusBadge) {
-                statusBadge.textContent = `Live • ${timeString}`;
+            
+            if (options.method === 'DELETE') return { success: true };
+            return res.json();
+        }
+        
+        async function loadTasks() {
+            try {
+                tasks = await api('tasks?order=created_at.desc');
+                renderTasks();
+                updateStats();
+            } catch (e) {
+                console.error('Failed to load tasks:', e);
             }
         }
         
-        updateTime();
-        setInterval(updateTime, 60000);
+        function updateStats() {
+            const counts = { todo: 0, in_progress: 0, done: 0 };
+            tasks.forEach(t => {
+                if (counts[t.status] !== undefined) counts[t.status]++;
+            });
+            
+            document.getElementById('statTodo').textContent = counts.todo;
+            document.getElementById('statProgress').textContent = counts.in_progress;
+            document.getElementById('statDone').textContent = counts.done;
+        }
+        
+        function getFilteredTasks() {
+            if (currentFilter === 'all') return tasks;
+            if (currentFilter === 'high') return tasks.filter(t => t.priority === 'high');
+            return tasks.filter(t => t.status === currentFilter);
+        }
+        
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            const filtered = getFilteredTasks();
+            
+            if (filtered.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No tasks yet</h3>
+                        <p>Add your first task to get started!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = filtered.map(task => `
+                <div class="task-item ${task.status === 'done' ? 'done' : ''}" data-id="${task.id}">
+                    <div class="task-header" onclick="toggleTask('${task.id}')">
+                        <div class="task-checkbox ${task.status === 'done' ? 'checked' : ''}" 
+                             onclick="event.stopPropagation(); toggleDone('${task.id}')"></div>
+                        <div class="task-content">
+                            <div class="task-title">${escapeHtml(task.title)}</div>
+                            <div class="task-meta">
+                                <span class="task-badge badge-${task.priority}">${task.priority}</span>
+                                <span class="task-badge badge-${task.status.replace('_', '')}">${formatStatus(task.status)}</span>
+                                ${task.category ? `<span>${formatCategory(task.category)}</span>` : ''}
+                                ${task.due_date ? `<span>📅 ${task.due_date}</span>` : ''}
+                            </div>
+                        </div>
+                        <span class="task-expand">▼</span>
+                    </div>
+                    <div class="task-details">
+                        ${task.description ? `
+                            <div class="detail-section">
+                                <div class="detail-label">Description</div>
+                                <div class="detail-content">${escapeHtml(task.description)}</div>
+                            </div>
+                        ` : ''}
+                        ${task.details ? `
+                            <div class="detail-section">
+                                <div class="detail-label">Details</div>
+                                <div class="detail-content">${escapeHtml(task.details)}</div>
+                            </div>
+                        ` : ''}
+                        ${!task.description && !task.details ? `
+                            <div class="detail-section">
+                                <div class="detail-content" style="color:var(--text-muted);font-style:italic;">No details added yet. Click Edit to add more information.</div>
+                            </div>
+                        ` : ''}
+                        <div class="detail-actions">
+                            <button class="btn btn-secondary" onclick="editTask('${task.id}')">✏️ Edit</button>
+                            <button class="btn btn-danger" onclick="deleteTask('${task.id}')">🗑️ Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function formatStatus(status) {
+            const map = { todo: 'To Do', in_progress: 'In Progress', done: 'Done' };
+            return map[status] || status;
+        }
+        
+        function formatCategory(cat) {
+            const map = {
+                interview_sidekick: '🎤 Interview Sidekick',
+                sales_echo: '📢 Sales Echo',
+                cover_letter: '✉️ Cover Letter Copilot',
+                brochbot: '🤖 Brochbot',
+                automation: '⚡ Automation'
+            };
+            return map[cat] || cat;
+        }
+        
+        function toggleTask(id) {
+            const item = document.querySelector(`.task-item[data-id="${id}"]`);
+            item.classList.toggle('expanded');
+        }
+        
+        async function toggleDone(id) {
+            const task = tasks.find(t => t.id === id);
+            const newStatus = task.status === 'done' ? 'todo' : 'done';
+            
+            await api(`tasks?id=eq.${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ status: newStatus, updated_at: new Date().toISOString() })
+            });
+            
+            task.status = newStatus;
+            renderTasks();
+            updateStats();
+        }
+        
+        function openModal(taskId = null) {
+            const modal = document.getElementById('taskModal');
+            const form = document.getElementById('taskForm');
+            
+            if (taskId) {
+                const task = tasks.find(t => t.id === taskId);
+                document.getElementById('modalTitle').textContent = 'Edit Task';
+                document.getElementById('taskId').value = task.id;
+                document.getElementById('taskTitle').value = task.title;
+                document.getElementById('taskDescription').value = task.description || '';
+                document.getElementById('taskDetails').value = task.details || '';
+                document.getElementById('taskStatus').value = task.status;
+                document.getElementById('taskPriority').value = task.priority;
+                document.getElementById('taskCategory').value = task.category || '';
+                document.getElementById('taskDueDate').value = task.due_date || '';
+            } else {
+                document.getElementById('modalTitle').textContent = 'Add Task';
+                form.reset();
+                document.getElementById('taskId').value = '';
+            }
+            
+            modal.classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('taskModal').classList.remove('active');
+        }
+        
+        function editTask(id) {
+            openModal(id);
+        }
+        
+        async function deleteTask(id) {
+            if (!confirm('Delete this task?')) return;
+            
+            await api(`tasks?id=eq.${id}`, { method: 'DELETE' });
+            tasks = tasks.filter(t => t.id !== id);
+            renderTasks();
+            updateStats();
+        }
+        
+        async function submitTask(e) {
+            e.preventDefault();
+            
+            const taskId = document.getElementById('taskId').value;
+            const taskData = {
+                title: document.getElementById('taskTitle').value,
+                description: document.getElementById('taskDescription').value || null,
+                details: document.getElementById('taskDetails').value || null,
+                status: document.getElementById('taskStatus').value,
+                priority: document.getElementById('taskPriority').value,
+                category: document.getElementById('taskCategory').value || null,
+                due_date: document.getElementById('taskDueDate').value || null,
+                updated_at: new Date().toISOString()
+            };
+            
+            if (taskId) {
+                // Update existing
+                const [updated] = await api(`tasks?id=eq.${taskId}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify(taskData)
+                });
+                const idx = tasks.findIndex(t => t.id === taskId);
+                tasks[idx] = { ...tasks[idx], ...taskData };
+            } else {
+                // Create new
+                const [created] = await api('tasks', {
+                    method: 'POST',
+                    body: JSON.stringify(taskData)
+                });
+                tasks.unshift(created);
+            }
+            
+            closeModal();
+            renderTasks();
+            updateStats();
+        }
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderTasks();
+            });
+        });
+        
+        // Close modal on outside click
+        document.getElementById('taskModal').addEventListener('click', (e) => {
+            if (e.target.id === 'taskModal') closeModal();
+        });
+        
+        // Load tasks on page load
+        loadTasks();
     </script>
 </body>
 </html>
