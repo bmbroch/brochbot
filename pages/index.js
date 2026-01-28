@@ -11,6 +11,7 @@ const CATEGORIES = [
   { id: 'interview_sidekick', label: 'Interview Sidekick', icon: '🎤' },
   { id: 'cover_letter', label: 'Cover Letter Copilot', icon: '✉️' },
   { id: 'life', label: 'Life', icon: '🌟' },
+  { id: 'ideas', label: 'Ideas', icon: '💡' },
 ]
 
 const COLUMNS = [
