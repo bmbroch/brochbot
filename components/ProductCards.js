@@ -1,31 +1,31 @@
-import Image from 'next/image'
+import { InterviewSidekickLogo, SalesEchoLogo, CoverLetterLogo, BrochbotLogo } from './ProductLogos'
 
 export default function ProductCards() {
   const products = [
     {
       name: 'Interview Sidekick',
-      favicon: 'https://interviewsidekick.com/favicon.ico',
+      logo: InterviewSidekickLogo,
       todo: 0,
       inProgress: 0,
       done: 0
     },
     {
       name: 'Sales Echo',
-      favicon: 'https://sales-echo.com/favicon.ico',
+      logo: SalesEchoLogo,
       todo: 0,
       inProgress: 0,
       done: 0
     },
     {
       name: 'Cover Letter Copilot',
-      favicon: 'https://coverlettercopilot.ai/favicon.ico',
+      logo: CoverLetterLogo,
       todo: 0,
       inProgress: 0,
       done: 0
     },
     {
       name: 'Brochbot Automation',
-      emoji: '🤖',
+      logo: BrochbotLogo,
       todo: 2,
       inProgress: 1,
       done: 2
@@ -47,11 +47,7 @@ export default function ProductCards() {
             <div key={product.name} className="product-card">
               <div className="product-header">
                 <div className="product-info">
-                  {product.favicon ? (
-                    <img src={product.favicon} alt={product.name} width={24} height={24} style={{borderRadius: '4px'}} />
-                  ) : (
-                    <span className="product-emoji">{product.emoji}</span>
-                  )}
+                  {product.logo && <product.logo size={24} />}
                   <h3 className="product-name">{product.name}</h3>
                 </div>
                 <span className="product-menu">⋯</span>
