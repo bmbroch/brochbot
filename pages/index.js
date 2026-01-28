@@ -11,7 +11,7 @@ const CATEGORIES = [
   { id: 'interview_sidekick', label: 'Interview Sidekick', icon: '🎤' },
   { id: 'cover_letter', label: 'Cover Letter Copilot', icon: '✉️' },
   { id: 'life', label: 'Life', icon: '🌟' },
-  { id: 'ideas', label: 'Ideas', icon: '💡' },
+  { id: 'ideas', label: 'Future Ideas', icon: '💡' },
 ]
 
 const COLUMNS = [
@@ -73,9 +73,10 @@ export default function Dashboard() {
     setLoading(false)
   }
 
-  const filteredTasks = tasks.filter(t => 
-    activeCategory === 'all' || t.category === activeCategory
-  )
+  const filteredTasks = tasks.filter(t => {
+    if (activeCategory === 'all') return t.category !== 'ideas'
+    return t.category === activeCategory
+  })
 
   const getTasksByStatus = (status) => filteredTasks.filter(t => t.status === status)
 
