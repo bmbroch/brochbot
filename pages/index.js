@@ -6,7 +6,7 @@ const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
 
 const CATEGORIES = [
   { id: 'all', label: 'All Tasks', icon: '📋' },
-  { id: 'sales_echo', label: 'Sales Echo', icon: '📢' },
+  { id: 'sales_echo', label: 'SalesEcho', icon: '📢' },
   { id: 'interview_sidekick', label: 'Interview Sidekick', icon: '🎤' },
   { id: 'cover_letter', label: 'Cover Letter Copilot', icon: '✉️' },
   { id: 'life', label: 'Life', icon: '🌟' },
