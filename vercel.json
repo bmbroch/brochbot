@@ -1,9 +1,4 @@
 {
   "version": 2,
-  "buildCommand": "exit 0",
-  "outputDirectory": ".",
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/:path*", "destination": "/:path*.html" }
-  ]
+  "public": true
 }
