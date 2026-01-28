@@ -1,82 +1,90 @@
-# Brochbot Dashboard
+# Brochbot Dashboard - Next.js
 
-Beautiful, professional task dashboard with actual product favicons and real tasks only.
+A beautiful, professional task dashboard built with Next.js, React, and modern web technologies.
 
-## 🚀 Deploy to Vercel
+## 🚀 Features
 
-### Option 1: Deploy with Vercel CLI
+- **Multi-page application** with routing
+- **API routes** for dynamic data
+- **Server-side rendering** for better SEO
+- **Beautiful UI** inspired by Airbnb/Vercel design
+- **Product tracking** for Interview Sidekick, Sales Echo, Cover Letter Copilot
+- **Task management** with Kanban board
+- **Competitor monitoring** dashboard
+- **Analytics integration** (ready for DataFast API)
+
+## 📁 Project Structure
+
+```
+brochbot/
+├── pages/
+│   ├── index.js          # Main dashboard
+│   ├── tasks.js          # Task management
+│   ├── analytics.js      # Analytics dashboard
+│   ├── competitors.js    # Competitor tracking
+│   └── api/
+│       └── tasks.js      # Tasks API endpoint
+├── components/
+│   ├── Header.js         # Navigation header
+│   ├── StatsGrid.js      # Statistics cards
+│   ├── ProductCards.js   # Product overview cards
+│   └── KanbanBoard.js    # Task board
+├── styles/
+│   └── globals.css       # Global styles
+├── public/
+│   └── favicon.txt       # Favicon
+└── next.config.js        # Next.js configuration
+```
+
+## 🛠 Installation
+
 ```bash
-# Install Vercel CLI if you haven't already
-npm i -g vercel
-
-# Deploy
-cd brochbot-vercel
-vercel
-
-# Follow the prompts:
-# - Link to existing project or create new
-# - Choose project name (e.g., "brochbot")
-# - Deploy!
+npm install
+# or
+yarn install
 ```
 
-### Option 2: Deploy via GitHub
-1. Push this folder to a GitHub repository
-2. Go to [vercel.com](https://vercel.com)
-3. Import the repository
-4. Deploy with one click
+## 🏃 Development
 
-### Option 3: Drag and Drop
-1. Go to [vercel.com/new](https://vercel.com/new)
-2. Drag the `brochbot-vercel` folder onto the page
-3. Deploy instantly
-
-## 📁 Structure
-
-```
-brochbot-vercel/
-├── index.html         # Main dashboard
-├── tasks.html         # Tasks page (placeholder)
-├── analytics.html     # Analytics page (placeholder)
-├── competitors.html   # Competitors page (placeholder)
-├── style.css          # Clean, minimal styling
-├── app.js            # Dashboard logic
-└── vercel.json       # Vercel configuration
+```bash
+npm run dev
+# or
+yarn dev
 ```
 
-## ✏️ Updating Tasks
+Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
 
-Edit the `tasks` object in `app.js`:
+## 🚢 Deployment
 
-```javascript
-const tasks = {
-    todo: [
-        { id: 1, title: "Task title", product: "Product name" }
-    ],
-    inProgress: [],
-    done: []
-};
-```
+### Deploy on Vercel
 
-## 🎨 Customization
+The easiest way to deploy is using [Vercel](https://vercel.com):
 
-- **Colors**: Edit `style.css`
-- **Products**: Update the `products` array in `app.js`
-- **Add pages**: Create new HTML files and link them in the nav
+1. Push to GitHub (already done!)
+2. Import to Vercel
+3. Deploy with these settings:
+   - Framework Preset: **Next.js**
+   - Build Command: `npm run build`
+   - Output Directory: `.next`
 
-## 🔗 After Deployment
+## 🎨 Tech Stack
 
-Your dashboard will be available at:
-- `https://brochbot.vercel.app` (or your chosen subdomain)
-- Custom domain can be added in Vercel settings
+- **Next.js 14** - React framework
+- **React 18** - UI library
+- **CSS** - Styling with custom design system
+- **Vercel** - Deployment platform
 
-## 📊 Future Enhancements
+## 📊 Current Tasks
 
-Ready to add:
-- Real-time task updates via API
-- Analytics integration
-- Competitor monitoring dashboard
-- UGC creator tracking
-- Interactive task management
+- ✅ Morning briefing setup
+- ✅ Dashboard creation
+- 🚧 Competitor monitoring (FinalRound AI, Parakeet AI, LockedIn AI)
+- 📥 UGC creator payment tracker
+- 📥 DataFast analytics integration
+
+## 🔗 Live Demo
+
+Coming soon at: `brochbot.vercel.app`
 
 ---
 
