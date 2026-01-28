@@ -1,6 +1,6 @@
 {
   "name": "brochbot",
   "version": 2,
-  "framework": "nextjs",
-  "public": false
+  "public": false,
+  "cleanUrls": true
 }
