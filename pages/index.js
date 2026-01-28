@@ -57,6 +57,7 @@ export default function Dashboard() {
   const [activeCategory, setActiveCategory] = useState('all')
   const [showModal, setShowModal] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({
     title: '', description: '', details: '', status: 'todo', priority: 'medium', category: 'life', due_date: '', schedule: ''
   })
@@ -64,8 +65,10 @@ export default function Dashboard() {
   useEffect(() => { loadTasks() }, [])
 
   async function loadTasks() {
+    setLoading(true)
     const data = await api('tasks?order=created_at.desc')
     setTasks(data || [])
+    setLoading(false)
   }
 
   const filteredTasks = tasks.filter(t => 
@@ -224,7 +227,9 @@ export default function Dashboard() {
                     </div>
                   ))}
                   {getTasksByStatus(col.id).length === 0 && (
-                    <div className="empty-column">No tasks</div>
+                    <div className="empty-column">
+                      {loading ? <span className="loader"></span> : 'No tasks'}
+                    </div>
                   )}
                 </div>
               </div>
@@ -414,10 +419,17 @@ export default function Dashboard() {
           font-size: 14px;
           font-weight: 500;
           cursor: pointer;
-          transition: opacity 0.2s;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .btn-primary:hover { opacity: 0.8; }
+        .btn-primary:hover { 
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary:active {
+          transform: translateY(0);
+        }
         
         .btn-secondary {
           background: var(--card);
@@ -529,11 +541,24 @@ export default function Dashboard() {
           border-radius: 10px;
           padding: 16px;
           cursor: default;
-          transition: box-shadow 0.2s;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          animation: cardIn 0.3s ease;
+        }
+        
+        @keyframes cardIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         
         .task-card:hover {
-          box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+          transform: translateY(-2px);
         }
         
         .task-card-header {
@@ -620,18 +645,39 @@ export default function Dashboard() {
           padding: 40px 20px;
           color: var(--text-secondary);
           font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .loader {
+          width: 20px;
+          height: 20px;
+          border: 2px solid var(--border);
+          border-top-color: var(--accent);
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+          to { transform: rotate(360deg); }
         }
         
         /* Modal */
         .modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.5);
+          background: rgba(0,0,0,0);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 100;
           padding: 20px;
+          animation: fadeIn 0.2s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+          to { background: rgba(0,0,0,0.5); }
         }
         
         .modal {
@@ -642,6 +688,19 @@ export default function Dashboard() {
           max-height: 90vh;
           overflow-y: auto;
           padding: 24px;
+          animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
         }
         
         .modal-header {
@@ -713,22 +772,53 @@ export default function Dashboard() {
           margin-top: 24px;
         }
         
+        /* Tablet */
+        @media (max-width: 1100px) {
+          .kanban {
+            grid-template-columns: repeat(3, minmax(250px, 1fr));
+            gap: 12px;
+          }
+        }
+        
         /* Mobile */
         @media (max-width: 900px) {
           .kanban {
             grid-template-columns: 1fr;
+            gap: 16px;
           }
           
           .kanban-column {
             min-height: auto;
+            padding: 12px;
           }
           
           .header {
             padding: 12px 16px;
           }
           
+          .header-right {
+            gap: 10px;
+          }
+          
+          .status-badge {
+            display: none;
+          }
+          
           .main {
             padding: 16px;
+          }
+          
+          .category-bar {
+            padding: 0 16px;
+          }
+          
+          .category-tab {
+            padding: 12px 12px;
+            font-size: 13px;
+          }
+          
+          .category-tab span:last-child {
+            display: none;
           }
           
           .form-row {
@@ -737,6 +827,37 @@ export default function Dashboard() {
           
           .logo-text {
             display: none;
+          }
+          
+          .task-card {
+            padding: 14px;
+          }
+          
+          .task-actions {
+            flex-wrap: wrap;
+          }
+          
+          .task-actions button {
+            flex: 1;
+            min-width: 60px;
+            justify-content: center;
+          }
+          
+          .modal {
+            margin: 16px;
+            max-height: calc(100vh - 32px);
+          }
+        }
+        
+        /* Small mobile */
+        @media (max-width: 400px) {
+          .btn-primary {
+            padding: 10px 14px;
+            font-size: 13px;
+          }
+          
+          .category-tab {
+            padding: 10px 8px;
           }
         }
       `}</style>
