@@ -13,13 +13,26 @@ async function api(endpoint, options = {}) {
   if (options.method === 'POST') headers['Prefer'] = 'return=representation'
   if (options.method === 'PATCH') headers['Prefer'] = 'return=representation'
   
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
-    ...options,
-    headers: { ...headers, ...options.headers }
-  })
-  
-  if (options.method === 'DELETE') return { success: true }
-  return res.json()
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
+      ...options,
+      headers: { ...headers, ...options.headers }
+    })
+    
+    if (!res.ok) {
+      const err = await res.text()
+      console.error('API Error:', res.status, err)
+      alert('Error saving: ' + err)
+      return null
+    }
+    
+    if (options.method === 'DELETE') return { success: true }
+    return res.json()
+  } catch (e) {
+    console.error('Fetch error:', e)
+    alert('Network error: ' + e.message)
+    return null
+  }
 }
 
 export default function Tasks() {
@@ -93,13 +106,21 @@ export default function Tasks() {
     if (!data.category) data.category = null
     if (!data.due_date) data.due_date = null
 
+    console.log('Submitting task:', data)
+
+    let result
     if (editingTask) {
-      await api(`tasks?id=eq.${editingTask.id}`, { method: 'PATCH', body: JSON.stringify(data) })
+      result = await api(`tasks?id=eq.${editingTask.id}`, { method: 'PATCH', body: JSON.stringify(data) })
     } else {
-      await api('tasks', { method: 'POST', body: JSON.stringify(data) })
+      result = await api('tasks', { method: 'POST', body: JSON.stringify(data) })
     }
-    setShowModal(false)
-    loadTasks()
+    
+    console.log('API result:', result)
+    
+    if (result) {
+      setShowModal(false)
+      loadTasks()
+    }
   }
 
   const formatStatus = s => ({ todo: 'To Do', in_progress: 'In Progress', done: 'Done' }[s] || s)
