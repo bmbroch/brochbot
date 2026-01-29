@@ -21,6 +21,7 @@ const PRIORITIES = [
 
 const STATUSES = [
   { id: 'active', label: '🔥 Active' },
+  { id: 'planning', label: '📝 Planning' },
   { id: 'paused', label: '⏸️ Paused' },
   { id: 'blocked', label: '🚫 Blocked' },
   { id: 'done', label: '✅ Done' },
@@ -34,18 +35,42 @@ const ASSIGNEES = [
 
 // Map old values to new
 const priorityMap = { high: 'p0', medium: 'p1', low: 'p2' }
-const statusMap = { todo: 'active', in_progress: 'active', done: 'done' }
+const statusMap = { todo: 'planning', in_progress: 'active', done: 'done' }
+
+const SCHEDULES = [
+  { id: 'daily', label: 'Daily', icon: '🔄' },
+  { id: 'daily_morning', label: 'Daily', icon: '🔄' },
+  { id: 'weekly', label: 'Weekly', icon: '📅' },
+  { id: 'monthly', label: 'Monthly', icon: '🗓️' },
+  { id: 'once', label: 'One-time', icon: '1️⃣' },
+]
+
+function parseScheduleField(schedule) {
+  if (!schedule) return { assignee: 'brochbot', frequency: null }
+  
+  let assignee = 'brochbot'
+  let frequency = null
+  
+  const parts = schedule.split('|')
+  for (const part of parts) {
+    if (part.startsWith('assignee:')) {
+      assignee = part.replace('assignee:', '')
+    } else if (['daily', 'daily_morning', 'weekly', 'monthly', 'once'].includes(part)) {
+      frequency = part
+    }
+  }
+  
+  return { assignee, frequency }
+}
 
 function normalizeTask(task) {
-  let assignee = 'brochbot'
-  if (task.schedule && task.schedule.startsWith('assignee:')) {
-    assignee = task.schedule.replace('assignee:', '')
-  }
+  const { assignee, frequency } = parseScheduleField(task.schedule)
   return {
     ...task,
     priority: priorityMap[task.priority] || task.priority || 'p1',
-    status: statusMap[task.status] || task.status || 'active',
+    status: statusMap[task.status] || task.status || 'planning',
     assignee,
+    frequency,
   }
 }
 
@@ -133,7 +158,7 @@ export default function Home() {
 
   async function handleSaveTask(taskData) {
     const priorityDbMap = { p0: 'high', p1: 'medium', p2: 'low', p3: 'low' }
-    const statusDbMap = { active: 'todo', paused: 'todo', blocked: 'todo', done: 'done' }
+    const statusDbMap = { active: 'in_progress', planning: 'todo', paused: 'todo', blocked: 'todo', done: 'done' }
     
     const dbData = {
       title: taskData.title,
@@ -263,6 +288,11 @@ export default function Home() {
                         {task.priority.toUpperCase()}
                       </span>
                       <span className="task-title">{task.title}</span>
+                      {task.frequency && (
+                        <span className="schedule-badge" title={SCHEDULES.find(s => s.id === task.frequency)?.label}>
+                          {SCHEDULES.find(s => s.id === task.frequency)?.icon}
+                        </span>
+                      )}
                     </div>
                     <div className="task-meta">
                       <span className={`assignee-badge assignee-${task.assignee}`}>
@@ -494,9 +524,15 @@ export default function Home() {
         }
         
         .status-active { background: #dcfce7; color: #16a34a; }
+        .status-planning { background: #e0e7ff; color: #4f46e5; }
         .status-paused { background: #fef9c3; color: #a16207; }
         .status-blocked { background: #fee2e2; color: #dc2626; }
         .status-done { background: #f3f4f6; color: #6b7280; }
+        
+        .schedule-badge {
+          font-size: 16px;
+          flex-shrink: 0;
+        }
         
         .sidebar { display: flex; flex-direction: column; gap: 16px; }
         
