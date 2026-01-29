@@ -41,7 +41,7 @@ const STATUSES = [
 ]
 
 const ASSIGNEES = [
-  { id: 'brochbot', label: '🤖 Brochbot', color: '#a855f7' },
+  { id: 'brochbot', label: '🤖 BrochBot', color: '#a855f7' },
   { id: 'ben', label: '👤 Ben', color: '#22c55e' },
   { id: 'both', label: '👥 Both', color: '#3b82f6' },
 ]
@@ -245,14 +245,14 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Brochbot HQ</title>
+        <title>BrochBot HQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
       <div className="container">
         {/* Header */}
         <header className="header">
-          <div className="logo">🤖 Brochbot HQ</div>
+          <div className="logo">🤖 BrochBot HQ</div>
           <nav className="nav">
             <Link href="/table" className="nav-link">Table</Link>
             <Link href="/agents" className="nav-link">Agents</Link>
@@ -272,7 +272,7 @@ export default function Home() {
           </div>
           <div className="stat-card">
             <div className="stat-value">{stats.brochbot}</div>
-            <div className="stat-label">🤖 Brochbot Tasks</div>
+            <div className="stat-label">🤖 BrochBot Tasks</div>
           </div>
           <div className="stat-card">
             <div className="stat-value">{stats.ben}</div>
@@ -293,7 +293,7 @@ export default function Home() {
               onClick={() => setView(v)}
             >
               {v === 'all' && 'All Tasks'}
-              {v === 'brochbot' && '🤖 Brochbot (Agent)'}
+              {v === 'brochbot' && '🤖 BrochBot (Agent)'}
               {v === 'ben' && '👤 Ben'}
               {v === 'p0' && '🔴 P0'}
               {v === 'p1' && '🟡 P1'}
@@ -357,7 +357,7 @@ export default function Home() {
           {/* Sidebar */}
           <div className="sidebar">
             <div className="sidebar-card">
-              <div className="sidebar-title">⚡ Quick Add for Brochbot</div>
+              <div className="sidebar-title">⚡ Quick Add for BrochBot</div>
               <input
                 type="text"
                 className="form-input"
@@ -426,7 +426,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="footer">
           <div className="footer-section">
-            <div className="footer-title">🤖 Brochbot HQ</div>
+            <div className="footer-title">🤖 BrochBot HQ</div>
             <p className="footer-tagline">Your AI coding assistant</p>
           </div>
           <div className="footer-section">
@@ -1048,7 +1048,7 @@ function TaskModal({ task, onClose, onSave }) {
               style={{ minHeight: '120px' }}
               value={form.details}
               onChange={e => setForm({ ...form, details: e.target.value })}
-              placeholder="Full context for Brochbot to complete this task..."
+              placeholder="Full context for BrochBot to complete this task..."
             />
           </div>
           

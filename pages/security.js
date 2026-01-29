@@ -88,14 +88,14 @@ export default function Security() {
   return (
     <>
       <Head>
-        <title>Security | Brochbot HQ</title>
+        <title>Security | BrochBot HQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
       <div className="container">
         {/* Header */}
         <header className="header">
-          <Link href="/" className="logo">🤖 Brochbot HQ</Link>
+          <Link href="/" className="logo">🤖 BrochBot HQ</Link>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
             <Link href="/agents" className="nav-link">Agents</Link>
@@ -107,7 +107,7 @@ export default function Security() {
         <section className="hero">
           <h1 className="hero-title">Data Access & Security 🔐</h1>
           <p className="hero-subtitle">
-            All services and databases Brochbot has access to, with full transparency on permissions.
+            All services and databases BrochBot has access to, with full transparency on permissions.
           </p>
         </section>
 

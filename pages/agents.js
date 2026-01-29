@@ -57,7 +57,7 @@ const COMMANDS = [
     emoji: '🗂️',
     title: 'Tasks',
     items: [
-      { cmd: 'tasks', desc: 'Show active Brochbot tasks' },
+      { cmd: 'tasks', desc: 'Show active BrochBot tasks' },
     ],
   },
   {
@@ -80,7 +80,7 @@ export default function Agents() {
   return (
     <>
       <Head>
-        <title>Agents | Brochbot HQ</title>
+        <title>Agents | BrochBot HQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Active agents, quick commands, and capabilities." />
       </Head>
@@ -88,7 +88,7 @@ export default function Agents() {
       <div className="container">
         {/* Header */}
         <header className="header">
-          <Link href="/" className="logo">🤖 Brochbot HQ</Link>
+          <Link href="/" className="logo">🤖 BrochBot HQ</Link>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
             <Link href="/how-it-works" className="nav-link">How It Works</Link>

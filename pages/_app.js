@@ -46,7 +46,7 @@ function PasswordGate({ children }) {
     return (
       <div style={styles.container}>
         <div style={styles.card}>
-          <div style={styles.logo}>🤖 Brochbot HQ</div>
+          <div style={styles.logo}>🤖 BrochBot HQ</div>
           <p style={styles.subtitle}>Enter password to continue</p>
           <form onSubmit={handleSubmit}>
             <input

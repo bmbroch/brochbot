@@ -6,25 +6,25 @@ const STEPS = [
     number: '1',
     emoji: '📝',
     title: 'Add Tasks',
-    description: 'Create tasks from the dashboard or chat directly with Brochbot via Telegram. Assign to yourself, Brochbot, or both.',
+    description: 'Create tasks from the dashboard or chat directly with BrochBot via Telegram. Assign to yourself, BrochBot, or both.',
   },
   {
     number: '2',
     emoji: '🤖',
-    title: 'Brochbot Works',
-    description: 'Brochbot checks in throughout the day, picks up assigned tasks, and gets to work autonomously—coding, researching, or organizing.',
+    title: 'BrochBot Works',
+    description: 'BrochBot checks in throughout the day, picks up assigned tasks, and gets to work autonomously—coding, researching, or organizing.',
   },
   {
     number: '3',
     emoji: '💬',
     title: 'Stay in Sync',
-    description: 'Get updates via Telegram. Brochbot asks questions when blocked and notifies you when tasks are done.',
+    description: 'Get updates via Telegram. BrochBot asks questions when blocked and notifies you when tasks are done.',
   },
   {
     number: '4',
     emoji: '✅',
     title: 'Review & Ship',
-    description: 'Check completed work, provide feedback, and ship. Brochbot learns your preferences over time.',
+    description: 'Check completed work, provide feedback, and ship. BrochBot learns your preferences over time.',
   },
 ]
 
@@ -32,22 +32,22 @@ const FEATURES = [
   {
     emoji: '⚡',
     title: 'Always Available',
-    description: 'Brochbot runs 24/7 on a cloud server, checking heartbeats and picking up tasks even while you sleep.',
+    description: 'BrochBot runs 24/7 on a cloud server, checking heartbeats and picking up tasks even while you sleep.',
   },
   {
     emoji: '🔐',
     title: 'Secure Access',
-    description: 'Controlled permissions for databases, APIs, and services. Brochbot asks before external actions.',
+    description: 'Controlled permissions for databases, APIs, and services. BrochBot asks before external actions.',
   },
   {
     emoji: '🧠',
     title: 'Memory & Context',
-    description: 'Brochbot maintains memory files to remember decisions, preferences, and project context across sessions.',
+    description: 'BrochBot maintains memory files to remember decisions, preferences, and project context across sessions.',
   },
   {
     emoji: '🛠️',
     title: 'Real Tools',
-    description: 'Not just chat—Brochbot can push code to GitHub, query databases, scrape the web, and more.',
+    description: 'Not just chat—BrochBot can push code to GitHub, query databases, scrape the web, and more.',
   },
 ]
 
@@ -55,15 +55,15 @@ export default function HowItWorks() {
   return (
     <>
       <Head>
-        <title>How It Works | Brochbot HQ</title>
+        <title>How It Works | BrochBot HQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Learn how Brochbot, your AI coding assistant, helps manage tasks and build products." />
+        <meta name="description" content="Learn how BrochBot, your AI coding assistant, helps manage tasks and build products." />
       </Head>
       
       <div className="container">
         {/* Header */}
         <header className="header">
-          <Link href="/" className="logo">🤖 Brochbot HQ</Link>
+          <Link href="/" className="logo">🤖 BrochBot HQ</Link>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
             <Link href="/agents" className="nav-link">Agents</Link>
@@ -75,7 +75,7 @@ export default function HowItWorks() {
         <section className="hero">
           <h1 className="hero-title">Hey there 👋</h1>
           <p className="hero-subtitle">
-            Let's walk through how Brochbot helps you ship faster. Assign tasks, stay in sync, and watch things get done.
+            Let's walk through how BrochBot helps you ship faster. Assign tasks, stay in sync, and watch things get done.
           </p>
         </section>
 
@@ -119,7 +119,7 @@ export default function HowItWorks() {
                 <div className="comm-icon">📱</div>
                 <div className="comm-content">
                   <h4>Telegram</h4>
-                  <p>Chat naturally with Brochbot. Ask questions, give instructions, or just check in.</p>
+                  <p>Chat naturally with BrochBot. Ask questions, give instructions, or just check in.</p>
                 </div>
               </div>
               <div className="comm-item">
@@ -133,7 +133,7 @@ export default function HowItWorks() {
                 <div className="comm-icon">💓</div>
                 <div className="comm-content">
                   <h4>Heartbeats</h4>
-                  <p>Periodic check-ins where Brochbot reviews tasks, checks email, and surfaces important updates.</p>
+                  <p>Periodic check-ins where BrochBot reviews tasks, checks email, and surfaces important updates.</p>
                 </div>
               </div>
             </div>

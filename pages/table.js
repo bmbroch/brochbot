@@ -86,14 +86,14 @@ export default function TableView() {
   return (
     <>
       <Head>
-        <title>Table View | Brochbot HQ</title>
+        <title>Table View | BrochBot HQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <div className="container">
         {/* Header */}
         <header className="header">
-          <Link href="/" className="logo">🤖 Brochbot HQ</Link>
+          <Link href="/" className="logo">🤖 BrochBot HQ</Link>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
             <Link href="/agents" className="nav-link">Agents</Link>

@@ -160,14 +160,14 @@ export default function Support() {
   return (
     <>
       <Head>
-        <title>Customer Support | Brochbot HQ</title>
+        <title>Customer Support | BrochBot HQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
       <div className="container">
         {/* Header */}
         <header className="header">
-          <div className="logo">🤖 Brochbot HQ</div>
+          <div className="logo">🤖 BrochBot HQ</div>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
             <Link href="/table" className="nav-link">Table</Link>
@@ -258,7 +258,7 @@ export default function Support() {
             <div className="sidebar-card">
               <div className="sidebar-title">📬 Forward Emails To</div>
               <code className="forward-address">anything@nelaacriso.resend.app</code>
-              <p className="sidebar-hint">Add notes above the forwarded content to give Brochbot instructions.</p>
+              <p className="sidebar-hint">Add notes above the forwarded content to give BrochBot instructions.</p>
             </div>
             
             <div className="sidebar-card">
