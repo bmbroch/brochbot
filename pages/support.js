@@ -265,41 +265,67 @@ export default function Support() {
               <div className="sidebar-title">📋 Response Playbook</div>
               <div className="playbook-list">
                 <div className="playbook-item">
-                  <strong>Refund Request</strong>
-                  <p>Ask Ben for approval before offering any refunds.</p>
+                  <strong>💰 Refund Request</strong>
+                  <p><b>Deny if usage found.</b> Check records first. "Falls outside our standard refund policy."</p>
                 </div>
                 <div className="playbook-item">
-                  <strong>Cancellation</strong>
-                  <p>Confirm cancellation, ask for feedback (optional).</p>
+                  <strong>🔧 Technical Issue Refund</strong>
+                  <p><b>Exception OK.</b> If product was broken, offer full refund as one-time courtesy.</p>
                 </div>
                 <div className="playbook-item">
-                  <strong>Bug Report</strong>
-                  <p>Thank them, ask for details, escalate to Ben.</p>
+                  <strong>🚪 Cancellation</strong>
+                  <p><b>Always ask why.</b> "What was the main reason you decided not to continue?"</p>
                 </div>
                 <div className="playbook-item">
-                  <strong>Feature Request</strong>
-                  <p>Thank them, log it, no promises.</p>
+                  <strong>🗑️ Account Deletion</strong>
+                  <p><b>Direct to /account.</b> Deleting data = deletes account. Self-service first.</p>
+                </div>
+                <div className="playbook-item">
+                  <strong>🐛 Bug Report</strong>
+                  <p><b>Get specifics.</b> Ask for screenshot + device/browser to reproduce.</p>
+                </div>
+                <div className="playbook-item">
+                  <strong>💡 Feature Request</strong>
+                  <p><b>Log it, no promises.</b> "Passed to product team. Can't promise timeline."</p>
+                </div>
+                <div className="playbook-item">
+                  <strong>⭐ Positive Feedback</strong>
+                  <p><b>Ask for review.</b> "Would you share on [Trustpilot/G2]? Helps others!"</p>
+                </div>
+                <div className="playbook-item">
+                  <strong>😤 Escalated Appeal</strong>
+                  <p><b>Partial refund OK.</b> If multiple appeals, small courtesy refund closes case.</p>
                 </div>
               </div>
-              <p className="sidebar-hint">Brochbot learns from Ben's corrections over time.</p>
+              <p className="sidebar-hint">Sign as Ben. Be direct but warm. We're a small business, not a corporation.</p>
             </div>
 
             <div className="sidebar-card">
-              <div className="sidebar-title">🎯 Products</div>
+              <div className="sidebar-title">🎯 Products & Links</div>
               <div className="product-list">
                 <div className="product-item">
                   <span>📢</span> SalesEcho
-                  <span className="product-domain">support@sales-echo.com</span>
+                  <div className="product-links">
+                    <a href="https://sales-echo.com/account" target="_blank">/account</a>
+                    <a href="https://billing.stripe.com/p/login/8x2fZi2NNglz774aop3F600" target="_blank">Stripe</a>
+                  </div>
                 </div>
                 <div className="product-item">
                   <span>🎤</span> Interview Sidekick
-                  <span className="product-domain">support@interviewsidekick.com</span>
+                  <div className="product-links">
+                    <a href="https://interviewsidekick.com/account" target="_blank">/account</a>
+                    <a href="https://pay.interviewsidekick.com/p/login/5kA7t53yQ0Tl6525kk" target="_blank">Stripe</a>
+                  </div>
                 </div>
                 <div className="product-item">
                   <span>✉️</span> Cover Letter Copilot
-                  <span className="product-domain">support@coverlettercopilot.ai</span>
+                  <div className="product-links">
+                    <a href="https://coverlettercopilot.ai/account" target="_blank">/account</a>
+                    <a href="https://billing.stripe.com/p/login/14k4hyc3Mc17gjC6oo" target="_blank">Stripe</a>
+                  </div>
                 </div>
               </div>
+              <p className="sidebar-hint">Direct users to /account first, Stripe if they can't log in.</p>
             </div>
           </div>
         </div>
@@ -612,6 +638,27 @@ export default function Support() {
         }
         
         .product-item:last-child { border-bottom: none; }
+        
+        .product-links {
+          margin-left: auto;
+          display: flex;
+          gap: 8px;
+        }
+        
+        .product-links a {
+          font-size: 11px;
+          color: #3b82f6;
+          text-decoration: none;
+          padding: 2px 8px;
+          background: #eff6ff;
+          border-radius: 6px;
+          transition: all 0.2s;
+        }
+        
+        .product-links a:hover {
+          background: #dbeafe;
+          color: #1d4ed8;
+        }
         
         .product-domain {
           margin-left: auto;
