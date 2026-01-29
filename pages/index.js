@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Header from '../components/Header'
 
 const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
@@ -264,22 +265,7 @@ export default function Home() {
       </Head>
       
       <div className="container">
-        {/* Header */}
-        <header className="header">
-          <Link href="/" className="logo">
-            <span className="logo-icon">🤖</span>
-            <span className="logo-text">BrochBot</span>
-          </Link>
-          <nav className="nav">
-            <Link href="/" className="nav-link active">Dashboard</Link>
-            <Link href="/agents" className="nav-link">Agents</Link>
-            <Link href="/creation" className="nav-link">Creation</Link>
-            <Link href="/support" className="nav-link">Support</Link>
-          </nav>
-          <button className="btn btn-primary" onClick={() => { setEditingTask(null); setModalOpen(true) }}>
-            + Add
-          </button>
-        </header>
+        <Header onAddClick={() => { setEditingTask(null); setModalOpen(true) }} />
 
         {/* View Toggle */}
         <div className="view-toggle">
