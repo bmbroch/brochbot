@@ -72,9 +72,9 @@ export default function HowItWorks() {
 
         {/* Hero */}
         <section className="hero">
-          <h1 className="hero-title">How Brochbot Works</h1>
+          <h1 className="hero-title">Hey there 👋</h1>
           <p className="hero-subtitle">
-            Your AI coding assistant that actually gets things done. Assign tasks, stay in sync, ship faster.
+            Let's walk through how Brochbot helps you ship faster. Assign tasks, stay in sync, and watch things get done.
           </p>
         </section>
 
@@ -142,7 +142,7 @@ export default function HowItWorks() {
         {/* CTA */}
         <section className="cta-section">
           <Link href="/" className="btn btn-primary">
-            View Dashboard →
+            Let's get started →
           </Link>
         </section>
       </div>
@@ -203,14 +203,16 @@ export default function HowItWorks() {
         }
         
         .hero-title {
-          font-size: 36px;
+          font-size: 48px;
           font-weight: 700;
+          line-height: 56px;
           margin-bottom: 16px;
           color: #000000;
         }
         
         .hero-subtitle {
-          font-size: 18px;
+          font-size: 16px;
+          line-height: 24px;
           color: var(--text-muted);
           max-width: 600px;
           margin: 0 auto;
@@ -218,8 +220,9 @@ export default function HowItWorks() {
         
         /* Sections */
         .section-title {
-          font-size: 24px;
+          font-size: 32px;
           font-weight: 600;
+          line-height: 40px;
           margin-bottom: 24px;
           color: #000000;
         }
@@ -269,16 +272,17 @@ export default function HowItWorks() {
         .step-emoji { font-size: 24px; }
         
         .step-title {
-          font-size: 16px;
+          font-size: 24px;
           font-weight: 600;
+          line-height: 32px;
           margin-bottom: 8px;
           color: #000000;
         }
         
         .step-description {
-          font-size: 14px;
+          font-size: 16px;
           color: var(--text-muted);
-          line-height: 1.6;
+          line-height: 24px;
         }
         
         /* Features */
@@ -304,16 +308,17 @@ export default function HowItWorks() {
         }
         
         .feature-title {
-          font-size: 16px;
+          font-size: 24px;
           font-weight: 600;
+          line-height: 32px;
           margin-bottom: 8px;
           color: #000000;
         }
         
         .feature-description {
-          font-size: 14px;
+          font-size: 16px;
           color: var(--text-muted);
-          line-height: 1.6;
+          line-height: 24px;
         }
         
         /* Communication */
@@ -327,8 +332,9 @@ export default function HowItWorks() {
         }
         
         .comm-title {
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 600;
+          line-height: 32px;
           margin-bottom: 24px;
           color: #000000;
         }
@@ -371,30 +377,34 @@ export default function HowItWorks() {
         
         .btn {
           display: inline-block;
-          padding: 14px 28px;
-          border-radius: 12px;
+          padding: 16px 32px;
+          border-radius: 16px;
           font-size: 16px;
           font-weight: 600;
           cursor: pointer;
           border: none;
           text-decoration: none;
-          transition: opacity 0.2s, transform 0.2s;
-        }
-        
-        .btn:hover {
-          opacity: 0.9;
-          transform: translateY(-1px);
+          transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .btn-primary {
           background: #000000;
           color: white;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:hover {
+          background: #333333;
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
         }
         
         @media (max-width: 600px) {
-          .hero-title { font-size: 28px; }
-          .hero-subtitle { font-size: 16px; }
-          .section-title { font-size: 20px; }
+          .hero-title { font-size: 36px; line-height: 44px; }
+          .hero-subtitle { font-size: 14px; }
+          .section-title { font-size: 24px; line-height: 32px; }
+          .step-title, .feature-title { font-size: 18px; line-height: 24px; }
+          .step-description, .feature-description { font-size: 14px; }
           .step-card, .feature-card, .comm-card { padding: 20px; }
         }
       `}</style>
