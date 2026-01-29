@@ -78,6 +78,29 @@ const CAPABILITIES = [
   { icon: '🐙', name: 'GitHub', description: 'Push code, manage repos' },
 ]
 
+const COMMANDS = [
+  { category: '📊 Reports', commands: [
+    { cmd: 'payouts', desc: 'Run creator payouts (scrape + update sheet + report)' },
+    { cmd: 'payout summary', desc: 'Show current payout totals' },
+    { cmd: 'briefing', desc: 'Morning briefing (tasks, weather, reminders)' },
+  ]},
+  { category: '🔄 Sync', commands: [
+    { cmd: 'sync', desc: 'Sync agents registry with tasks + verify crons' },
+    { cmd: 'sync tasks', desc: 'Pull active tasks from Supabase' },
+    { cmd: 'sync crons', desc: 'List and verify cron jobs' },
+  ]},
+  { category: '🗂️ Tasks', commands: [
+    { cmd: 'tasks', desc: 'Show active Brochbot tasks' },
+    { cmd: 'p0', desc: 'Show P0 (drop everything) tasks' },
+    { cmd: 'p1', desc: 'Show P1 (do today) tasks' },
+  ]},
+  { category: '🛠️ Dev', commands: [
+    { cmd: 'deploy', desc: 'Commit + push brochbot (triggers Vercel)' },
+    { cmd: 'agents', desc: 'Describe active agents' },
+    { cmd: 'crons', desc: 'List scheduled cron jobs' },
+  ]},
+]
+
 export default function AgentsPage() {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
@@ -243,12 +266,47 @@ export default function AgentsPage() {
 
           </div>
 
+          {/* Commands */}
+          <section style={{ marginTop: '2rem' }}>
+            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#f472b6' }}>🎮 Quick Commands</h2>
+            <p style={{ color: '#888', marginBottom: '1rem', fontSize: '0.9rem' }}>
+              Type these in Telegram to trigger actions. Commands are case-insensitive.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+              {COMMANDS.map((group, i) => (
+                <div key={i} style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '16px',
+                  padding: '1.25rem',
+                  border: '1px solid rgba(244, 114, 182, 0.2)'
+                }}>
+                  <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '1rem', color: '#f472b6' }}>{group.category}</h3>
+                  {group.commands.map((c, j) => (
+                    <div key={j} style={{ 
+                      padding: '0.5rem 0',
+                      borderBottom: j < group.commands.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none'
+                    }}>
+                      <code style={{ 
+                        background: 'rgba(244, 114, 182, 0.15)', 
+                        padding: '2px 8px', 
+                        borderRadius: '6px',
+                        color: '#f9a8d4',
+                        fontSize: '0.85rem'
+                      }}>{c.cmd}</code>
+                      <div style={{ color: '#888', fontSize: '0.8rem', marginTop: '4px' }}>{c.desc}</div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Sync Status */}
           <section style={{ marginTop: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#888' }}>🔄 Sync Status</h2>
             <div style={{
               background: 'rgba(255,255,255,0.03)',
-              borderRadius: '12px',
+              borderRadius: '16px',
               padding: '1rem',
               border: '1px solid rgba(255,255,255,0.1)',
               fontSize: '0.9rem',
