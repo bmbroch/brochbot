@@ -88,11 +88,15 @@ export default function Agents() {
       <div className="container">
         {/* Header */}
         <header className="header">
-          <Link href="/" className="logo"><span className="logo-icon">🤖</span><span className="logo-text">BrochBot</span></Link>
+          <Link href="/" className="logo">
+            <span className="logo-icon">🤖</span>
+            <span className="logo-text">BrochBot</span>
+          </Link>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
-            <Link href="/how-it-works" className="nav-link">How It Works</Link>
-            <Link href="/security" className="nav-link">Security</Link>
+            <Link href="/agents" className="nav-link active">Agents</Link>
+            <Link href="/creation" className="nav-link">Creation</Link>
+            <Link href="/support" className="nav-link">Support</Link>
           </nav>
         </header>
 

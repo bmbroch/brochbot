@@ -167,11 +167,14 @@ export default function Support() {
       <div className="container">
         {/* Header */}
         <header className="header">
-          <div className="logo">🤖 BrochBot HQ</div>
+          <Link href="/" className="logo">
+            <span className="logo-icon">🤖</span>
+            <span className="logo-text">BrochBot</span>
+          </Link>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
-            <Link href="/table" className="nav-link">Table</Link>
             <Link href="/agents" className="nav-link">Agents</Link>
+            <Link href="/creation" className="nav-link">Creation</Link>
             <Link href="/support" className="nav-link active">Support</Link>
           </nav>
         </header>
@@ -372,16 +375,25 @@ export default function Support() {
         .logo-icon { font-size: 24px; }
         .logo-text { font-size: 18px; font-weight: 700; }
         
-        .nav { display: flex; gap: 24px; }
-        
-        .nav-link {
-          font-size: 14px;
-          color: var(--text-muted);
-          text-decoration: none;
-          transition: color 0.2s;
+        .nav { 
+          display: flex; 
+          gap: 4px;
+          background: #f5f5f5;
+          padding: 4px;
+          border-radius: 12px;
         }
         
-        .nav-link:hover, .nav-link.active { color: var(--text); font-weight: 500; }
+        .nav-link {
+          font-size: 13px;
+          color: var(--text-muted);
+          text-decoration: none;
+          padding: 8px 14px;
+          border-radius: 8px;
+          transition: all 0.2s;
+        }
+        
+        .nav-link:hover { color: var(--text); background: white; }
+        .nav-link.active { color: var(--text); background: white; font-weight: 500; }
         
         .page-header { margin-bottom: 24px; }
         .page-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
