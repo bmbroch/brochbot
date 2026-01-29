@@ -145,26 +145,6 @@ export default function Support() {
     setEmails(emails.filter(e => e.id !== id))
   }
 
-  const [summoning, setSummoning] = useState(false)
-  const [summoned, setSummoned] = useState(false)
-  
-  const summonBrochbot = async () => {
-    setSummoning(true)
-    await fetch(`${SUPABASE_URL}/rest/v1/support_triggers`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal',
-      },
-      body: JSON.stringify({}),
-    })
-    setSummoning(false)
-    setSummoned(true)
-    setTimeout(() => setSummoned(false), 5000)
-  }
-
   useEffect(() => {
     fetchEmails()
     const interval = setInterval(fetchEmails, 10000)
@@ -275,18 +255,6 @@ export default function Support() {
 
           {/* Sidebar */}
           <div className="sidebar">
-            <div className="sidebar-card summon-card">
-              <div className="sidebar-title">🤖 Review Support</div>
-              <p className="sidebar-hint">Summon Brochbot to review pending emails with you in Telegram.</p>
-              <button 
-                className={`summon-btn ${summoned ? 'summoned' : ''}`}
-                onClick={summonBrochbot}
-                disabled={summoning || summoned}
-              >
-                {summoning ? '⏳ Summoning...' : summoned ? '✓ Brochbot notified!' : '📲 Summon Brochbot'}
-              </button>
-            </div>
-            
             <div className="sidebar-card">
               <div className="sidebar-title">📬 Forward Emails To</div>
               <code className="forward-address">anything@nelaacriso.resend.app</code>
@@ -618,39 +586,6 @@ export default function Support() {
           font-size: 12px;
           color: var(--text-muted);
           margin-top: 8px;
-        }
-        
-        .summon-card {
-          background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-          border-color: #7dd3fc;
-        }
-        
-        .summon-btn {
-          width: 100%;
-          padding: 14px 20px;
-          border-radius: 12px;
-          border: none;
-          background: #0ea5e9;
-          color: white;
-          font-size: 15px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s;
-          margin-top: 12px;
-        }
-        
-        .summon-btn:hover:not(:disabled) {
-          background: #0284c7;
-          transform: translateY(-1px);
-        }
-        
-        .summon-btn:disabled {
-          cursor: not-allowed;
-          opacity: 0.7;
-        }
-        
-        .summon-btn.summoned {
-          background: #22c55e;
         }
         
         .playbook-list { display: flex; flex-direction: column; gap: 12px; }
