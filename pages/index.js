@@ -114,6 +114,7 @@ export default function Home() {
   const [quickAdd, setQuickAdd] = useState('')
   const [toast, setToast] = useState(null)
   const [pendingSupport, setPendingSupport] = useState(0)
+  const [contentIdeas, setContentIdeas] = useState(0)
 
   function showToast(message) {
     setToast(message)
@@ -131,6 +132,10 @@ export default function Home() {
     // Fetch pending support emails count
     api('support_emails?status=eq.pending&select=id').then(data => {
       setPendingSupport(Array.isArray(data) ? data.length : 0)
+    })
+    // Fetch content ideas count
+    api('content_ideas?status=eq.ready&select=id').then(data => {
+      setContentIdeas(Array.isArray(data) ? data.length : 0)
     })
   }, [])
 
@@ -288,12 +293,15 @@ export default function Home() {
               <div className="quick-subtitle">{stats.agents} running</div>
             </div>
           </Link>
-          <Link href="/table" className="quick-card">
-            <div className="quick-icon">📊</div>
+          <Link href="/creation" className="quick-card">
+            <div className="quick-icon">✨</div>
             <div className="quick-content">
-              <div className="quick-title">Task Table</div>
-              <div className="quick-subtitle">Spreadsheet view</div>
+              <div className="quick-title">Content Creation</div>
+              <div className="quick-subtitle">
+                {contentIdeas > 0 ? `${contentIdeas} ready to post` : 'Ideas & drafts'}
+              </div>
             </div>
+            {contentIdeas > 0 && <div className="quick-badge">{contentIdeas}</div>}
           </Link>
         </div>
 
