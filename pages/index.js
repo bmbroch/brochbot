@@ -113,6 +113,7 @@ export default function Home() {
   const [editingTask, setEditingTask] = useState(null)
   const [quickAdd, setQuickAdd] = useState('')
   const [toast, setToast] = useState(null)
+  const [pendingSupport, setPendingSupport] = useState(0)
 
   function showToast(message) {
     setToast(message)
@@ -127,6 +128,10 @@ export default function Home() {
 
   useEffect(() => {
     loadTasks()
+    // Fetch pending support emails count
+    api('support_emails?status=eq.pending&select=id').then(data => {
+      setPendingSupport(Array.isArray(data) ? data.length : 0)
+    })
   }, [])
 
   async function loadTasks() {
@@ -264,24 +269,32 @@ export default function Home() {
           </button>
         </header>
 
-        {/* Stats */}
-        <div className="stats-bar">
-          <div className="stat-card">
-            <div className="stat-value">{stats.agents}</div>
-            <div className="stat-label">🟢 Active Agents</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-value">{stats.brochbot}</div>
-            <div className="stat-label">🤖 BrochBot Tasks</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-value">{stats.ben}</div>
-            <div className="stat-label">👤 Ben Tasks</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-value">{stats.done}</div>
-            <div className="stat-label">✅ Done</div>
-          </div>
+        {/* Quick Access */}
+        <div className="quick-access">
+          <Link href="/support" className="quick-card">
+            <div className="quick-icon">📧</div>
+            <div className="quick-content">
+              <div className="quick-title">Customer Support</div>
+              <div className="quick-subtitle">
+                {pendingSupport > 0 ? `${pendingSupport} pending` : 'All clear'}
+              </div>
+            </div>
+            {pendingSupport > 0 && <div className="quick-badge">{pendingSupport}</div>}
+          </Link>
+          <Link href="/agents" className="quick-card">
+            <div className="quick-icon">🤖</div>
+            <div className="quick-content">
+              <div className="quick-title">Active Agents</div>
+              <div className="quick-subtitle">{stats.agents} running</div>
+            </div>
+          </Link>
+          <Link href="/table" className="quick-card">
+            <div className="quick-icon">📊</div>
+            <div className="quick-content">
+              <div className="quick-title">Task Table</div>
+              <div className="quick-subtitle">Spreadsheet view</div>
+            </div>
+          </Link>
         </div>
 
         {/* View Toggle */}
@@ -552,30 +565,74 @@ export default function Home() {
           background: #F9FAFB;
         }
         
-        .stats-bar {
+        .quick-access {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-          gap: 12px;
-          margin-bottom: 24px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+          margin-bottom: 32px;
         }
         
-        .stat-card {
+        @media (max-width: 768px) {
+          .quick-access { grid-template-columns: 1fr; }
+        }
+        
+        .quick-card {
+          display: flex;
+          align-items: center;
+          gap: 16px;
           background: white;
-          border: 1px solid #F5F5F5;
+          border: 2px solid #F5F5F5;
+          border-radius: 20px;
+          padding: 24px;
+          text-decoration: none;
+          color: inherit;
+          transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+        }
+        
+        .quick-card:hover {
+          border-color: #000;
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+          transform: translateY(-4px);
+        }
+        
+        .quick-icon {
+          font-size: 32px;
+          width: 56px;
+          height: 56px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #F5F5F5;
           border-radius: 16px;
-          padding: 20px;
+        }
+        
+        .quick-content { flex: 1; }
+        
+        .quick-title {
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+        
+        .quick-subtitle {
+          font-size: 14px;
+          color: var(--text-muted);
+        }
+        
+        .quick-badge {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background: #ef4444;
+          color: white;
+          font-size: 14px;
+          font-weight: 600;
+          padding: 4px 10px;
+          border-radius: 20px;
+          min-width: 28px;
           text-align: center;
-          transition: all 300ms;
         }
-        
-        .stat-card:hover {
-          border-color: #D1D5DB;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-          transform: translateY(-2px);
-        }
-        
-        .stat-value { font-size: 28px; font-weight: 700; }
-        .stat-label { font-size: 12px; color: var(--text-muted); }
         
         .view-toggle {
           display: flex;
