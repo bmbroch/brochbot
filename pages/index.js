@@ -314,16 +314,16 @@ export default function Home() {
 
         {/* View Toggle */}
         <div className="view-toggle">
-          {['all', 'brochbot', 'ben', 'updates', 'p0', 'p1'].map(v => (
+          {['all', 'brochbot', 'updates', 'ben', 'p0', 'p1'].map(v => (
             <button
               key={v}
               className={`view-btn ${view === v ? 'active' : ''}`}
               onClick={() => setView(v)}
             >
               {v === 'all' && 'All Tasks'}
-              {v === 'brochbot' && '🤖 BrochBot (Agent)'}
-              {v === 'ben' && '👤 Ben'}
+              {v === 'brochbot' && '🤖 Agent'}
               {v === 'updates' && '📬 Updates'}
+              {v === 'ben' && '👤 Ben'}
               {v === 'p0' && '🔴 P0'}
               {v === 'p1' && '🟡 P1'}
             </button>
