@@ -379,11 +379,10 @@ export default function Home() {
               <div className="commands-list">
                 {[
                   { cmd: 'payouts', desc: 'Run creator payouts' },
-                  { cmd: 'sync', desc: 'Sync tasks & crons' },
-                  { cmd: 'tasks', desc: 'Show my tasks' },
-                  { cmd: 'p0', desc: 'P0 tasks only' },
+                  { cmd: 'sync', desc: 'Check everything matches' },
+                  { cmd: 'tasks', desc: 'Show active tasks' },
                   { cmd: 'briefing', desc: 'Morning briefing' },
-                  { cmd: 'deploy', desc: 'Deploy brochbot' },
+                  { cmd: 'deploy', desc: 'Deploy brochbot.com' },
                 ].map(item => (
                   <div key={item.cmd} className="command-row">
                     <div className="command-info">
@@ -438,7 +437,7 @@ export default function Home() {
           <div className="footer-section">
             <div className="footer-label">Quick Commands</div>
             <div className="footer-commands">
-              {['payouts', 'sync', 'tasks', 'p0', 'p1', 'briefing', 'deploy', 'crons', 'agents'].map(cmd => (
+              {['payouts', 'sync', 'tasks', 'briefing', 'deploy'].map(cmd => (
                 <button
                   key={cmd}
                   className="footer-cmd"

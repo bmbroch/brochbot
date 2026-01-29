@@ -41,7 +41,6 @@ const COMMANDS = [
     title: 'Reports',
     items: [
       { cmd: 'payouts', desc: 'Run creator payouts (scrape + sheet + report)' },
-      { cmd: 'payout summary', desc: 'Show current payout totals' },
       { cmd: 'briefing', desc: 'Morning briefing (tasks, weather)' },
     ],
   },
@@ -49,9 +48,7 @@ const COMMANDS = [
     emoji: '🔄',
     title: 'Sync',
     items: [
-      { cmd: 'sync', desc: 'Sync agents registry with tasks' },
-      { cmd: 'sync tasks', desc: 'Pull active tasks from Supabase' },
-      { cmd: 'sync crons', desc: 'List and verify cron jobs' },
+      { cmd: 'sync', desc: 'Check everything matches, fix drift' },
     ],
   },
   {
@@ -59,8 +56,6 @@ const COMMANDS = [
     title: 'Tasks',
     items: [
       { cmd: 'tasks', desc: 'Show active Brochbot tasks' },
-      { cmd: 'p0', desc: 'Show P0 (drop everything) tasks' },
-      { cmd: 'p1', desc: 'Show P1 (do today) tasks' },
     ],
   },
   {
@@ -68,8 +63,6 @@ const COMMANDS = [
     title: 'Dev',
     items: [
       { cmd: 'deploy', desc: 'Commit + push (triggers Vercel)' },
-      { cmd: 'agents', desc: 'Describe active agents' },
-      { cmd: 'crons', desc: 'List scheduled cron jobs' },
     ],
   },
 ]
