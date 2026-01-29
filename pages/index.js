@@ -293,13 +293,6 @@ export default function Home() {
             </div>
             {pendingSupport > 0 && <div className="quick-badge">{pendingSupport}</div>}
           </Link>
-          <Link href="/agents" className="quick-card">
-            <div className="quick-icon">🤖</div>
-            <div className="quick-content">
-              <div className="quick-title">Active Agents</div>
-              <div className="quick-subtitle">{stats.agents} running</div>
-            </div>
-          </Link>
           <Link href="/creation" className="quick-card">
             <div className="quick-icon">✨</div>
             <div className="quick-content">
@@ -611,7 +604,7 @@ export default function Home() {
         
         .quick-access {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(2, 1fr);
           gap: 16px;
           margin-bottom: 32px;
         }
@@ -648,7 +641,7 @@ export default function Home() {
           }
           
           .quick-access { 
-            grid-template-columns: repeat(3, 1fr); 
+            grid-template-columns: repeat(2, 1fr); 
             gap: 8px; 
           }
           
@@ -680,7 +673,7 @@ export default function Home() {
         }
         
         @media (max-width: 380px) {
-          .quick-access { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+          .quick-access { grid-template-columns: repeat(2, 1fr); gap: 6px; }
           .quick-card { padding: 10px 8px; }
           .quick-icon { width: 32px; height: 32px; font-size: 18px; }
           .quick-title { font-size: 11px; }
