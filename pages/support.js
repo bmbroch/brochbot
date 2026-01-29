@@ -41,11 +41,23 @@ function timeAgo(date) {
 
 function EmailCard({ email, expanded, onToggle }) {
   const product = PRODUCTS.find(p => p.id === email.product) || { icon: '❓', label: 'Unknown' }
+  const shortId = email.id?.slice(0, 8) || 'unknown'
+  const [copied, setCopied] = useState(false)
+  
+  const copyId = (e) => {
+    e.stopPropagation()
+    navigator.clipboard.writeText(email.id)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
   
   return (
     <div className={`email-item ${expanded ? 'expanded' : ''}`} onClick={onToggle}>
       <div className="email-header">
         <div className="email-badges">
+          <button className="uid-badge" onClick={copyId} title="Copy full ID">
+            {copied ? '✓' : '📋'} {shortId}
+          </button>
           <span className={`product-badge product-${email.product || 'unknown'}`}>
             {product.icon} {product.label}
           </span>
@@ -87,8 +99,6 @@ function EmailCard({ email, expanded, onToggle }) {
               {email.sent_at && <div className="sent-time">Sent: {new Date(email.sent_at).toLocaleString()}</div>}
             </div>
           )}
-          
-          <div className="email-id">ID: {email.id}</div>
         </div>
       )}
     </div>
@@ -433,6 +443,24 @@ export default function Support() {
           font-weight: 500;
         }
         
+        .uid-badge {
+          padding: 4px 10px;
+          border-radius: 8px;
+          font-size: 11px;
+          font-weight: 600;
+          font-family: 'Monaco', 'Consolas', monospace;
+          background: #f3f4f6;
+          color: #374151;
+          border: 1px solid #e5e7eb;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        
+        .uid-badge:hover {
+          background: #e5e7eb;
+          border-color: #d1d5db;
+        }
+        
         .product-salesecho { background: #dbeafe; color: #1d4ed8; }
         .product-interviewsidekick { background: #dcfce7; color: #15803d; }
         .product-coverlettercopilot { background: #f3e8ff; color: #7c3aed; }
@@ -479,7 +507,6 @@ export default function Support() {
         .notes-section .detail-content { background: #fef3c7; border: 1px solid #fcd34d; }
         
         .sent-time { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
-        .email-id { font-size: 11px; color: #9ca3af; margin-top: 12px; }
         
         .sidebar { display: flex; flex-direction: column; gap: 16px; }
         
