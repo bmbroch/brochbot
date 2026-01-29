@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 
 const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
@@ -235,6 +236,11 @@ export default function Home() {
         {/* Header */}
         <header className="header">
           <div className="logo">🤖 Brochbot HQ</div>
+          <nav className="nav">
+            <Link href="/agents" className="nav-link">Agents</Link>
+            <Link href="/how-it-works" className="nav-link">How It Works</Link>
+            <Link href="/security" className="nav-link">Security</Link>
+          </nav>
           <button className="btn btn-primary" onClick={() => { setEditingTask(null); setModalOpen(true) }}>
             + Add Task
           </button>
@@ -426,19 +432,46 @@ export default function Home() {
         
         .logo { font-size: 24px; font-weight: 700; }
         
-        .btn {
-          padding: 10px 20px;
-          border-radius: 8px;
+        .nav { display: flex; gap: 24px; }
+        
+        .nav-link {
           font-size: 14px;
-          font-weight: 500;
-          cursor: pointer;
-          border: none;
-          transition: opacity 0.2s;
+          color: var(--text-muted);
+          text-decoration: none;
+          transition: color 0.2s;
         }
         
-        .btn:hover { opacity: 0.9; }
-        .btn-primary { background: var(--accent); color: white; }
-        .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+        .nav-link:hover { color: var(--text); }
+        
+        .btn {
+          padding: 12px 24px;
+          border-radius: 16px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          border: none;
+          transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-primary { 
+          background: #000000; 
+          color: white;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn-primary:hover { 
+          background: #333333;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .btn-secondary { 
+          background: transparent; 
+          color: var(--text); 
+          border: 2px solid #F5F5F5;
+        }
+        .btn-secondary:hover {
+          border-color: #D1D5DB;
+          background: #F9FAFB;
+        }
         
         .stats-bar {
           display: grid;
@@ -448,11 +481,18 @@ export default function Home() {
         }
         
         .stat-card {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          border-radius: 12px;
-          padding: 16px;
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 16px;
+          padding: 20px;
           text-align: center;
+          transition: all 300ms;
+        }
+        
+        .stat-card:hover {
+          border-color: #D1D5DB;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+          transform: translateY(-2px);
         }
         
         .stat-value { font-size: 28px; font-weight: 700; }
@@ -466,17 +506,19 @@ export default function Home() {
         }
         
         .view-btn {
-          padding: 8px 16px;
-          border-radius: 8px;
-          border: 1px solid var(--border);
+          padding: 10px 18px;
+          border-radius: 12px;
+          border: 2px solid #F5F5F5;
           background: transparent;
           color: var(--text-muted);
           font-size: 14px;
+          font-weight: 500;
           cursor: pointer;
+          transition: all 300ms;
         }
         
-        .view-btn:hover { border-color: var(--accent); color: var(--text); }
-        .view-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+        .view-btn:hover { border-color: #D1D5DB; color: var(--text); }
+        .view-btn.active { background: #000000; border-color: #000000; color: white; }
         .view-btn-done { margin-left: auto; opacity: 0.6; }
         .view-btn-done:hover { opacity: 1; }
         .view-btn-done.active { opacity: 1; background: #6b7280; border-color: #6b7280; }
@@ -492,10 +534,11 @@ export default function Home() {
         }
         
         .task-section {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          border-radius: 16px;
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
           overflow: hidden;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
         
         .section-header {
@@ -576,10 +619,16 @@ export default function Home() {
         .sidebar { display: flex; flex-direction: column; gap: 16px; }
         
         .sidebar-card {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
+          background: white;
+          border: 1px solid #F5F5F5;
           border-radius: 16px;
-          padding: 16px;
+          padding: 20px;
+          transition: all 300ms;
+        }
+        
+        .sidebar-card:hover {
+          border-color: #D1D5DB;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
         
         .sidebar-title {
@@ -591,14 +640,15 @@ export default function Home() {
         .form-input {
           width: 100%;
           background: var(--bg);
-          border: 1px solid var(--border);
-          border-radius: 8px;
-          padding: 10px 12px;
+          border: 2px solid #F5F5F5;
+          border-radius: 12px;
+          padding: 12px 16px;
           color: var(--text);
           font-size: 14px;
+          transition: border-color 0.2s;
         }
         
-        .form-input:focus { outline: none; border-color: var(--accent); }
+        .form-input:focus { outline: none; border-color: #333333; }
         
         .priority-guide { display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
         .priority-guide div { display: flex; align-items: center; gap: 8px; }
@@ -634,9 +684,9 @@ export default function Home() {
         
         .modal-content {
           background: #ffffff;
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 24px;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
+          padding: 32px;
           width: 100%;
           max-width: 600px;
           max-height: 90vh;
@@ -663,13 +713,16 @@ export default function Home() {
         .form-select, .form-textarea {
           width: 100%;
           background: var(--bg);
-          border: 1px solid var(--border);
-          border-radius: 8px;
-          padding: 10px 12px;
+          border: 2px solid #F5F5F5;
+          border-radius: 12px;
+          padding: 12px 16px;
           color: var(--text);
           font-size: 14px;
           font-family: inherit;
+          transition: border-color 0.2s;
         }
+        
+        .form-select:focus, .form-textarea:focus { outline: none; border-color: #333333; }
         
         .form-textarea { resize: vertical; min-height: 80px; }
         
