@@ -150,16 +150,21 @@ export default function Home() {
     // Hide done tasks unless explicitly viewing done
     if (view !== 'done' && t.status === 'done') return false
     
+    // Agents view - only show ongoing
+    if (view === 'agents') return t.priority === 'ongoing'
+    
+    // All other views - exclude ongoing agents
+    if (view !== 'agents' && t.priority === 'ongoing') return false
+    
     if (view === 'all') return true
     if (view === 'brochbot') return t.assignee === 'brochbot'
     if (view === 'ben') return t.assignee === 'ben'
     if (view === 'p0') return t.priority === 'p0'
     if (view === 'p1') return t.priority === 'p1'
-    if (view === 'active') return t.status === 'active'
     if (view === 'done') return t.status === 'done'
     return true
   }).sort((a, b) => {
-    const pOrder = { p0: 0, p1: 1, p2: 2, p3: 3 }
+    const pOrder = { ongoing: -1, p0: 0, p1: 1, p2: 2, p3: 3 }
     const sOrder = { active: 0, paused: 1, blocked: 2, done: 3 }
     if (pOrder[a.priority] !== pOrder[b.priority]) return pOrder[a.priority] - pOrder[b.priority]
     return sOrder[a.status] - sOrder[b.status]
@@ -281,18 +286,18 @@ export default function Home() {
 
         {/* View Toggle */}
         <div className="view-toggle">
-          {['all', 'brochbot', 'ben', 'p0', 'p1', 'active'].map(v => (
+          {['all', 'agents', 'brochbot', 'ben', 'p0', 'p1'].map(v => (
             <button
               key={v}
               className={`view-btn ${view === v ? 'active' : ''}`}
               onClick={() => setView(v)}
             >
               {v === 'all' && 'All Tasks'}
+              {v === 'agents' && '🟢 Agents'}
               {v === 'brochbot' && '🤖 Brochbot'}
               {v === 'ben' && '👤 Ben'}
               {v === 'p0' && '🔴 P0'}
               {v === 'p1' && '🟡 P1'}
-              {v === 'active' && 'Active'}
             </button>
           ))}
           <button
