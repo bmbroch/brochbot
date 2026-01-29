@@ -679,6 +679,76 @@ export default function Support() {
           border-radius: 4px;
           font-size: 13px;
         }
+        
+        @media (max-width: 768px) {
+          .container { padding: 16px; }
+          
+          .header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          
+          .nav {
+            width: 100%;
+            gap: 16px;
+            flex-wrap: wrap;
+          }
+          
+          .page-title { font-size: 24px; }
+          
+          .stats-bar { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+          .stat-card { padding: 12px; }
+          .stat-value { font-size: 20px; }
+          .stat-label { font-size: 11px; }
+          
+          .view-toggle {
+            gap: 6px;
+          }
+          
+          .view-btn {
+            padding: 8px 12px;
+            font-size: 12px;
+          }
+          
+          .filter-divider { display: none; }
+          
+          .email-item { padding: 12px 16px; }
+          
+          .email-header { flex-wrap: wrap; gap: 6px; }
+          
+          .email-badges { flex-wrap: wrap; gap: 4px; }
+          
+          .email-actions {
+            width: 100%;
+            justify-content: space-between;
+            margin-top: 8px;
+          }
+          
+          .product-badge, .status-badge, .uid-badge {
+            font-size: 10px;
+            padding: 3px 6px;
+          }
+          
+          .email-subject { font-size: 14px; }
+          .email-from { font-size: 12px; }
+          
+          .detail-content {
+            font-size: 13px;
+            max-height: 150px;
+          }
+          
+          .sidebar-card { padding: 16px; }
+          .playbook-list { gap: 8px; }
+          .playbook-item { padding: 10px; font-size: 12px; }
+          .playbook-item p { font-size: 11px; }
+        }
+        
+        @media (max-width: 480px) {
+          .stats-bar { grid-template-columns: repeat(3, 1fr); }
+          .view-toggle { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; }
+          .view-btn { flex-shrink: 0; }
+        }
       `}</style>
     </>
   )

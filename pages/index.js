@@ -581,7 +581,41 @@ export default function Home() {
         }
         
         @media (max-width: 768px) {
-          .quick-access { grid-template-columns: 1fr; }
+          .container { padding: 16px; }
+          
+          .header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          
+          .header .nav {
+            width: 100%;
+            gap: 16px;
+            flex-wrap: wrap;
+          }
+          
+          .header .btn { width: 100%; justify-content: center; }
+          
+          .quick-access { grid-template-columns: 1fr; gap: 12px; }
+          
+          .quick-card { padding: 16px; gap: 12px; }
+          
+          .quick-icon {
+            font-size: 24px;
+            width: 44px;
+            height: 44px;
+          }
+          
+          .quick-title { font-size: 16px; }
+          .quick-subtitle { font-size: 13px; }
+          
+          .quick-badge {
+            top: -6px;
+            right: -6px;
+            font-size: 12px;
+            padding: 2px 8px;
+          }
         }
         
         .quick-card {

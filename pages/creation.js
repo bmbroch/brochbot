@@ -536,8 +536,82 @@ export default function Creation() {
         .empty-state h3 { margin-bottom: 8px; color: var(--text); }
         
         @media (max-width: 768px) {
+          .container { padding: 16px; }
+          
+          .header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          
+          .nav { 
+            width: 100%;
+            justify-content: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
+          }
+          
+          .page-title { font-size: 24px; }
+          
           .stats-bar { grid-template-columns: repeat(2, 1fr); }
+          
+          .stat-card { padding: 16px; }
+          .stat-value { font-size: 24px; }
+          
+          .view-toggle {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          
+          .filter-divider { display: none; }
+          
+          .view-toggle > .filter-label {
+            width: 100%;
+            margin-bottom: -4px;
+          }
+          
+          .view-toggle > .filter-label ~ .view-btn {
+            margin-right: 4px;
+            margin-bottom: 4px;
+          }
+          
+          .idea-header {
+            flex-wrap: wrap;
+            gap: 6px;
+          }
+          
+          .idea-time {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 8px;
+          }
+          
+          .source-text {
+            font-size: 14px;
+            line-height: 1.5;
+          }
+          
           .steps { grid-template-columns: repeat(2, 1fr); }
+          
+          .how-it-works { padding: 16px; }
+        }
+        
+        @media (max-width: 480px) {
+          .stats-bar { grid-template-columns: 1fr 1fr; gap: 8px; }
+          .stat-card { padding: 12px; }
+          .stat-value { font-size: 20px; }
+          .stat-label { font-size: 11px; }
+          
+          .steps { grid-template-columns: 1fr 1fr; gap: 12px; }
+          
+          .idea-card { padding: 16px; }
+          .idea-source { padding: 12px; }
+          
+          .platform-badge, .cluster-tag, .status-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+          }
         }
       `}</style>
     </>
