@@ -140,6 +140,7 @@ export default function Home() {
   }
 
   const stats = {
+    agents: tasks.filter(t => t.priority === 'ongoing' && t.status === 'active').length,
     brochbot: tasks.filter(t => t.assignee === 'brochbot' && t.status !== 'done').length,
     ben: tasks.filter(t => t.assignee === 'ben' && t.status !== 'done').length,
     active: tasks.filter(t => t.status === 'active').length,
@@ -150,14 +151,13 @@ export default function Home() {
     // Hide done tasks unless explicitly viewing done
     if (view !== 'done' && t.status === 'done') return false
     
-    // Agents view - only show ongoing
-    if (view === 'agents') return t.priority === 'ongoing'
+    // Brochbot view - show ALL brochbot tasks including ongoing agents
+    if (view === 'brochbot') return t.assignee === 'brochbot'
     
-    // All other views - exclude ongoing agents
-    if (view !== 'agents' && t.priority === 'ongoing') return false
+    // All other views - exclude ongoing agents (they live in Brochbot view)
+    if (t.priority === 'ongoing') return false
     
     if (view === 'all') return true
-    if (view === 'brochbot') return t.assignee === 'brochbot'
     if (view === 'ben') return t.assignee === 'ben'
     if (view === 'p0') return t.priority === 'p0'
     if (view === 'p1') return t.priority === 'p1'
@@ -267,16 +267,16 @@ export default function Home() {
         {/* Stats */}
         <div className="stats-bar">
           <div className="stat-card">
+            <div className="stat-value">{stats.agents}</div>
+            <div className="stat-label">🟢 Active Agents</div>
+          </div>
+          <div className="stat-card">
             <div className="stat-value">{stats.brochbot}</div>
-            <div className="stat-label">🤖 Brochbot</div>
+            <div className="stat-label">🤖 Brochbot Tasks</div>
           </div>
           <div className="stat-card">
             <div className="stat-value">{stats.ben}</div>
-            <div className="stat-label">👤 Ben</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-value">{stats.active}</div>
-            <div className="stat-label">🔥 Active</div>
+            <div className="stat-label">👤 Ben Tasks</div>
           </div>
           <div className="stat-card">
             <div className="stat-value">{stats.done}</div>
@@ -286,15 +286,14 @@ export default function Home() {
 
         {/* View Toggle */}
         <div className="view-toggle">
-          {['all', 'agents', 'brochbot', 'ben', 'p0', 'p1'].map(v => (
+          {['all', 'brochbot', 'ben', 'p0', 'p1'].map(v => (
             <button
               key={v}
               className={`view-btn ${view === v ? 'active' : ''}`}
               onClick={() => setView(v)}
             >
               {v === 'all' && 'All Tasks'}
-              {v === 'agents' && '🟢 Agents'}
-              {v === 'brochbot' && '🤖 Brochbot'}
+              {v === 'brochbot' && '🤖 Brochbot (Agent)'}
               {v === 'ben' && '👤 Ben'}
               {v === 'p0' && '🔴 P0'}
               {v === 'p1' && '🟡 P1'}
