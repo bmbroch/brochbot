@@ -597,25 +597,44 @@ export default function Home() {
           
           .header .btn { width: 100%; justify-content: center; }
           
-          .quick-access { grid-template-columns: 1fr; gap: 12px; }
+          .quick-access { 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; 
+          }
           
-          .quick-card { padding: 16px; gap: 12px; }
+          .quick-card { 
+            padding: 12px; 
+            gap: 8px;
+            flex-direction: column;
+            text-align: center;
+            border-radius: 16px;
+          }
           
           .quick-icon {
-            font-size: 24px;
-            width: 44px;
-            height: 44px;
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
           }
           
-          .quick-title { font-size: 16px; }
-          .quick-subtitle { font-size: 13px; }
+          .quick-title { font-size: 12px; }
+          .quick-subtitle { font-size: 10px; }
           
           .quick-badge {
-            top: -6px;
-            right: -6px;
-            font-size: 12px;
-            padding: 2px 8px;
+            top: -4px;
+            right: -4px;
+            font-size: 10px;
+            padding: 2px 6px;
+            min-width: 20px;
           }
+        }
+        
+        @media (max-width: 380px) {
+          .quick-access { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+          .quick-card { padding: 10px 8px; }
+          .quick-icon { width: 32px; height: 32px; font-size: 18px; }
+          .quick-title { font-size: 11px; }
+          .quick-subtitle { display: none; }
         }
         
         .quick-card {
