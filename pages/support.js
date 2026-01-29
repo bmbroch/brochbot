@@ -117,9 +117,26 @@ function EmailCard({ email, expanded, onToggle }) {
             </div>
           </div>
           
+          {email.ben_notes && (
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#f59e0b' }}>📝 Ben's Notes:</div>
+              <div 
+                style={{ 
+                  background: '#fef3c7', 
+                  padding: '12px', 
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  border: '1px solid #fcd34d'
+                }}
+              >
+                {email.ben_notes}
+              </div>
+            </div>
+          )}
+          
           {email.draft_response && (
             <div style={{ marginBottom: '16px' }}>
-              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#374151' }}>📝 Draft Response:</div>
+              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#374151' }}>💬 Draft Response:</div>
               <div 
                 style={{ 
                   background: '#eff6ff', 
