@@ -587,29 +587,32 @@ export default function Home() {
         
         .quick-access {
           display: flex;
-          gap: 10px;
-          margin-bottom: 24px;
+          gap: 12px;
+          margin-bottom: 28px;
           flex-wrap: wrap;
         }
         
         .quick-btn {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          padding: 8px 14px;
-          background: #1a1a2e;
-          border: 1px solid #333;
-          border-radius: 8px;
+          gap: 8px;
+          padding: 14px 24px;
+          background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%);
+          border: 1px solid #444;
+          border-radius: 12px;
           color: #fff;
-          font-size: 14px;
-          font-weight: 500;
+          font-size: 16px;
+          font-weight: 600;
           text-decoration: none;
           transition: all 0.2s;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         
         .quick-btn:hover {
-          background: #252542;
-          border-color: #444;
+          background: linear-gradient(135deg, #252542 0%, #2d2d5a 100%);
+          border-color: #666;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
         
         @media (max-width: 768px) {
@@ -644,12 +647,12 @@ export default function Home() {
           }
           
           .quick-access { 
-            gap: 8px; 
+            gap: 10px; 
           }
           
           .quick-btn { 
-            padding: 6px 12px;
-            font-size: 13px;
+            padding: 12px 18px;
+            font-size: 15px;
             flex-direction: column;
             text-align: center;
             border-radius: 16px;
@@ -675,8 +678,8 @@ export default function Home() {
         }
         
         @media (max-width: 380px) {
-          .quick-access { gap: 6px; }
-          .quick-btn { padding: 5px 10px; font-size: 12px; }
+          .quick-access { gap: 8px; }
+          .quick-btn { padding: 10px 14px; font-size: 14px; }
         }
         
         .quick-card {
