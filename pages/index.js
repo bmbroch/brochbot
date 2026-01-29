@@ -365,6 +365,16 @@ export default function Home() {
             </div>
             
             <div className="sidebar-card">
+              <div className="sidebar-title">📊 Priority Guide</div>
+              <div className="priority-guide">
+                <div><span className="priority-badge priority-p0">P0</span> Drop everything</div>
+                <div><span className="priority-badge priority-p1">P1</span> Do today/tonight</div>
+                <div><span className="priority-badge priority-p2">P2</span> This week</div>
+                <div><span className="priority-badge priority-p3">P3</span> Backlog</div>
+              </div>
+            </div>
+            
+            <div className="sidebar-card">
               <div className="sidebar-title">🎮 Quick Commands</div>
               <div className="commands-list">
                 {[
@@ -389,16 +399,6 @@ export default function Home() {
                 ))}
               </div>
               <a href="/agents" className="sidebar-link">All commands →</a>
-            </div>
-            
-            <div className="sidebar-card">
-              <div className="sidebar-title">📊 Priority Guide</div>
-              <div className="priority-guide">
-                <div><span className="priority-badge priority-p0">P0</span> Drop everything</div>
-                <div><span className="priority-badge priority-p1">P1</span> Do today/tonight</div>
-                <div><span className="priority-badge priority-p2">P2</span> This week</div>
-                <div><span className="priority-badge priority-p3">P3</span> Backlog</div>
-              </div>
             </div>
             
             <div className="sidebar-card">
