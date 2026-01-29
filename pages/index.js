@@ -330,12 +330,12 @@ export default function Home() {
 
       <style jsx global>{`
         :root {
-          --bg: #0a0a0a;
-          --card-bg: #141414;
-          --border: #262626;
-          --text: #fafafa;
-          --text-muted: #71717a;
-          --accent: #3b82f6;
+          --bg: #ffffff;
+          --card-bg: #f9fafb;
+          --border: #e5e7eb;
+          --text: #111827;
+          --text-muted: #6b7280;
+          --accent: #2563eb;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -447,7 +447,7 @@ export default function Home() {
           transition: background 0.2s;
         }
         
-        .task-item:hover { background: rgba(255,255,255,0.02); }
+        .task-item:hover { background: #f3f4f6; }
         .task-item:last-child { border-bottom: none; }
         
         .task-top-row {
@@ -465,10 +465,10 @@ export default function Home() {
           flex-shrink: 0;
         }
         
-        .priority-p0 { background: #ef4444; color: white; }
-        .priority-p1 { background: #eab308; color: black; }
-        .priority-p2 { background: #3b82f6; color: white; }
-        .priority-p3 { background: #404040; color: #a1a1aa; }
+        .priority-p0 { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+        .priority-p1 { background: #fefce8; color: #ca8a04; border: 1px solid #fef08a; }
+        .priority-p2 { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+        .priority-p3 { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
         
         .task-title { font-size: 14px; font-weight: 500; }
         
@@ -483,9 +483,9 @@ export default function Home() {
           font-weight: 500;
         }
         
-        .assignee-brochbot { background: rgba(168,85,247,0.2); color: #a855f7; }
-        .assignee-ben { background: rgba(34,197,94,0.2); color: #22c55e; }
-        .assignee-both { background: rgba(59,130,246,0.2); color: #3b82f6; }
+        .assignee-brochbot { background: #f3e8ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+        .assignee-ben { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
+        .assignee-both { background: #dbeafe; color: #2563eb; border: 1px solid #bfdbfe; }
         
         .status-badge {
           padding: 2px 8px;
@@ -493,10 +493,10 @@ export default function Home() {
           font-size: 11px;
         }
         
-        .status-active { background: rgba(34,197,94,0.15); color: #22c55e; }
-        .status-paused { background: rgba(234,179,8,0.15); color: #eab308; }
-        .status-blocked { background: rgba(239,68,68,0.15); color: #ef4444; }
-        .status-done { background: rgba(113,113,122,0.15); color: #71717a; }
+        .status-active { background: #dcfce7; color: #16a34a; }
+        .status-paused { background: #fef9c3; color: #a16207; }
+        .status-blocked { background: #fee2e2; color: #dc2626; }
+        .status-done { background: #f3f4f6; color: #6b7280; }
         
         .sidebar { display: flex; flex-direction: column; gap: 16px; }
         
@@ -539,7 +539,7 @@ export default function Home() {
         .modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.8);
+          background: rgba(0,0,0,0.4);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -548,7 +548,7 @@ export default function Home() {
         }
         
         .modal-content {
-          background: var(--card-bg);
+          background: #ffffff;
           border: 1px solid var(--border);
           border-radius: 16px;
           padding: 24px;
@@ -556,6 +556,7 @@ export default function Home() {
           max-width: 600px;
           max-height: 90vh;
           overflow-y: auto;
+          box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         }
         
         .modal-header {
