@@ -6,18 +6,16 @@ const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
 
 const PRODUCTS = [
-  { id: 'all', label: 'All Products', icon: '📧' },
-  { id: 'salesecho', label: 'SalesEcho', icon: '📢', color: '#3b82f6' },
-  { id: 'interviewsidekick', label: 'Interview Sidekick', icon: '🎤', color: '#22c55e' },
-  { id: 'coverlettercopilot', label: 'Cover Letter Copilot', icon: '✉️', color: '#a855f7' },
+  { id: 'all', label: 'All', icon: '📧' },
+  { id: 'salesecho', label: 'SalesEcho', icon: '📢' },
+  { id: 'interviewsidekick', label: 'Interview Sidekick', icon: '🎤' },
+  { id: 'coverlettercopilot', label: 'Cover Letter Copilot', icon: '✉️' },
 ]
 
 const STATUSES = [
-  { id: 'all', label: 'All', color: '#6b7280' },
-  { id: 'pending', label: 'Pending', color: '#eab308' },
-  { id: 'drafted', label: 'Drafted', color: '#3b82f6' },
-  { id: 'sent', label: 'Sent', color: '#22c55e' },
-  { id: 'ignored', label: 'Ignored', color: '#6b7280' },
+  { id: 'all', label: 'All' },
+  { id: 'pending', label: '🟡 Pending' },
+  { id: 'sent', label: '✅ Sent' },
 ]
 
 async function api(endpoint, options = {}) {
@@ -26,7 +24,6 @@ async function api(endpoint, options = {}) {
     'Authorization': `Bearer ${SUPABASE_KEY}`,
     'Content-Type': 'application/json',
   }
-  
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
     ...options,
     headers: { ...headers, ...options.headers },
@@ -34,152 +31,64 @@ async function api(endpoint, options = {}) {
   return res.json()
 }
 
-function EmailCard({ email, expanded, onToggle }) {
-  const product = PRODUCTS.find(p => p.id === email.product) || { icon: '❓', label: 'Unknown', color: '#6b7280' }
-  const status = STATUSES.find(s => s.id === email.status) || STATUSES[0]
-  
-  const timeAgo = (date) => {
-    const seconds = Math.floor((new Date() - new Date(date)) / 1000)
-    if (seconds < 60) return 'just now'
-    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`
-    return `${Math.floor(seconds / 86400)}d ago`
-  }
+function timeAgo(date) {
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000)
+  if (seconds < 60) return 'just now'
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`
+  return `${Math.floor(seconds / 86400)}d ago`
+}
 
+function EmailCard({ email, expanded, onToggle }) {
+  const product = PRODUCTS.find(p => p.id === email.product) || { icon: '❓', label: 'Unknown' }
+  
   return (
-    <div 
-      style={{
-        background: 'white',
-        borderRadius: '12px',
-        padding: '16px',
-        marginBottom: '12px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-        cursor: 'pointer',
-        border: expanded ? '2px solid #3b82f6' : '2px solid transparent',
-        transition: 'all 0.2s'
-      }}
-      onClick={onToggle}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span 
-              style={{ 
-                background: product.color || '#6b7280', 
-                color: 'white', 
-                padding: '2px 8px', 
-                borderRadius: '12px', 
-                fontSize: '12px',
-                fontWeight: '500'
-              }}
-            >
-              {product.icon} {product.label}
-            </span>
-            <span 
-              style={{ 
-                background: status.color + '22', 
-                color: status.color, 
-                padding: '2px 8px', 
-                borderRadius: '12px', 
-                fontSize: '12px',
-                fontWeight: '500'
-              }}
-            >
-              {status.label}
-            </span>
-          </div>
-          <div style={{ fontWeight: '600', marginBottom: '4px' }}>{email.subject || '(no subject)'}</div>
-          <div style={{ color: '#6b7280', fontSize: '14px' }}>
-            From: {email.from_email}
-          </div>
+    <div className={`email-item ${expanded ? 'expanded' : ''}`} onClick={onToggle}>
+      <div className="email-header">
+        <div className="email-badges">
+          <span className={`product-badge product-${email.product || 'unknown'}`}>
+            {product.icon} {product.label}
+          </span>
+          <span className={`status-badge status-${email.status}`}>
+            {email.status === 'pending' ? '🟡' : email.status === 'sent' ? '✅' : '⏳'} {email.status}
+          </span>
         </div>
-        <div style={{ color: '#9ca3af', fontSize: '12px', whiteSpace: 'nowrap' }}>
-          {timeAgo(email.created_at)}
-        </div>
+        <span className="email-time">{timeAgo(email.created_at)}</span>
       </div>
       
+      <div className="email-subject">{email.subject || '(no subject)'}</div>
+      <div className="email-from">From: {email.from_email}</div>
+      
       {expanded && (
-        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e5e7eb' }}>
-          <div style={{ marginBottom: '16px' }}>
-            <div style={{ fontWeight: '600', marginBottom: '8px', color: '#374151' }}>📩 Original Email:</div>
-            <div 
-              style={{ 
-                background: '#f9fafb', 
-                padding: '12px', 
-                borderRadius: '8px',
-                whiteSpace: 'pre-wrap',
-                fontSize: '14px',
-                maxHeight: '200px',
-                overflow: 'auto'
-              }}
-            >
-              {email.body_text || email.body_html || '(no body)'}
-            </div>
-          </div>
-          
+        <div className="email-details">
           {email.ben_notes && (
-            <div style={{ marginBottom: '16px' }}>
-              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#f59e0b' }}>📝 Ben's Notes:</div>
-              <div 
-                style={{ 
-                  background: '#fef3c7', 
-                  padding: '12px', 
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  border: '1px solid #fcd34d'
-                }}
-              >
-                {email.ben_notes}
-              </div>
+            <div className="detail-section notes-section">
+              <div className="detail-label">📝 Ben's Notes</div>
+              <div className="detail-content">{email.ben_notes}</div>
             </div>
           )}
           
+          <div className="detail-section">
+            <div className="detail-label">📩 Original Email</div>
+            <div className="detail-content email-body">{email.body_text || email.body_html || '(no body)'}</div>
+          </div>
+          
           {email.draft_response && (
-            <div style={{ marginBottom: '16px' }}>
-              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#374151' }}>💬 Draft Response:</div>
-              <div 
-                style={{ 
-                  background: '#eff6ff', 
-                  padding: '12px', 
-                  borderRadius: '8px',
-                  whiteSpace: 'pre-wrap',
-                  fontSize: '14px',
-                  maxHeight: '200px',
-                  overflow: 'auto'
-                }}
-              >
-                {email.draft_response}
-              </div>
+            <div className="detail-section">
+              <div className="detail-label">💬 Draft Response</div>
+              <div className="detail-content draft-body">{email.draft_response}</div>
             </div>
           )}
           
           {email.sent_response && (
-            <div>
-              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#22c55e' }}>✅ Sent Response:</div>
-              <div 
-                style={{ 
-                  background: '#f0fdf4', 
-                  padding: '12px', 
-                  borderRadius: '8px',
-                  whiteSpace: 'pre-wrap',
-                  fontSize: '14px',
-                  maxHeight: '200px',
-                  overflow: 'auto'
-                }}
-              >
-                {email.sent_response}
-              </div>
-              {email.sent_at && (
-                <div style={{ color: '#6b7280', fontSize: '12px', marginTop: '8px' }}>
-                  Sent: {new Date(email.sent_at).toLocaleString()}
-                </div>
-              )}
+            <div className="detail-section">
+              <div className="detail-label">✅ Sent Response</div>
+              <div className="detail-content sent-body">{email.sent_response}</div>
+              {email.sent_at && <div className="sent-time">Sent: {new Date(email.sent_at).toLocaleString()}</div>}
             </div>
           )}
           
-          <div style={{ marginTop: '12px', color: '#9ca3af', fontSize: '12px' }}>
-            ID: {email.id}
-          </div>
+          <div className="email-id">ID: {email.id}</div>
         </div>
       )}
     </div>
@@ -207,11 +116,11 @@ export default function Support() {
 
   useEffect(() => {
     fetchEmails()
-    const interval = setInterval(fetchEmails, 10000) // Refresh every 10s
+    const interval = setInterval(fetchEmails, 10000)
     return () => clearInterval(interval)
   }, [productFilter, statusFilter])
 
-  const counts = {
+  const stats = {
     total: emails.length,
     pending: emails.filter(e => e.status === 'pending').length,
     sent: emails.filter(e => e.status === 'sent').length,
@@ -220,114 +129,440 @@ export default function Support() {
   return (
     <>
       <Head>
-        <title>Customer Support | Brochbot</title>
+        <title>Customer Support | Brochbot HQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
-      <div style={{ 
-        minHeight: '100vh', 
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-        padding: '24px'
-      }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-          {/* Header */}
-          <div style={{ marginBottom: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <h1 style={{ color: 'white', margin: 0, fontSize: '28px' }}>📧 Customer Support</h1>
-              <Link href="/" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px' }}>
-                ← Back to Dashboard
-              </Link>
-            </div>
-            <p style={{ color: '#9ca3af', margin: 0 }}>
-              {counts.pending > 0 ? `${counts.pending} pending` : 'No pending emails'} • {counts.sent} sent total
-            </p>
+      <div className="container">
+        {/* Header */}
+        <header className="header">
+          <div className="logo">🤖 Brochbot HQ</div>
+          <nav className="nav">
+            <Link href="/" className="nav-link">Dashboard</Link>
+            <Link href="/table" className="nav-link">Table</Link>
+            <Link href="/agents" className="nav-link">Agents</Link>
+            <Link href="/support" className="nav-link active">Support</Link>
+          </nav>
+        </header>
+
+        {/* Page Title */}
+        <div className="page-header">
+          <h1 className="page-title">📧 Customer Support</h1>
+          <p className="page-subtitle">
+            {stats.pending > 0 ? `${stats.pending} pending` : 'No pending'} • {stats.sent} sent
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="stats-bar">
+          <div className="stat-card">
+            <div className="stat-value">{stats.total}</div>
+            <div className="stat-label">Total</div>
           </div>
-          
-          {/* Filters */}
-          <div style={{ 
-            display: 'flex', 
-            gap: '12px', 
-            marginBottom: '20px',
-            flexWrap: 'wrap'
-          }}>
-            {/* Product Filter */}
-            <div style={{ display: 'flex', gap: '4px', background: '#ffffff11', borderRadius: '8px', padding: '4px' }}>
-              {PRODUCTS.map(p => (
-                <button
-                  key={p.id}
-                  onClick={() => setProductFilter(p.id)}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    background: productFilter === p.id ? 'white' : 'transparent',
-                    color: productFilter === p.id ? '#1a1a2e' : '#9ca3af',
-                    cursor: 'pointer',
-                    fontSize: '13px',
-                    fontWeight: productFilter === p.id ? '600' : '400',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  {p.icon} {p.label}
-                </button>
-              ))}
+          <div className="stat-card">
+            <div className="stat-value">{stats.pending}</div>
+            <div className="stat-label">🟡 Pending</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-value">{stats.sent}</div>
+            <div className="stat-label">✅ Sent</div>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="view-toggle">
+          {PRODUCTS.map(p => (
+            <button
+              key={p.id}
+              className={`view-btn ${productFilter === p.id ? 'active' : ''}`}
+              onClick={() => setProductFilter(p.id)}
+            >
+              {p.icon} {p.label}
+            </button>
+          ))}
+          <div className="filter-divider" />
+          {STATUSES.map(s => (
+            <button
+              key={s.id}
+              className={`view-btn ${statusFilter === s.id ? 'active' : ''}`}
+              onClick={() => setStatusFilter(s.id)}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Main Layout */}
+        <div className="main-layout">
+          {/* Email List */}
+          <div className="email-section">
+            <div className="section-header">
+              <span className="section-title">Support Emails</span>
+              <span className="meta-tag">{emails.length} emails</span>
             </div>
-            
-            {/* Status Filter */}
-            <div style={{ display: 'flex', gap: '4px', background: '#ffffff11', borderRadius: '8px', padding: '4px' }}>
-              {STATUSES.map(s => (
-                <button
-                  key={s.id}
-                  onClick={() => setStatusFilter(s.id)}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    background: statusFilter === s.id ? 'white' : 'transparent',
-                    color: statusFilter === s.id ? '#1a1a2e' : '#9ca3af',
-                    cursor: 'pointer',
-                    fontSize: '13px',
-                    fontWeight: statusFilter === s.id ? '600' : '400',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  {s.label}
-                </button>
-              ))}
+            <div className="email-list">
+              {loading ? (
+                <div className="empty-state">Loading...</div>
+              ) : emails.length === 0 ? (
+                <div className="empty-state">
+                  <h3>📭 No support emails</h3>
+                  <p>Forward emails to: <code>anything@nelaacriso.resend.app</code></p>
+                </div>
+              ) : (
+                emails.map(email => (
+                  <EmailCard
+                    key={email.id}
+                    email={email}
+                    expanded={expandedId === email.id}
+                    onToggle={() => setExpandedId(expandedId === email.id ? null : email.id)}
+                  />
+                ))
+              )}
             </div>
           </div>
 
-          {/* Email List */}
-          {loading ? (
-            <div style={{ color: '#9ca3af', textAlign: 'center', padding: '40px' }}>
-              Loading...
+          {/* Sidebar */}
+          <div className="sidebar">
+            <div className="sidebar-card">
+              <div className="sidebar-title">📬 Forward Emails To</div>
+              <code className="forward-address">anything@nelaacriso.resend.app</code>
+              <p className="sidebar-hint">Add notes above the forwarded content to give Brochbot instructions.</p>
             </div>
-          ) : emails.length === 0 ? (
-            <div style={{ 
-              color: '#9ca3af', 
-              textAlign: 'center', 
-              padding: '60px 20px',
-              background: '#ffffff08',
-              borderRadius: '12px'
-            }}>
-              <div style={{ fontSize: '48px', marginBottom: '16px' }}>📭</div>
-              <div style={{ fontSize: '18px', marginBottom: '8px' }}>No support emails yet</div>
-              <div style={{ fontSize: '14px' }}>
-                Forward support emails to: <code style={{ background: '#ffffff11', padding: '2px 6px', borderRadius: '4px' }}>anything@nelaacriso.resend.app</code>
+            
+            <div className="sidebar-card">
+              <div className="sidebar-title">📋 Response Playbook</div>
+              <div className="playbook-list">
+                <div className="playbook-item">
+                  <strong>Refund Request</strong>
+                  <p>Ask Ben for approval before offering any refunds.</p>
+                </div>
+                <div className="playbook-item">
+                  <strong>Cancellation</strong>
+                  <p>Confirm cancellation, ask for feedback (optional).</p>
+                </div>
+                <div className="playbook-item">
+                  <strong>Bug Report</strong>
+                  <p>Thank them, ask for details, escalate to Ben.</p>
+                </div>
+                <div className="playbook-item">
+                  <strong>Feature Request</strong>
+                  <p>Thank them, log it, no promises.</p>
+                </div>
+              </div>
+              <p className="sidebar-hint">Brochbot learns from Ben's corrections over time.</p>
+            </div>
+
+            <div className="sidebar-card">
+              <div className="sidebar-title">🎯 Products</div>
+              <div className="product-list">
+                <div className="product-item">
+                  <span>📢</span> SalesEcho
+                  <span className="product-domain">support@sales-echo.com</span>
+                </div>
+                <div className="product-item">
+                  <span>🎤</span> Interview Sidekick
+                  <span className="product-domain">support@interviewsidekick.com</span>
+                </div>
+                <div className="product-item">
+                  <span>✉️</span> Cover Letter Copilot
+                  <span className="product-domain">support@coverlettercopilot.ai</span>
+                </div>
               </div>
             </div>
-          ) : (
-            emails.map(email => (
-              <EmailCard
-                key={email.id}
-                email={email}
-                expanded={expandedId === email.id}
-                onToggle={() => setExpandedId(expandedId === email.id ? null : email.id)}
-              />
-            ))
-          )}
+          </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        :root {
+          --bg: #ffffff;
+          --card-bg: #f9fafb;
+          --border: #e5e7eb;
+          --text: #111827;
+          --text-muted: #6b7280;
+          --accent: #2563eb;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+          font-family: 'Inter', -apple-system, sans-serif;
+          background: var(--bg);
+          color: var(--text);
+          line-height: 1.5;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 32px;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+        
+        .logo { font-size: 24px; font-weight: 700; }
+        
+        .nav { display: flex; gap: 24px; }
+        
+        .nav-link {
+          font-size: 14px;
+          color: var(--text-muted);
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+        
+        .nav-link:hover, .nav-link.active { color: var(--text); font-weight: 500; }
+        
+        .page-header { margin-bottom: 24px; }
+        .page-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+        .page-subtitle { color: var(--text-muted); font-size: 14px; }
+        
+        .stats-bar {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px;
+          margin-bottom: 24px;
+        }
+        
+        .stat-card {
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 16px;
+          padding: 20px;
+          text-align: center;
+          transition: all 300ms;
+        }
+        
+        .stat-card:hover {
+          border-color: #D1D5DB;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+          transform: translateY(-2px);
+        }
+        
+        .stat-value { font-size: 28px; font-weight: 700; }
+        .stat-label { font-size: 12px; color: var(--text-muted); }
+        
+        .view-toggle {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 24px;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+        
+        .filter-divider {
+          width: 1px;
+          height: 24px;
+          background: #E5E7EB;
+          margin: 0 8px;
+        }
+        
+        .view-btn {
+          padding: 10px 18px;
+          border-radius: 12px;
+          border: 2px solid #F5F5F5;
+          background: transparent;
+          color: var(--text-muted);
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 300ms;
+        }
+        
+        .view-btn:hover { border-color: #D1D5DB; color: var(--text); }
+        .view-btn.active { background: #000000; border-color: #000000; color: white; }
+        
+        .main-layout {
+          display: grid;
+          grid-template-columns: 1fr 320px;
+          gap: 24px;
+        }
+        
+        @media (max-width: 900px) {
+          .main-layout { grid-template-columns: 1fr; }
+        }
+        
+        .email-section {
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-header {
+          padding: 16px 20px;
+          border-bottom: 1px solid var(--border);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        
+        .section-title { font-weight: 600; }
+        .meta-tag { font-size: 12px; color: var(--text-muted); }
+        
+        .email-list { max-height: 700px; overflow-y: auto; }
+        
+        .email-item {
+          padding: 16px 20px;
+          border-bottom: 1px solid var(--border);
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        
+        .email-item:hover { background: #f9fafb; }
+        .email-item.expanded { background: #f3f4f6; }
+        .email-item:last-child { border-bottom: none; }
+        
+        .email-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+        
+        .email-badges { display: flex; gap: 8px; }
+        
+        .product-badge, .status-badge {
+          padding: 4px 10px;
+          border-radius: 8px;
+          font-size: 12px;
+          font-weight: 500;
+        }
+        
+        .product-salesecho { background: #dbeafe; color: #1d4ed8; }
+        .product-interviewsidekick { background: #dcfce7; color: #15803d; }
+        .product-coverlettercopilot { background: #f3e8ff; color: #7c3aed; }
+        .product-unknown { background: #f3f4f6; color: #6b7280; }
+        
+        .status-pending { background: #fef9c3; color: #a16207; }
+        .status-sent { background: #dcfce7; color: #15803d; }
+        .status-drafted { background: #dbeafe; color: #1d4ed8; }
+        
+        .email-time { font-size: 12px; color: var(--text-muted); }
+        .email-subject { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+        .email-from { font-size: 13px; color: var(--text-muted); }
+        
+        .email-details {
+          margin-top: 16px;
+          padding-top: 16px;
+          border-top: 1px solid var(--border);
+        }
+        
+        .detail-section { margin-bottom: 16px; }
+        .detail-section:last-of-type { margin-bottom: 0; }
+        
+        .detail-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          margin-bottom: 8px;
+        }
+        
+        .detail-content {
+          font-size: 14px;
+          line-height: 1.6;
+          white-space: pre-wrap;
+          padding: 12px;
+          border-radius: 8px;
+          max-height: 200px;
+          overflow-y: auto;
+        }
+        
+        .email-body { background: #f9fafb; }
+        .draft-body { background: #eff6ff; }
+        .sent-body { background: #f0fdf4; }
+        .notes-section .detail-content { background: #fef3c7; border: 1px solid #fcd34d; }
+        
+        .sent-time { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+        .email-id { font-size: 11px; color: #9ca3af; margin-top: 12px; }
+        
+        .sidebar { display: flex; flex-direction: column; gap: 16px; }
+        
+        .sidebar-card {
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 16px;
+          padding: 20px;
+          transition: all 300ms;
+        }
+        
+        .sidebar-card:hover {
+          border-color: #D1D5DB;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-title {
+          font-size: 14px;
+          font-weight: 600;
+          margin-bottom: 12px;
+        }
+        
+        .forward-address {
+          display: block;
+          background: #f3f4f6;
+          padding: 12px;
+          border-radius: 8px;
+          font-size: 12px;
+          word-break: break-all;
+          margin-bottom: 8px;
+        }
+        
+        .sidebar-hint {
+          font-size: 12px;
+          color: var(--text-muted);
+          margin-top: 8px;
+        }
+        
+        .playbook-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .playbook-item {
+          padding: 12px;
+          background: #f9fafb;
+          border-radius: 8px;
+          font-size: 13px;
+        }
+        
+        .playbook-item strong { display: block; margin-bottom: 4px; }
+        .playbook-item p { color: var(--text-muted); margin: 0; font-size: 12px; }
+        
+        .product-list { display: flex; flex-direction: column; gap: 8px; }
+        
+        .product-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 14px;
+          padding: 8px 0;
+          border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .product-item:last-child { border-bottom: none; }
+        
+        .product-domain {
+          margin-left: auto;
+          font-size: 11px;
+          color: var(--text-muted);
+        }
+        
+        .empty-state {
+          padding: 60px 20px;
+          text-align: center;
+          color: var(--text-muted);
+        }
+        
+        .empty-state h3 { margin-bottom: 8px; color: var(--text); }
+        .empty-state code {
+          background: #f3f4f6;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 13px;
+        }
+      `}</style>
     </>
   )
 }
