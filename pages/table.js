@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -6,17 +6,13 @@ const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
 
 const CATEGORIES = [
-  { id: 'operations', label: 'Work Operations' },
+  { id: 'operations', label: 'Operations' },
   { id: 'sales_echo', label: 'SalesEcho' },
   { id: 'interview_sidekick', label: 'Interview Sidekick' },
   { id: 'cover_letter', label: 'Cover Letter Copilot' },
   { id: 'life', label: 'Life' },
-  { id: 'ideas', label: 'Future Ideas' },
+  { id: 'ideas', label: 'Ideas' },
 ]
-
-const STATUSES = ['todo', 'in_progress', 'done']
-const PRIORITIES = ['high', 'medium', 'low']
-const SCHEDULES = ['', 'daily_morning', 'daily_evening', 'weekly', 'monthly']
 
 async function api(endpoint, options = {}) {
   const headers = {
@@ -67,7 +63,7 @@ export default function TableView() {
         title: 'New Task', 
         status: 'todo', 
         priority: 'medium',
-        category: 'life'
+        category: 'operations'
       })
     })
     if (result && result[0]) {
@@ -90,345 +86,402 @@ export default function TableView() {
   return (
     <>
       <Head>
-        <title>Brochbot - Table View</title>
+        <title>Table View | Brochbot HQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
       </Head>
 
-      <div className="app">
+      <div className="container">
+        {/* Header */}
         <header className="header">
-          <div className="header-left">
-            <Link href="/" className="logo">
-              <span className="logo-icon">🤖</span>
-              <span>Brochbot</span>
-            </Link>
-            <div className="view-toggle">
-              <Link href="/" className="view-btn">Kanban</Link>
-              <span className="view-btn active">Table</span>
-            </div>
-          </div>
-          <button className="btn-primary" onClick={addTask}>+ Add Row</button>
+          <Link href="/" className="logo">🤖 Brochbot HQ</Link>
+          <nav className="nav">
+            <Link href="/" className="nav-link">Dashboard</Link>
+            <Link href="/agents" className="nav-link">Agents</Link>
+            <Link href="/how-it-works" className="nav-link">How It Works</Link>
+            <Link href="/security" className="nav-link">Security</Link>
+          </nav>
         </header>
 
-        <div className="filter-bar">
-          <select value={filter} onChange={e => setFilter(e.target.value)}>
-            <option value="all">All Tasks</option>
-            <option value="operations">Work Operations</option>
-            <option value="sales_echo">SalesEcho</option>
-            <option value="interview_sidekick">Interview Sidekick</option>
-            <option value="cover_letter">Cover Letter Copilot</option>
-            <option value="life">Life</option>
-            <option value="ideas">Future Ideas</option>
-          </select>
-          <span className="task-count">{filteredTasks.length} tasks</span>
-        </div>
+        {/* Hero */}
+        <section className="hero">
+          <h1 className="hero-title">Table View 📋</h1>
+          <p className="hero-subtitle">
+            Quick spreadsheet-style editing for all your tasks.
+          </p>
+        </section>
 
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th className="col-title">Title</th>
-                <th className="col-desc">Description</th>
-                <th className="col-status">Status</th>
-                <th className="col-priority">Priority</th>
-                <th className="col-category">Category</th>
-                <th className="col-schedule">Schedule</th>
-                <th className="col-actions">⚡</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan="7" className="loading-cell">Loading...</td></tr>
-              ) : filteredTasks.length === 0 ? (
-                <tr><td colSpan="7" className="empty-cell">No tasks. Click "+ Add Row" to create one.</td></tr>
-              ) : (
-                filteredTasks.map(task => (
-                  <tr key={task.id} className={saving === task.id ? 'saving' : ''}>
-                    <td className="col-title">
-                      <input
-                        type="text"
-                        value={task.title || ''}
-                        onChange={e => setTasks(tasks.map(t => t.id === task.id ? {...t, title: e.target.value} : t))}
-                        onBlur={e => updateTask(task.id, 'title', e.target.value)}
-                        placeholder="Task title..."
-                      />
-                    </td>
-                    <td className="col-desc">
-                      <input
-                        type="text"
-                        value={task.description || ''}
-                        onChange={e => setTasks(tasks.map(t => t.id === task.id ? {...t, description: e.target.value} : t))}
-                        onBlur={e => updateTask(task.id, 'description', e.target.value)}
-                        placeholder="Description..."
-                      />
-                    </td>
-                    <td className="col-status">
-                      <select
-                        value={task.status || 'todo'}
-                        onChange={e => updateTask(task.id, 'status', e.target.value)}
-                        className={`status-${task.status}`}
-                      >
-                        <option value="todo">To Do</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="done">Done</option>
-                      </select>
-                    </td>
-                    <td className="col-priority">
-                      <select
-                        value={task.priority || 'medium'}
-                        onChange={e => updateTask(task.id, 'priority', e.target.value)}
-                        className={`priority-${task.priority}`}
-                      >
-                        <option value="high">🔴 High</option>
-                        <option value="medium">🟡 Medium</option>
-                        <option value="low">🟢 Low</option>
-                      </select>
-                    </td>
-                    <td className="col-category">
-                      <select
-                        value={task.category || ''}
-                        onChange={e => updateTask(task.id, 'category', e.target.value)}
-                      >
-                        {CATEGORIES.map(c => (
-                          <option key={c.id} value={c.id}>{c.label}</option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="col-schedule">
-                      <select
-                        value={task.schedule || ''}
-                        onChange={e => updateTask(task.id, 'schedule', e.target.value)}
-                      >
-                        <option value="">None</option>
-                        <option value="daily_morning">🌅 Daily AM</option>
-                        <option value="daily_evening">🌙 Daily PM</option>
-                        <option value="weekly">📅 Weekly</option>
-                        <option value="monthly">🗓️ Monthly</option>
-                      </select>
-                    </td>
-                    <td className="col-actions">
-                      <button className="delete-btn" onClick={() => deleteTask(task.id)}>🗑️</button>
-                    </td>
+        {/* Controls */}
+        <section className="controls">
+          <div className="controls-left">
+            <select 
+              className="filter-select"
+              value={filter} 
+              onChange={e => setFilter(e.target.value)}
+            >
+              <option value="all">All Tasks</option>
+              {CATEGORIES.map(c => (
+                <option key={c.id} value={c.id}>{c.label}</option>
+              ))}
+            </select>
+            <span className="task-count">{filteredTasks.length} tasks</span>
+          </div>
+          <button className="btn btn-primary" onClick={addTask}>
+            + Add Task
+          </button>
+        </section>
+
+        {/* Table */}
+        <section className="table-section">
+          <div className="table-card">
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th className="col-title">Title</th>
+                    <th className="col-desc">Description</th>
+                    <th className="col-status">Status</th>
+                    <th className="col-priority">Priority</th>
+                    <th className="col-category">Category</th>
+                    <th className="col-actions"></th>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr><td colSpan="6" className="empty-cell">Loading...</td></tr>
+                  ) : filteredTasks.length === 0 ? (
+                    <tr><td colSpan="6" className="empty-cell">No tasks yet. Click "+ Add Task" to create one.</td></tr>
+                  ) : (
+                    filteredTasks.map(task => (
+                      <tr key={task.id} className={saving === task.id ? 'saving' : ''}>
+                        <td className="col-title">
+                          <input
+                            type="text"
+                            value={task.title || ''}
+                            onChange={e => setTasks(tasks.map(t => t.id === task.id ? {...t, title: e.target.value} : t))}
+                            onBlur={e => updateTask(task.id, 'title', e.target.value)}
+                            placeholder="Task title..."
+                          />
+                        </td>
+                        <td className="col-desc">
+                          <input
+                            type="text"
+                            value={task.description || ''}
+                            onChange={e => setTasks(tasks.map(t => t.id === task.id ? {...t, description: e.target.value} : t))}
+                            onBlur={e => updateTask(task.id, 'description', e.target.value)}
+                            placeholder="Description..."
+                          />
+                        </td>
+                        <td className="col-status">
+                          <select
+                            value={task.status || 'todo'}
+                            onChange={e => updateTask(task.id, 'status', e.target.value)}
+                            className={`status-${task.status}`}
+                          >
+                            <option value="todo">To Do</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="done">Done</option>
+                          </select>
+                        </td>
+                        <td className="col-priority">
+                          <select
+                            value={task.priority || 'medium'}
+                            onChange={e => updateTask(task.id, 'priority', e.target.value)}
+                            className={`priority-${task.priority}`}
+                          >
+                            <option value="high">🔴 High</option>
+                            <option value="medium">🟡 Medium</option>
+                            <option value="low">🟢 Low</option>
+                          </select>
+                        </td>
+                        <td className="col-category">
+                          <select
+                            value={task.category || ''}
+                            onChange={e => updateTask(task.id, 'category', e.target.value)}
+                          >
+                            {CATEGORIES.map(c => (
+                              <option key={c.id} value={c.id}>{c.label}</option>
+                            ))}
+                          </select>
+                        </td>
+                        <td className="col-actions">
+                          <button className="delete-btn" onClick={() => deleteTask(task.id)}>🗑️</button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="cta-section">
+          <Link href="/" className="btn btn-secondary">
+            ← Back to Dashboard
+          </Link>
+        </section>
       </div>
 
       <style jsx global>{`
+        :root {
+          --bg: #ffffff;
+          --text: #111827;
+          --text-muted: #6b7280;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-          font-family: 'Inter', -apple-system, sans-serif;
-          background: #fafafa;
-          color: #111;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          background: var(--bg);
+          color: var(--text);
+          line-height: 1.6;
         }
         
-        .app { min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
         
+        /* Header */
         .header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 12px 24px;
-          background: white;
-          border-bottom: 1px solid #e5e7eb;
-          position: sticky;
-          top: 0;
-          z-index: 50;
-        }
-        
-        .header-left {
-          display: flex;
-          align-items: center;
-          gap: 24px;
+          margin-bottom: 48px;
+          flex-wrap: wrap;
+          gap: 16px;
         }
         
         .logo {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-weight: 600;
+          font-size: 24px;
+          font-weight: 700;
+          text-decoration: none;
+          color: var(--text);
+        }
+        
+        .nav { display: flex; gap: 24px; }
+        
+        .nav-link {
+          font-size: 14px;
+          color: var(--text-muted);
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+        
+        .nav-link:hover { color: var(--text); }
+        
+        /* Hero */
+        .hero {
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
+          padding: 40px;
+          text-align: center;
+          margin-bottom: 32px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hero-title {
+          font-size: 48px;
+          font-weight: 700;
+          line-height: 56px;
+          margin-bottom: 16px;
+          color: #000000;
+        }
+        
+        .hero-subtitle {
           font-size: 16px;
-          text-decoration: none;
-          color: inherit;
+          line-height: 24px;
+          color: #6B7280;
         }
         
-        .logo-icon {
-          width: 32px;
-          height: 32px;
-          background: linear-gradient(135deg, #000, #333);
-          border-radius: 8px;
+        /* Controls */
+        .controls {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 24px;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+        
+        .controls-left {
           display: flex;
           align-items: center;
-          justify-content: center;
+          gap: 16px;
         }
         
-        .view-toggle {
-          display: flex;
-          gap: 4px;
-          background: #f3f4f6;
-          padding: 4px;
-          border-radius: 8px;
-        }
-        
-        .view-btn {
-          padding: 6px 12px;
-          border-radius: 6px;
-          font-size: 13px;
-          text-decoration: none;
-          color: #6b7280;
+        .filter-select {
+          padding: 12px 16px;
+          border: 2px solid #F5F5F5;
+          border-radius: 12px;
+          font-size: 14px;
+          background: white;
           cursor: pointer;
+          transition: border-color 0.2s;
         }
         
-        .view-btn.active {
-          background: white;
-          color: #111;
-          box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        
-        .btn-primary {
-          background: #000;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 6px;
-          font-size: 13px;
-          font-weight: 500;
-          cursor: pointer;
-        }
-        
-        .filter-bar {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 24px;
-          background: white;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .filter-bar select {
-          padding: 6px 12px;
-          border: 1px solid #e5e7eb;
-          border-radius: 6px;
-          font-size: 13px;
-          background: white;
+        .filter-select:focus {
+          outline: none;
+          border-color: #333333;
         }
         
         .task-count {
-          font-size: 13px;
-          color: #6b7280;
+          font-size: 14px;
+          color: #6B7280;
         }
         
-        .table-container {
+        /* Buttons */
+        .btn {
+          display: inline-block;
+          padding: 16px 32px;
+          border-radius: 16px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          border: none;
+          text-decoration: none;
+          transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-primary {
+          background: #000000;
+          color: white;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:hover {
+          background: #333333;
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+          background: white;
+          color: #333333;
+          border: 2px solid #F5F5F5;
+        }
+        
+        .btn-secondary:hover {
+          border-color: #D1D5DB;
+          background: #F9FAFB;
+        }
+        
+        /* Table Section */
+        .table-section { margin-bottom: 48px; }
+        
+        .table-card {
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-scroll {
           overflow-x: auto;
-          padding: 0 24px 24px;
         }
         
         table {
           width: 100%;
           border-collapse: collapse;
-          background: white;
-          margin-top: 16px;
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         th {
           text-align: left;
-          padding: 12px 16px;
-          font-size: 11px;
+          padding: 16px 20px;
+          font-size: 12px;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.5px;
-          color: #6b7280;
-          background: #f9fafb;
-          border-bottom: 1px solid #e5e7eb;
+          color: #6B7280;
+          background: #F9FAFB;
+          border-bottom: 1px solid #F5F5F5;
         }
         
         td {
-          padding: 8px 12px;
-          border-bottom: 1px solid #f3f4f6;
+          padding: 12px 16px;
+          border-bottom: 1px solid #F5F5F5;
           vertical-align: middle;
         }
         
-        tr:hover { background: #fafafa; }
-        tr.saving { opacity: 0.6; }
+        tr:hover { background: #FAFAFA; }
+        tr.saving { opacity: 0.5; }
         tr:last-child td { border-bottom: none; }
         
         .col-title { min-width: 200px; }
         .col-desc { min-width: 200px; }
-        .col-status { width: 130px; }
-        .col-priority { width: 120px; }
+        .col-status { width: 140px; }
+        .col-priority { width: 130px; }
         .col-category { width: 160px; }
-        .col-schedule { width: 130px; }
-        .col-actions { width: 50px; text-align: center; }
+        .col-actions { width: 60px; text-align: center; }
         
         td input, td select {
           width: 100%;
-          padding: 8px 10px;
-          border: 1px solid transparent;
-          border-radius: 6px;
-          font-size: 13px;
+          padding: 10px 12px;
+          border: 2px solid transparent;
+          border-radius: 12px;
+          font-size: 14px;
           font-family: inherit;
           background: transparent;
+          transition: all 0.2s;
         }
         
         td input:hover, td select:hover {
-          background: #f3f4f6;
+          background: #F3F4F6;
         }
         
         td input:focus, td select:focus {
           outline: none;
-          border-color: #000;
+          border-color: #333333;
           background: white;
         }
         
-        td select {
-          cursor: pointer;
-        }
+        td select { cursor: pointer; }
         
-        .status-todo { color: #6b7280; }
-        .status-in_progress { color: #3b82f6; }
-        .status-done { color: #22c55e; }
+        .status-todo { color: #6B7280; }
+        .status-in_progress { color: #3B82F6; }
+        .status-done { color: #22C55E; }
         
-        .priority-high { color: #ef4444; }
-        .priority-medium { color: #eab308; }
-        .priority-low { color: #22c55e; }
+        .priority-high { color: #EF4444; }
+        .priority-medium { color: #EAB308; }
+        .priority-low { color: #22C55E; }
         
         .delete-btn {
           background: none;
           border: none;
           cursor: pointer;
           opacity: 0.4;
-          font-size: 14px;
-          padding: 4px 8px;
-          border-radius: 4px;
+          font-size: 16px;
+          padding: 8px;
+          border-radius: 8px;
+          transition: all 0.2s;
         }
         
         .delete-btn:hover {
           opacity: 1;
-          background: #fef2f2;
+          background: #FEF2F2;
         }
         
-        .loading-cell, .empty-cell {
+        .empty-cell {
           text-align: center;
-          padding: 40px !important;
-          color: #6b7280;
+          padding: 48px 20px !important;
+          color: #6B7280;
+          font-size: 16px;
         }
         
-        @media (max-width: 768px) {
-          .header { padding: 12px 16px; }
-          .filter-bar { padding: 12px 16px; }
-          .table-container { padding: 0 16px 16px; }
-          
-          .col-desc, .col-schedule {
-            display: none;
-          }
+        /* CTA */
+        .cta-section {
+          text-align: center;
+          padding: 32px 0;
+        }
+        
+        @media (max-width: 640px) {
+          .hero { padding: 32px 24px; }
+          .hero-title { font-size: 36px; line-height: 44px; }
+          .col-desc { display: none; }
+          .btn { width: 100%; text-align: center; }
+          .controls { flex-direction: column; align-items: stretch; }
+          .controls-left { justify-content: space-between; }
         }
       `}</style>
     </>
