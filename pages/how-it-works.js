@@ -198,8 +198,13 @@ export default function HowItWorks() {
         
         /* Hero */
         .hero {
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
+          padding: 40px;
           text-align: center;
           margin-bottom: 56px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
         
         .hero-title {
@@ -213,7 +218,7 @@ export default function HowItWorks() {
         .hero-subtitle {
           font-size: 16px;
           line-height: 24px;
-          color: var(--text-muted);
+          color: #6B7280;
           max-width: 600px;
           margin: 0 auto;
         }
@@ -237,16 +242,18 @@ export default function HowItWorks() {
         }
         
         .step-card {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
+          background: white;
+          border: 1px solid #F5F5F5;
           border-radius: 16px;
           padding: 24px;
-          transition: transform 0.2s, box-shadow 0.2s;
+          transition: all 300ms;
+          position: relative;
         }
         
         .step-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+          border-color: #D1D5DB;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+          transform: translateY(-4px);
         }
         
         .step-header {
@@ -295,11 +302,18 @@ export default function HowItWorks() {
         }
         
         .feature-card {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
+          background: white;
+          border: 1px solid #F5F5F5;
           border-radius: 16px;
           padding: 24px;
           text-align: center;
+          transition: all 300ms;
+        }
+        
+        .feature-card:hover {
+          border-color: #D1D5DB;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+          transform: translateY(-4px);
         }
         
         .feature-emoji {
@@ -325,10 +339,11 @@ export default function HowItWorks() {
         .comm-section { margin-bottom: 56px; }
         
         .comm-card {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 32px;
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
+          padding: 40px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
         
         .comm-title {
