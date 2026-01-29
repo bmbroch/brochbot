@@ -3,6 +3,13 @@ import Link from 'next/link'
 
 const ACTIVE_AGENTS = [
   {
+    emoji: '📧',
+    title: 'Email Support Bot',
+    description: 'Handle customer support emails via Resend webhook → Draft responses → Ben approves → Send.',
+    trigger: 'Webhook (on email)',
+    link: '/support',
+  },
+  {
     emoji: '💰',
     title: 'Creator Payouts',
     description: 'Scrape TikTok/IG for Nick, Luke, Abby, Jake → Update Google Sheet → Send Telegram report',
@@ -23,11 +30,6 @@ const ACTIVE_AGENTS = [
 ]
 
 const PLANNED_AGENTS = [
-  {
-    emoji: '📧',
-    title: 'Email Support Bot',
-    description: 'Handle customer support emails automatically via Resend API.',
-  },
   {
     emoji: '🔍',
     title: 'Creator Scout',
@@ -111,9 +113,16 @@ export default function Agents() {
                 <div className="card-emoji">{agent.emoji}</div>
                 <h3 className="card-title">{agent.title}</h3>
                 <p className="card-description">{agent.description}</p>
-                <div className="card-meta">
-                  <span className="meta-icon">⏰</span>
-                  <span>{agent.trigger}</span>
+                <div className="card-footer">
+                  <div className="card-meta">
+                    <span className="meta-icon">⏰</span>
+                    <span>{agent.trigger}</span>
+                  </div>
+                  {agent.link && (
+                    <Link href={agent.link} className="card-link">
+                      Open →
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}
@@ -336,15 +345,37 @@ export default function Agents() {
           line-height: 24px;
         }
         
+        .card-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 16px;
+          padding-top: 16px;
+          border-top: 1px solid #F5F5F5;
+        }
+        
         .card-meta {
           display: flex;
           align-items: center;
           gap: 8px;
-          margin-top: 16px;
-          padding-top: 16px;
-          border-top: 1px solid #F5F5F5;
           font-size: 14px;
           color: #6B7280;
+        }
+        
+        .card-link {
+          font-size: 14px;
+          font-weight: 500;
+          color: #3b82f6;
+          text-decoration: none;
+          padding: 6px 12px;
+          background: #eff6ff;
+          border-radius: 8px;
+          transition: all 0.2s;
+        }
+        
+        .card-link:hover {
+          background: #dbeafe;
+          color: #1d4ed8;
         }
         
         /* Commands */
