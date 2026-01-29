@@ -79,6 +79,25 @@ function IdeaCard({ idea }) {
               <div className="derivative-content hint">Tell BrochBot to generate derivatives for this idea</div>
             </div>
           )}
+          
+          {idea.posted_url && (
+            <div className="derivative-section">
+              <div className="derivative-label">🚀 Posted</div>
+              <div className="posted-info">
+                <a href={idea.posted_url} target="_blank" rel="noopener noreferrer" className="posted-link">
+                  View on {idea.posted_url.includes('linkedin') ? 'LinkedIn' : '𝕏'} →
+                </a>
+                {(idea.views > 0 || idea.likes > 0) && (
+                  <div className="posted-metrics">
+                    {idea.views > 0 && <span>👁 {idea.views.toLocaleString()}</span>}
+                    {idea.likes > 0 && <span>❤️ {idea.likes}</span>}
+                    {idea.reposts > 0 && <span>🔄 {idea.reposts}</span>}
+                    {idea.replies > 0 && <span>💬 {idea.replies}</span>}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -497,6 +516,40 @@ export default function Creation() {
         .derivative-content.hint {
           color: var(--text-muted);
           font-style: italic;
+        }
+        
+        .posted-info {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        
+        .posted-link {
+          display: inline-block;
+          padding: 12px 16px;
+          background: #dcfce7;
+          border-radius: 8px;
+          color: #15803d;
+          text-decoration: none;
+          font-weight: 500;
+          font-size: 14px;
+        }
+        
+        .posted-link:hover {
+          background: #bbf7d0;
+        }
+        
+        .posted-metrics {
+          display: flex;
+          gap: 16px;
+          font-size: 14px;
+          color: var(--text-muted);
+        }
+        
+        .posted-metrics span {
+          display: flex;
+          align-items: center;
+          gap: 4px;
         }
         
         .how-it-works {
