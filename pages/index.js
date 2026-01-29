@@ -353,6 +353,38 @@ export default function Home() {
             </div>
             
             <div className="sidebar-card">
+              <div className="sidebar-title">🎮 Quick Commands</div>
+              <div className="commands-list">
+                {[
+                  { cmd: 'payouts', desc: 'Run creator payouts' },
+                  { cmd: 'sync', desc: 'Sync tasks & crons' },
+                  { cmd: 'tasks', desc: 'Show my tasks' },
+                  { cmd: 'p0', desc: 'P0 tasks only' },
+                  { cmd: 'briefing', desc: 'Morning briefing' },
+                  { cmd: 'deploy', desc: 'Deploy brochbot' },
+                ].map(item => (
+                  <div key={item.cmd} className="command-row">
+                    <div className="command-info">
+                      <code className="command-code">{item.cmd}</code>
+                      <span className="command-desc">{item.desc}</span>
+                    </div>
+                    <button 
+                      className="copy-btn"
+                      onClick={() => {
+                        navigator.clipboard.writeText(item.cmd)
+                        const btn = event.target
+                        btn.textContent = '✓'
+                        setTimeout(() => btn.textContent = '📋', 1000)
+                      }}
+                      title="Copy to clipboard"
+                    >📋</button>
+                  </div>
+                ))}
+              </div>
+              <a href="/agents" className="sidebar-link">All commands →</a>
+            </div>
+            
+            <div className="sidebar-card">
               <div className="sidebar-title">📊 Priority Guide</div>
               <div className="priority-guide">
                 <div><span className="priority-badge priority-p0">P0</span> Drop everything</div>
@@ -663,6 +695,51 @@ export default function Home() {
         .level-read { background: #dcfce7; color: #16a34a; }
         .sidebar-link { display: block; margin-top: 12px; font-size: 13px; color: var(--accent); text-decoration: none; }
         .sidebar-link:hover { text-decoration: underline; }
+        
+        .commands-list { display: flex; flex-direction: column; gap: 8px; }
+        
+        .command-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          padding: 8px 0;
+          border-bottom: 1px solid #F5F5F5;
+        }
+        
+        .command-row:last-child { border-bottom: none; }
+        
+        .command-info { display: flex; flex-direction: column; gap: 2px; }
+        
+        .command-code {
+          background: #F3F4F6;
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-size: 13px;
+          font-weight: 500;
+          color: #000000;
+        }
+        
+        .command-desc {
+          font-size: 11px;
+          color: var(--text-muted);
+        }
+        
+        .copy-btn {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          font-size: 14px;
+          padding: 6px 8px;
+          border-radius: 8px;
+          transition: all 0.2s;
+          opacity: 0.6;
+        }
+        
+        .copy-btn:hover {
+          background: #F3F4F6;
+          opacity: 1;
+        }
         
         .empty-state {
           padding: 40px 20px;
