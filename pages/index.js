@@ -283,26 +283,9 @@ export default function Home() {
 
         {/* Quick Access */}
         <div className="quick-access">
-          <Link href="/support" className="quick-card">
-            <div className="quick-icon">📧</div>
-            <div className="quick-content">
-              <div className="quick-title">Customer Support</div>
-              <div className="quick-subtitle">
-                {pendingSupport > 0 ? `${pendingSupport} pending` : 'All clear'}
-              </div>
-            </div>
-            {pendingSupport > 0 && <div className="quick-badge">{pendingSupport}</div>}
-          </Link>
-          <Link href="/creation" className="quick-card">
-            <div className="quick-icon">✨</div>
-            <div className="quick-content">
-              <div className="quick-title">Content Creation</div>
-              <div className="quick-subtitle">
-                {contentIdeas > 0 ? `${contentIdeas} ready to post` : 'Ideas & drafts'}
-              </div>
-            </div>
-            {contentIdeas > 0 && <div className="quick-badge">{contentIdeas}</div>}
-          </Link>
+          <Link href="/support" className="quick-btn">📧 Support</Link>
+          <Link href="/creation" className="quick-btn">✨ Content</Link>
+          <Link href="/agents" className="quick-btn">🤖 Agents</Link>
         </div>
 
         {/* View Toggle */}
@@ -603,10 +586,30 @@ export default function Home() {
         }
         
         .quick-access {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 16px;
-          margin-bottom: 32px;
+          display: flex;
+          gap: 10px;
+          margin-bottom: 24px;
+          flex-wrap: wrap;
+        }
+        
+        .quick-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 14px;
+          background: #1a1a2e;
+          border: 1px solid #333;
+          border-radius: 8px;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 500;
+          text-decoration: none;
+          transition: all 0.2s;
+        }
+        
+        .quick-btn:hover {
+          background: #252542;
+          border-color: #444;
         }
         
         @media (max-width: 768px) {
@@ -641,13 +644,12 @@ export default function Home() {
           }
           
           .quick-access { 
-            grid-template-columns: repeat(2, 1fr); 
             gap: 8px; 
           }
           
-          .quick-card { 
-            padding: 12px; 
-            gap: 8px;
+          .quick-btn { 
+            padding: 6px 12px;
+            font-size: 13px;
             flex-direction: column;
             text-align: center;
             border-radius: 16px;
@@ -673,11 +675,8 @@ export default function Home() {
         }
         
         @media (max-width: 380px) {
-          .quick-access { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-          .quick-card { padding: 10px 8px; }
-          .quick-icon { width: 32px; height: 32px; font-size: 18px; }
-          .quick-title { font-size: 11px; }
-          .quick-subtitle { display: none; }
+          .quick-access { gap: 6px; }
+          .quick-btn { padding: 5px 10px; font-size: 12px; }
         }
         
         .quick-card {
