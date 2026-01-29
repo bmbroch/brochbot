@@ -4,6 +4,18 @@ import Head from 'next/head'
 const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
 
+const DATA_ACCESS = [
+  { id: 'supabase', name: 'Supabase', icon: '🗄️', type: 'database', level: 'read/write' },
+  { id: 'google-sheets', name: 'Google Sheets', icon: '📊', type: 'api', level: 'read/write' },
+  { id: 'telegram', name: 'Telegram Bot', icon: '💬', type: 'messaging', level: 'send' },
+  { id: 'anthropic', name: 'Anthropic API', icon: '🤖', type: 'ai', level: 'api calls' },
+  { id: 'github', name: 'GitHub', icon: '📦', type: 'repo', level: 'push' },
+  { id: 'browser', name: 'Browser/Relay', icon: '🌐', type: 'browser', level: 'scrape' },
+  { id: 'tiktok', name: 'TikTok', icon: '🎵', type: 'scraping', level: 'read only' },
+  { id: 'instagram', name: 'Instagram', icon: '📸', type: 'scraping', level: 'read only' },
+  { id: 'filesystem', name: 'Workspace', icon: '📁', type: 'files', level: 'read/write' },
+]
+
 const CATEGORIES = [
   { id: 'operations', label: 'Operations', icon: '⚙️' },
   { id: 'sales_echo', label: 'SalesEcho', icon: '📢' },
@@ -334,6 +346,22 @@ export default function Home() {
                 <div><span className="priority-badge priority-p3">P3</span> Backlog</div>
               </div>
             </div>
+            
+            <div className="sidebar-card">
+              <div className="sidebar-title">🔐 Data Access</div>
+              <div className="access-list">
+                {DATA_ACCESS.map(access => (
+                  <div key={access.id} className="access-item">
+                    <span className="access-icon-small">{access.icon}</span>
+                    <span className="access-name-small">{access.name}</span>
+                    <span className={`access-level-small ${access.level.includes('write') || access.level === 'push' ? 'level-write' : 'level-read'}`}>
+                      {access.level}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <a href="/security" className="sidebar-link">View details →</a>
+            </div>
           </div>
         </div>
       </div>
@@ -563,6 +591,16 @@ export default function Home() {
         
         .priority-guide { display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
         .priority-guide div { display: flex; align-items: center; gap: 8px; }
+        
+        .access-list { display: flex; flex-direction: column; gap: 6px; }
+        .access-item { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 4px 0; }
+        .access-icon-small { font-size: 14px; }
+        .access-name-small { flex: 1; }
+        .access-level-small { font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+        .level-write { background: #fef2f2; color: #dc2626; }
+        .level-read { background: #dcfce7; color: #16a34a; }
+        .sidebar-link { display: block; margin-top: 12px; font-size: 13px; color: var(--accent); text-decoration: none; }
+        .sidebar-link:hover { text-decoration: underline; }
         
         .empty-state {
           padding: 40px 20px;
