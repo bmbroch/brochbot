@@ -39,7 +39,7 @@ function timeAgo(date) {
   return `${Math.floor(seconds / 86400)}d ago`
 }
 
-function EmailCard({ email, expanded, onToggle }) {
+function EmailCard({ email, expanded, onToggle, onDelete }) {
   const product = PRODUCTS.find(p => p.id === email.product) || { icon: '❓', label: 'Unknown' }
   const shortId = email.id?.slice(0, 8) || 'unknown'
   const [copied, setCopied] = useState(false)
@@ -49,6 +49,13 @@ function EmailCard({ email, expanded, onToggle }) {
     navigator.clipboard.writeText(email.id)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+  
+  const handleDelete = (e) => {
+    e.stopPropagation()
+    if (confirm('Delete this support email?')) {
+      onDelete(email.id)
+    }
   }
   
   return (
@@ -65,7 +72,10 @@ function EmailCard({ email, expanded, onToggle }) {
             {email.status === 'pending' ? '🟡' : email.status === 'sent' ? '✅' : '⏳'} {email.status}
           </span>
         </div>
-        <span className="email-time">{timeAgo(email.created_at)}</span>
+        <div className="email-actions">
+          <button className="delete-btn" onClick={handleDelete} title="Delete email">🗑️</button>
+          <span className="email-time">{timeAgo(email.created_at)}</span>
+        </div>
       </div>
       
       <div className="email-subject">{email.subject || '(no subject)'}</div>
@@ -122,6 +132,37 @@ export default function Support() {
     const data = await api(query)
     setEmails(Array.isArray(data) ? data : [])
     setLoading(false)
+  }
+
+  const deleteEmail = async (id) => {
+    await fetch(`${SUPABASE_URL}/rest/v1/support_emails?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+      },
+    })
+    setEmails(emails.filter(e => e.id !== id))
+  }
+
+  const [summoning, setSummoning] = useState(false)
+  const [summoned, setSummoned] = useState(false)
+  
+  const summonBrochbot = async () => {
+    setSummoning(true)
+    await fetch(`${SUPABASE_URL}/rest/v1/support_triggers`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal',
+      },
+      body: JSON.stringify({}),
+    })
+    setSummoning(false)
+    setSummoned(true)
+    setTimeout(() => setSummoned(false), 5000)
   }
 
   useEffect(() => {
@@ -225,6 +266,7 @@ export default function Support() {
                     email={email}
                     expanded={expandedId === email.id}
                     onToggle={() => setExpandedId(expandedId === email.id ? null : email.id)}
+                    onDelete={deleteEmail}
                   />
                 ))
               )}
@@ -233,6 +275,18 @@ export default function Support() {
 
           {/* Sidebar */}
           <div className="sidebar">
+            <div className="sidebar-card summon-card">
+              <div className="sidebar-title">🤖 Review Support</div>
+              <p className="sidebar-hint">Summon Brochbot to review pending emails with you in Telegram.</p>
+              <button 
+                className={`summon-btn ${summoned ? 'summoned' : ''}`}
+                onClick={summonBrochbot}
+                disabled={summoning || summoned}
+              >
+                {summoning ? '⏳ Summoning...' : summoned ? '✓ Brochbot notified!' : '📲 Summon Brochbot'}
+              </button>
+            </div>
+            
             <div className="sidebar-card">
               <div className="sidebar-title">📬 Forward Emails To</div>
               <code className="forward-address">anything@nelaacriso.resend.app</code>
@@ -470,6 +524,27 @@ export default function Support() {
         .status-sent { background: #dcfce7; color: #15803d; }
         .status-drafted { background: #dbeafe; color: #1d4ed8; }
         
+        .email-actions {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        
+        .delete-btn {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+          opacity: 0.4;
+          transition: all 0.2s;
+          padding: 4px;
+        }
+        
+        .delete-btn:hover {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+        
         .email-time { font-size: 12px; color: var(--text-muted); }
         .email-subject { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
         .email-from { font-size: 13px; color: var(--text-muted); }
@@ -543,6 +618,39 @@ export default function Support() {
           font-size: 12px;
           color: var(--text-muted);
           margin-top: 8px;
+        }
+        
+        .summon-card {
+          background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+          border-color: #7dd3fc;
+        }
+        
+        .summon-btn {
+          width: 100%;
+          padding: 14px 20px;
+          border-radius: 12px;
+          border: none;
+          background: #0ea5e9;
+          color: white;
+          font-size: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s;
+          margin-top: 12px;
+        }
+        
+        .summon-btn:hover:not(:disabled) {
+          background: #0284c7;
+          transform: translateY(-1px);
+        }
+        
+        .summon-btn:disabled {
+          cursor: not-allowed;
+          opacity: 0.7;
+        }
+        
+        .summon-btn.summoned {
+          background: #22c55e;
         }
         
         .playbook-list { display: flex; flex-direction: column; gap: 12px; }
