@@ -411,6 +411,39 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Footer */}
+        <footer className="footer">
+          <div className="footer-section">
+            <div className="footer-title">🤖 Brochbot HQ</div>
+            <p className="footer-tagline">Your AI coding assistant</p>
+          </div>
+          <div className="footer-section">
+            <div className="footer-label">Pages</div>
+            <div className="footer-links">
+              <a href="/">Dashboard</a>
+              <a href="/table">Table View</a>
+              <a href="/agents">Agents</a>
+              <a href="/how-it-works">How It Works</a>
+              <a href="/security">Security</a>
+            </div>
+          </div>
+          <div className="footer-section">
+            <div className="footer-label">Quick Commands</div>
+            <div className="footer-commands">
+              {['payouts', 'sync', 'tasks', 'p0', 'p1', 'briefing', 'deploy', 'crons', 'agents'].map(cmd => (
+                <button
+                  key={cmd}
+                  className="footer-cmd"
+                  onClick={() => {
+                    navigator.clipboard.writeText(cmd)
+                    alert(`Copied: ${cmd}`)
+                  }}
+                >{cmd}</button>
+              ))}
+            </div>
+          </div>
+        </footer>
       </div>
 
       {/* Task Modal */}
@@ -739,6 +772,82 @@ export default function Home() {
         .copy-btn:hover {
           background: #F3F4F6;
           opacity: 1;
+        }
+        
+        /* Footer */
+        .footer {
+          margin-top: 48px;
+          padding: 32px;
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
+          display: grid;
+          grid-template-columns: 1fr 1fr 2fr;
+          gap: 32px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        
+        @media (max-width: 800px) {
+          .footer { grid-template-columns: 1fr; gap: 24px; }
+        }
+        
+        .footer-section { }
+        
+        .footer-title {
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 4px;
+        }
+        
+        .footer-tagline {
+          font-size: 13px;
+          color: var(--text-muted);
+        }
+        
+        .footer-label {
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: var(--text-muted);
+          margin-bottom: 12px;
+        }
+        
+        .footer-links {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        
+        .footer-links a {
+          font-size: 14px;
+          color: var(--text);
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+        
+        .footer-links a:hover { color: var(--accent); }
+        
+        .footer-commands {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        
+        .footer-cmd {
+          background: #F3F4F6;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 8px;
+          font-size: 13px;
+          font-family: monospace;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        
+        .footer-cmd:hover {
+          background: #000000;
+          color: white;
         }
         
         .empty-state {
