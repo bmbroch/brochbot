@@ -237,6 +237,7 @@ export default function Home() {
         <header className="header">
           <div className="logo">🤖 Brochbot HQ</div>
           <nav className="nav">
+            <Link href="/table" className="nav-link">Table</Link>
             <Link href="/agents" className="nav-link">Agents</Link>
             <Link href="/how-it-works" className="nav-link">How It Works</Link>
             <Link href="/security" className="nav-link">Security</Link>
@@ -425,7 +426,7 @@ export default function Home() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 24px;
+          margin-bottom: 32px;
           flex-wrap: wrap;
           gap: 16px;
         }

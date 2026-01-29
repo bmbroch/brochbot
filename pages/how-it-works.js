@@ -66,6 +66,7 @@ export default function HowItWorks() {
           <Link href="/" className="logo">🤖 Brochbot HQ</Link>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
+            <Link href="/agents" className="nav-link">Agents</Link>
             <Link href="/security" className="nav-link">Security</Link>
           </nav>
         </header>
