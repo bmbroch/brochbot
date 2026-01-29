@@ -134,6 +134,9 @@ export default function Home() {
   }
 
   const filteredTasks = tasks.filter(t => {
+    // Hide done tasks unless explicitly viewing done
+    if (view !== 'done' && t.status === 'done') return false
+    
     if (view === 'all') return true
     if (view === 'brochbot') return t.assignee === 'brochbot'
     if (view === 'ben') return t.assignee === 'ben'
@@ -259,7 +262,7 @@ export default function Home() {
 
         {/* View Toggle */}
         <div className="view-toggle">
-          {['all', 'brochbot', 'ben', 'p0', 'p1', 'active', 'done'].map(v => (
+          {['all', 'brochbot', 'ben', 'p0', 'p1', 'active'].map(v => (
             <button
               key={v}
               className={`view-btn ${view === v ? 'active' : ''}`}
@@ -271,9 +274,14 @@ export default function Home() {
               {v === 'p0' && '🔴 P0'}
               {v === 'p1' && '🟡 P1'}
               {v === 'active' && 'Active'}
-              {v === 'done' && 'Done'}
             </button>
           ))}
+          <button
+            className={`view-btn view-btn-done ${view === 'done' ? 'active' : ''}`}
+            onClick={() => setView('done')}
+          >
+            ✅ Done ({tasks.filter(t => t.status === 'done').length})
+          </button>
         </div>
 
         {/* Main Layout */}
@@ -469,6 +477,9 @@ export default function Home() {
         
         .view-btn:hover { border-color: var(--accent); color: var(--text); }
         .view-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+        .view-btn-done { margin-left: auto; opacity: 0.6; }
+        .view-btn-done:hover { opacity: 1; }
+        .view-btn-done.active { opacity: 1; background: #6b7280; border-color: #6b7280; }
         
         .main-layout {
           display: grid;
