@@ -47,7 +47,7 @@ const ASSIGNEES = [
 ]
 
 // Map old values to new
-const priorityMap = { high: 'p0', medium: 'p1', low: 'p2' }
+const priorityMap = { high: 'p0', medium: 'p1', low: 'p2', ongoing: 'ongoing' }
 const statusMap = { todo: 'planning', in_progress: 'active', done: 'done' }
 
 const SCHEDULES = [
@@ -367,6 +367,7 @@ export default function Home() {
             <div className="sidebar-card">
               <div className="sidebar-title">📊 Priority Guide</div>
               <div className="priority-guide">
+                <div><span className="priority-badge priority-ongoing">ONGOING</span> Always running agents</div>
                 <div><span className="priority-badge priority-p0">P0</span> Drop everything</div>
                 <div><span className="priority-badge priority-p1">P1</span> Do today/tonight</div>
                 <div><span className="priority-badge priority-p2">P2</span> This week</div>
@@ -655,6 +656,7 @@ export default function Home() {
         .priority-p1 { background: #fefce8; color: #ca8a04; border: 1px solid #fef08a; }
         .priority-p2 { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
         .priority-p3 { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+        .priority-ongoing { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
         
         .task-title { font-size: 14px; font-weight: 500; }
         
