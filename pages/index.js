@@ -119,9 +119,10 @@ export default function Home() {
     setTimeout(() => setToast(null), 1500)
   }
 
-  function copyToClipboard(text) {
+  function copyToClipboard(cmd) {
+    const text = `run quick command: ${cmd}`
     navigator.clipboard.writeText(text)
-    showToast(`Copied: ${text}`)
+    showToast(`Copied: ${cmd}`)
   }
 
   useEffect(() => {
