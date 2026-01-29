@@ -361,7 +361,16 @@ export default function Support() {
           gap: 16px;
         }
         
-        .logo { font-size: 24px; font-weight: 700; }
+        .logo {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+          color: var(--text);
+        }
+        
+        .logo-icon { font-size: 24px; }
+        .logo-text { font-size: 18px; font-weight: 700; }
         
         .nav { display: flex; gap: 24px; }
         

@@ -262,15 +262,18 @@ export default function Home() {
       <div className="container">
         {/* Header */}
         <header className="header">
-          <div className="logo">🤖 BrochBot HQ</div>
+          <Link href="/" className="logo">
+            <span className="logo-icon">🤖</span>
+            <span className="logo-text">BrochBot</span>
+          </Link>
           <nav className="nav">
             <Link href="/table" className="nav-link">Table</Link>
             <Link href="/agents" className="nav-link">Agents</Link>
-            <Link href="/how-it-works" className="nav-link">How It Works</Link>
-            <Link href="/security" className="nav-link">Security</Link>
+            <Link href="/creation" className="nav-link">Creation</Link>
+            <Link href="/support" className="nav-link">Support</Link>
           </nav>
           <button className="btn btn-primary" onClick={() => { setEditingTask(null); setModalOpen(true) }}>
-            + Add Task
+            + Add
           </button>
         </header>
 
@@ -525,28 +528,56 @@ export default function Home() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 32px;
-          flex-wrap: wrap;
-          gap: 16px;
+          margin-bottom: 24px;
+          padding: 12px 0;
+          gap: 12px;
         }
         
-        .logo { font-size: 24px; font-weight: 700; }
+        .logo {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+          color: var(--text);
+        }
         
-        .nav { display: flex; gap: 24px; }
+        .logo-icon {
+          font-size: 28px;
+          line-height: 1;
+        }
+        
+        .logo-text {
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: -0.5px;
+        }
+        
+        .nav { 
+          display: flex; 
+          gap: 8px;
+          background: #f5f5f5;
+          padding: 4px;
+          border-radius: 12px;
+        }
         
         .nav-link {
-          font-size: 14px;
+          font-size: 13px;
           color: var(--text-muted);
           text-decoration: none;
-          transition: color 0.2s;
+          padding: 8px 14px;
+          border-radius: 8px;
+          transition: all 0.2s;
         }
         
-        .nav-link:hover { color: var(--text); }
+        .nav-link:hover { 
+          color: var(--text); 
+          background: white;
+        }
         
         .btn {
-          padding: 12px 24px;
-          border-radius: 16px;
-          font-size: 14px;
+          padding: 10px 18px;
+          border-radius: 12px;
+          font-size: 13px;
           font-weight: 600;
           cursor: pointer;
           border: none;
@@ -581,21 +612,35 @@ export default function Home() {
         }
         
         @media (max-width: 768px) {
-          .container { padding: 16px; }
+          .container { padding: 12px; }
           
           .header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
-          }
-          
-          .header .nav {
-            width: 100%;
-            gap: 16px;
             flex-wrap: wrap;
+            gap: 10px;
+            padding: 8px 0;
+            margin-bottom: 16px;
           }
           
-          .header .btn { width: 100%; justify-content: center; }
+          .logo-icon { font-size: 24px; }
+          .logo-text { font-size: 18px; }
+          
+          .nav {
+            order: 3;
+            width: 100%;
+            justify-content: center;
+            padding: 3px;
+            gap: 4px;
+          }
+          
+          .nav-link {
+            font-size: 12px;
+            padding: 6px 10px;
+          }
+          
+          .btn { 
+            padding: 8px 14px;
+            font-size: 12px;
+          }
           
           .quick-access { 
             grid-template-columns: repeat(3, 1fr); 

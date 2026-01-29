@@ -63,7 +63,7 @@ export default function HowItWorks() {
       <div className="container">
         {/* Header */}
         <header className="header">
-          <Link href="/" className="logo">🤖 BrochBot HQ</Link>
+          <Link href="/" className="logo"><span className="logo-icon">🤖</span><span className="logo-text">BrochBot</span></Link>
           <nav className="nav">
             <Link href="/" className="nav-link">Dashboard</Link>
             <Link href="/agents" className="nav-link">Agents</Link>
@@ -179,7 +179,7 @@ export default function HowItWorks() {
           gap: 16px;
         }
         
-        .logo {
+        .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); } .logo-icon { font-size: 24px; } .logo-text { font-size: 18px; font-weight: 700; } .logo-unused {
           font-size: 24px;
           font-weight: 700;
           text-decoration: none;
