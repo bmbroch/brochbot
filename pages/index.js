@@ -172,6 +172,10 @@ export default function Home() {
     if (view === 'p0') return t.priority === 'p0'
     if (view === 'p1') return t.priority === 'p1'
     if (view === 'done') return t.status === 'done'
+    if (view === 'updates') {
+      const updateKeywords = ['briefing', 'planning', 'report', 'summary', 'digest']
+      return updateKeywords.some(kw => t.title.toLowerCase().includes(kw))
+    }
     return true
   }).sort((a, b) => {
     const pOrder = { ongoing: -1, p0: 0, p1: 1, p2: 2, p3: 3 }
@@ -310,7 +314,7 @@ export default function Home() {
 
         {/* View Toggle */}
         <div className="view-toggle">
-          {['all', 'brochbot', 'ben', 'p0', 'p1'].map(v => (
+          {['all', 'brochbot', 'ben', 'updates', 'p0', 'p1'].map(v => (
             <button
               key={v}
               className={`view-btn ${view === v ? 'active' : ''}`}
@@ -319,6 +323,7 @@ export default function Home() {
               {v === 'all' && 'All Tasks'}
               {v === 'brochbot' && '🤖 BrochBot (Agent)'}
               {v === 'ben' && '👤 Ben'}
+              {v === 'updates' && '📬 Updates'}
               {v === 'p0' && '🔴 P0'}
               {v === 'p1' && '🟡 P1'}
             </button>
