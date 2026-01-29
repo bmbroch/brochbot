@@ -112,6 +112,17 @@ export default function Home() {
   const [detailTask, setDetailTask] = useState(null)
   const [editingTask, setEditingTask] = useState(null)
   const [quickAdd, setQuickAdd] = useState('')
+  const [toast, setToast] = useState(null)
+
+  function showToast(message) {
+    setToast(message)
+    setTimeout(() => setToast(null), 1500)
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text)
+    showToast(`Copied: ${text}`)
+  }
 
   useEffect(() => {
     loadTasks()
@@ -370,12 +381,7 @@ export default function Home() {
                     </div>
                     <button 
                       className="copy-btn"
-                      onClick={() => {
-                        navigator.clipboard.writeText(item.cmd)
-                        const btn = event.target
-                        btn.textContent = '✓'
-                        setTimeout(() => btn.textContent = '📋', 1000)
-                      }}
+                      onClick={() => copyToClipboard(item.cmd)}
                       title="Copy to clipboard"
                     >📋</button>
                   </div>
@@ -435,16 +441,18 @@ export default function Home() {
                 <button
                   key={cmd}
                   className="footer-cmd"
-                  onClick={() => {
-                    navigator.clipboard.writeText(cmd)
-                    alert(`Copied: ${cmd}`)
-                  }}
+                  onClick={() => copyToClipboard(cmd)}
                 >{cmd}</button>
               ))}
             </div>
           </div>
         </footer>
       </div>
+
+      {/* Toast */}
+      {toast && (
+        <div className="toast">{toast}</div>
+      )}
 
       {/* Task Modal */}
       {modalOpen && (
@@ -848,6 +856,34 @@ export default function Home() {
         .footer-cmd:hover {
           background: #000000;
           color: white;
+        }
+        
+        /* Toast */
+        .toast {
+          position: fixed;
+          bottom: 24px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #000000;
+          color: white;
+          padding: 12px 24px;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 500;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+          animation: toastIn 0.2s ease-out;
+          z-index: 1000;
+        }
+        
+        @keyframes toastIn {
+          from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+          }
         }
         
         .empty-state {
