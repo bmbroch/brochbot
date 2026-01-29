@@ -5,15 +5,12 @@ import Link from 'next/link'
 const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
 
-async function api(endpoint, options = {}) {
-  const headers = {
-    'apikey': SUPABASE_KEY,
-    'Authorization': `Bearer ${SUPABASE_KEY}`,
-    'Content-Type': 'application/json',
-  }
+async function api(endpoint) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
-    ...options,
-    headers: { ...headers, ...options.headers },
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+    },
   })
   return res.json()
 }
@@ -26,76 +23,95 @@ function timeAgo(date) {
   return `${Math.floor(seconds / 86400)}d ago`
 }
 
-function IdeaCard({ idea }) {
-  const [expanded, setExpanded] = useState(false)
+function IdeaCard({ idea, isExpanded, onToggle }) {
+  const isPosted = idea.status === 'posted'
+  const isReady = idea.status === 'ready'
   
   return (
-    <div className={`idea-card ${expanded ? 'expanded' : ''}`} onClick={() => setExpanded(!expanded)}>
-      <div className="idea-header">
-        <span className={`platform-badge platform-${idea.source_platform}`}>
-          {idea.source_platform === 'x' ? '𝕏' : '💼'} {idea.source_platform}
-        </span>
-        <span className="cluster-tag">{idea.cluster_tag || 'unclustered'}</span>
-        <span className={`status-badge status-${idea.status}`}>{idea.status}</span>
-        <span className="idea-time">{timeAgo(idea.created_at)}</span>
+    <div className={`idea-card ${isExpanded ? 'expanded' : ''} ${isPosted ? 'posted' : ''}`}>
+      <div className="idea-main" onClick={onToggle}>
+        <div className="idea-status-indicator">
+          {isPosted ? '🚀' : isReady ? '✅' : '📝'}
+        </div>
+        
+        <div className="idea-content">
+          <div className="idea-meta">
+            <span className="cluster-pill">#{idea.cluster_tag || 'unclustered'}</span>
+            <span className="platform-pill">{idea.source_platform === 'x' ? '𝕏' : idea.source_platform === 'linkedin' ? 'in' : '💡'}</span>
+            <span className="time-ago">{timeAgo(idea.created_at)}</span>
+          </div>
+          
+          <p className="idea-preview">
+            {idea.source_text?.slice(0, 120)}{idea.source_text?.length > 120 ? '...' : ''}
+          </p>
+          
+          {idea.source_author && idea.source_author !== 'Ben (original thought)' && (
+            <span className="idea-author">via {idea.source_author}</span>
+          )}
+        </div>
+        
+        <div className="idea-arrow">{isExpanded ? '▼' : '▶'}</div>
       </div>
       
-      <div className="idea-source">
-        <div className="source-author">{idea.source_author}</div>
-        <div className="source-text">{idea.source_text}</div>
-        {idea.source_url && (
-          <a href={idea.source_url} target="_blank" rel="noopener noreferrer" className="source-link" onClick={e => e.stopPropagation()}>
-            View original →
-          </a>
-        )}
-      </div>
-      
-      {expanded && (
-        <div className="idea-derivatives">
-          {idea.notes && (
-            <div className="derivative-section">
-              <div className="derivative-label">📝 Notes</div>
-              <div className="derivative-content">{idea.notes}</div>
-            </div>
-          )}
-          
-          {idea.derivative_x && (
-            <div className="derivative-section">
-              <div className="derivative-label">𝕏 Draft</div>
-              <div className="derivative-content draft">{idea.derivative_x}</div>
-            </div>
-          )}
-          
-          {idea.derivative_linkedin && (
-            <div className="derivative-section">
-              <div className="derivative-label">💼 LinkedIn Draft</div>
-              <div className="derivative-content draft">{idea.derivative_linkedin}</div>
-            </div>
-          )}
-          
-          {!idea.derivative_x && !idea.derivative_linkedin && (
-            <div className="derivative-section">
-              <div className="derivative-label">⏳ Awaiting Generation</div>
-              <div className="derivative-content hint">Tell BrochBot to generate derivatives for this idea</div>
-            </div>
-          )}
-          
-          {idea.posted_url && (
-            <div className="derivative-section">
-              <div className="derivative-label">🚀 Posted</div>
-              <div className="posted-info">
-                <a href={idea.posted_url} target="_blank" rel="noopener noreferrer" className="posted-link">
-                  View on {idea.posted_url.includes('linkedin') ? 'LinkedIn' : '𝕏'} →
+      {isExpanded && (
+        <div className="idea-expanded">
+          {/* Source */}
+          <div className="section">
+            <div className="section-label">💡 Inspiration</div>
+            <div className="section-content source-box">
+              {idea.source_text}
+              {idea.source_url && (
+                <a href={idea.source_url} target="_blank" rel="noopener noreferrer" className="source-link">
+                  View original →
                 </a>
-                {(idea.views > 0 || idea.likes > 0) && (
-                  <div className="posted-metrics">
-                    {idea.views > 0 && <span>👁 {idea.views.toLocaleString()}</span>}
-                    {idea.likes > 0 && <span>❤️ {idea.likes}</span>}
-                    {idea.reposts > 0 && <span>🔄 {idea.reposts}</span>}
-                    {idea.replies > 0 && <span>💬 {idea.replies}</span>}
+              )}
+            </div>
+          </div>
+          
+          {/* Drafts */}
+          {(idea.derivative_x || idea.derivative_linkedin) && (
+            <div className="drafts-grid">
+              {idea.derivative_x && (
+                <div className="draft-card">
+                  <div className="draft-header">
+                    <span className="draft-platform">𝕏 Twitter</span>
+                    {isPosted && idea.posted_url?.includes('x.com') && (
+                      <a href={idea.posted_url} target="_blank" className="view-live">View live →</a>
+                    )}
                   </div>
-                )}
-              </div>
+                  <div className="draft-text">{idea.derivative_x}</div>
+                </div>
+              )}
+              
+              {idea.derivative_linkedin && (
+                <div className="draft-card">
+                  <div className="draft-header">
+                    <span className="draft-platform">💼 LinkedIn</span>
+                    {isPosted && idea.posted_url?.includes('linkedin') && (
+                      <a href={idea.posted_url} target="_blank" className="view-live">View live →</a>
+                    )}
+                  </div>
+                  <div className="draft-text">{idea.derivative_linkedin}</div>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Metrics if posted */}
+          {isPosted && (idea.views > 0 || idea.likes > 0) && (
+            <div className="metrics-bar">
+              {idea.views > 0 && <div className="metric"><span className="metric-num">{idea.views.toLocaleString()}</span> views</div>}
+              {idea.likes > 0 && <div className="metric"><span className="metric-num">{idea.likes}</span> likes</div>}
+              {idea.reposts > 0 && <div className="metric"><span className="metric-num">{idea.reposts}</span> reposts</div>}
+              {idea.replies > 0 && <div className="metric"><span className="metric-num">{idea.replies}</span> replies</div>}
+            </div>
+          )}
+          
+          {/* No drafts yet */}
+          {!idea.derivative_x && !idea.derivative_linkedin && (
+            <div className="empty-drafts">
+              <span>📝</span>
+              <p>No drafts yet. Tell BrochBot to generate posts from this idea.</p>
             </div>
           )}
         </div>
@@ -107,28 +123,20 @@ function IdeaCard({ idea }) {
 export default function Creation() {
   const [ideas, setIdeas] = useState([])
   const [loading, setLoading] = useState(true)
-  const [clusterFilter, setClusterFilter] = useState('all')
-  const [statusFilter, setStatusFilter] = useState('all')
-
-  const fetchIdeas = async () => {
-    let query = 'content_ideas?order=created_at.desc'
-    const filters = []
-    if (clusterFilter !== 'all') filters.push(`cluster_tag=eq.${clusterFilter}`)
-    if (statusFilter !== 'all') filters.push(`status=eq.${statusFilter}`)
-    if (filters.length > 0) query += '&' + filters.join('&')
-    
-    const data = await api(query)
-    setIdeas(Array.isArray(data) ? data : [])
-    setLoading(false)
-  }
+  const [expandedId, setExpandedId] = useState(null)
+  const [filter, setFilter] = useState('all')
 
   useEffect(() => {
-    fetchIdeas()
-  }, [clusterFilter, statusFilter])
+    api('content_ideas?order=created_at.desc').then(data => {
+      setIdeas(Array.isArray(data) ? data : [])
+      setLoading(false)
+    })
+  }, [])
 
-  // Get unique clusters
-  const clusters = ['all', ...new Set(ideas.map(i => i.cluster_tag).filter(Boolean))]
-  const statuses = ['all', 'draft', 'ready', 'posted']
+  const filtered = ideas.filter(i => {
+    if (filter === 'all') return true
+    return i.status === filter
+  })
 
   const stats = {
     total: ideas.length,
@@ -140,11 +148,11 @@ export default function Creation() {
   return (
     <>
       <Head>
-        <title>Creation | BrochBot HQ</title>
+        <title>Content Creation | BrochBot</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
-      <div className="container">
+      <div className="page">
         {/* Header */}
         <header className="header">
           <Link href="/" className="logo">
@@ -159,130 +167,85 @@ export default function Creation() {
           </nav>
         </header>
 
-        {/* Page Title */}
-        <div className="page-header">
-          <h1 className="page-title">✨ Content Creation</h1>
-          <p className="page-subtitle">
-            Inspiration → Clusters → Derivative posts for LinkedIn & X
-          </p>
+        {/* Hero */}
+        <div className="hero">
+          <h1>✨ Content Creation</h1>
+          <p>Collect inspiration, generate posts, track performance</p>
         </div>
 
         {/* Stats */}
-        <div className="stats-bar">
-          <div className="stat-card">
-            <div className="stat-value">{stats.total}</div>
-            <div className="stat-label">📚 Total Ideas</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-value">{stats.draft}</div>
-            <div className="stat-label">📝 Drafts</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-value">{stats.ready}</div>
-            <div className="stat-label">✅ Ready</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-value">{stats.posted}</div>
-            <div className="stat-label">🚀 Posted</div>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="view-toggle">
-          <span className="filter-label">Cluster:</span>
-          {clusters.map(c => (
-            <button
-              key={c}
-              className={`view-btn ${clusterFilter === c ? 'active' : ''}`}
-              onClick={() => setClusterFilter(c)}
-            >
-              {c === 'all' ? 'All' : `#${c}`}
-            </button>
-          ))}
-          <div className="filter-divider" />
-          <span className="filter-label">Status:</span>
-          {statuses.map(s => (
-            <button
-              key={s}
-              className={`view-btn ${statusFilter === s ? 'active' : ''}`}
-              onClick={() => setStatusFilter(s)}
-            >
-              {s}
-            </button>
-          ))}
+        <div className="stats">
+          <button className={`stat ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>
+            <span className="stat-num">{stats.total}</span>
+            <span className="stat-label">All Ideas</span>
+          </button>
+          <button className={`stat ${filter === 'draft' ? 'active' : ''}`} onClick={() => setFilter('draft')}>
+            <span className="stat-num">{stats.draft}</span>
+            <span className="stat-label">📝 Drafts</span>
+          </button>
+          <button className={`stat ${filter === 'ready' ? 'active' : ''}`} onClick={() => setFilter('ready')}>
+            <span className="stat-num">{stats.ready}</span>
+            <span className="stat-label">✅ Ready</span>
+          </button>
+          <button className={`stat ${filter === 'posted' ? 'active' : ''}`} onClick={() => setFilter('posted')}>
+            <span className="stat-num">{stats.posted}</span>
+            <span className="stat-label">🚀 Posted</span>
+          </button>
         </div>
 
         {/* Ideas List */}
-        <div className="ideas-section">
-          <div className="section-header">
-            <span className="section-title">Content Ideas</span>
-            <span className="meta-tag">{ideas.length} ideas</span>
-          </div>
-          <div className="ideas-list">
-            {loading ? (
-              <div className="empty-state">Loading...</div>
-            ) : ideas.length === 0 ? (
-              <div className="empty-state">
-                <h3>📭 No content ideas yet</h3>
-                <p>Send posts to BrochBot via Telegram to start collecting inspiration</p>
-              </div>
-            ) : (
-              ideas.map(idea => (
-                <IdeaCard key={idea.id} idea={idea} />
-              ))
-            )}
-          </div>
+        <div className="ideas-list">
+          {loading ? (
+            <div className="empty">Loading...</div>
+          ) : filtered.length === 0 ? (
+            <div className="empty">
+              <span>📭</span>
+              <h3>No content ideas yet</h3>
+              <p>Send posts to BrochBot via Telegram to start collecting inspiration</p>
+            </div>
+          ) : (
+            filtered.map(idea => (
+              <IdeaCard
+                key={idea.id}
+                idea={idea}
+                isExpanded={expandedId === idea.id}
+                onToggle={() => setExpandedId(expandedId === idea.id ? null : idea.id)}
+              />
+            ))
+          )}
         </div>
 
-        {/* How It Works */}
+        {/* How it works */}
         <div className="how-it-works">
-          <h3>🔄 How It Works</h3>
-          <div className="steps">
-            <div className="step">
-              <span className="step-num">1</span>
-              <span>Send inspiring posts to BrochBot</span>
-            </div>
-            <div className="step">
-              <span className="step-num">2</span>
-              <span>Posts get clustered by theme</span>
-            </div>
-            <div className="step">
-              <span className="step-num">3</span>
-              <span>BrochBot generates derivative posts</span>
-            </div>
-            <div className="step">
-              <span className="step-num">4</span>
-              <span>Review, edit, post to LinkedIn/X</span>
-            </div>
-          </div>
+          <div className="step"><span>1</span> Send inspiration to BrochBot</div>
+          <div className="step"><span>2</span> Get AI-generated drafts</div>
+          <div className="step"><span>3</span> Post & track performance</div>
         </div>
       </div>
 
       <style jsx global>{`
-        :root {
-          --bg: #ffffff;
-          --text: #111827;
-          --text-muted: #6b7280;
-        }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
           font-family: 'Inter', -apple-system, sans-serif;
-          background: var(--bg);
-          color: var(--text);
+          background: #fafafa;
+          color: #111;
           line-height: 1.5;
         }
         
-        .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+        .page {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+        }
         
+        /* Header */
         .header {
           display: flex;
-          justify-content: space-between;
           align-items: center;
+          justify-content: space-between;
           margin-bottom: 32px;
-          flex-wrap: wrap;
-          gap: 16px;
+          padding: 8px 0;
         }
         
         .logo {
@@ -290,397 +253,354 @@ export default function Creation() {
           align-items: center;
           gap: 8px;
           text-decoration: none;
-          color: var(--text);
+          color: inherit;
         }
         
         .logo-icon { font-size: 24px; }
         .logo-text { font-size: 18px; font-weight: 700; }
         
-        .nav { 
-          display: flex; 
+        .nav {
+          display: flex;
           gap: 4px;
-          background: #f5f5f5;
+          background: #f0f0f0;
           padding: 4px;
           border-radius: 12px;
         }
         
         .nav-link {
           font-size: 13px;
-          color: var(--text-muted);
+          color: #666;
           text-decoration: none;
           padding: 8px 14px;
           border-radius: 8px;
           transition: all 0.2s;
         }
         
-        .nav-link:hover { color: var(--text); background: white; }
-        .nav-link.active { color: var(--text); background: white; font-weight: 500; }
+        .nav-link:hover { background: white; color: #111; }
+        .nav-link.active { background: white; color: #111; font-weight: 500; }
         
-        .page-header { margin-bottom: 24px; }
-        .page-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-        .page-subtitle { color: var(--text-muted); font-size: 14px; }
+        /* Hero */
+        .hero {
+          text-align: center;
+          margin-bottom: 24px;
+        }
         
-        .stats-bar {
+        .hero h1 {
+          font-size: 28px;
+          font-weight: 700;
+          margin-bottom: 4px;
+        }
+        
+        .hero p {
+          color: #666;
+          font-size: 15px;
+        }
+        
+        /* Stats */
+        .stats {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 12px;
           margin-bottom: 24px;
         }
         
-        .stat-card {
+        .stat {
           background: white;
-          border: 1px solid #F5F5F5;
+          border: 2px solid #f0f0f0;
           border-radius: 16px;
-          padding: 20px;
+          padding: 16px;
           text-align: center;
-          transition: all 300ms;
-        }
-        
-        .stat-card:hover {
-          border-color: #D1D5DB;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        }
-        
-        .stat-value { font-size: 28px; font-weight: 700; }
-        .stat-label { font-size: 12px; color: var(--text-muted); }
-        
-        .view-toggle {
-          display: flex;
-          gap: 8px;
-          margin-bottom: 24px;
-          flex-wrap: wrap;
-          align-items: center;
-        }
-        
-        .filter-label {
-          font-size: 14px;
-          font-weight: 500;
-          color: var(--text-muted);
-          margin-right: 4px;
-        }
-        
-        .filter-divider {
-          width: 1px;
-          height: 24px;
-          background: #E5E7EB;
-          margin: 0 12px;
-        }
-        
-        .view-btn {
-          padding: 8px 16px;
-          border-radius: 12px;
-          border: 2px solid #F5F5F5;
-          background: transparent;
-          color: var(--text-muted);
-          font-size: 13px;
-          font-weight: 500;
           cursor: pointer;
-          transition: all 300ms;
+          transition: all 0.2s;
         }
         
-        .view-btn:hover { border-color: #D1D5DB; color: var(--text); }
-        .view-btn.active { background: #000; border-color: #000; color: white; }
+        .stat:hover { border-color: #ddd; }
+        .stat.active { border-color: #111; background: #111; color: white; }
         
-        .ideas-section {
-          background: white;
-          border: 1px solid #F5F5F5;
-          border-radius: 20px;
-          overflow: hidden;
+        .stat-num { display: block; font-size: 24px; font-weight: 700; }
+        .stat-label { font-size: 12px; color: #666; }
+        .stat.active .stat-label { color: rgba(255,255,255,0.7); }
+        
+        /* Ideas List */
+        .ideas-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
           margin-bottom: 32px;
         }
         
-        .section-header {
-          padding: 16px 20px;
-          border-bottom: 1px solid #F5F5F5;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        
-        .section-title { font-weight: 600; }
-        .meta-tag { font-size: 12px; color: var(--text-muted); }
-        
-        .ideas-list { max-height: 600px; overflow-y: auto; }
-        
         .idea-card {
-          padding: 20px;
-          border-bottom: 1px solid #F5F5F5;
-          cursor: pointer;
-          transition: background 0.2s;
+          background: white;
+          border: 2px solid #f0f0f0;
+          border-radius: 20px;
+          overflow: hidden;
+          transition: all 0.2s;
         }
         
-        .idea-card:hover { background: #f9fafb; }
-        .idea-card.expanded { background: #f3f4f6; }
-        .idea-card:last-child { border-bottom: none; }
+        .idea-card:hover { border-color: #ddd; }
+        .idea-card.expanded { border-color: #111; }
+        .idea-card.posted { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); }
         
-        .idea-header {
+        .idea-main {
           display: flex;
-          gap: 8px;
           align-items: center;
-          margin-bottom: 12px;
+          gap: 16px;
+          padding: 20px;
+          cursor: pointer;
         }
         
-        .platform-badge {
-          padding: 4px 10px;
-          border-radius: 8px;
-          font-size: 12px;
-          font-weight: 500;
+        .idea-status-indicator {
+          font-size: 24px;
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f5f5f5;
+          border-radius: 14px;
+          flex-shrink: 0;
         }
         
-        .platform-x { background: #000; color: white; }
-        .platform-linkedin { background: #0077b5; color: white; }
+        .idea-card.posted .idea-status-indicator { background: #dcfce7; }
         
-        .cluster-tag {
-          padding: 4px 10px;
-          border-radius: 8px;
-          font-size: 12px;
-          font-weight: 500;
-          background: #dbeafe;
-          color: #1d4ed8;
-        }
+        .idea-content { flex: 1; min-width: 0; }
         
-        .status-badge {
-          padding: 4px 10px;
-          border-radius: 8px;
-          font-size: 12px;
-          font-weight: 500;
-        }
-        
-        .status-draft { background: #fef9c3; color: #a16207; }
-        .status-ready { background: #dcfce7; color: #15803d; }
-        .status-posted { background: #f3f4f6; color: #6b7280; }
-        
-        .idea-time {
-          margin-left: auto;
-          font-size: 12px;
-          color: var(--text-muted);
-        }
-        
-        .idea-source {
-          padding: 16px;
-          background: #f9fafb;
-          border-radius: 12px;
-        }
-        
-        .source-author {
-          font-weight: 600;
-          font-size: 14px;
+        .idea-meta {
+          display: flex;
+          align-items: center;
+          gap: 8px;
           margin-bottom: 8px;
         }
         
-        .source-text {
+        .cluster-pill {
+          background: #e0f2fe;
+          color: #0369a1;
+          padding: 4px 10px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 500;
+        }
+        
+        .platform-pill {
+          background: #f3f4f6;
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-size: 11px;
+          font-weight: 600;
+        }
+        
+        .time-ago {
+          color: #999;
+          font-size: 12px;
+          margin-left: auto;
+        }
+        
+        .idea-preview {
+          font-size: 14px;
+          color: #333;
+          line-height: 1.5;
+        }
+        
+        .idea-author {
+          font-size: 12px;
+          color: #999;
+          margin-top: 4px;
+          display: block;
+        }
+        
+        .idea-arrow {
+          color: #ccc;
+          font-size: 12px;
+          flex-shrink: 0;
+        }
+        
+        /* Expanded */
+        .idea-expanded {
+          padding: 0 20px 20px;
+          border-top: 1px solid #f0f0f0;
+        }
+        
+        .section {
+          margin-top: 16px;
+        }
+        
+        .section-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: #666;
+          margin-bottom: 8px;
+        }
+        
+        .section-content {
           font-size: 14px;
           line-height: 1.6;
-          color: #374151;
+        }
+        
+        .source-box {
+          background: #f9fafb;
+          padding: 16px;
+          border-radius: 12px;
+          white-space: pre-wrap;
         }
         
         .source-link {
           display: inline-block;
           margin-top: 12px;
-          font-size: 13px;
           color: #3b82f6;
           text-decoration: none;
+          font-size: 13px;
         }
         
         .source-link:hover { text-decoration: underline; }
         
-        .idea-derivatives {
-          margin-top: 16px;
-          padding-top: 16px;
-          border-top: 1px solid #e5e7eb;
-        }
-        
-        .derivative-section { margin-bottom: 16px; }
-        .derivative-section:last-child { margin-bottom: 0; }
-        
-        .derivative-label {
-          font-size: 12px;
-          font-weight: 600;
-          color: var(--text-muted);
-          margin-bottom: 8px;
-        }
-        
-        .derivative-content {
-          font-size: 14px;
-          line-height: 1.6;
-          padding: 12px;
-          border-radius: 8px;
-          background: #f9fafb;
-        }
-        
-        .derivative-content.draft {
-          background: #eff6ff;
-          border: 1px solid #bfdbfe;
-        }
-        
-        .derivative-content.hint {
-          color: var(--text-muted);
-          font-style: italic;
-        }
-        
-        .posted-info {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        
-        .posted-link {
-          display: inline-block;
-          padding: 12px 16px;
-          background: #dcfce7;
-          border-radius: 8px;
-          color: #15803d;
-          text-decoration: none;
-          font-weight: 500;
-          font-size: 14px;
-        }
-        
-        .posted-link:hover {
-          background: #bbf7d0;
-        }
-        
-        .posted-metrics {
-          display: flex;
-          gap: 16px;
-          font-size: 14px;
-          color: var(--text-muted);
-        }
-        
-        .posted-metrics span {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-        
-        .how-it-works {
-          background: white;
-          border: 1px solid #F5F5F5;
-          border-radius: 20px;
-          padding: 24px;
-        }
-        
-        .how-it-works h3 {
-          font-size: 16px;
-          margin-bottom: 16px;
-        }
-        
-        .steps {
+        /* Drafts Grid */
+        .drafts-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 16px;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 12px;
+          margin-top: 16px;
+        }
+        
+        .draft-card {
+          background: #f9fafb;
+          border-radius: 12px;
+          padding: 16px;
+        }
+        
+        .draft-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+        }
+        
+        .draft-platform {
+          font-size: 13px;
+          font-weight: 600;
+        }
+        
+        .view-live {
+          font-size: 12px;
+          color: #22c55e;
+          text-decoration: none;
+        }
+        
+        .view-live:hover { text-decoration: underline; }
+        
+        .draft-text {
+          font-size: 13px;
+          line-height: 1.6;
+          white-space: pre-wrap;
+          color: #333;
+          max-height: 200px;
+          overflow-y: auto;
+        }
+        
+        /* Metrics */
+        .metrics-bar {
+          display: flex;
+          gap: 24px;
+          margin-top: 16px;
+          padding: 16px;
+          background: #f0fdf4;
+          border-radius: 12px;
+        }
+        
+        .metric {
+          font-size: 13px;
+          color: #666;
+        }
+        
+        .metric-num {
+          font-weight: 700;
+          color: #111;
+          margin-right: 4px;
+        }
+        
+        /* Empty states */
+        .empty-drafts {
+          text-align: center;
+          padding: 32px;
+          color: #999;
+        }
+        
+        .empty-drafts span { font-size: 32px; display: block; margin-bottom: 8px; }
+        .empty-drafts p { font-size: 14px; }
+        
+        .empty {
+          text-align: center;
+          padding: 60px 20px;
+          background: white;
+          border-radius: 20px;
+          color: #666;
+        }
+        
+        .empty span { font-size: 48px; display: block; margin-bottom: 16px; }
+        .empty h3 { color: #111; margin-bottom: 8px; }
+        
+        /* How it works */
+        .how-it-works {
+          display: flex;
+          justify-content: center;
+          gap: 32px;
+          padding: 24px;
+          background: white;
+          border-radius: 20px;
         }
         
         .step {
           display: flex;
-          flex-direction: column;
           align-items: center;
-          text-align: center;
-          gap: 8px;
+          gap: 12px;
+          font-size: 14px;
+          color: #666;
         }
         
-        .step-num {
-          width: 32px;
-          height: 32px;
-          background: #000;
+        .step span {
+          width: 28px;
+          height: 28px;
+          background: #111;
           color: white;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 600;
-          font-size: 14px;
-        }
-        
-        .step span:last-child {
           font-size: 13px;
-          color: var(--text-muted);
+          font-weight: 600;
         }
         
-        .empty-state {
-          padding: 60px 20px;
-          text-align: center;
-          color: var(--text-muted);
-        }
-        
-        .empty-state h3 { margin-bottom: 8px; color: var(--text); }
-        
-        @media (max-width: 768px) {
-          .container { padding: 16px; }
+        /* Mobile */
+        @media (max-width: 640px) {
+          .page { padding: 16px; }
           
-          .header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
+          .header { flex-wrap: wrap; gap: 12px; }
+          
+          .nav {
+            width: 100%;
+            justify-content: center;
           }
           
-          .nav { 
-            width: 100%;
-            justify-content: flex-start;
+          .nav-link { padding: 6px 10px; font-size: 12px; }
+          
+          .hero h1 { font-size: 24px; }
+          
+          .stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+          .stat { padding: 12px; }
+          .stat-num { font-size: 20px; }
+          
+          .idea-main { padding: 16px; gap: 12px; }
+          .idea-status-indicator { width: 40px; height: 40px; font-size: 20px; }
+          .idea-preview { font-size: 13px; }
+          
+          .drafts-grid { grid-template-columns: 1fr; }
+          
+          .how-it-works {
+            flex-direction: column;
             gap: 16px;
-            flex-wrap: wrap;
-          }
-          
-          .page-title { font-size: 24px; }
-          
-          .stats-bar { grid-template-columns: repeat(2, 1fr); }
-          
-          .stat-card { padding: 16px; }
-          .stat-value { font-size: 24px; }
-          
-          .view-toggle {
-            flex-direction: column;
             align-items: flex-start;
-            gap: 12px;
           }
           
-          .filter-divider { display: none; }
-          
-          .view-toggle > .filter-label {
-            width: 100%;
-            margin-bottom: -4px;
-          }
-          
-          .view-toggle > .filter-label ~ .view-btn {
-            margin-right: 4px;
-            margin-bottom: 4px;
-          }
-          
-          .idea-header {
-            flex-wrap: wrap;
-            gap: 6px;
-          }
-          
-          .idea-time {
-            width: 100%;
-            margin-left: 0;
-            margin-top: 8px;
-          }
-          
-          .source-text {
-            font-size: 14px;
-            line-height: 1.5;
-          }
-          
-          .steps { grid-template-columns: repeat(2, 1fr); }
-          
-          .how-it-works { padding: 16px; }
-        }
-        
-        @media (max-width: 480px) {
-          .stats-bar { grid-template-columns: 1fr 1fr; gap: 8px; }
-          .stat-card { padding: 12px; }
-          .stat-value { font-size: 20px; }
-          .stat-label { font-size: 11px; }
-          
-          .steps { grid-template-columns: 1fr 1fr; gap: 12px; }
-          
-          .idea-card { padding: 16px; }
-          .idea-source { padding: 12px; }
-          
-          .platform-badge, .cluster-tag, .status-badge {
-            font-size: 11px;
-            padding: 3px 8px;
-          }
+          .metrics-bar { flex-wrap: wrap; gap: 16px; }
         }
       `}</style>
     </>
