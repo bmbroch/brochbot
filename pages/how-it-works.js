@@ -236,9 +236,24 @@ export default function HowItWorks() {
         .steps-section { margin-bottom: 56px; }
         
         .steps-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        
+        @media (min-width: 640px) {
+          .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .steps-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+          }
         }
         
         .step-card {
@@ -266,14 +281,15 @@ export default function HowItWorks() {
         .step-number {
           width: 32px;
           height: 32px;
-          background: var(--accent);
+          background: #000000;
           color: white;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 700;
+          font-weight: 600;
           font-size: 14px;
+          flex-shrink: 0;
         }
         
         .step-emoji { font-size: 24px; }
@@ -296,9 +312,24 @@ export default function HowItWorks() {
         .features-section { margin-bottom: 56px; }
         
         .features-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        
+        @media (min-width: 640px) {
+          .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .features-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+          }
         }
         
         .feature-card {
@@ -355,9 +386,17 @@ export default function HowItWorks() {
         }
         
         .comm-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          display: flex;
+          flex-direction: column;
           gap: 24px;
+        }
+        
+        @media (min-width: 640px) {
+          .comm-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+          }
         }
         
         .comm-item {
@@ -414,13 +453,16 @@ export default function HowItWorks() {
           box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
         }
         
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
+          .hero { padding: 32px 24px; }
           .hero-title { font-size: 36px; line-height: 44px; }
           .hero-subtitle { font-size: 14px; }
           .section-title { font-size: 24px; line-height: 32px; }
           .step-title, .feature-title { font-size: 18px; line-height: 24px; }
           .step-description, .feature-description { font-size: 14px; }
-          .step-card, .feature-card, .comm-card { padding: 20px; }
+          .step-card, .feature-card { padding: 20px; }
+          .comm-card { padding: 24px; }
+          .btn { width: 100%; text-align: center; }
         }
       `}</style>
     </>
