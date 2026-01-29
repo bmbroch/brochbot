@@ -281,13 +281,6 @@ export default function Home() {
           </button>
         </header>
 
-        {/* Quick Access */}
-        <div className="quick-access">
-          <Link href="/support" className="quick-btn">📧 Support</Link>
-          <Link href="/creation" className="quick-btn">✨ Content</Link>
-          <Link href="/agents" className="quick-btn">🤖 Agents</Link>
-        </div>
-
         {/* View Toggle */}
         <div className="view-toggle">
           {['all', 'brochbot', 'updates', 'ben', 'p0', 'p1'].map(v => (
