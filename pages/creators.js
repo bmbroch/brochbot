@@ -375,9 +375,36 @@ export default function Creators() {
                 </div>
               </div>
               {grandTotal.bonusesReady > 0 && (
-                <div className="bonus-ready-banner">
-                  <span>🎉 Bonuses Ready to Pay</span>
-                  <span className="bonus-ready-amount">${grandTotal.bonusesReady.toLocaleString()} ({grandTotal.bonusesReadyCount} posts)</span>
+                <div className="bonuses-ready-table">
+                  <div className="table-header">
+                    <span>Bonuses Ready to Pay</span>
+                    <span className="table-total">${grandTotal.bonusesReady.toLocaleString()}</span>
+                  </div>
+                  <div className="table-rows">
+                    {creatorData.filter(c => c.bonusReadyAmount > 0).map(c => {
+                      const readyPosts = c.posts.filter(p => {
+                        const eligible = new Date(p.bonus_eligible_date) <= new Date()
+                        const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
+                        const bonusValue = getPayout(views) - 25
+                        return eligible && !p.bonus_paid && bonusValue > 0
+                      })
+                      return readyPosts.map(p => {
+                        const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
+                        const bonus = getPayout(views) - 25
+                        return (
+                          <div key={p.id} className="table-row">
+                            <span className="row-creator">{c.name}</span>
+                            <span className="row-date">{formatDate(p.post_date)}</span>
+                            <span className="row-views">{formatNumber(views)}</span>
+                            <span className="row-bonus">${bonus}</span>
+                            <span className="row-updated" title={p.updated_at}>
+                              {p.updated_at ? new Date(p.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'}
+                            </span>
+                          </div>
+                        )
+                      })
+                    })}
+                  </div>
                 </div>
               )}
             </div>
@@ -924,26 +951,47 @@ export default function Creators() {
         .balance-banner.clear { background: #dcfce7; color: #16a34a; }
         .balance-amount { font-size: 24px; font-weight: 700; }
 
-        .bonus-ready-banner {
+        .bonuses-ready-table {
+          margin-top: 16px;
+          background: #f0fdf4;
+          border: 1px solid #bbf7d0;
+          border-radius: 12px;
+          overflow: hidden;
+        }
+        
+        .table-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 16px 20px;
-          background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%);
-          border: 2px solid #16a34a;
-          border-radius: 12px;
-          margin-top: 16px;
+          padding: 12px 16px;
+          background: #dcfce7;
           font-weight: 600;
           color: #16a34a;
-          animation: pulse-glow 2s ease-in-out infinite;
+          border-bottom: 1px solid #bbf7d0;
         }
         
-        @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 8px rgba(22, 163, 74, 0.3); }
-          50% { box-shadow: 0 0 16px rgba(22, 163, 74, 0.5); }
+        .table-total { font-size: 18px; font-weight: 700; }
+        
+        .table-rows { max-height: 200px; overflow-y: auto; }
+        
+        .table-row {
+          display: grid;
+          grid-template-columns: 80px 70px 70px 60px 1fr;
+          gap: 8px;
+          padding: 10px 16px;
+          font-size: 13px;
+          border-bottom: 1px solid #dcfce7;
+          align-items: center;
         }
         
-        .bonus-ready-amount { font-size: 20px; font-weight: 700; }
+        .table-row:last-child { border-bottom: none; }
+        .table-row:hover { background: #dcfce7; }
+        
+        .row-creator { font-weight: 500; }
+        .row-date { color: #6B7280; }
+        .row-views { color: #6B7280; }
+        .row-bonus { font-weight: 600; color: #16a34a; }
+        .row-updated { color: #9CA3AF; font-size: 11px; text-align: right; }
         
         .meta-item.bonus-ready { 
           color: #16a34a; 
