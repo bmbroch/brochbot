@@ -424,8 +424,26 @@ export default function Creators() {
                             </div>
                           </div>
                           <div className="creator-handles">
-                            {c.tiktok_handle && <span className="handle-tag">🎵 @{c.tiktok_handle}</span>}
-                            {c.instagram_handle && <span className="handle-tag">📸 @{c.instagram_handle}</span>}
+                            {c.tiktok_handle && (
+                              <a 
+                                href={`https://www.tiktok.com/@${c.tiktok_handle.replace('@', '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="handle-tag handle-link"
+                              >
+                                🎵 TikTok
+                              </a>
+                            )}
+                            {c.instagram_handle && (
+                              <a 
+                                href={`https://www.instagram.com/${c.instagram_handle.replace('@', '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="handle-tag handle-link"
+                              >
+                                📸 Instagram
+                              </a>
+                            )}
                             {c.mercury_name && <span className="handle-tag mercury">💳 {c.mercury_name}</span>}
                           </div>
                           <div className="creator-meta">
@@ -771,6 +789,15 @@ export default function Creators() {
         .creator-handles { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
         .handle-tag { font-size: 12px; color: #6B7280; background: #F5F5F5; padding: 2px 8px; border-radius: 6px; }
         .handle-tag.mercury { background: #dbeafe; color: #1d4ed8; }
+        .handle-tag.handle-link { 
+          text-decoration: none; 
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .handle-tag.handle-link:hover { 
+          background: #3B82F6; 
+          color: white; 
+        }
 
         .creator-meta { display: flex; gap: 12px; flex-wrap: wrap; }
         .meta-item { font-size: 12px; color: #6B7280; }
