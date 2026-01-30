@@ -144,12 +144,15 @@ export default function Creators() {
     : []
 
   // Calculate selected total for reconciliation
-  const selectedTotal = Array.from(selectedPosts).reduce((sum, postId) => {
+  const selectedBaseTotal = Array.from(selectedPosts).reduce((sum, postId) => {
     const post = posts.find(p => p.id === postId)
     if (!post) return sum
     const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
     return sum + getPayout(views)
-  }, 0) + Number(bonusAmount || 0)
+  }, 0)
+  const selectedTotal = selectedBaseTotal + Number(bonusAmount || 0)
+  const paymentAmount = selectedPayment ? Number(selectedPayment.amount) : 0
+  const remaining = paymentAmount - selectedTotal
 
   function selectCreator(id) {
     setSelectedCreator(id === selectedCreator ? null : id)
@@ -168,9 +171,30 @@ export default function Creators() {
 
   function togglePost(postId) {
     const newSet = new Set(selectedPosts)
-    if (newSet.has(postId)) newSet.delete(postId)
-    else newSet.add(postId)
+    if (newSet.has(postId)) {
+      newSet.delete(postId)
+    } else {
+      // Check if adding this post would exceed payment amount
+      const post = posts.find(p => p.id === postId)
+      if (post) {
+        const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
+        const postPayout = getPayout(views)
+        if (selectedTotal + postPayout <= paymentAmount) {
+          newSet.add(postId)
+        }
+      }
+    }
     setSelectedPosts(newSet)
+  }
+  
+  // Check if a post can be added (wouldn't exceed payment)
+  function canAddPost(postId) {
+    if (selectedPosts.has(postId)) return true // Can always remove
+    const post = posts.find(p => p.id === postId)
+    if (!post) return false
+    const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
+    const postPayout = getPayout(views)
+    return selectedTotal + postPayout <= paymentAmount
   }
 
   async function saveReconciliation() {
@@ -455,8 +479,13 @@ export default function Creators() {
                     {tab === 'reconcile' && selectedPayment && (
                       <div className="reconcile-section">
                         <div className="reconcile-header">
-                          <strong>Payment: ${selectedPayment.amount}</strong>
-                          <span>{formatDate(selectedPayment.payment_date)}</span>
+                          <div>
+                            <strong>Payment: ${selectedPayment.amount}</strong>
+                            <span className="reconcile-date">{formatDate(selectedPayment.payment_date)}</span>
+                          </div>
+                          <div className={`remaining ${remaining === 0 ? 'zero' : remaining < 0 ? 'over' : ''}`}>
+                            ${remaining.toLocaleString()} remaining
+                          </div>
                         </div>
                         
                         <h3>Select posts covered by this payment:</h3>
@@ -466,17 +495,21 @@ export default function Creators() {
                           ) : (
                             availablePosts.map(p => {
                               const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
+                              const postPayout = getPayout(views)
+                              const isSelected = selectedPosts.has(p.id)
+                              const canAdd = canAddPost(p.id)
                               return (
-                                <label key={p.id} className="post-checkbox">
+                                <label key={p.id} className={`post-checkbox ${!canAdd && !isSelected ? 'disabled' : ''}`}>
                                   <input
                                     type="checkbox"
-                                    checked={selectedPosts.has(p.id)}
+                                    checked={isSelected}
                                     onChange={() => togglePost(p.id)}
+                                    disabled={!canAdd && !isSelected}
                                   />
                                   <span className="post-info">
                                     <span>{formatDate(p.post_date)}</span>
                                     <span>{formatNumber(views)} views</span>
-                                    <span className="payout">${getPayout(views)}</span>
+                                    <span className="payout">${postPayout}</span>
                                   </span>
                                 </label>
                               )
@@ -489,22 +522,38 @@ export default function Creators() {
                           <input
                             type="number"
                             value={bonusAmount}
-                            onChange={(e) => setBonusAmount(e.target.value)}
+                            onChange={(e) => {
+                              const val = Number(e.target.value) || 0
+                              if (selectedBaseTotal + val <= paymentAmount) {
+                                setBonusAmount(e.target.value)
+                              }
+                            }}
+                            max={paymentAmount - selectedBaseTotal}
                             placeholder="0"
                           />
                         </div>
 
-                        <div className={`total-check ${selectedTotal === Number(selectedPayment.amount) ? 'match' : 'mismatch'}`}>
-                          <span>Total: ${selectedTotal}</span>
-                          <span>Payment: ${selectedPayment.amount}</span>
+                        <div className="total-breakdown">
+                          <div className="breakdown-row">
+                            <span>Base ({selectedPosts.size} posts)</span>
+                            <span>${selectedBaseTotal}</span>
+                          </div>
+                          <div className="breakdown-row">
+                            <span>Bonus</span>
+                            <span>${bonusAmount || 0}</span>
+                          </div>
+                          <div className={`breakdown-row total ${remaining === 0 ? 'match' : ''}`}>
+                            <span>Total</span>
+                            <span>${selectedTotal} / ${paymentAmount}</span>
+                          </div>
                         </div>
 
                         <button 
                           className="btn-primary"
                           onClick={saveReconciliation}
-                          disabled={saving || selectedPosts.size === 0}
+                          disabled={saving || selectedPosts.size === 0 || remaining < 0}
                         >
-                          {saving ? 'Saving...' : 'Save Reconciliation'}
+                          {saving ? 'Saving...' : remaining === 0 ? '✓ Save Reconciliation' : `Save (${remaining > 0 ? '$' + remaining + ' unassigned' : 'Over budget'})`}
                         </button>
                       </div>
                     )}
@@ -750,7 +799,19 @@ export default function Creators() {
         .empty-msg { color: #6B7280; font-style: italic; padding: 20px; text-align: center; }
 
         .reconcile-section { }
-        .reconcile-header { display: flex; justify-content: space-between; margin-bottom: 16px; padding: 12px; background: #fefce8; border-radius: 10px; }
+        .reconcile-header { 
+          display: flex; 
+          justify-content: space-between; 
+          align-items: center;
+          margin-bottom: 16px; 
+          padding: 14px 16px; 
+          background: #fefce8; 
+          border-radius: 12px; 
+        }
+        .reconcile-date { color: #6B7280; font-weight: 400; margin-left: 8px; }
+        .remaining { font-weight: 600; font-size: 15px; }
+        .remaining.zero { color: #16a34a; }
+        .remaining.over { color: #dc2626; }
 
         h3 { font-size: 13px; font-weight: 600; color: #6B7280; margin: 16px 0 12px 0; }
 
@@ -764,9 +825,16 @@ export default function Creators() {
           background: #FAFAFA;
           border-radius: 10px;
           cursor: pointer;
+          transition: opacity 200ms;
         }
         .post-checkbox:hover { background: #F0F0F0; }
+        .post-checkbox.disabled { 
+          opacity: 0.4; 
+          cursor: not-allowed; 
+        }
+        .post-checkbox.disabled:hover { background: #FAFAFA; }
         .post-checkbox input { width: 18px; height: 18px; }
+        .post-checkbox input:disabled { cursor: not-allowed; }
         .post-info { display: flex; gap: 12px; flex: 1; font-size: 13px; }
         .post-info .payout { font-weight: 600; color: #16a34a; }
 
@@ -781,16 +849,26 @@ export default function Creators() {
         }
         .bonus-input input:focus { outline: none; border-color: #000; }
 
-        .total-check {
+        .total-breakdown {
+          margin: 16px 0;
+          padding: 12px;
+          background: #FAFAFA;
+          border-radius: 10px;
+        }
+        .breakdown-row {
           display: flex;
           justify-content: space-between;
-          padding: 14px;
-          border-radius: 10px;
-          font-weight: 600;
-          margin-bottom: 16px;
+          padding: 6px 0;
+          font-size: 14px;
         }
-        .total-check.match { background: #dcfce7; color: #16a34a; }
-        .total-check.mismatch { background: #fee2e2; color: #dc2626; }
+        .breakdown-row.total {
+          border-top: 1px solid #E5E5E5;
+          margin-top: 8px;
+          padding-top: 12px;
+          font-weight: 600;
+          font-size: 16px;
+        }
+        .breakdown-row.match { color: #16a34a; }
 
         .btn-primary {
           width: 100%;
