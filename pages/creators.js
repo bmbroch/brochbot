@@ -48,20 +48,37 @@ export default function Creators() {
   const [payouts, setPayouts] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedCreator, setSelectedCreator] = useState(null)
-  const [mercuryTxns, setMercuryTxns] = useState([])
+  const [syncing, setSyncing] = useState(false)
+  const [syncResult, setSyncResult] = useState(null)
 
-  useEffect(() => {
-    Promise.all([
+  async function loadData() {
+    const [c, p, pay] = await Promise.all([
       api('creators?select=*&active=eq.true'),
       api('creator_posts?select=*&order=post_date.desc'),
       api('creator_payouts?select=*'),
-    ]).then(([c, p, pay]) => {
-      setCreators(c || [])
-      setPosts(p || [])
-      setPayouts(pay || [])
-      setLoading(false)
-    })
-  }, [])
+    ])
+    setCreators(c || [])
+    setPosts(p || [])
+    setPayouts(pay || [])
+    setLoading(false)
+  }
+
+  useEffect(() => { loadData() }, [])
+
+  async function syncMercury() {
+    setSyncing(true)
+    setSyncResult(null)
+    try {
+      const res = await fetch('/api/mercury-sync')
+      const data = await res.json()
+      setSyncResult(data)
+      // Reload data to show updated payments
+      await loadData()
+    } catch (err) {
+      setSyncResult({ error: err.message })
+    }
+    setSyncing(false)
+  }
 
   // Calculate data per creator
   const creatorData = creators.map(c => {
@@ -120,6 +137,24 @@ export default function Creators() {
             
             {/* Summary Card */}
             <div className="summary-card">
+              <div className="summary-header">
+                <div className="summary-title">💰 Payout Summary</div>
+                <button 
+                  className={`sync-btn ${syncing ? 'syncing' : ''}`}
+                  onClick={syncMercury}
+                  disabled={syncing}
+                >
+                  {syncing ? '⏳ Syncing...' : '🔄 Sync Mercury'}
+                </button>
+              </div>
+              {syncResult && (
+                <div className={`sync-result ${syncResult.error ? 'error' : 'success'}`}>
+                  {syncResult.error 
+                    ? `❌ ${syncResult.error}`
+                    : `✅ Synced! ${syncResult.newPayments} new payments found`
+                  }
+                </div>
+              )}
               <div className="summary-row">
                 <div className="summary-item">
                   <div className="summary-label">Total Owed</div>
@@ -270,6 +305,59 @@ export default function Creators() {
           border-radius: 16px;
           padding: 24px;
           margin-bottom: 24px;
+        }
+
+        .summary-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+
+        .summary-title {
+          font-size: 18px;
+          font-weight: 600;
+        }
+
+        .sync-btn {
+          background: #6366f1;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 200ms;
+          min-height: 44px;
+        }
+
+        .sync-btn:hover {
+          background: #5558e3;
+          transform: translateY(-1px);
+        }
+
+        .sync-btn:disabled, .sync-btn.syncing {
+          background: #4b4b6b;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .sync-result {
+          padding: 12px 16px;
+          border-radius: 10px;
+          font-size: 14px;
+          margin-bottom: 20px;
+        }
+
+        .sync-result.success {
+          background: rgba(34, 197, 94, 0.15);
+          color: #22c55e;
+        }
+
+        .sync-result.error {
+          background: rgba(239, 68, 68, 0.15);
+          color: #ef4444;
         }
 
         .summary-row {
