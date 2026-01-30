@@ -61,10 +61,10 @@ export default function Creators() {
   const [saving, setSaving] = useState(false)
   const [tab, setTab] = useState('posts') // posts | payments | reconcile
   const [reconcileType, setReconcileType] = useState('base') // base | bonus
-  const [editingMercuryName, setEditingMercuryName] = useState(false)
-  const [mercuryNameInput, setMercuryNameInput] = useState('')
   const [mercuryRecipients, setMercuryRecipients] = useState([])
   const [loadingRecipients, setLoadingRecipients] = useState(false)
+  const [editingCreator, setEditingCreator] = useState(null)
+  const [creatorEdits, setCreatorEdits] = useState({})
 
   async function loadData() {
     const [c, p, pay, links] = await Promise.all([
@@ -267,36 +267,39 @@ export default function Creators() {
     await loadData()
   }
 
-  async function saveMercuryName() {
-    if (!selected) return
-    await api(`creators?id=eq.${selected.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ mercury_name: mercuryNameInput }),
-    })
-    await loadData()
-    setEditingMercuryName(false)
+  async function loadMercuryRecipients() {
+    if (mercuryRecipients.length === 0) {
+      setLoadingRecipients(true)
+      try {
+        const res = await fetch('/api/mercury-recipients')
+        const data = await res.json()
+        if (data.recipients) {
+          setMercuryRecipients(data.recipients)
+        }
+      } catch (err) {
+        console.error('Failed to load recipients:', err)
+      }
+      setLoadingRecipients(false)
+    }
   }
 
-  async function startEditMercuryName() {
-    if (selected) {
-      setMercuryNameInput(selected.mercury_name || '')
-      setEditingMercuryName(true)
-      
-      // Fetch recipients if not loaded
-      if (mercuryRecipients.length === 0) {
-        setLoadingRecipients(true)
-        try {
-          const res = await fetch('/api/mercury-recipients')
-          const data = await res.json()
-          if (data.recipients) {
-            setMercuryRecipients(data.recipients)
-          }
-        } catch (err) {
-          console.error('Failed to load recipients:', err)
-        }
-        setLoadingRecipients(false)
-      }
-    }
+  function startEditCreator(creator) {
+    setEditingCreator(creator.id)
+    setCreatorEdits({
+      tiktok_handle: creator.tiktok_handle || '',
+      instagram_handle: creator.instagram_handle || '',
+      mercury_name: creator.mercury_name || '',
+    })
+    loadMercuryRecipients()
+  }
+
+  async function saveCreatorEdits(creatorId) {
+    await api(`creators?id=eq.${creatorId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(creatorEdits),
+    })
+    await loadData()
+    setEditingCreator(null)
   }
 
   return (
@@ -360,26 +363,85 @@ export default function Creators() {
               {/* Creator Cards */}
               <div className="creator-list">
                 {creatorData.map(c => (
-                  <button
-                    key={c.id}
-                    className={`creator-card ${selectedCreator === c.id ? 'selected' : ''}`}
-                    onClick={() => selectCreator(c.id)}
-                  >
-                    <div className="creator-header">
-                      <div className="creator-name">{c.name}</div>
-                      <div className={`creator-balance ${c.balance > 0 ? 'due' : 'clear'}`}>
-                        ${c.balance.toLocaleString()}
+                  <div key={c.id} className={`creator-card ${selectedCreator === c.id ? 'selected' : ''}`}>
+                    {editingCreator === c.id ? (
+                      <div className="creator-edit-form">
+                        <div className="edit-header">
+                          <strong>{c.name}</strong>
+                          <button className="btn-cancel" onClick={() => setEditingCreator(null)}>✕</button>
+                        </div>
+                        <div className="edit-field">
+                          <label>TikTok</label>
+                          <div className="handle-input">
+                            <span>@</span>
+                            <input
+                              type="text"
+                              value={creatorEdits.tiktok_handle}
+                              onChange={(e) => setCreatorEdits({...creatorEdits, tiktok_handle: e.target.value})}
+                              placeholder="username"
+                            />
+                          </div>
+                        </div>
+                        <div className="edit-field">
+                          <label>Instagram</label>
+                          <div className="handle-input">
+                            <span>@</span>
+                            <input
+                              type="text"
+                              value={creatorEdits.instagram_handle}
+                              onChange={(e) => setCreatorEdits({...creatorEdits, instagram_handle: e.target.value})}
+                              placeholder="username"
+                            />
+                          </div>
+                        </div>
+                        <div className="edit-field">
+                          <label>Mercury Recipient</label>
+                          {loadingRecipients ? (
+                            <span className="loading-text">Loading...</span>
+                          ) : (
+                            <select
+                              value={creatorEdits.mercury_name}
+                              onChange={(e) => setCreatorEdits({...creatorEdits, mercury_name: e.target.value})}
+                            >
+                              <option value="">-- Select --</option>
+                              {mercuryRecipients.map(r => (
+                                <option key={r.name} value={r.name}>
+                                  {r.name} (${r.totalPaid.toLocaleString()})
+                                </option>
+                              ))}
+                            </select>
+                          )}
+                        </div>
+                        <button className="btn-save" onClick={() => saveCreatorEdits(c.id)}>Save</button>
                       </div>
-                    </div>
-                    <div className="creator-meta">
-                      <span className="meta-item">📹 {c.postCount} posts</span>
-                      <span className="meta-item">👁 {formatNumber(c.totalViews)}</span>
-                      <span className="meta-item">💵 {c.payments.length} payments</span>
-                      {c.unreconciledCount > 0 && (
-                        <span className="meta-item unreconciled">⚠️ {c.unreconciledCount} unreconciled</span>
-                      )}
-                    </div>
-                  </button>
+                    ) : (
+                      <>
+                        <div className="creator-top" onClick={() => selectCreator(c.id)}>
+                          <div className="creator-header">
+                            <div className="creator-name">{c.name}</div>
+                            <div className={`creator-balance ${c.balance > 0 ? 'due' : 'clear'}`}>
+                              ${c.balance.toLocaleString()}
+                            </div>
+                          </div>
+                          <div className="creator-handles">
+                            {c.tiktok_handle && <span className="handle-tag">🎵 @{c.tiktok_handle}</span>}
+                            {c.instagram_handle && <span className="handle-tag">📸 @{c.instagram_handle}</span>}
+                            {c.mercury_name && <span className="handle-tag mercury">💳 {c.mercury_name}</span>}
+                          </div>
+                          <div className="creator-meta">
+                            <span className="meta-item">📹 {c.postCount} posts</span>
+                            <span className="meta-item">👁 {formatNumber(c.totalViews)}</span>
+                            {c.unreconciledCount > 0 && (
+                              <span className="meta-item unreconciled">⚠️ {c.unreconciledCount}</span>
+                            )}
+                          </div>
+                        </div>
+                        <button className="edit-btn" onClick={(e) => { e.stopPropagation(); startEditCreator(c); }}>
+                          ✏️ Edit
+                        </button>
+                      </>
+                    )}
+                  </div>
                 ))}
               </div>
 
@@ -389,35 +451,9 @@ export default function Creators() {
                   <>
                     <div className="detail-header">
                       <h2>{selected.name}</h2>
-                      {selected.tiktok_handle && <div className="handle">@{selected.tiktok_handle}</div>}
-                      <div className="mercury-name">
-                        {editingMercuryName ? (
-                          <div className="mercury-edit">
-                            {loadingRecipients ? (
-                              <span>Loading recipients...</span>
-                            ) : (
-                              <select
-                                value={mercuryNameInput}
-                                onChange={(e) => setMercuryNameInput(e.target.value)}
-                              >
-                                <option value="">-- Select Mercury Recipient --</option>
-                                {mercuryRecipients.map(r => (
-                                  <option key={r.name} value={r.name}>
-                                    {r.name} (${r.totalPaid.toLocaleString()} / {r.count} payments)
-                                  </option>
-                                ))}
-                              </select>
-                            )}
-                            <button onClick={saveMercuryName}>Save</button>
-                            <button onClick={() => setEditingMercuryName(false)}>Cancel</button>
-                          </div>
-                        ) : (
-                          <div className="mercury-display" onClick={startEditMercuryName}>
-                            <span className="mercury-label">Mercury:</span>
-                            <span className="mercury-value">{selected.mercury_name || 'Click to set'}</span>
-                            <span className="edit-icon">✏️</span>
-                          </div>
-                        )}
+                      <div className="detail-handles">
+                        {selected.tiktok_handle && <span>🎵 @{selected.tiktok_handle}</span>}
+                        {selected.instagram_handle && <span>📸 @{selected.instagram_handle}</span>}
                       </div>
                     </div>
 
@@ -692,24 +728,87 @@ export default function Creators() {
           background: white;
           border: 2px solid #F5F5F5;
           border-radius: 16px;
-          padding: 20px;
+          padding: 16px;
           text-align: left;
-          cursor: pointer;
           transition: all 200ms;
         }
 
         .creator-card:hover { border-color: #D1D5DB; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .creator-card.selected { border-color: #000; }
 
-        .creator-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .creator-name { font-size: 20px; font-weight: 600; }
-        .creator-balance { font-size: 18px; font-weight: 700; padding: 6px 14px; border-radius: 10px; }
+        .creator-top { cursor: pointer; }
+
+        .creator-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .creator-name { font-size: 18px; font-weight: 600; }
+        .creator-balance { font-size: 16px; font-weight: 700; padding: 4px 12px; border-radius: 8px; }
         .creator-balance.due { background: #fefce8; color: #ca8a04; }
         .creator-balance.clear { background: #dcfce7; color: #16a34a; }
 
-        .creator-meta { display: flex; gap: 16px; flex-wrap: wrap; }
-        .meta-item { font-size: 13px; color: #6B7280; }
+        .creator-handles { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+        .handle-tag { font-size: 12px; color: #6B7280; background: #F5F5F5; padding: 2px 8px; border-radius: 6px; }
+        .handle-tag.mercury { background: #dbeafe; color: #1d4ed8; }
+
+        .creator-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+        .meta-item { font-size: 12px; color: #6B7280; }
         .meta-item.unreconciled { color: #ca8a04; font-weight: 500; }
+
+        .edit-btn {
+          margin-top: 12px;
+          padding: 6px 12px;
+          border: 1px solid #F5F5F5;
+          border-radius: 8px;
+          background: white;
+          font-size: 12px;
+          cursor: pointer;
+          color: #6B7280;
+        }
+        .edit-btn:hover { border-color: #000; color: #000; }
+
+        .creator-edit-form { }
+        .edit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .btn-cancel { background: none; border: none; font-size: 18px; cursor: pointer; color: #6B7280; }
+
+        .edit-field { margin-bottom: 12px; }
+        .edit-field label { display: block; font-size: 12px; color: #6B7280; margin-bottom: 4px; }
+
+        .handle-input {
+          display: flex;
+          align-items: center;
+          border: 2px solid #F5F5F5;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        .handle-input span { padding: 8px 8px 8px 12px; color: #6B7280; background: #FAFAFA; }
+        .handle-input input {
+          flex: 1;
+          padding: 8px;
+          border: none;
+          font-size: 14px;
+          outline: none;
+        }
+
+        .edit-field select {
+          width: 100%;
+          padding: 8px 12px;
+          border: 2px solid #F5F5F5;
+          border-radius: 8px;
+          font-size: 14px;
+        }
+
+        .loading-text { font-size: 13px; color: #6B7280; }
+
+        .btn-save {
+          width: 100%;
+          padding: 10px;
+          background: #000;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+        }
+        .btn-save:hover { background: #333; }
 
         .detail-panel {
           background: white;
@@ -720,53 +819,13 @@ export default function Creators() {
         }
 
         .detail-header h2 { font-size: 24px; font-weight: 700; margin: 0 0 4px 0; }
-        .handle { font-size: 14px; color: #6B7280; }
-
-        .mercury-name { margin: 12px 0 20px 0; }
-
-        .mercury-display {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 8px 12px;
-          background: #F5F5F5;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 13px;
+        .detail-handles { 
+          display: flex; 
+          gap: 12px; 
+          font-size: 14px; 
+          color: #6B7280; 
+          margin-bottom: 20px;
         }
-
-        .mercury-display:hover { background: #EBEBEB; }
-        .mercury-label { color: #6B7280; }
-        .mercury-value { font-weight: 500; }
-        .edit-icon { opacity: 0.5; font-size: 12px; }
-
-        .mercury-edit {
-          display: flex;
-          gap: 8px;
-          align-items: center;
-        }
-
-        .mercury-edit select, .mercury-edit input {
-          flex: 1;
-          padding: 8px 12px;
-          border: 2px solid #F5F5F5;
-          border-radius: 8px;
-          font-size: 14px;
-          min-width: 200px;
-        }
-
-        .mercury-edit select:focus, .mercury-edit input:focus { outline: none; border-color: #000; }
-
-        .mercury-edit button {
-          padding: 8px 12px;
-          border: none;
-          border-radius: 8px;
-          font-size: 13px;
-          cursor: pointer;
-        }
-
-        .mercury-edit button:first-of-type { background: #000; color: white; }
-        .mercury-edit button:last-of-type { background: #F5F5F5; }
 
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .stat-card { background: #FAFAFA; border-radius: 12px; padding: 16px; text-align: center; }
