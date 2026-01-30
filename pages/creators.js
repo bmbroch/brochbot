@@ -501,6 +501,30 @@ export default function Creators() {
                               <div className="post-main">
                                 <span className="post-date">{formatDate(p.post_date)}</span>
                                 <span className="post-views">{formatNumber(views)} views</span>
+                                <div className="post-links">
+                                  {p.tiktok_url && (
+                                    <a 
+                                      href={p.tiktok_url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className={`post-link ${(p.tiktok_views || 0) >= (p.instagram_views || 0) ? 'winner' : 'secondary'}`}
+                                      title={`TikTok: ${formatNumber(p.tiktok_views || 0)} views`}
+                                    >
+                                      TT
+                                    </a>
+                                  )}
+                                  {p.instagram_url && (
+                                    <a 
+                                      href={p.instagram_url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className={`post-link ${(p.instagram_views || 0) > (p.tiktok_views || 0) ? 'winner' : 'secondary'}`}
+                                      title={`Instagram: ${formatNumber(p.instagram_views || 0)} views`}
+                                    >
+                                      IG
+                                    </a>
+                                  )}
+                                </div>
                               </div>
                               <div className="post-payments">
                                 <span className={`pay-badge ${p.base_paid ? 'paid' : 'unpaid'}`}>
@@ -941,6 +965,33 @@ export default function Creators() {
         
         .post-main { display: flex; gap: 12px; font-size: 14px; }
         .post-main .post-date { color: #6B7280; }
+        
+        .post-links {
+          display: flex;
+          gap: 6px;
+          margin-left: 8px;
+        }
+        
+        .post-link {
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: opacity 0.2s;
+        }
+        
+        .post-link:hover { opacity: 0.8; }
+        
+        .post-link.winner {
+          background: #3B82F6;
+          color: white;
+        }
+        
+        .post-link.secondary {
+          background: #E5E7EB;
+          color: #9CA3AF;
+        }
         
         .post-payments { display: flex; gap: 8px; }
         
