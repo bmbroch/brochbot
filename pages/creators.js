@@ -62,6 +62,8 @@ export default function Creators() {
   const [tab, setTab] = useState('posts') // posts | payments | reconcile
   const [editingMercuryName, setEditingMercuryName] = useState(false)
   const [mercuryNameInput, setMercuryNameInput] = useState('')
+  const [mercuryRecipients, setMercuryRecipients] = useState([])
+  const [loadingRecipients, setLoadingRecipients] = useState(false)
 
   async function loadData() {
     const [c, p, pay, links] = await Promise.all([
@@ -226,10 +228,25 @@ export default function Creators() {
     setEditingMercuryName(false)
   }
 
-  function startEditMercuryName() {
+  async function startEditMercuryName() {
     if (selected) {
       setMercuryNameInput(selected.mercury_name || '')
       setEditingMercuryName(true)
+      
+      // Fetch recipients if not loaded
+      if (mercuryRecipients.length === 0) {
+        setLoadingRecipients(true)
+        try {
+          const res = await fetch('/api/mercury-recipients')
+          const data = await res.json()
+          if (data.recipients) {
+            setMercuryRecipients(data.recipients)
+          }
+        } catch (err) {
+          console.error('Failed to load recipients:', err)
+        }
+        setLoadingRecipients(false)
+      }
     }
   }
 
@@ -327,19 +344,28 @@ export default function Creators() {
                       <div className="mercury-name">
                         {editingMercuryName ? (
                           <div className="mercury-edit">
-                            <input
-                              type="text"
-                              value={mercuryNameInput}
-                              onChange={(e) => setMercuryNameInput(e.target.value)}
-                              placeholder="e.g. Nicholas Schindehette"
-                            />
+                            {loadingRecipients ? (
+                              <span>Loading recipients...</span>
+                            ) : (
+                              <select
+                                value={mercuryNameInput}
+                                onChange={(e) => setMercuryNameInput(e.target.value)}
+                              >
+                                <option value="">-- Select Mercury Recipient --</option>
+                                {mercuryRecipients.map(r => (
+                                  <option key={r.name} value={r.name}>
+                                    {r.name} (${r.totalPaid.toLocaleString()} / {r.count} payments)
+                                  </option>
+                                ))}
+                              </select>
+                            )}
                             <button onClick={saveMercuryName}>Save</button>
                             <button onClick={() => setEditingMercuryName(false)}>Cancel</button>
                           </div>
                         ) : (
                           <div className="mercury-display" onClick={startEditMercuryName}>
                             <span className="mercury-label">Mercury:</span>
-                            <span className="mercury-value">{selected.mercury_name || 'Not set'}</span>
+                            <span className="mercury-value">{selected.mercury_name || 'Click to set'}</span>
                             <span className="edit-icon">✏️</span>
                           </div>
                         )}
@@ -622,15 +648,16 @@ export default function Creators() {
           align-items: center;
         }
 
-        .mercury-edit input {
+        .mercury-edit select, .mercury-edit input {
           flex: 1;
           padding: 8px 12px;
           border: 2px solid #F5F5F5;
           border-radius: 8px;
           font-size: 14px;
+          min-width: 200px;
         }
 
-        .mercury-edit input:focus { outline: none; border-color: #000; }
+        .mercury-edit select:focus, .mercury-edit input:focus { outline: none; border-color: #000; }
 
         .mercury-edit button {
           padding: 8px 12px;
