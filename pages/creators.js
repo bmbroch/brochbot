@@ -1146,28 +1146,46 @@ export default function Creators() {
                             )}
                           </td>
                           
-                          {/* Base Paid - checkbox */}
-                          <td className="center">
-                            <input
-                              type="checkbox"
-                              checked={post.base_paid || false}
-                              onChange={() => toggleBooleanField(post.id, 'base_paid', post.base_paid, post)}
-                            />
+                          {/* Base Paid - reconciliation status */}
+                          <td className="center reconcile-cell">
+                            {(() => {
+                              const baseLink = postPayments.find(pp => pp.post_id === post.id && pp.payment_type === 'base')
+                              if (baseLink) {
+                                const payment = payments.find(p => p.id === baseLink.payment_id)
+                                return (
+                                  <span className="reconciled-badge" title={`Reconciled: $${baseLink.amount} on ${payment?.payment_date || '?'}`}>
+                                    ✓ ${baseLink.amount}
+                                  </span>
+                                )
+                              }
+                              return <span className="unpaid-badge">Unpaid</span>
+                            })()}
                           </td>
                           
-                          {/* Bonus Paid - checkbox with validation */}
-                          <td className={`center ${!bonusEligible ? 'disabled-cell' : ''}`}>
-                            <input
-                              type="checkbox"
-                              checked={post.bonus_paid || false}
-                              onChange={() => toggleBooleanField(post.id, 'bonus_paid', post.bonus_paid, post)}
-                              disabled={!bonusEligible && !post.bonus_paid}
-                              title={!bonusEligible ? `Not eligible until ${post.bonus_eligible_date} (${15 - daysOld} days)` : ''}
-                            />
-                            {!bonusEligible && <span className="days-left" title={`${15 - daysOld} days until eligible`}>⏳</span>}
+                          {/* Bonus Paid - reconciliation status */}
+                          <td className={`center reconcile-cell ${!bonusEligible ? 'disabled-cell' : ''}`}>
+                            {(() => {
+                              const bonusLink = postPayments.find(pp => pp.post_id === post.id && pp.payment_type === 'bonus')
+                              if (bonusLink) {
+                                const payment = payments.find(p => p.id === bonusLink.payment_id)
+                                return (
+                                  <span className="reconciled-badge" title={`Reconciled: $${bonusLink.amount} on ${payment?.payment_date || '?'}`}>
+                                    ✓ ${bonusLink.amount}
+                                  </span>
+                                )
+                              }
+                              if (!bonusEligible) {
+                                return <span className="waiting-badge">⏳ {15 - daysOld}d</span>
+                              }
+                              const bonusAmount = payout - 25
+                              if (bonusAmount <= 0) {
+                                return <span className="na-badge">—</span>
+                              }
+                              return <span className="unpaid-badge">${bonusAmount} due</span>
+                            })()}
                           </td>
                           
-                          {/* Views Locked - checkbox */}
+                          {/* Views Locked - checkbox (keep this editable) */}
                           <td className="center">
                             <input
                               type="checkbox"
@@ -1952,6 +1970,48 @@ export default function Creators() {
 
         .spreadsheet td.creator-cell {
           font-weight: 500;
+        }
+
+        .spreadsheet td.reconcile-cell {
+          min-width: 80px;
+        }
+
+        .reconciled-badge {
+          display: inline-block;
+          padding: 3px 8px;
+          background: #dcfce7;
+          color: #16a34a;
+          border-radius: 6px;
+          font-size: 11px;
+          font-weight: 600;
+          white-space: nowrap;
+        }
+
+        .unpaid-badge {
+          display: inline-block;
+          padding: 3px 8px;
+          background: #fee2e2;
+          color: #dc2626;
+          border-radius: 6px;
+          font-size: 11px;
+          font-weight: 500;
+          white-space: nowrap;
+        }
+
+        .waiting-badge {
+          display: inline-block;
+          padding: 3px 8px;
+          background: #fef3c7;
+          color: #d97706;
+          border-radius: 6px;
+          font-size: 11px;
+          font-weight: 500;
+          white-space: nowrap;
+        }
+
+        .na-badge {
+          color: #9CA3AF;
+          font-size: 12px;
         }
 
         .spreadsheet input[type="checkbox"] {
