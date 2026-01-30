@@ -65,6 +65,11 @@ export default function Creators() {
   const [loadingRecipients, setLoadingRecipients] = useState(false)
   const [editingCreator, setEditingCreator] = useState(null)
   const [creatorEdits, setCreatorEdits] = useState({})
+  const [viewMode, setViewMode] = useState('cards') // cards | spreadsheet
+  const [editingCell, setEditingCell] = useState(null) // { postId, field }
+  const [cellValue, setCellValue] = useState('')
+  const [sortField, setSortField] = useState('post_date')
+  const [sortDir, setSortDir] = useState('desc')
 
   async function loadData() {
     const [c, p, pay, links] = await Promise.all([
@@ -319,6 +324,133 @@ export default function Creators() {
     setEditingCreator(null)
   }
 
+  // Spreadsheet cell editing
+  function startEditCell(postId, field, currentValue) {
+    setEditingCell({ postId, field })
+    setCellValue(currentValue ?? '')
+  }
+
+  function cancelEditCell() {
+    setEditingCell(null)
+    setCellValue('')
+  }
+
+  async function saveCell() {
+    if (!editingCell) return
+    const { postId, field } = editingCell
+    
+    // Validate based on field type
+    let value = cellValue
+    let isValid = true
+    let errorMsg = ''
+    
+    // Integer fields
+    if (['tiktok_views', 'instagram_views'].includes(field)) {
+      const num = parseInt(value, 10)
+      if (value !== '' && (isNaN(num) || num < 0)) {
+        isValid = false
+        errorMsg = 'Must be a positive number'
+      } else {
+        value = value === '' ? 0 : num
+      }
+    }
+    
+    // Date field
+    if (field === 'post_date') {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        isValid = false
+        errorMsg = 'Must be YYYY-MM-DD format'
+      }
+    }
+    
+    // URL fields
+    if (['tiktok_url', 'instagram_url'].includes(field)) {
+      if (value !== '' && !value.startsWith('http')) {
+        isValid = false
+        errorMsg = 'Must be a valid URL starting with http'
+      }
+    }
+    
+    // Boolean fields (handled separately via checkbox)
+    if (['base_paid', 'bonus_paid', 'views_locked'].includes(field)) {
+      value = value === 'true' || value === true
+    }
+    
+    if (!isValid) {
+      alert(errorMsg)
+      return
+    }
+    
+    try {
+      await api(`creator_posts?id=eq.${postId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ [field]: value }),
+      })
+      await loadData()
+      setEditingCell(null)
+      setCellValue('')
+    } catch (err) {
+      alert('Error saving: ' + err.message)
+    }
+  }
+
+  async function toggleBooleanField(postId, field, currentValue, post) {
+    // Special validation for bonus_paid
+    if (field === 'bonus_paid' && !currentValue) {
+      const daysOld = Math.floor((new Date() - new Date(post.post_date)) / (1000 * 60 * 60 * 24))
+      if (daysOld < 15) {
+        alert(`Cannot mark bonus as paid - post is only ${daysOld} days old (must be 15+ days)`)
+        return
+      }
+    }
+    
+    try {
+      await api(`creator_posts?id=eq.${postId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ [field]: !currentValue }),
+      })
+      await loadData()
+    } catch (err) {
+      alert('Error saving: ' + err.message)
+    }
+  }
+
+  function handleCellKeyDown(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      saveCell()
+    } else if (e.key === 'Escape') {
+      cancelEditCell()
+    }
+  }
+
+  // Sort posts for spreadsheet
+  const sortedPosts = [...posts].sort((a, b) => {
+    let aVal = a[sortField]
+    let bVal = b[sortField]
+    
+    // Handle creator name sort
+    if (sortField === 'creator_name') {
+      const aCreator = creators.find(c => c.id === a.creator_id)
+      const bCreator = creators.find(c => c.id === b.creator_id)
+      aVal = aCreator?.name || ''
+      bVal = bCreator?.name || ''
+    }
+    
+    if (aVal < bVal) return sortDir === 'asc' ? -1 : 1
+    if (aVal > bVal) return sortDir === 'asc' ? 1 : -1
+    return 0
+  })
+
+  function toggleSort(field) {
+    if (sortField === field) {
+      setSortDir(sortDir === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortField(field)
+      setSortDir('desc')
+    }
+  }
+
   return (
     <>
       <Head>
@@ -334,8 +466,26 @@ export default function Creators() {
           <div className="loading">Loading...</div>
         ) : (
           <div className="content">
-            <h1>💰 Creators</h1>
+            <div className="page-header">
+              <h1>💰 Creators</h1>
+              <div className="view-toggle">
+                <button 
+                  className={`toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
+                  onClick={() => setViewMode('cards')}
+                >
+                  📊 Dashboard
+                </button>
+                <button 
+                  className={`toggle-btn ${viewMode === 'spreadsheet' ? 'active' : ''}`}
+                  onClick={() => setViewMode('spreadsheet')}
+                >
+                  📋 Spreadsheet
+                </button>
+              </div>
+            </div>
             
+            {viewMode === 'cards' ? (
+            <>
             {/* Summary Card */}
             <div className="summary-card">
               <div className="summary-header">
@@ -746,6 +896,207 @@ export default function Creators() {
                 )}
               </div>
             </div>
+            </>
+            ) : (
+            /* Spreadsheet View */
+            <div className="spreadsheet-container">
+              <div className="spreadsheet-header">
+                <h2>📋 Raw Data ({posts.length} posts)</h2>
+                <p className="spreadsheet-help">Click any cell to edit. Press Enter to save, Escape to cancel.</p>
+              </div>
+              <div className="spreadsheet-wrapper">
+                <table className="spreadsheet">
+                  <thead>
+                    <tr>
+                      <th className="sortable" onClick={() => toggleSort('creator_name')}>
+                        Creator {sortField === 'creator_name' && (sortDir === 'asc' ? '↑' : '↓')}
+                      </th>
+                      <th className="sortable" onClick={() => toggleSort('post_date')}>
+                        Date {sortField === 'post_date' && (sortDir === 'asc' ? '↑' : '↓')}
+                      </th>
+                      <th>TikTok URL</th>
+                      <th className="sortable num" onClick={() => toggleSort('tiktok_views')}>
+                        TT Views {sortField === 'tiktok_views' && (sortDir === 'asc' ? '↑' : '↓')}
+                      </th>
+                      <th>Instagram URL</th>
+                      <th className="sortable num" onClick={() => toggleSort('instagram_views')}>
+                        IG Views {sortField === 'instagram_views' && (sortDir === 'asc' ? '↑' : '↓')}
+                      </th>
+                      <th className="center">Base Paid</th>
+                      <th className="center">Bonus Paid</th>
+                      <th className="center">Locked</th>
+                      <th>Bonus Date</th>
+                      <th className="num">Payout</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sortedPosts.map(post => {
+                      const creator = creators.find(c => c.id === post.creator_id)
+                      const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
+                      const payout = getPayout(views)
+                      const daysOld = Math.floor((new Date() - new Date(post.post_date)) / (1000 * 60 * 60 * 24))
+                      const bonusEligible = daysOld >= 15
+                      
+                      return (
+                        <tr key={post.id} className={bonusEligible ? 'eligible' : ''}>
+                          <td className="creator-cell">{creator?.name || '—'}</td>
+                          
+                          {/* Date - editable */}
+                          <td 
+                            className={`editable ${editingCell?.postId === post.id && editingCell?.field === 'post_date' ? 'editing' : ''}`}
+                            onClick={() => !editingCell && startEditCell(post.id, 'post_date', post.post_date)}
+                          >
+                            {editingCell?.postId === post.id && editingCell?.field === 'post_date' ? (
+                              <input
+                                type="date"
+                                value={cellValue}
+                                onChange={(e) => setCellValue(e.target.value)}
+                                onKeyDown={handleCellKeyDown}
+                                onBlur={saveCell}
+                                autoFocus
+                              />
+                            ) : (
+                              post.post_date
+                            )}
+                          </td>
+                          
+                          {/* TikTok URL - editable */}
+                          <td 
+                            className={`editable url-cell ${editingCell?.postId === post.id && editingCell?.field === 'tiktok_url' ? 'editing' : ''}`}
+                            onClick={() => !editingCell && startEditCell(post.id, 'tiktok_url', post.tiktok_url)}
+                          >
+                            {editingCell?.postId === post.id && editingCell?.field === 'tiktok_url' ? (
+                              <input
+                                type="url"
+                                value={cellValue}
+                                onChange={(e) => setCellValue(e.target.value)}
+                                onKeyDown={handleCellKeyDown}
+                                onBlur={saveCell}
+                                placeholder="https://..."
+                                autoFocus
+                              />
+                            ) : post.tiktok_url ? (
+                              <a href={post.tiktok_url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                                🔗 TikTok
+                              </a>
+                            ) : (
+                              <span className="empty">—</span>
+                            )}
+                          </td>
+                          
+                          {/* TikTok Views - editable */}
+                          <td 
+                            className={`editable num ${editingCell?.postId === post.id && editingCell?.field === 'tiktok_views' ? 'editing' : ''}`}
+                            onClick={() => !editingCell && startEditCell(post.id, 'tiktok_views', post.tiktok_views)}
+                          >
+                            {editingCell?.postId === post.id && editingCell?.field === 'tiktok_views' ? (
+                              <input
+                                type="number"
+                                min="0"
+                                value={cellValue}
+                                onChange={(e) => setCellValue(e.target.value)}
+                                onKeyDown={handleCellKeyDown}
+                                onBlur={saveCell}
+                                autoFocus
+                              />
+                            ) : (
+                              (post.tiktok_views || 0).toLocaleString()
+                            )}
+                          </td>
+                          
+                          {/* Instagram URL - editable */}
+                          <td 
+                            className={`editable url-cell ${editingCell?.postId === post.id && editingCell?.field === 'instagram_url' ? 'editing' : ''}`}
+                            onClick={() => !editingCell && startEditCell(post.id, 'instagram_url', post.instagram_url)}
+                          >
+                            {editingCell?.postId === post.id && editingCell?.field === 'instagram_url' ? (
+                              <input
+                                type="url"
+                                value={cellValue}
+                                onChange={(e) => setCellValue(e.target.value)}
+                                onKeyDown={handleCellKeyDown}
+                                onBlur={saveCell}
+                                placeholder="https://..."
+                                autoFocus
+                              />
+                            ) : post.instagram_url ? (
+                              <a href={post.instagram_url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                                🔗 Instagram
+                              </a>
+                            ) : (
+                              <span className="empty">—</span>
+                            )}
+                          </td>
+                          
+                          {/* Instagram Views - editable */}
+                          <td 
+                            className={`editable num ${editingCell?.postId === post.id && editingCell?.field === 'instagram_views' ? 'editing' : ''}`}
+                            onClick={() => !editingCell && startEditCell(post.id, 'instagram_views', post.instagram_views)}
+                          >
+                            {editingCell?.postId === post.id && editingCell?.field === 'instagram_views' ? (
+                              <input
+                                type="number"
+                                min="0"
+                                value={cellValue}
+                                onChange={(e) => setCellValue(e.target.value)}
+                                onKeyDown={handleCellKeyDown}
+                                onBlur={saveCell}
+                                autoFocus
+                              />
+                            ) : (
+                              (post.instagram_views || 0).toLocaleString()
+                            )}
+                          </td>
+                          
+                          {/* Base Paid - checkbox */}
+                          <td className="center">
+                            <input
+                              type="checkbox"
+                              checked={post.base_paid || false}
+                              onChange={() => toggleBooleanField(post.id, 'base_paid', post.base_paid, post)}
+                            />
+                          </td>
+                          
+                          {/* Bonus Paid - checkbox with validation */}
+                          <td className={`center ${!bonusEligible ? 'disabled-cell' : ''}`}>
+                            <input
+                              type="checkbox"
+                              checked={post.bonus_paid || false}
+                              onChange={() => toggleBooleanField(post.id, 'bonus_paid', post.bonus_paid, post)}
+                              disabled={!bonusEligible && !post.bonus_paid}
+                              title={!bonusEligible ? `Not eligible until ${post.bonus_eligible_date} (${15 - daysOld} days)` : ''}
+                            />
+                            {!bonusEligible && <span className="days-left" title={`${15 - daysOld} days until eligible`}>⏳</span>}
+                          </td>
+                          
+                          {/* Views Locked - checkbox */}
+                          <td className="center">
+                            <input
+                              type="checkbox"
+                              checked={post.views_locked || false}
+                              onChange={() => toggleBooleanField(post.id, 'views_locked', post.views_locked, post)}
+                            />
+                          </td>
+                          
+                          {/* Bonus Eligible Date - read only */}
+                          <td className="readonly">{post.bonus_eligible_date || '—'}</td>
+                          
+                          {/* Payout - calculated */}
+                          <td className="num payout-cell">${payout}</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              
+              <div className="spreadsheet-legend">
+                <span><span className="legend-dot eligible"></span> Bonus eligible (15+ days)</span>
+                <span><span className="legend-dot"></span> Not yet eligible</span>
+                <span>⏳ = Days remaining until bonus eligible</span>
+              </div>
+            </div>
+            )}
           </div>
         )}
       </div>
@@ -1237,6 +1588,245 @@ export default function Creators() {
           .content { padding: 16px; }
           h1 { font-size: 24px; }
           .summary-value { font-size: 20px; }
+        }
+
+        /* Page Header with Toggle */
+        .page-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 24px;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+
+        .page-header h1 { margin: 0; }
+
+        .view-toggle {
+          display: flex;
+          gap: 8px;
+          background: #F5F5F5;
+          padding: 4px;
+          border-radius: 12px;
+        }
+
+        .toggle-btn {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 10px;
+          background: transparent;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 200ms;
+        }
+
+        .toggle-btn:hover { background: #E5E7EB; }
+        .toggle-btn.active { background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+        /* Spreadsheet View */
+        .spreadsheet-container {
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
+          padding: 24px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .spreadsheet-header {
+          margin-bottom: 20px;
+        }
+
+        .spreadsheet-header h2 {
+          font-size: 20px;
+          font-weight: 600;
+          margin: 0 0 8px 0;
+        }
+
+        .spreadsheet-help {
+          font-size: 13px;
+          color: #6B7280;
+          margin: 0;
+        }
+
+        .spreadsheet-wrapper {
+          overflow-x: auto;
+          border: 1px solid #E5E7EB;
+          border-radius: 12px;
+        }
+
+        .spreadsheet {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+          min-width: 1000px;
+        }
+
+        .spreadsheet th {
+          background: #F9FAFB;
+          padding: 12px 10px;
+          text-align: left;
+          font-weight: 600;
+          color: #374151;
+          border-bottom: 2px solid #E5E7EB;
+          white-space: nowrap;
+          position: sticky;
+          top: 0;
+        }
+
+        .spreadsheet th.sortable {
+          cursor: pointer;
+          user-select: none;
+        }
+
+        .spreadsheet th.sortable:hover {
+          background: #F3F4F6;
+        }
+
+        .spreadsheet th.num,
+        .spreadsheet td.num {
+          text-align: right;
+        }
+
+        .spreadsheet th.center,
+        .spreadsheet td.center {
+          text-align: center;
+        }
+
+        .spreadsheet td {
+          padding: 10px;
+          border-bottom: 1px solid #F3F4F6;
+          vertical-align: middle;
+        }
+
+        .spreadsheet tr:hover td {
+          background: #FAFAFA;
+        }
+
+        .spreadsheet tr.eligible td {
+          background: #f0fdf4;
+        }
+
+        .spreadsheet tr.eligible:hover td {
+          background: #dcfce7;
+        }
+
+        .spreadsheet td.editable {
+          cursor: pointer;
+          position: relative;
+        }
+
+        .spreadsheet td.editable:hover {
+          background: #EEF2FF;
+          outline: 2px solid #6366F1;
+          outline-offset: -2px;
+        }
+
+        .spreadsheet td.editable.editing {
+          padding: 4px;
+          background: white;
+        }
+
+        .spreadsheet td.editable input {
+          width: 100%;
+          padding: 6px 8px;
+          border: 2px solid #6366F1;
+          border-radius: 6px;
+          font-size: 13px;
+          outline: none;
+        }
+
+        .spreadsheet td.editable input[type="number"] {
+          text-align: right;
+        }
+
+        .spreadsheet td.url-cell {
+          max-width: 120px;
+        }
+
+        .spreadsheet td.url-cell a {
+          color: #3B82F6;
+          text-decoration: none;
+          font-size: 12px;
+        }
+
+        .spreadsheet td.url-cell a:hover {
+          text-decoration: underline;
+        }
+
+        .spreadsheet td .empty {
+          color: #D1D5DB;
+        }
+
+        .spreadsheet td.readonly {
+          color: #9CA3AF;
+          font-style: italic;
+        }
+
+        .spreadsheet td.disabled-cell {
+          background: #F9FAFB;
+        }
+
+        .spreadsheet td.disabled-cell input[type="checkbox"] {
+          opacity: 0.4;
+        }
+
+        .spreadsheet td .days-left {
+          font-size: 11px;
+          margin-left: 4px;
+        }
+
+        .spreadsheet td.payout-cell {
+          font-weight: 600;
+          color: #16a34a;
+        }
+
+        .spreadsheet td.creator-cell {
+          font-weight: 500;
+        }
+
+        .spreadsheet input[type="checkbox"] {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+        }
+
+        .spreadsheet-legend {
+          display: flex;
+          gap: 24px;
+          margin-top: 16px;
+          font-size: 12px;
+          color: #6B7280;
+          flex-wrap: wrap;
+        }
+
+        .legend-dot {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          border-radius: 3px;
+          background: #F3F4F6;
+          margin-right: 6px;
+          vertical-align: middle;
+        }
+
+        .legend-dot.eligible {
+          background: #dcfce7;
+        }
+
+        @media (max-width: 767px) {
+          .page-header {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          
+          .view-toggle {
+            justify-content: center;
+          }
+          
+          .spreadsheet-container {
+            padding: 16px;
+          }
         }
       `}</style>
     </>
