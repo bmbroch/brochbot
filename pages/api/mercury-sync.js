@@ -103,12 +103,12 @@ export default async function handler(req, res) {
       })
     }
 
-    // 5. Filter for creator payments (negative amounts = outgoing)
+    // 5. Filter for creator payments (negative amounts = outgoing, only posted transactions)
     const creatorPayments = allTransactions
-      .filter(t => t.amount < 0)
+      .filter(t => t.amount < 0 && t.postedAt) // Skip pending transactions (postedAt is null)
       .map(t => ({
         id: t.id,
-        date: t.postedAt?.slice(0, 10),
+        date: t.postedAt.slice(0, 10),
         amount: Math.abs(t.amount),
         name: t.counterpartyName,
         note: t.note,
