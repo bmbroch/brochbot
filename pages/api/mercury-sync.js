@@ -1,7 +1,7 @@
 // Mercury Sync API - pulls transactions from ALL accounts and matches to creators
 const MERCURY_TOKEN = process.env.MERCURY_API_TOKEN
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ibluforpuicmxzmevbmj.supabase.co'
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
 
 // Map Mercury names to creator names
 const NAME_MAP = {
