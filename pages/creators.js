@@ -60,6 +60,7 @@ export default function Creators() {
   const [syncResult, setSyncResult] = useState(null)
   const [saving, setSaving] = useState(false)
   const [tab, setTab] = useState('posts') // posts | payments | reconcile
+  const [reconcileType, setReconcileType] = useState('base') // base | bonus
   const [editingMercuryName, setEditingMercuryName] = useState(false)
   const [mercuryNameInput, setMercuryNameInput] = useState('')
   const [mercuryRecipients, setMercuryRecipients] = useState([])
@@ -138,9 +139,17 @@ export default function Creators() {
 
   const selected = selectedCreator ? creatorData.find(c => c.id === selectedCreator) : null
 
-  // Posts available for reconciliation (unlinked, for selected creator)
+  // Posts available for reconciliation based on type
   const availablePosts = selected
-    ? selected.posts.filter(p => !linkedPostIds.has(p.id))
+    ? selected.posts.filter(p => {
+        if (reconcileType === 'base') {
+          return !p.base_paid
+        } else {
+          // Bonus: must be eligible (15+ days) and not bonus_paid yet
+          const bonusEligible = new Date(p.bonus_eligible_date) <= new Date()
+          return bonusEligible && !p.bonus_paid
+        }
+      })
     : []
 
   // Calculate selected total for reconciliation
@@ -148,7 +157,11 @@ export default function Creators() {
     const post = posts.find(p => p.id === postId)
     if (!post) return sum
     const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
-    return sum + getPayout(views)
+    if (reconcileType === 'base') {
+      return sum + 25 // Base pay is always $25
+    } else {
+      return sum + (getPayout(views) - 25) // Bonus is tier minus base
+    }
   }, 0)
   const selectedTotal = selectedBaseTotal + Number(bonusAmount || 0)
   const paymentAmount = selectedPayment ? Number(selectedPayment.amount) : 0
@@ -166,6 +179,7 @@ export default function Creators() {
     setSelectedPayment(payment)
     setSelectedPosts(new Set())
     setBonusAmount(0)
+    setReconcileType('base')
     setTab('reconcile')
   }
 
@@ -193,7 +207,7 @@ export default function Creators() {
     const post = posts.find(p => p.id === postId)
     if (!post) return false
     const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
-    const postPayout = getPayout(views)
+    const postPayout = reconcileType === 'base' ? 25 : (getPayout(views) - 25)
     return selectedTotal + postPayout <= paymentAmount
   }
 
@@ -204,22 +218,33 @@ export default function Creators() {
       for (const postId of selectedPosts) {
         const post = posts.find(p => p.id === postId)
         const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
+        const amount = reconcileType === 'base' ? 25 : (getPayout(views) - 25)
+        
+        // Create post_payment link
         await api('post_payments', {
           method: 'POST',
           body: JSON.stringify({
             post_id: postId,
             payment_id: selectedPayment.id,
-            amount: getPayout(views),
-            payment_type: 'base',
+            amount,
+            payment_type: reconcileType,
           }),
         })
+        
+        // Update post's paid flag
+        const paidFlag = reconcileType === 'base' ? { base_paid: true } : { bonus_paid: true }
+        await api(`creator_posts?id=eq.${postId}`, {
+          method: 'PATCH',
+          body: JSON.stringify(paidFlag),
+        })
       }
+      
       await api(`creator_payments?id=eq.${selectedPayment.id}`, {
         method: 'PATCH',
         body: JSON.stringify({
           status: 'reconciled',
-          base_count: selectedPosts.size,
-          bonus_amount: bonusAmount || 0,
+          base_count: reconcileType === 'base' ? selectedPosts.size : 0,
+          bonus_amount: reconcileType === 'bonus' ? selectedBaseTotal : (bonusAmount || 0),
         }),
       })
       await loadData()
@@ -432,14 +457,23 @@ export default function Creators() {
                       <div className="posts-list">
                         {selected.posts.map(p => {
                           const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
-                          const payout = getPayout(views)
-                          const isLinked = linkedPostIds.has(p.id)
+                          const basePay = 25
+                          const bonusPay = getPayout(views) - 25
+                          const bonusEligible = new Date(p.bonus_eligible_date) <= new Date()
                           return (
-                            <div key={p.id} className={`post-row ${isLinked ? 'linked' : ''}`}>
-                              <span className="post-date">{formatDate(p.post_date)}</span>
-                              <span className="post-views">{formatNumber(views)} views</span>
-                              <span className="post-payout">${payout}</span>
-                              <span className="post-status">{isLinked ? '✅' : '⏳'}</span>
+                            <div key={p.id} className="post-row-detailed">
+                              <div className="post-main">
+                                <span className="post-date">{formatDate(p.post_date)}</span>
+                                <span className="post-views">{formatNumber(views)} views</span>
+                              </div>
+                              <div className="post-payments">
+                                <span className={`pay-badge ${p.base_paid ? 'paid' : 'unpaid'}`}>
+                                  Base ${basePay} {p.base_paid ? '✓' : ''}
+                                </span>
+                                <span className={`pay-badge ${p.bonus_paid ? 'paid' : bonusEligible ? 'eligible' : 'waiting'}`}>
+                                  Bonus ${bonusPay > 0 ? bonusPay : 0} {p.bonus_paid ? '✓' : bonusEligible ? '⏳' : `(${formatDate(p.bonus_eligible_date)})`}
+                                </span>
+                              </div>
                             </div>
                           )
                         })}
@@ -488,14 +522,29 @@ export default function Creators() {
                           </div>
                         </div>
                         
-                        <h3>Select posts covered by this payment:</h3>
+                        <div className="reconcile-type-selector">
+                          <button 
+                            className={`type-btn ${reconcileType === 'base' ? 'active' : ''}`}
+                            onClick={() => { setReconcileType('base'); setSelectedPosts(new Set()); }}
+                          >
+                            Base Pay ($25/post)
+                          </button>
+                          <button 
+                            className={`type-btn ${reconcileType === 'bonus' ? 'active' : ''}`}
+                            onClick={() => { setReconcileType('bonus'); setSelectedPosts(new Set()); }}
+                          >
+                            Bonus Pay (tier-based)
+                          </button>
+                        </div>
+
+                        <h3>{reconcileType === 'base' ? 'Posts needing base pay:' : 'Posts eligible for bonus (15+ days):'}</h3>
                         <div className="posts-checklist">
                           {availablePosts.length === 0 ? (
                             <p className="empty-msg">No unlinked posts</p>
                           ) : (
                             availablePosts.map(p => {
                               const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
-                              const postPayout = getPayout(views)
+                              const postPayout = reconcileType === 'base' ? 25 : (getPayout(views) - 25)
                               const isSelected = selectedPosts.has(p.id)
                               const canAdd = canAddPost(p.id)
                               return (
@@ -799,6 +848,54 @@ export default function Creators() {
         .empty-msg { color: #6B7280; font-style: italic; padding: 20px; text-align: center; }
 
         .reconcile-section { }
+        
+        .reconcile-type-selector {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 16px;
+        }
+        
+        .type-btn {
+          flex: 1;
+          padding: 10px 12px;
+          border: 2px solid #F5F5F5;
+          border-radius: 10px;
+          background: white;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 200ms;
+        }
+        
+        .type-btn:hover { border-color: #D1D5DB; }
+        .type-btn.active { border-color: #000; background: #000; color: white; }
+        
+        .post-row-detailed {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 12px;
+          background: #FAFAFA;
+          border-radius: 10px;
+          margin-bottom: 8px;
+        }
+        
+        .post-main { display: flex; gap: 12px; font-size: 14px; }
+        .post-main .post-date { color: #6B7280; }
+        
+        .post-payments { display: flex; gap: 8px; }
+        
+        .pay-badge {
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-size: 11px;
+          font-weight: 500;
+        }
+        
+        .pay-badge.paid { background: #dcfce7; color: #16a34a; }
+        .pay-badge.unpaid { background: #fee2e2; color: #dc2626; }
+        .pay-badge.eligible { background: #fefce8; color: #ca8a04; }
+        .pay-badge.waiting { background: #F5F5F5; color: #6B7280; }
         .reconcile-header { 
           display: flex; 
           justify-content: space-between; 
