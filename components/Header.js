@@ -16,6 +16,7 @@ export default function Header({ onAddClick }) {
           <Link href="/" className={`nav-link ${path === '/' ? 'active' : ''}`}>Dashboard</Link>
           <Link href="/support" className={`nav-link ${path === '/support' ? 'active' : ''}`}>Support</Link>
           <Link href="/creation" className={`nav-link ${path === '/creation' ? 'active' : ''}`}>Creation</Link>
+          <Link href="/security" className={`nav-link ${path === '/security' ? 'active' : ''}`}>Security</Link>
         </nav>
         {onAddClick && (
           <button className="btn btn-primary" onClick={onAddClick}>
