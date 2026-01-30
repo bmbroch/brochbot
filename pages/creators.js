@@ -6,14 +6,14 @@ const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
 
 const PAYOUT_TIERS = [
-  { min: 0, max: 9999, payout: 25, label: '$25' },
-  { min: 10000, max: 29999, payout: 40, label: '$40' },
-  { min: 30000, max: 49999, payout: 60, label: '$60' },
-  { min: 50000, max: 99999, payout: 120, label: '$120' },
-  { min: 100000, max: 249999, payout: 225, label: '$225' },
-  { min: 250000, max: 499999, payout: 300, label: '$300' },
-  { min: 500000, max: 999999, payout: 400, label: '$400' },
-  { min: 1000000, max: Infinity, payout: 650, label: '$650' },
+  { min: 0, max: 9999, payout: 25 },
+  { min: 10000, max: 29999, payout: 40 },
+  { min: 30000, max: 49999, payout: 60 },
+  { min: 50000, max: 99999, payout: 120 },
+  { min: 100000, max: 249999, payout: 225 },
+  { min: 250000, max: 499999, payout: 300 },
+  { min: 500000, max: 999999, payout: 400 },
+  { min: 1000000, max: Infinity, payout: 650 },
 ]
 
 function getPayout(views) {
@@ -32,34 +32,46 @@ function formatDate(d) {
   return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-async function api(endpoint) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-    },
-  })
+async function api(endpoint, options = {}) {
+  const headers = {
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+    'Content-Type': 'application/json',
+  }
+  if (options.method === 'POST' || options.method === 'PATCH') {
+    headers['Prefer'] = 'return=representation'
+  }
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, { ...options, headers })
+  if (options.method === 'DELETE') return { success: true }
   return res.json()
 }
 
 export default function Creators() {
   const [creators, setCreators] = useState([])
   const [posts, setPosts] = useState([])
-  const [payouts, setPayouts] = useState([])
+  const [payments, setPayments] = useState([])
+  const [postPayments, setPostPayments] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedCreator, setSelectedCreator] = useState(null)
+  const [selectedPayment, setSelectedPayment] = useState(null)
+  const [selectedPosts, setSelectedPosts] = useState(new Set())
+  const [bonusAmount, setBonusAmount] = useState(0)
   const [syncing, setSyncing] = useState(false)
   const [syncResult, setSyncResult] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [tab, setTab] = useState('posts') // posts | payments | reconcile
 
   async function loadData() {
-    const [c, p, pay] = await Promise.all([
+    const [c, p, pay, links] = await Promise.all([
       api('creators?select=*&active=eq.true'),
       api('creator_posts?select=*&order=post_date.desc'),
-      api('creator_payouts?select=*'),
+      api('creator_payments?select=*&order=payment_date.desc'),
+      api('post_payments?select=*'),
     ])
     setCreators(c || [])
     setPosts(p || [])
-    setPayouts(pay || [])
+    setPayments(pay || [])
+    setPostPayments(links || [])
     setLoading(false)
   }
 
@@ -79,19 +91,24 @@ export default function Creators() {
     setSyncing(false)
   }
 
+  // Which posts are linked to payments
+  const linkedPostIds = new Set(postPayments.map(lp => lp.post_id))
+
+  // Calculate data per creator
   const creatorData = creators.map(c => {
     const creatorPosts = posts.filter(p => p.creator_id === c.id)
-    const creatorPayouts = payouts.filter(p => p.creator_id === c.id)
+    const creatorPayments = payments.filter(p => p.creator_id === c.id)
     
     const totalOwed = creatorPosts.reduce((s, p) => {
       const bestViews = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
       return s + getPayout(bestViews)
     }, 0)
     
-    const totalPaid = creatorPayouts.reduce((s, p) => s + Number(p.amount_paid || 0), 0)
+    const totalPaid = creatorPayments.reduce((s, p) => s + Number(p.amount || 0), 0)
     const balance = totalOwed - totalPaid
     const lastPost = creatorPosts[0]?.post_date
     const totalViews = creatorPosts.reduce((s, p) => s + Math.max(p.tiktok_views || 0, p.instagram_views || 0), 0)
+    const unreconciledCount = creatorPayments.filter(p => p.status === 'unreconciled').length
     
     return {
       ...c,
@@ -102,6 +119,8 @@ export default function Creators() {
       lastPost,
       totalViews,
       posts: creatorPosts,
+      payments: creatorPayments,
+      unreconciledCount,
     }
   })
 
@@ -109,10 +128,91 @@ export default function Creators() {
     owed: creatorData.reduce((s, c) => s + c.totalOwed, 0),
     paid: creatorData.reduce((s, c) => s + c.totalPaid, 0),
     posts: creatorData.reduce((s, c) => s + c.postCount, 0),
+    unreconciled: creatorData.reduce((s, c) => s + c.unreconciledCount, 0),
   }
   grandTotal.balance = grandTotal.owed - grandTotal.paid
 
   const selected = selectedCreator ? creatorData.find(c => c.id === selectedCreator) : null
+
+  // Posts available for reconciliation (unlinked, for selected creator)
+  const availablePosts = selected
+    ? selected.posts.filter(p => !linkedPostIds.has(p.id))
+    : []
+
+  // Calculate selected total for reconciliation
+  const selectedTotal = Array.from(selectedPosts).reduce((sum, postId) => {
+    const post = posts.find(p => p.id === postId)
+    if (!post) return sum
+    const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
+    return sum + getPayout(views)
+  }, 0) + Number(bonusAmount || 0)
+
+  function selectCreator(id) {
+    setSelectedCreator(id === selectedCreator ? null : id)
+    setSelectedPayment(null)
+    setSelectedPosts(new Set())
+    setBonusAmount(0)
+    setTab('posts')
+  }
+
+  function selectPaymentForReconcile(payment) {
+    setSelectedPayment(payment)
+    setSelectedPosts(new Set())
+    setBonusAmount(0)
+    setTab('reconcile')
+  }
+
+  function togglePost(postId) {
+    const newSet = new Set(selectedPosts)
+    if (newSet.has(postId)) newSet.delete(postId)
+    else newSet.add(postId)
+    setSelectedPosts(newSet)
+  }
+
+  async function saveReconciliation() {
+    if (!selectedPayment) return
+    setSaving(true)
+    try {
+      for (const postId of selectedPosts) {
+        const post = posts.find(p => p.id === postId)
+        const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
+        await api('post_payments', {
+          method: 'POST',
+          body: JSON.stringify({
+            post_id: postId,
+            payment_id: selectedPayment.id,
+            amount: getPayout(views),
+            payment_type: 'base',
+          }),
+        })
+      }
+      await api(`creator_payments?id=eq.${selectedPayment.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          status: 'reconciled',
+          base_count: selectedPosts.size,
+          bonus_amount: bonusAmount || 0,
+        }),
+      })
+      await loadData()
+      setSelectedPayment(null)
+      setSelectedPosts(new Set())
+      setBonusAmount(0)
+      setTab('payments')
+    } catch (err) {
+      alert('Error: ' + err.message)
+    }
+    setSaving(false)
+  }
+
+  async function undoReconciliation(paymentId) {
+    await api(`post_payments?payment_id=eq.${paymentId}`, { method: 'DELETE' })
+    await api(`creator_payments?id=eq.${paymentId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: 'unreconciled', base_count: 0, bonus_amount: 0 }),
+    })
+    await loadData()
+  }
 
   return (
     <>
@@ -165,8 +265,8 @@ export default function Creators() {
                   <div className="summary-value balance">${grandTotal.balance.toLocaleString()}</div>
                 </div>
                 <div className="summary-item">
-                  <div className="summary-label">Posts</div>
-                  <div className="summary-value">{grandTotal.posts}</div>
+                  <div className="summary-label">Unreconciled</div>
+                  <div className="summary-value">{grandTotal.unreconciled}</div>
                 </div>
               </div>
             </div>
@@ -178,7 +278,7 @@ export default function Creators() {
                   <button
                     key={c.id}
                     className={`creator-card ${selectedCreator === c.id ? 'selected' : ''}`}
-                    onClick={() => setSelectedCreator(selectedCreator === c.id ? null : c.id)}
+                    onClick={() => selectCreator(c.id)}
                   >
                     <div className="creator-header">
                       <div className="creator-name">{c.name}</div>
@@ -189,7 +289,10 @@ export default function Creators() {
                     <div className="creator-meta">
                       <span className="meta-item">📹 {c.postCount} posts</span>
                       <span className="meta-item">👁 {formatNumber(c.totalViews)}</span>
-                      <span className="meta-item">📅 {formatDate(c.lastPost)}</span>
+                      <span className="meta-item">💵 {c.payments.length} payments</span>
+                      {c.unreconciledCount > 0 && (
+                        <span className="meta-item unreconciled">⚠️ {c.unreconciledCount} unreconciled</span>
+                      )}
                     </div>
                   </button>
                 ))}
@@ -206,14 +309,6 @@ export default function Creators() {
 
                     <div className="stats-grid">
                       <div className="stat-card">
-                        <div className="stat-label">Posts</div>
-                        <div className="stat-value">{selected.postCount}</div>
-                      </div>
-                      <div className="stat-card">
-                        <div className="stat-label">Views</div>
-                        <div className="stat-value">{formatNumber(selected.totalViews)}</div>
-                      </div>
-                      <div className="stat-card">
                         <div className="stat-label">Owed</div>
                         <div className="stat-value">${selected.totalOwed}</div>
                       </div>
@@ -224,31 +319,135 @@ export default function Creators() {
                     </div>
 
                     <div className={`balance-banner ${selected.balance > 0 ? 'due' : 'clear'}`}>
-                      <span>Balance Due</span>
+                      <span>Balance</span>
                       <span className="balance-amount">${selected.balance.toLocaleString()}</span>
                     </div>
 
-                    <div className="posts-section">
-                      <h3>Recent Posts</h3>
+                    {/* Tabs */}
+                    <div className="tabs">
+                      <button className={`tab ${tab === 'posts' ? 'active' : ''}`} onClick={() => setTab('posts')}>
+                        Posts ({selected.postCount})
+                      </button>
+                      <button className={`tab ${tab === 'payments' ? 'active' : ''}`} onClick={() => setTab('payments')}>
+                        Payments ({selected.payments.length})
+                      </button>
+                      {selectedPayment && (
+                        <button className={`tab ${tab === 'reconcile' ? 'active' : ''}`} onClick={() => setTab('reconcile')}>
+                          Reconcile
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Posts Tab */}
+                    {tab === 'posts' && (
                       <div className="posts-list">
-                        {selected.posts.slice(0, 10).map(p => {
+                        {selected.posts.map(p => {
                           const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
                           const payout = getPayout(views)
+                          const isLinked = linkedPostIds.has(p.id)
                           return (
-                            <div key={p.id} className="post-row">
+                            <div key={p.id} className={`post-row ${isLinked ? 'linked' : ''}`}>
                               <span className="post-date">{formatDate(p.post_date)}</span>
                               <span className="post-views">{formatNumber(views)} views</span>
                               <span className="post-payout">${payout}</span>
+                              <span className="post-status">{isLinked ? '✅' : '⏳'}</span>
                             </div>
                           )
                         })}
                       </div>
-                    </div>
+                    )}
+
+                    {/* Payments Tab */}
+                    {tab === 'payments' && (
+                      <div className="payments-list">
+                        {selected.payments.length === 0 ? (
+                          <p className="empty-msg">No payments yet</p>
+                        ) : (
+                          selected.payments.map(p => (
+                            <div key={p.id} className={`payment-row ${p.status}`}>
+                              <div className="payment-main">
+                                <span className="payment-date">{formatDate(p.payment_date)}</span>
+                                <span className="payment-amount">${p.amount}</span>
+                              </div>
+                              {p.mercury_note && <div className="payment-note">{p.mercury_note}</div>}
+                              <div className="payment-actions">
+                                {p.status === 'reconciled' ? (
+                                  <>
+                                    <span className="reconciled-info">✅ {p.base_count} posts + ${p.bonus_amount || 0} bonus</span>
+                                    <button className="btn-small" onClick={() => undoReconciliation(p.id)}>Undo</button>
+                                  </>
+                                ) : (
+                                  <button className="btn-small primary" onClick={() => selectPaymentForReconcile(p)}>Reconcile</button>
+                                )}
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
+
+                    {/* Reconcile Tab */}
+                    {tab === 'reconcile' && selectedPayment && (
+                      <div className="reconcile-section">
+                        <div className="reconcile-header">
+                          <strong>Payment: ${selectedPayment.amount}</strong>
+                          <span>{formatDate(selectedPayment.payment_date)}</span>
+                        </div>
+                        
+                        <h3>Select posts covered by this payment:</h3>
+                        <div className="posts-checklist">
+                          {availablePosts.length === 0 ? (
+                            <p className="empty-msg">No unlinked posts</p>
+                          ) : (
+                            availablePosts.map(p => {
+                              const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
+                              return (
+                                <label key={p.id} className="post-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedPosts.has(p.id)}
+                                    onChange={() => togglePost(p.id)}
+                                  />
+                                  <span className="post-info">
+                                    <span>{formatDate(p.post_date)}</span>
+                                    <span>{formatNumber(views)} views</span>
+                                    <span className="payout">${getPayout(views)}</span>
+                                  </span>
+                                </label>
+                              )
+                            })
+                          )}
+                        </div>
+
+                        <div className="bonus-input">
+                          <label>Bonus amount:</label>
+                          <input
+                            type="number"
+                            value={bonusAmount}
+                            onChange={(e) => setBonusAmount(e.target.value)}
+                            placeholder="0"
+                          />
+                        </div>
+
+                        <div className={`total-check ${selectedTotal === Number(selectedPayment.amount) ? 'match' : 'mismatch'}`}>
+                          <span>Total: ${selectedTotal}</span>
+                          <span>Payment: ${selectedPayment.amount}</span>
+                        </div>
+
+                        <button 
+                          className="btn-primary"
+                          onClick={saveReconciliation}
+                          disabled={saving || selectedPosts.size === 0}
+                        >
+                          {saving ? 'Saving...' : 'Save Reconciliation'}
+                        </button>
+                      </div>
+                    )}
                   </>
                 ) : (
                   <div className="no-selection">
                     <div className="no-selection-icon">👈</div>
-                    <div className="no-selection-text">Select a creator to view details</div>
+                    <div className="no-selection-text">Select a creator</div>
                   </div>
                 )}
               </div>
@@ -265,26 +464,10 @@ export default function Creators() {
           color: #000;
         }
 
-        .content {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 24px;
-        }
+        .content { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .loading { text-align: center; padding: 60px; color: #6B7280; }
+        h1 { font-size: 28px; font-weight: 700; margin: 0 0 24px 0; }
 
-        .loading {
-          text-align: center;
-          padding: 60px;
-          color: #6B7280;
-        }
-
-        h1 {
-          font-size: 28px;
-          font-weight: 700;
-          margin: 0 0 24px 0;
-          color: #000;
-        }
-
-        /* Summary Card */
         .summary-card {
           background: white;
           border: 1px solid #F5F5F5;
@@ -303,11 +486,7 @@ export default function Creators() {
           gap: 12px;
         }
 
-        .summary-title {
-          font-size: 18px;
-          font-weight: 600;
-          color: #000;
-        }
+        .summary-title { font-size: 18px; font-weight: 600; }
 
         .sync-btn {
           background: #000;
@@ -318,20 +497,11 @@ export default function Creators() {
           font-size: 14px;
           font-weight: 600;
           cursor: pointer;
-          transition: all 200ms;
           min-height: 44px;
         }
 
-        .sync-btn:hover {
-          background: #333;
-          transform: translateY(-2px);
-        }
-
-        .sync-btn:disabled, .sync-btn.syncing {
-          background: #6B7280;
-          cursor: not-allowed;
-          transform: none;
-        }
+        .sync-btn:hover { background: #333; }
+        .sync-btn:disabled { background: #6B7280; cursor: not-allowed; }
 
         .sync-result {
           padding: 12px 16px;
@@ -340,48 +510,20 @@ export default function Creators() {
           margin-bottom: 20px;
         }
 
-        .sync-result.success {
-          background: #dcfce7;
-          color: #16a34a;
-        }
+        .sync-result.success { background: #dcfce7; color: #16a34a; }
+        .sync-result.error { background: #fee2e2; color: #dc2626; }
 
-        .sync-result.error {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-
-        .summary-row {
-          display: flex;
-          gap: 24px;
-          flex-wrap: wrap;
-        }
-
+        .summary-row { display: flex; gap: 24px; flex-wrap: wrap; }
         .summary-item { flex: 1; min-width: 100px; text-align: center; }
         .summary-label { font-size: 13px; color: #6B7280; margin-bottom: 6px; }
-        .summary-value { font-size: 28px; font-weight: 700; color: #000; }
+        .summary-value { font-size: 24px; font-weight: 700; }
         .summary-value.paid { color: #16a34a; }
         .summary-value.balance { color: #ca8a04; }
 
-        /* Layout */
-        .layout {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-        }
+        .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
 
-        @media (min-width: 768px) {
-          .layout {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-          }
-        }
-
-        /* Creator List */
-        .creator-list {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
+        .creator-list { display: flex; flex-direction: column; gap: 12px; }
 
         .creator-card {
           background: white;
@@ -391,128 +533,167 @@ export default function Creators() {
           text-align: left;
           cursor: pointer;
           transition: all 200ms;
-          width: 100%;
-          color: #000;
         }
 
-        .creator-card:hover {
-          border-color: #D1D5DB;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        }
+        .creator-card:hover { border-color: #D1D5DB; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .creator-card.selected { border-color: #000; }
 
-        .creator-card.selected {
-          border-color: #000;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        }
-
-        .creator-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 12px;
-        }
-
+        .creator-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .creator-name { font-size: 20px; font-weight: 600; }
-        
-        .creator-balance {
-          font-size: 18px;
-          font-weight: 700;
-          padding: 6px 14px;
-          border-radius: 10px;
-        }
+        .creator-balance { font-size: 18px; font-weight: 700; padding: 6px 14px; border-radius: 10px; }
         .creator-balance.due { background: #fefce8; color: #ca8a04; }
         .creator-balance.clear { background: #dcfce7; color: #16a34a; }
 
-        .creator-meta {
-          display: flex;
-          gap: 20px;
-          flex-wrap: wrap;
-        }
+        .creator-meta { display: flex; gap: 16px; flex-wrap: wrap; }
+        .meta-item { font-size: 13px; color: #6B7280; }
+        .meta-item.unreconciled { color: #ca8a04; font-weight: 500; }
 
-        .meta-item { font-size: 14px; color: #6B7280; }
-
-        /* Detail Panel */
         .detail-panel {
           background: white;
           border: 1px solid #F5F5F5;
           border-radius: 20px;
-          padding: 28px;
-          height: fit-content;
+          padding: 24px;
           box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
 
-        @media (min-width: 768px) {
-          .detail-panel {
-            position: sticky;
-            top: 24px;
-          }
-        }
+        .detail-header h2 { font-size: 24px; font-weight: 700; margin: 0 0 4px 0; }
+        .handle { font-size: 14px; color: #6B7280; margin-bottom: 20px; }
 
-        .detail-header h2 {
-          font-size: 26px;
-          font-weight: 700;
-          margin: 0 0 4px 0;
-          color: #000;
-        }
-
-        .handle { font-size: 15px; color: #6B7280; margin-bottom: 24px; }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
-          margin-bottom: 20px;
-        }
-
-        .stat-card {
-          background: #FAFAFA;
-          border-radius: 12px;
-          padding: 16px;
-          text-align: center;
-        }
-
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .stat-card { background: #FAFAFA; border-radius: 12px; padding: 16px; text-align: center; }
         .stat-label { font-size: 12px; color: #6B7280; margin-bottom: 4px; }
-        .stat-value { font-size: 22px; font-weight: 700; color: #000; }
+        .stat-value { font-size: 22px; font-weight: 700; }
         .stat-value.paid { color: #16a34a; }
 
         .balance-banner {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 18px 22px;
-          border-radius: 14px;
+          padding: 16px 20px;
+          border-radius: 12px;
           font-weight: 600;
-          margin-bottom: 24px;
+          margin-bottom: 20px;
         }
 
         .balance-banner.due { background: #fefce8; color: #ca8a04; }
         .balance-banner.clear { background: #dcfce7; color: #16a34a; }
-        .balance-amount { font-size: 26px; font-weight: 700; }
+        .balance-amount { font-size: 24px; font-weight: 700; }
 
-        .posts-section h3 {
+        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+        .tab {
+          padding: 10px 16px;
+          border: 2px solid #F5F5F5;
+          border-radius: 10px;
+          background: white;
           font-size: 13px;
-          font-weight: 600;
-          color: #6B7280;
-          text-transform: uppercase;
-          margin: 0 0 14px 0;
-          letter-spacing: 0.5px;
+          font-weight: 500;
+          cursor: pointer;
         }
+        .tab:hover { border-color: #D1D5DB; }
+        .tab.active { border-color: #000; background: #000; color: white; }
 
-        .posts-list {
-          display: flex;
-          flex-direction: column;
-        }
+        .posts-list, .payments-list { display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto; }
 
         .post-row {
           display: flex;
-          padding: 14px 0;
-          border-bottom: 1px solid #F5F5F5;
-          font-size: 15px;
+          align-items: center;
+          gap: 12px;
+          padding: 12px;
+          background: #FAFAFA;
+          border-radius: 10px;
+          font-size: 14px;
         }
 
-        .post-date { width: 80px; color: #6B7280; }
-        .post-views { flex: 1; color: #000; }
+        .post-row.linked { opacity: 0.6; }
+        .post-date { width: 70px; color: #6B7280; }
+        .post-views { flex: 1; }
         .post-payout { font-weight: 600; color: #16a34a; }
+        .post-status { font-size: 16px; }
+
+        .payment-row {
+          padding: 14px;
+          background: #FAFAFA;
+          border-radius: 12px;
+        }
+
+        .payment-row.reconciled { background: #f0fdf4; }
+
+        .payment-main { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 4px; }
+        .payment-date { color: #6B7280; font-weight: 400; }
+        .payment-amount { font-size: 18px; }
+        .payment-note { font-size: 13px; color: #6B7280; font-style: italic; margin-bottom: 8px; }
+        .payment-actions { display: flex; justify-content: space-between; align-items: center; }
+        .reconciled-info { font-size: 12px; color: #16a34a; }
+
+        .btn-small {
+          padding: 6px 12px;
+          border: 1px solid #F5F5F5;
+          border-radius: 8px;
+          background: white;
+          font-size: 12px;
+          cursor: pointer;
+        }
+        .btn-small:hover { border-color: #000; }
+        .btn-small.primary { background: #000; color: white; border-color: #000; }
+
+        .empty-msg { color: #6B7280; font-style: italic; padding: 20px; text-align: center; }
+
+        .reconcile-section { }
+        .reconcile-header { display: flex; justify-content: space-between; margin-bottom: 16px; padding: 12px; background: #fefce8; border-radius: 10px; }
+
+        h3 { font-size: 13px; font-weight: 600; color: #6B7280; margin: 16px 0 12px 0; }
+
+        .posts-checklist { display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
+
+        .post-checkbox {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 12px;
+          background: #FAFAFA;
+          border-radius: 10px;
+          cursor: pointer;
+        }
+        .post-checkbox:hover { background: #F0F0F0; }
+        .post-checkbox input { width: 18px; height: 18px; }
+        .post-info { display: flex; gap: 12px; flex: 1; font-size: 13px; }
+        .post-info .payout { font-weight: 600; color: #16a34a; }
+
+        .bonus-input { display: flex; justify-content: space-between; align-items: center; margin: 16px 0; }
+        .bonus-input input {
+          width: 100px;
+          padding: 10px;
+          border: 2px solid #F5F5F5;
+          border-radius: 10px;
+          font-size: 16px;
+          text-align: right;
+        }
+        .bonus-input input:focus { outline: none; border-color: #000; }
+
+        .total-check {
+          display: flex;
+          justify-content: space-between;
+          padding: 14px;
+          border-radius: 10px;
+          font-weight: 600;
+          margin-bottom: 16px;
+        }
+        .total-check.match { background: #dcfce7; color: #16a34a; }
+        .total-check.mismatch { background: #fee2e2; color: #dc2626; }
+
+        .btn-primary {
+          width: 100%;
+          padding: 14px;
+          background: #000;
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .btn-primary:hover { background: #333; }
+        .btn-primary:disabled { background: #6B7280; cursor: not-allowed; }
 
         .no-selection {
           display: flex;
@@ -523,15 +704,13 @@ export default function Creators() {
           text-align: center;
         }
 
-        .no-selection-icon { font-size: 56px; margin-bottom: 20px; opacity: 0.5; }
-        .no-selection-text { color: #6B7280; font-size: 16px; }
+        .no-selection-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+        .no-selection-text { color: #6B7280; }
 
-        /* Mobile adjustments */
         @media (max-width: 767px) {
           .content { padding: 16px; }
           h1 { font-size: 24px; }
-          .summary-row { gap: 16px; }
-          .summary-value { font-size: 22px; }
+          .summary-value { font-size: 20px; }
         }
       `}</style>
     </>
