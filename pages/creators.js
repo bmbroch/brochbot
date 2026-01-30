@@ -490,13 +490,35 @@ export default function Creators() {
             <div className="summary-card">
               <div className="summary-header">
                 <div className="summary-title">Payout Summary</div>
-                <button 
-                  className={`sync-btn ${syncing ? 'syncing' : ''}`}
-                  onClick={syncMercury}
-                  disabled={syncing}
-                >
-                  {syncing ? '⏳ Syncing...' : '🔄 Sync Mercury'}
-                </button>
+                <div className="sync-area">
+                  {payments.length > 0 && (
+                    <span className="last-synced">
+                      Last synced: {(() => {
+                        const lastSync = payments.reduce((latest, p) => {
+                          const t = new Date(p.created_at)
+                          return t > latest ? t : latest
+                        }, new Date(0))
+                        if (lastSync.getTime() === 0) return 'Never'
+                        const now = new Date()
+                        const diffMs = now - lastSync
+                        const diffMins = Math.floor(diffMs / 60000)
+                        const diffHours = Math.floor(diffMs / 3600000)
+                        const diffDays = Math.floor(diffMs / 86400000)
+                        if (diffMins < 1) return 'Just now'
+                        if (diffMins < 60) return `${diffMins}m ago`
+                        if (diffHours < 24) return `${diffHours}h ago`
+                        return `${diffDays}d ago`
+                      })()}
+                    </span>
+                  )}
+                  <button 
+                    className={`sync-btn ${syncing ? 'syncing' : ''}`}
+                    onClick={syncMercury}
+                    disabled={syncing}
+                  >
+                    {syncing ? '⏳ Syncing...' : '🔄 Sync Mercury'}
+                  </button>
+                </div>
               </div>
               {syncResult && (
                 <div className={`sync-result ${syncResult.error ? 'error' : 'success'}`}>
@@ -1132,6 +1154,17 @@ export default function Creators() {
         }
 
         .summary-title { font-size: 18px; font-weight: 600; }
+
+        .sync-area {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .last-synced {
+          font-size: 13px;
+          color: #6B7280;
+        }
 
         .sync-btn {
           background: #000;
