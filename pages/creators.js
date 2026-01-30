@@ -60,6 +60,8 @@ export default function Creators() {
   const [syncResult, setSyncResult] = useState(null)
   const [saving, setSaving] = useState(false)
   const [tab, setTab] = useState('posts') // posts | payments | reconcile
+  const [editingMercuryName, setEditingMercuryName] = useState(false)
+  const [mercuryNameInput, setMercuryNameInput] = useState('')
 
   async function loadData() {
     const [c, p, pay, links] = await Promise.all([
@@ -214,6 +216,23 @@ export default function Creators() {
     await loadData()
   }
 
+  async function saveMercuryName() {
+    if (!selected) return
+    await api(`creators?id=eq.${selected.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ mercury_name: mercuryNameInput }),
+    })
+    await loadData()
+    setEditingMercuryName(false)
+  }
+
+  function startEditMercuryName() {
+    if (selected) {
+      setMercuryNameInput(selected.mercury_name || '')
+      setEditingMercuryName(true)
+    }
+  }
+
   return (
     <>
       <Head>
@@ -305,6 +324,26 @@ export default function Creators() {
                     <div className="detail-header">
                       <h2>{selected.name}</h2>
                       {selected.tiktok_handle && <div className="handle">@{selected.tiktok_handle}</div>}
+                      <div className="mercury-name">
+                        {editingMercuryName ? (
+                          <div className="mercury-edit">
+                            <input
+                              type="text"
+                              value={mercuryNameInput}
+                              onChange={(e) => setMercuryNameInput(e.target.value)}
+                              placeholder="e.g. Nicholas Schindehette"
+                            />
+                            <button onClick={saveMercuryName}>Save</button>
+                            <button onClick={() => setEditingMercuryName(false)}>Cancel</button>
+                          </div>
+                        ) : (
+                          <div className="mercury-display" onClick={startEditMercuryName}>
+                            <span className="mercury-label">Mercury:</span>
+                            <span className="mercury-value">{selected.mercury_name || 'Not set'}</span>
+                            <span className="edit-icon">✏️</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <div className="stats-grid">
@@ -557,7 +596,52 @@ export default function Creators() {
         }
 
         .detail-header h2 { font-size: 24px; font-weight: 700; margin: 0 0 4px 0; }
-        .handle { font-size: 14px; color: #6B7280; margin-bottom: 20px; }
+        .handle { font-size: 14px; color: #6B7280; }
+
+        .mercury-name { margin: 12px 0 20px 0; }
+
+        .mercury-display {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 12px;
+          background: #F5F5F5;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 13px;
+        }
+
+        .mercury-display:hover { background: #EBEBEB; }
+        .mercury-label { color: #6B7280; }
+        .mercury-value { font-weight: 500; }
+        .edit-icon { opacity: 0.5; font-size: 12px; }
+
+        .mercury-edit {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+
+        .mercury-edit input {
+          flex: 1;
+          padding: 8px 12px;
+          border: 2px solid #F5F5F5;
+          border-radius: 8px;
+          font-size: 14px;
+        }
+
+        .mercury-edit input:focus { outline: none; border-color: #000; }
+
+        .mercury-edit button {
+          padding: 8px 12px;
+          border: none;
+          border-radius: 8px;
+          font-size: 13px;
+          cursor: pointer;
+        }
+
+        .mercury-edit button:first-of-type { background: #000; color: white; }
+        .mercury-edit button:last-of-type { background: #F5F5F5; }
 
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .stat-card { background: #FAFAFA; border-radius: 12px; padding: 16px; text-align: center; }
