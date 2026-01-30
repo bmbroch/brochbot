@@ -115,6 +115,19 @@ export default function Creators() {
     const totalViews = creatorPosts.reduce((s, p) => s + Math.max(p.tiktok_views || 0, p.instagram_views || 0), 0)
     const unreconciledCount = creatorPayments.filter(p => p.status === 'unreconciled').length
     
+    // Calculate bonuses ready to pay (eligible + not paid + has bonus value)
+    const today = new Date()
+    const bonusesReady = creatorPosts.filter(p => {
+      const eligible = new Date(p.bonus_eligible_date) <= today
+      const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
+      const bonusValue = getPayout(views) - 25
+      return eligible && !p.bonus_paid && bonusValue > 0
+    })
+    const bonusReadyAmount = bonusesReady.reduce((s, p) => {
+      const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
+      return s + (getPayout(views) - 25)
+    }, 0)
+    
     return {
       ...c,
       postCount: creatorPosts.length,
@@ -126,6 +139,8 @@ export default function Creators() {
       posts: creatorPosts,
       payments: creatorPayments,
       unreconciledCount,
+      bonusesReadyCount: bonusesReady.length,
+      bonusReadyAmount,
     }
   })
 
@@ -134,6 +149,8 @@ export default function Creators() {
     paid: creatorData.reduce((s, c) => s + c.totalPaid, 0),
     posts: creatorData.reduce((s, c) => s + c.postCount, 0),
     unreconciled: creatorData.reduce((s, c) => s + c.unreconciledCount, 0),
+    bonusesReady: creatorData.reduce((s, c) => s + c.bonusReadyAmount, 0),
+    bonusesReadyCount: creatorData.reduce((s, c) => s + c.bonusesReadyCount, 0),
   }
   grandTotal.balance = grandTotal.owed - grandTotal.paid
 
@@ -357,6 +374,12 @@ export default function Creators() {
                   <div className="summary-value">{grandTotal.unreconciled}</div>
                 </div>
               </div>
+              {grandTotal.bonusesReady > 0 && (
+                <div className="bonus-ready-banner">
+                  <span>🎉 Bonuses Ready to Pay</span>
+                  <span className="bonus-ready-amount">${grandTotal.bonusesReady.toLocaleString()} ({grandTotal.bonusesReadyCount} posts)</span>
+                </div>
+              )}
             </div>
 
             <div className="layout">
@@ -451,6 +474,9 @@ export default function Creators() {
                             <span className="meta-item">👁 {formatNumber(c.totalViews)}</span>
                             {c.unreconciledCount > 0 && (
                               <span className="meta-item unreconciled">⚠️ {c.unreconciledCount}</span>
+                            )}
+                            {c.bonusReadyAmount > 0 && (
+                              <span className="meta-item bonus-ready">🎉 ${c.bonusReadyAmount}</span>
                             )}
                           </div>
                         </div>
@@ -897,6 +923,35 @@ export default function Creators() {
         .balance-banner.due { background: #fefce8; color: #ca8a04; }
         .balance-banner.clear { background: #dcfce7; color: #16a34a; }
         .balance-amount { font-size: 24px; font-weight: 700; }
+
+        .bonus-ready-banner {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 16px 20px;
+          background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%);
+          border: 2px solid #16a34a;
+          border-radius: 12px;
+          margin-top: 16px;
+          font-weight: 600;
+          color: #16a34a;
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 8px rgba(22, 163, 74, 0.3); }
+          50% { box-shadow: 0 0 16px rgba(22, 163, 74, 0.5); }
+        }
+        
+        .bonus-ready-amount { font-size: 20px; font-weight: 700; }
+        
+        .meta-item.bonus-ready { 
+          color: #16a34a; 
+          font-weight: 600; 
+          background: #dcfce7;
+          padding: 2px 8px;
+          border-radius: 6px;
+        }
 
         .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
         .tab {
