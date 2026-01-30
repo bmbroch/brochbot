@@ -4,13 +4,14 @@ const SUPABASE_URL = 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_SQd68zFS8mKRsWhvR3Skzw_yqVgfe_T'
 
 // Match Mercury counterparty to creator using mercury_name field
+// Returns { id, tracking_start_date } or null
 function matchCreator(counterpartyName, creators) {
   if (!counterpartyName) return null
   const lower = counterpartyName.toLowerCase()
   
   for (const creator of creators) {
     if (creator.mercury_name && lower.includes(creator.mercury_name.toLowerCase())) {
-      return creator.id
+      return { id: creator.id, trackingStartDate: creator.tracking_start_date }
     }
   }
   return null
@@ -32,8 +33,8 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to fetch Mercury accounts', details: accountsData })
     }
 
-    // 2. Fetch creators from Supabase (including mercury_name for matching)
-    const creatorsRes = await fetch(`${SUPABASE_URL}/rest/v1/creators?select=id,name,mercury_name`, {
+    // 2. Fetch creators from Supabase (including mercury_name and tracking_start_date for matching)
+    const creatorsRes = await fetch(`${SUPABASE_URL}/rest/v1/creators?select=id,name,mercury_name,tracking_start_date`, {
       headers: {
         'apikey': SUPABASE_KEY,
         'Authorization': `Bearer ${SUPABASE_KEY}`,
@@ -106,16 +107,26 @@ export default async function handler(req, res) {
     // 5. Filter for creator payments (negative amounts = outgoing, only posted transactions)
     const creatorPayments = allTransactions
       .filter(t => t.amount < 0 && t.postedAt) // Skip pending transactions (postedAt is null)
-      .map(t => ({
-        id: t.id,
-        date: t.postedAt.slice(0, 10),
-        amount: Math.abs(t.amount),
-        name: t.counterpartyName,
-        note: t.note,
-        creatorId: matchCreator(t.counterpartyName, creators),
-        account: t.accountName,
-      }))
-      .filter(t => t.creatorId && !existingRefs.has(t.id))
+      .map(t => {
+        const match = matchCreator(t.counterpartyName, creators)
+        return {
+          id: t.id,
+          date: t.postedAt.slice(0, 10),
+          amount: Math.abs(t.amount),
+          name: t.counterpartyName,
+          note: t.note,
+          creatorId: match?.id || null,
+          trackingStartDate: match?.trackingStartDate || null,
+          account: t.accountName,
+        }
+      })
+      .filter(t => {
+        // Must match a creator and not already exist
+        if (!t.creatorId || existingRefs.has(t.id)) return false
+        // If creator has a tracking_start_date, skip payments before that date
+        if (t.trackingStartDate && t.date < t.trackingStartDate) return false
+        return true
+      })
 
     // 6. Insert new payments
     const inserted = []
