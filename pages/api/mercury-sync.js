@@ -47,6 +47,11 @@ export default async function handler(req, res) {
       },
     })
     const creators = await creatorsRes.json()
+    
+    if (!Array.isArray(creators)) {
+      return res.status(500).json({ error: 'Failed to fetch creators', details: creators })
+    }
+    
     const creatorMap = {}
     creators.forEach(c => { creatorMap[c.name] = c.id })
 
@@ -58,7 +63,11 @@ export default async function handler(req, res) {
       },
     })
     const existingPayouts = await payoutsRes.json()
-    const existingRefs = new Set(existingPayouts.map(p => p.mercury_ref).filter(Boolean))
+    const existingRefs = new Set(
+      Array.isArray(existingPayouts) 
+        ? existingPayouts.map(p => p.mercury_ref).filter(Boolean)
+        : []
+    )
 
     // 4. Fetch transactions from ALL accounts
     let allTransactions = []
@@ -146,10 +155,12 @@ export default async function handler(req, res) {
     
     const totals = {}
     creators.forEach(c => { totals[c.name] = 0 })
-    allPayouts.forEach(p => {
-      const creator = creators.find(c => c.id === p.creator_id)
-      if (creator) totals[creator.name] += Number(p.amount_paid || 0)
-    })
+    if (Array.isArray(allPayouts)) {
+      allPayouts.forEach(p => {
+        const creator = creators.find(c => c.id === p.creator_id)
+        if (creator) totals[creator.name] += Number(p.amount_paid || 0)
+      })
+    }
 
     res.status(200).json({
       success: true,
