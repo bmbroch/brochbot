@@ -59,32 +59,48 @@ export default async function handler(req, res) {
         : []
     )
 
-    // 4. Fetch transactions from ALL accounts
+    // 4. Fetch transactions from ALL accounts (paginated, back to Jan 1 2025)
     let allTransactions = []
     const accountsSummary = []
+    const startDate = '2025-01-01' // Go back to start of last year
     
     for (const account of accountsData.accounts) {
-      const txnRes = await fetch(
-        `https://api.mercury.com/api/v1/account/${account.id}/transactions?limit=100`,
-        { headers: { 'Authorization': `Bearer ${MERCURY_TOKEN}` } }
-      )
-      const txnData = await txnRes.json()
+      let accountTxns = []
+      let offset = 0
+      const limit = 100
+      let hasMore = true
       
-      if (txnData.transactions) {
-        // Tag each transaction with account info
-        const tagged = txnData.transactions.map(t => ({
-          ...t,
-          accountName: account.name,
-          accountId: account.id,
-        }))
-        allTransactions = allTransactions.concat(tagged)
-        accountsSummary.push({
-          name: account.name,
-          kind: account.kind,
-          balance: account.currentBalance,
-          transactions: txnData.transactions.length,
-        })
+      // Paginate through all transactions for this account
+      while (hasMore) {
+        const txnRes = await fetch(
+          `https://api.mercury.com/api/v1/account/${account.id}/transactions?limit=${limit}&offset=${offset}&start=${startDate}`,
+          { headers: { 'Authorization': `Bearer ${MERCURY_TOKEN}` } }
+        )
+        const txnData = await txnRes.json()
+        
+        if (txnData.transactions && txnData.transactions.length > 0) {
+          accountTxns = accountTxns.concat(txnData.transactions)
+          offset += limit
+          // If we got less than limit, we've reached the end
+          hasMore = txnData.transactions.length === limit
+        } else {
+          hasMore = false
+        }
       }
+      
+      // Tag each transaction with account info
+      const tagged = accountTxns.map(t => ({
+        ...t,
+        accountName: account.name,
+        accountId: account.id,
+      }))
+      allTransactions = allTransactions.concat(tagged)
+      accountsSummary.push({
+        name: account.name,
+        kind: account.kind,
+        balance: account.currentBalance,
+        transactions: accountTxns.length,
+      })
     }
 
     // 5. Filter for creator payments (negative amounts = outgoing)
