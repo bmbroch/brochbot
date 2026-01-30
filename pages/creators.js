@@ -761,7 +761,7 @@ export default function Creators() {
         .summary-value.paid { color: #16a34a; }
         .summary-value.balance { color: #ca8a04; }
 
-        .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
         @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
 
         .creator-list { display: flex; flex-direction: column; gap: 12px; }
