@@ -72,7 +72,6 @@ export default function Creators() {
       const res = await fetch('/api/mercury-sync')
       const data = await res.json()
       setSyncResult(data)
-      // Reload data to show updated payments
       await loadData()
     } catch (err) {
       setSyncResult({ error: err.message })
@@ -80,7 +79,6 @@ export default function Creators() {
     setSyncing(false)
   }
 
-  // Calculate data per creator
   const creatorData = creators.map(c => {
     const creatorPosts = posts.filter(p => p.creator_id === c.id)
     const creatorPayouts = payouts.filter(p => p.creator_id === c.id)
@@ -125,9 +123,7 @@ export default function Creators() {
       </Head>
 
       <div className="page">
-        <div className="header-wrap">
-          <Header />
-        </div>
+        <Header />
 
         {loading ? (
           <div className="loading">Loading...</div>
@@ -138,7 +134,7 @@ export default function Creators() {
             {/* Summary Card */}
             <div className="summary-card">
               <div className="summary-header">
-                <div className="summary-title">💰 Payout Summary</div>
+                <div className="summary-title">Payout Summary</div>
                 <button 
                   className={`sync-btn ${syncing ? 'syncing' : ''}`}
                   onClick={syncMercury}
@@ -151,7 +147,7 @@ export default function Creators() {
                 <div className={`sync-result ${syncResult.error ? 'error' : 'success'}`}>
                   {syncResult.error 
                     ? `❌ ${syncResult.error}`
-                    : `✅ Synced! ${syncResult.newPayments} new payments found`
+                    : `✅ Synced ${syncResult.accounts?.length || 0} accounts — ${syncResult.newPayments} new payments`
                   }
                 </div>
               )}
@@ -176,32 +172,30 @@ export default function Creators() {
             </div>
 
             <div className="layout">
-              {/* Left: Creator List */}
+              {/* Creator Cards */}
               <div className="creator-list">
-                <div className="creators">
-                  {creatorData.map(c => (
-                    <button
-                      key={c.id}
-                      className={`creator-card ${selectedCreator === c.id ? 'selected' : ''}`}
-                      onClick={() => setSelectedCreator(selectedCreator === c.id ? null : c.id)}
-                    >
-                      <div className="creator-header">
-                        <div className="creator-name">{c.name}</div>
-                        <div className={`creator-balance ${c.balance > 0 ? 'due' : 'clear'}`}>
-                          ${c.balance.toLocaleString()}
-                        </div>
+                {creatorData.map(c => (
+                  <button
+                    key={c.id}
+                    className={`creator-card ${selectedCreator === c.id ? 'selected' : ''}`}
+                    onClick={() => setSelectedCreator(selectedCreator === c.id ? null : c.id)}
+                  >
+                    <div className="creator-header">
+                      <div className="creator-name">{c.name}</div>
+                      <div className={`creator-balance ${c.balance > 0 ? 'due' : 'clear'}`}>
+                        ${c.balance.toLocaleString()}
                       </div>
-                      <div className="creator-meta">
-                        <span className="meta-item">📹 {c.postCount} posts</span>
-                        <span className="meta-item">👁 {formatNumber(c.totalViews)}</span>
-                        <span className="meta-item">📅 {formatDate(c.lastPost)}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                    </div>
+                    <div className="creator-meta">
+                      <span className="meta-item">📹 {c.postCount} posts</span>
+                      <span className="meta-item">👁 {formatNumber(c.totalViews)}</span>
+                      <span className="meta-item">📅 {formatDate(c.lastPost)}</span>
+                    </div>
+                  </button>
+                ))}
               </div>
 
-              {/* Right: Detail Panel */}
+              {/* Detail Panel */}
               <div className="detail-panel">
                 {selected ? (
                   <>
@@ -210,7 +204,6 @@ export default function Creators() {
                       {selected.tiktok_handle && <div className="handle">@{selected.tiktok_handle}</div>}
                     </div>
 
-                    {/* Stats */}
                     <div className="stats-grid">
                       <div className="stat-card">
                         <div className="stat-label">Posts</div>
@@ -230,13 +223,11 @@ export default function Creators() {
                       </div>
                     </div>
 
-                    {/* Balance Banner */}
                     <div className={`balance-banner ${selected.balance > 0 ? 'due' : 'clear'}`}>
                       <span>Balance Due</span>
                       <span className="balance-amount">${selected.balance.toLocaleString()}</span>
                     </div>
 
-                    {/* Recent Posts */}
                     <div className="posts-section">
                       <h3>Recent Posts</h3>
                       <div className="posts-list">
@@ -269,42 +260,38 @@ export default function Creators() {
       <style jsx>{`
         .page {
           min-height: 100vh;
-          background: #0d0d1a;
+          background: #FAFAFA;
           font-family: 'Inter', system-ui, -apple-system, sans-serif;
-          color: #fff;
-        }
-
-        .header-wrap {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 24px;
+          color: #000;
         }
 
         .content {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 0 24px 40px;
+          padding: 24px;
         }
 
         .loading {
           text-align: center;
           padding: 60px;
-          color: #888;
+          color: #6B7280;
         }
 
         h1 {
           font-size: 28px;
           font-weight: 700;
           margin: 0 0 24px 0;
+          color: #000;
         }
 
         /* Summary Card */
         .summary-card {
-          background: #1a1a2e;
-          border: 1px solid #333;
-          border-radius: 16px;
+          background: white;
+          border: 1px solid #F5F5F5;
+          border-radius: 20px;
           padding: 24px;
           margin-bottom: 24px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
 
         .summary-header {
@@ -312,18 +299,21 @@ export default function Creators() {
           justify-content: space-between;
           align-items: center;
           margin-bottom: 20px;
+          flex-wrap: wrap;
+          gap: 12px;
         }
 
         .summary-title {
           font-size: 18px;
           font-weight: 600;
+          color: #000;
         }
 
         .sync-btn {
-          background: #6366f1;
+          background: #000;
           color: white;
           border: none;
-          padding: 10px 20px;
+          padding: 12px 24px;
           border-radius: 12px;
           font-size: 14px;
           font-weight: 600;
@@ -333,31 +323,31 @@ export default function Creators() {
         }
 
         .sync-btn:hover {
-          background: #5558e3;
-          transform: translateY(-1px);
+          background: #333;
+          transform: translateY(-2px);
         }
 
         .sync-btn:disabled, .sync-btn.syncing {
-          background: #4b4b6b;
+          background: #6B7280;
           cursor: not-allowed;
           transform: none;
         }
 
         .sync-result {
           padding: 12px 16px;
-          border-radius: 10px;
+          border-radius: 12px;
           font-size: 14px;
           margin-bottom: 20px;
         }
 
         .sync-result.success {
-          background: rgba(34, 197, 94, 0.15);
-          color: #22c55e;
+          background: #dcfce7;
+          color: #16a34a;
         }
 
         .sync-result.error {
-          background: rgba(239, 68, 68, 0.15);
-          color: #ef4444;
+          background: #fee2e2;
+          color: #dc2626;
         }
 
         .summary-row {
@@ -367,10 +357,10 @@ export default function Creators() {
         }
 
         .summary-item { flex: 1; min-width: 100px; text-align: center; }
-        .summary-label { font-size: 13px; color: #888; margin-bottom: 6px; }
-        .summary-value { font-size: 28px; font-weight: 700; }
-        .summary-value.paid { color: #22c55e; }
-        .summary-value.balance { color: #eab308; }
+        .summary-label { font-size: 13px; color: #6B7280; margin-bottom: 6px; }
+        .summary-value { font-size: 28px; font-weight: 700; color: #000; }
+        .summary-value.paid { color: #16a34a; }
+        .summary-value.balance { color: #ca8a04; }
 
         /* Layout */
         .layout {
@@ -387,32 +377,32 @@ export default function Creators() {
         }
 
         /* Creator List */
-        .creators {
+        .creator-list {
           display: flex;
           flex-direction: column;
           gap: 12px;
         }
 
         .creator-card {
-          background: #1a1a2e;
-          border: 2px solid #333;
+          background: white;
+          border: 2px solid #F5F5F5;
           border-radius: 16px;
           padding: 20px;
           text-align: left;
           cursor: pointer;
           transition: all 200ms;
           width: 100%;
-          color: #fff;
+          color: #000;
         }
 
         .creator-card:hover {
-          border-color: #555;
-          background: #252542;
+          border-color: #D1D5DB;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
 
         .creator-card.selected {
-          border-color: #6366f1;
-          background: #252542;
+          border-color: #000;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
 
         .creator-header {
@@ -430,8 +420,8 @@ export default function Creators() {
           padding: 6px 14px;
           border-radius: 10px;
         }
-        .creator-balance.due { background: rgba(234, 179, 8, 0.2); color: #eab308; }
-        .creator-balance.clear { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .creator-balance.due { background: #fefce8; color: #ca8a04; }
+        .creator-balance.clear { background: #dcfce7; color: #16a34a; }
 
         .creator-meta {
           display: flex;
@@ -439,15 +429,16 @@ export default function Creators() {
           flex-wrap: wrap;
         }
 
-        .meta-item { font-size: 14px; color: #888; }
+        .meta-item { font-size: 14px; color: #6B7280; }
 
         /* Detail Panel */
         .detail-panel {
-          background: #1a1a2e;
-          border: 1px solid #333;
+          background: white;
+          border: 1px solid #F5F5F5;
           border-radius: 20px;
           padding: 28px;
           height: fit-content;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
 
         @media (min-width: 768px) {
@@ -461,9 +452,10 @@ export default function Creators() {
           font-size: 26px;
           font-weight: 700;
           margin: 0 0 4px 0;
+          color: #000;
         }
 
-        .handle { font-size: 15px; color: #888; margin-bottom: 24px; }
+        .handle { font-size: 15px; color: #6B7280; margin-bottom: 24px; }
 
         .stats-grid {
           display: grid;
@@ -473,15 +465,15 @@ export default function Creators() {
         }
 
         .stat-card {
-          background: #252542;
+          background: #FAFAFA;
           border-radius: 12px;
           padding: 16px;
           text-align: center;
         }
 
-        .stat-label { font-size: 12px; color: #888; margin-bottom: 4px; }
-        .stat-value { font-size: 22px; font-weight: 700; }
-        .stat-value.paid { color: #22c55e; }
+        .stat-label { font-size: 12px; color: #6B7280; margin-bottom: 4px; }
+        .stat-value { font-size: 22px; font-weight: 700; color: #000; }
+        .stat-value.paid { color: #16a34a; }
 
         .balance-banner {
           display: flex;
@@ -493,14 +485,14 @@ export default function Creators() {
           margin-bottom: 24px;
         }
 
-        .balance-banner.due { background: rgba(234, 179, 8, 0.15); color: #eab308; }
-        .balance-banner.clear { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+        .balance-banner.due { background: #fefce8; color: #ca8a04; }
+        .balance-banner.clear { background: #dcfce7; color: #16a34a; }
         .balance-amount { font-size: 26px; font-weight: 700; }
 
         .posts-section h3 {
           font-size: 13px;
           font-weight: 600;
-          color: #888;
+          color: #6B7280;
           text-transform: uppercase;
           margin: 0 0 14px 0;
           letter-spacing: 0.5px;
@@ -514,13 +506,13 @@ export default function Creators() {
         .post-row {
           display: flex;
           padding: 14px 0;
-          border-bottom: 1px solid #333;
+          border-bottom: 1px solid #F5F5F5;
           font-size: 15px;
         }
 
-        .post-date { width: 80px; color: #888; }
-        .post-views { flex: 1; }
-        .post-payout { font-weight: 600; color: #22c55e; }
+        .post-date { width: 80px; color: #6B7280; }
+        .post-views { flex: 1; color: #000; }
+        .post-payout { font-weight: 600; color: #16a34a; }
 
         .no-selection {
           display: flex;
@@ -532,12 +524,11 @@ export default function Creators() {
         }
 
         .no-selection-icon { font-size: 56px; margin-bottom: 20px; opacity: 0.5; }
-        .no-selection-text { color: #888; font-size: 16px; }
+        .no-selection-text { color: #6B7280; font-size: 16px; }
 
         /* Mobile adjustments */
         @media (max-width: 767px) {
-          .header-wrap { padding: 0 16px; }
-          .content { padding: 0 16px 32px; }
+          .content { padding: 16px; }
           h1 { font-size: 24px; }
           .summary-row { gap: 16px; }
           .summary-value { font-size: 22px; }

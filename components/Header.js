@@ -30,9 +30,11 @@ export default function Header({ onAddClick }) {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 16px 0;
-          margin-bottom: 24px;
-          border-bottom: 1px solid #222;
+          padding: 16px 24px;
+          background: white;
+          border-bottom: 1px solid #F5F5F5;
+          max-width: 1200px;
+          margin: 0 auto;
         }
         
         .logo {
@@ -49,57 +51,63 @@ export default function Header({ onAddClick }) {
         .logo-text {
           font-size: 22px;
           font-weight: 700;
-          color: #fff;
+          color: #000;
         }
         
         .nav {
           display: flex;
-          gap: 8px;
+          gap: 4px;
         }
         
         .nav-link {
-          padding: 8px 16px;
-          border-radius: 8px;
-          color: #888;
+          padding: 10px 16px;
+          border-radius: 12px;
+          color: #6B7280;
           text-decoration: none;
           font-weight: 500;
+          font-size: 14px;
           transition: all 0.2s;
+          min-height: 44px;
+          display: flex;
+          align-items: center;
         }
         
         .nav-link:hover {
-          color: #fff;
-          background: #1a1a2e;
+          color: #000;
+          background: #F5F5F5;
         }
         
         .nav-link.active {
-          color: #fff;
-          background: #2a2a4a;
+          color: #000;
+          background: #F5F5F5;
+          font-weight: 600;
         }
         
         .btn {
-          padding: 10px 20px;
-          border-radius: 8px;
+          padding: 12px 24px;
+          border-radius: 12px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.2s;
           border: none;
+          min-height: 44px;
         }
         
         .btn-primary {
-          background: #6366f1;
+          background: #000;
           color: white;
         }
         
         .btn-primary:hover {
-          background: #5558e3;
+          background: #333;
+          transform: translateY(-2px);
         }
         
         @media (max-width: 768px) {
           .header {
             flex-wrap: wrap;
-            gap: 10px;
-            padding: 8px 0;
-            margin-bottom: 16px;
+            gap: 12px;
+            padding: 12px 16px;
           }
           
           .logo-icon { font-size: 24px; }
@@ -110,23 +118,18 @@ export default function Header({ onAddClick }) {
             width: 100%;
             justify-content: center;
             gap: 4px;
+            overflow-x: auto;
           }
           
           .nav-link {
-            padding: 6px 12px;
-            font-size: 14px;
+            padding: 8px 12px;
+            font-size: 13px;
+            white-space: nowrap;
           }
           
           .btn {
-            padding: 8px 14px;
+            padding: 10px 18px;
             font-size: 14px;
-          }
-        }
-        
-        @media (max-width: 380px) {
-          .nav-link {
-            padding: 6px 8px;
-            font-size: 13px;
           }
         }
       `}</style>
