@@ -1,6 +1,5 @@
-// Mercury Sync API - pulls transactions and matches to creators
+// Mercury Sync API - pulls transactions from ALL accounts and matches to creators
 const MERCURY_TOKEN = process.env.MERCURY_API_TOKEN
-const MERCURY_CHECKING_ID = process.env.MERCURY_CHECKING_ID || '81c3b1ac-6b06-11ee-b0cb-5f10e78edea2'
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ibluforpuicmxzmevbmj.supabase.co'
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -30,7 +29,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Fetch creators from Supabase
+    // 1. Fetch ALL Mercury accounts
+    const accountsRes = await fetch('https://api.mercury.com/api/v1/accounts', {
+      headers: { 'Authorization': `Bearer ${MERCURY_TOKEN}` }
+    })
+    const accountsData = await accountsRes.json()
+    
+    if (!accountsData.accounts) {
+      return res.status(500).json({ error: 'Failed to fetch Mercury accounts', details: accountsData })
+    }
+
+    // 2. Fetch creators from Supabase
     const creatorsRes = await fetch(`${SUPABASE_URL}/rest/v1/creators?select=id,name`, {
       headers: {
         'apikey': SUPABASE_KEY,
@@ -41,7 +50,7 @@ export default async function handler(req, res) {
     const creatorMap = {}
     creators.forEach(c => { creatorMap[c.name] = c.id })
 
-    // 2. Fetch existing payouts to avoid duplicates
+    // 3. Fetch existing payouts to avoid duplicates
     const payoutsRes = await fetch(`${SUPABASE_URL}/rest/v1/creator_payouts?select=mercury_ref`, {
       headers: {
         'apikey': SUPABASE_KEY,
@@ -51,19 +60,36 @@ export default async function handler(req, res) {
     const existingPayouts = await payoutsRes.json()
     const existingRefs = new Set(existingPayouts.map(p => p.mercury_ref).filter(Boolean))
 
-    // 3. Fetch Mercury transactions
-    const mercuryRes = await fetch(
-      `https://api.mercury.com/api/v1/account/${MERCURY_CHECKING_ID}/transactions?limit=100`,
-      { headers: { 'Authorization': `Bearer ${MERCURY_TOKEN}` } }
-    )
-    const mercuryData = await mercuryRes.json()
+    // 4. Fetch transactions from ALL accounts
+    let allTransactions = []
+    const accountsSummary = []
     
-    if (!mercuryData.transactions) {
-      return res.status(500).json({ error: 'Failed to fetch Mercury transactions', details: mercuryData })
+    for (const account of accountsData.accounts) {
+      const txnRes = await fetch(
+        `https://api.mercury.com/api/v1/account/${account.id}/transactions?limit=100`,
+        { headers: { 'Authorization': `Bearer ${MERCURY_TOKEN}` } }
+      )
+      const txnData = await txnRes.json()
+      
+      if (txnData.transactions) {
+        // Tag each transaction with account info
+        const tagged = txnData.transactions.map(t => ({
+          ...t,
+          accountName: account.name,
+          accountId: account.id,
+        }))
+        allTransactions = allTransactions.concat(tagged)
+        accountsSummary.push({
+          name: account.name,
+          kind: account.kind,
+          balance: account.currentBalance,
+          transactions: txnData.transactions.length,
+        })
+      }
     }
 
-    // 4. Filter for creator payments (negative amounts = outgoing)
-    const creatorPayments = mercuryData.transactions
+    // 5. Filter for creator payments (negative amounts = outgoing)
+    const creatorPayments = allTransactions
       .filter(t => t.amount < 0)
       .map(t => ({
         id: t.id,
@@ -72,10 +98,11 @@ export default async function handler(req, res) {
         name: t.counterpartyName,
         note: t.note,
         creator: matchCreator(t.counterpartyName),
+        account: t.accountName,
       }))
       .filter(t => t.creator && !existingRefs.has(t.id))
 
-    // 5. Insert new payments
+    // 6. Insert new payments
     const inserted = []
     for (const payment of creatorPayments) {
       const creatorId = creatorMap[payment.creator]
@@ -105,7 +132,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // 6. Get updated totals
+    // 7. Get updated totals
     const totalsRes = await fetch(
       `${SUPABASE_URL}/rest/v1/creator_payouts?select=creator_id,amount_paid`,
       {
@@ -129,7 +156,8 @@ export default async function handler(req, res) {
       newPayments: inserted.length,
       inserted,
       totals,
-      scanned: mercuryData.transactions.length,
+      accounts: accountsSummary,
+      totalTransactionsScanned: allTransactions.length,
     })
 
   } catch (error) {
