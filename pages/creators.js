@@ -70,6 +70,11 @@ export default function Creators() {
   const [cellValue, setCellValue] = useState('')
   const [sortField, setSortField] = useState('post_date')
   const [sortDir, setSortDir] = useState('desc')
+  // Spreadsheet filters
+  const [filterCreator, setFilterCreator] = useState('all')
+  const [filterBasePaid, setFilterBasePaid] = useState('all')
+  const [filterBonusPaid, setFilterBonusPaid] = useState('all')
+  const [filterBonusEligible, setFilterBonusEligible] = useState('all')
 
   async function loadData() {
     const [c, p, pay, links] = await Promise.all([
@@ -424,8 +429,29 @@ export default function Creators() {
     }
   }
 
-  // Sort posts for spreadsheet
-  const sortedPosts = [...posts].sort((a, b) => {
+  // Filter and sort posts for spreadsheet
+  const filteredPosts = posts.filter(post => {
+    // Creator filter
+    if (filterCreator !== 'all' && post.creator_id !== filterCreator) return false
+    
+    // Base paid filter
+    if (filterBasePaid === 'yes' && !post.base_paid) return false
+    if (filterBasePaid === 'no' && post.base_paid) return false
+    
+    // Bonus paid filter
+    if (filterBonusPaid === 'yes' && !post.bonus_paid) return false
+    if (filterBonusPaid === 'no' && post.bonus_paid) return false
+    
+    // Bonus eligible filter (15+ days old)
+    const daysOld = Math.floor((new Date() - new Date(post.post_date)) / (1000 * 60 * 60 * 24))
+    const isEligible = daysOld >= 15
+    if (filterBonusEligible === 'yes' && !isEligible) return false
+    if (filterBonusEligible === 'no' && isEligible) return false
+    
+    return true
+  })
+  
+  const sortedPosts = [...filteredPosts].sort((a, b) => {
     let aVal = a[sortField]
     let bVal = b[sortField]
     
@@ -923,8 +949,58 @@ export default function Creators() {
             /* Spreadsheet View */
             <div className="spreadsheet-container">
               <div className="spreadsheet-header">
-                <h2>📋 Raw Data ({posts.length} posts)</h2>
-                <p className="spreadsheet-help">Click any cell to edit. Press Enter to save, Escape to cancel.</p>
+                <div className="spreadsheet-title-row">
+                  <h2>📋 Raw Data ({sortedPosts.length}{sortedPosts.length !== posts.length ? ` of ${posts.length}` : ''} posts)</h2>
+                  <p className="spreadsheet-help">Click any cell to edit. Press Enter to save, Escape to cancel.</p>
+                </div>
+                <div className="filter-bar">
+                  <div className="filter-item">
+                    <label>Creator</label>
+                    <select value={filterCreator} onChange={(e) => setFilterCreator(e.target.value)}>
+                      <option value="all">All Creators</option>
+                      {creators.map(c => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="filter-item">
+                    <label>Base Paid</label>
+                    <select value={filterBasePaid} onChange={(e) => setFilterBasePaid(e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="yes">✓ Paid</option>
+                      <option value="no">✗ Unpaid</option>
+                    </select>
+                  </div>
+                  <div className="filter-item">
+                    <label>Bonus Paid</label>
+                    <select value={filterBonusPaid} onChange={(e) => setFilterBonusPaid(e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="yes">✓ Paid</option>
+                      <option value="no">✗ Unpaid</option>
+                    </select>
+                  </div>
+                  <div className="filter-item">
+                    <label>Bonus Eligible</label>
+                    <select value={filterBonusEligible} onChange={(e) => setFilterBonusEligible(e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="yes">✓ Eligible (15+ days)</option>
+                      <option value="no">⏳ Not Yet</option>
+                    </select>
+                  </div>
+                  {(filterCreator !== 'all' || filterBasePaid !== 'all' || filterBonusPaid !== 'all' || filterBonusEligible !== 'all') && (
+                    <button 
+                      className="clear-filters-btn"
+                      onClick={() => {
+                        setFilterCreator('all')
+                        setFilterBasePaid('all')
+                        setFilterBonusPaid('all')
+                        setFilterBonusEligible('all')
+                      }}
+                    >
+                      ✕ Clear Filters
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="spreadsheet-wrapper">
                 <table className="spreadsheet">
@@ -1680,6 +1756,66 @@ export default function Creators() {
           font-size: 13px;
           color: #6B7280;
           margin: 0;
+        }
+
+        .spreadsheet-title-row {
+          margin-bottom: 16px;
+        }
+
+        .filter-bar {
+          display: flex;
+          gap: 16px;
+          flex-wrap: wrap;
+          align-items: flex-end;
+          padding: 16px;
+          background: #F9FAFB;
+          border-radius: 12px;
+          margin-bottom: 16px;
+        }
+
+        .filter-item {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .filter-item label {
+          font-size: 11px;
+          font-weight: 600;
+          color: #6B7280;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .filter-item select {
+          padding: 8px 12px;
+          border: 2px solid #E5E7EB;
+          border-radius: 8px;
+          font-size: 13px;
+          background: white;
+          cursor: pointer;
+          min-width: 140px;
+        }
+
+        .filter-item select:focus {
+          outline: none;
+          border-color: #6366F1;
+        }
+
+        .clear-filters-btn {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 8px;
+          background: #FEE2E2;
+          color: #DC2626;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 200ms;
+        }
+
+        .clear-filters-btn:hover {
+          background: #FECACA;
         }
 
         .spreadsheet-wrapper {
