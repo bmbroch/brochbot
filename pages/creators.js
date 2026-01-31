@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Header from '../components/Header'
 
@@ -46,7 +47,480 @@ async function api(endpoint, options = {}) {
   return res.json()
 }
 
+// Creator Portal Component (self-service view)
+function CreatorPortal({ token }) {
+  const [creator, setCreator] = useState(null)
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitResult, setSubmitResult] = useState(null)
+  const [newPost, setNewPost] = useState({ tiktok_url: '', instagram_url: '' })
+
+  async function loadCreatorData() {
+    try {
+      // Get creator by token
+      const creatorRes = await api(`creators?token=eq.${token}&select=*`)
+      if (!creatorRes || creatorRes.length === 0) {
+        setError('Invalid token')
+        setLoading(false)
+        return
+      }
+      const c = creatorRes[0]
+      setCreator(c)
+
+      // Get their posts
+      const postsRes = await api(`creator_posts?creator_id=eq.${c.id}&order=post_date.desc`)
+      setPosts(postsRes || [])
+      setLoading(false)
+    } catch (err) {
+      setError('Failed to load data')
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => { loadCreatorData() }, [token])
+
+  async function submitPost(e) {
+    e.preventDefault()
+    if (!newPost.tiktok_url && !newPost.instagram_url) {
+      setSubmitResult({ error: 'Please enter at least one URL' })
+      return
+    }
+    
+    setSubmitting(true)
+    setSubmitResult(null)
+    
+    try {
+      // Call API to create post and scrape views
+      const res = await fetch('/api/creator-submit-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token,
+          tiktok_url: newPost.tiktok_url,
+          instagram_url: newPost.instagram_url,
+        }),
+      })
+      const data = await res.json()
+      
+      if (data.error) {
+        setSubmitResult({ error: data.error })
+      } else {
+        setSubmitResult({ success: 'Post submitted successfully!' })
+        setNewPost({ tiktok_url: '', instagram_url: '' })
+        await loadCreatorData()
+      }
+    } catch (err) {
+      setSubmitResult({ error: 'Failed to submit post' })
+    }
+    setSubmitting(false)
+  }
+
+  if (loading) {
+    return (
+      <div className="portal-page">
+        <div className="portal-loading">Loading...</div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="portal-page">
+        <div className="portal-error">
+          <h1>❌ {error}</h1>
+          <p>Please check your link and try again.</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Calculate totals
+  const totalPosts = posts.length
+  const totalViews = posts.reduce((s, p) => s + Math.max(p.tiktok_views || 0, p.instagram_views || 0), 0)
+  const totalEarned = posts.reduce((s, p) => {
+    const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
+    return s + getPayout(views)
+  }, 0)
+  const totalPaid = posts.reduce((s, p) => {
+    let paid = 0
+    if (p.base_paid) paid += 25
+    if (p.bonus_paid) {
+      const views = Math.max(p.tiktok_views || 0, p.instagram_views || 0)
+      paid += getPayout(views) - 25
+    }
+    return s + paid
+  }, 0)
+  const pendingPayout = totalEarned - totalPaid
+
+  return (
+    <>
+      <Head>
+        <title>{creator.name} | Creator Portal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      </Head>
+      
+      <div className="portal-page">
+        <div className="portal-header">
+          <h1>👋 Hey {creator.name}!</h1>
+          <p>Track your posts and earnings</p>
+        </div>
+
+        <div className="portal-stats">
+          <div className="stat-box">
+            <div className="stat-label">Total Posts</div>
+            <div className="stat-value">{totalPosts}</div>
+          </div>
+          <div className="stat-box">
+            <div className="stat-label">Total Views</div>
+            <div className="stat-value">{formatNumber(totalViews)}</div>
+          </div>
+          <div className="stat-box">
+            <div className="stat-label">Total Earned</div>
+            <div className="stat-value">${totalEarned}</div>
+          </div>
+          <div className="stat-box highlight">
+            <div className="stat-label">Pending Payout</div>
+            <div className="stat-value">${pendingPayout}</div>
+          </div>
+        </div>
+
+        <div className="portal-section">
+          <h2>📤 Submit New Post</h2>
+          <form onSubmit={submitPost} className="submit-form">
+            <div className="form-row">
+              <label>TikTok URL</label>
+              <input
+                type="url"
+                placeholder="https://www.tiktok.com/@you/video/..."
+                value={newPost.tiktok_url}
+                onChange={(e) => setNewPost({ ...newPost, tiktok_url: e.target.value })}
+              />
+            </div>
+            <div className="form-row">
+              <label>Instagram URL</label>
+              <input
+                type="url"
+                placeholder="https://www.instagram.com/reel/..."
+                value={newPost.instagram_url}
+                onChange={(e) => setNewPost({ ...newPost, instagram_url: e.target.value })}
+              />
+            </div>
+            {submitResult && (
+              <div className={`submit-result ${submitResult.error ? 'error' : 'success'}`}>
+                {submitResult.error || submitResult.success}
+              </div>
+            )}
+            <button type="submit" disabled={submitting}>
+              {submitting ? 'Submitting...' : 'Submit Post'}
+            </button>
+          </form>
+        </div>
+
+        <div className="portal-section">
+          <h2>📹 Your Posts</h2>
+          <div className="posts-grid">
+            {posts.length === 0 ? (
+              <p className="no-posts">No posts yet. Submit your first one above!</p>
+            ) : (
+              posts.map(post => {
+                const views = Math.max(post.tiktok_views || 0, post.instagram_views || 0)
+                const payout = getPayout(views)
+                const basePaid = post.base_paid
+                const bonusPaid = post.bonus_paid
+                const bonusEligible = new Date(post.bonus_eligible_date) <= new Date()
+                const daysUntilBonus = Math.max(0, Math.ceil((new Date(post.bonus_eligible_date) - new Date()) / (1000 * 60 * 60 * 24)))
+                
+                return (
+                  <div key={post.id} className="post-card">
+                    <div className="post-card-header">
+                      <span className="post-date">{formatDate(post.post_date)}</span>
+                      <span className="post-payout">${payout}</span>
+                    </div>
+                    <div className="post-views">{formatNumber(views)} views</div>
+                    <div className="post-links">
+                      {post.tiktok_url && (
+                        <a href={post.tiktok_url} target="_blank" rel="noopener noreferrer">🎵 TikTok</a>
+                      )}
+                      {post.instagram_url && (
+                        <a href={post.instagram_url} target="_blank" rel="noopener noreferrer">📸 Instagram</a>
+                      )}
+                    </div>
+                    <div className="post-status">
+                      <span className={`status-badge ${basePaid ? 'paid' : 'unpaid'}`}>
+                        Base $25 {basePaid ? '✓' : ''}
+                      </span>
+                      <span className={`status-badge ${bonusPaid ? 'paid' : bonusEligible ? 'ready' : 'waiting'}`}>
+                        Bonus ${payout - 25 > 0 ? payout - 25 : 0} {bonusPaid ? '✓' : bonusEligible ? '⏳' : `(${daysUntilBonus}d)`}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })
+            )}
+          </div>
+        </div>
+
+        <div className="portal-footer">
+          <p>💡 Views are locked 15 days after posting for bonus calculation</p>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .portal-page {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          font-family: 'Inter', system-ui, sans-serif;
+          padding: 24px;
+        }
+
+        .portal-loading, .portal-error {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 60vh;
+          color: white;
+          text-align: center;
+        }
+
+        .portal-error h1 { font-size: 24px; margin-bottom: 8px; }
+        .portal-error p { opacity: 0.8; }
+
+        .portal-header {
+          text-align: center;
+          color: white;
+          margin-bottom: 32px;
+        }
+
+        .portal-header h1 {
+          font-size: 32px;
+          font-weight: 700;
+          margin: 0 0 8px 0;
+        }
+
+        .portal-header p {
+          opacity: 0.9;
+          font-size: 16px;
+          margin: 0;
+        }
+
+        .portal-stats {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+          max-width: 500px;
+          margin: 0 auto 32px;
+        }
+
+        @media (min-width: 600px) {
+          .portal-stats { grid-template-columns: repeat(4, 1fr); max-width: 800px; }
+        }
+
+        .stat-box {
+          background: rgba(255,255,255,0.15);
+          backdrop-filter: blur(10px);
+          border-radius: 16px;
+          padding: 20px;
+          text-align: center;
+          color: white;
+        }
+
+        .stat-box.highlight {
+          background: rgba(255,255,255,0.95);
+          color: #764ba2;
+        }
+
+        .stat-label {
+          font-size: 12px;
+          opacity: 0.8;
+          margin-bottom: 4px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .stat-box.highlight .stat-label { opacity: 0.7; }
+
+        .stat-value {
+          font-size: 24px;
+          font-weight: 700;
+        }
+
+        .portal-section {
+          background: white;
+          border-radius: 20px;
+          padding: 24px;
+          max-width: 800px;
+          margin: 0 auto 24px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .portal-section h2 {
+          font-size: 18px;
+          font-weight: 600;
+          margin: 0 0 20px 0;
+          color: #1f2937;
+        }
+
+        .submit-form {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .form-row label {
+          display: block;
+          font-size: 13px;
+          font-weight: 500;
+          color: #6b7280;
+          margin-bottom: 6px;
+        }
+
+        .form-row input {
+          width: 100%;
+          padding: 14px 16px;
+          border: 2px solid #e5e7eb;
+          border-radius: 12px;
+          font-size: 15px;
+          transition: border-color 0.2s;
+        }
+
+        .form-row input:focus {
+          outline: none;
+          border-color: #764ba2;
+        }
+
+        .submit-result {
+          padding: 12px 16px;
+          border-radius: 10px;
+          font-size: 14px;
+        }
+
+        .submit-result.success { background: #dcfce7; color: #16a34a; }
+        .submit-result.error { background: #fee2e2; color: #dc2626; }
+
+        .submit-form button {
+          padding: 16px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-form button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-form button:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .posts-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .no-posts {
+          text-align: center;
+          color: #9ca3af;
+          padding: 40px;
+        }
+
+        .post-card {
+          border: 2px solid #f3f4f6;
+          border-radius: 16px;
+          padding: 20px;
+          transition: border-color 0.2s;
+        }
+
+        .post-card:hover { border-color: #e5e7eb; }
+
+        .post-card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+
+        .post-date {
+          font-size: 14px;
+          color: #6b7280;
+        }
+
+        .post-payout {
+          font-size: 20px;
+          font-weight: 700;
+          color: #16a34a;
+        }
+
+        .post-views {
+          font-size: 24px;
+          font-weight: 600;
+          color: #1f2937;
+          margin-bottom: 12px;
+        }
+
+        .post-links {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 16px;
+        }
+
+        .post-links a {
+          padding: 8px 16px;
+          background: #f3f4f6;
+          border-radius: 8px;
+          text-decoration: none;
+          font-size: 13px;
+          color: #374151;
+          transition: background 0.2s;
+        }
+
+        .post-links a:hover { background: #e5e7eb; }
+
+        .post-status {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .status-badge {
+          padding: 6px 12px;
+          border-radius: 8px;
+          font-size: 12px;
+          font-weight: 500;
+        }
+
+        .status-badge.paid { background: #dcfce7; color: #16a34a; }
+        .status-badge.unpaid { background: #fee2e2; color: #dc2626; }
+        .status-badge.ready { background: #fef3c7; color: #d97706; }
+        .status-badge.waiting { background: #f3f4f6; color: #6b7280; }
+
+        .portal-footer {
+          text-align: center;
+          color: rgba(255,255,255,0.8);
+          font-size: 14px;
+          padding: 20px;
+        }
+      `}</style>
+    </>
+  )
+}
+
 export default function Creators() {
+  const router = useRouter()
+  const { token } = router.query
+  
   const [creators, setCreators] = useState([])
   const [posts, setPosts] = useState([])
   const [payments, setPayments] = useState([])
@@ -475,6 +949,11 @@ export default function Creators() {
       setSortField(field)
       setSortDir('desc')
     }
+  }
+
+  // If token is present, show creator portal
+  if (token) {
+    return <CreatorPortal token={token} />
   }
 
   return (
