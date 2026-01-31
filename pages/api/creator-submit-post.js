@@ -1,8 +1,4 @@
 import { createClient } from '@supabase/supabase-js'
-import { exec } from 'child_process'
-import { promisify } from 'util'
-
-const execAsync = promisify(exec)
 
 const supabase = createClient(
   process.env.SUPABASE_URL || 'https://ibluforpuicmxzmevbmj.supabase.co',
@@ -23,31 +19,19 @@ function extractInstagramCode(url) {
   return match ? match[2] : null
 }
 
-// Scrape TikTok views using yt-dlp
-async function scrapeTikTokViews(url) {
-  try {
-    const { stdout } = await execAsync(
-      `/tmp/yt-dlp -j "${url}" 2>/dev/null | head -1`,
-      { timeout: 30000 }
-    )
-    const data = JSON.parse(stdout)
-    return {
-      views: data.view_count || 0,
-      id: data.id,
-      timestamp: data.timestamp,
-    }
-  } catch (err) {
-    console.error('TikTok scrape error:', err.message)
-    return null
-  }
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { token, tiktok_url, instagram_url } = req.body
+  const { 
+    token, 
+    post_date,
+    tiktok_url, 
+    tiktok_views,
+    instagram_url, 
+    instagram_views 
+  } = req.body
 
   if (!token) {
     return res.status(400).json({ error: 'Missing token' })
@@ -55,6 +39,10 @@ export default async function handler(req, res) {
 
   if (!tiktok_url && !instagram_url) {
     return res.status(400).json({ error: 'Please provide at least one URL' })
+  }
+
+  if (!post_date) {
+    return res.status(400).json({ error: 'Please provide a post date' })
   }
 
   // Validate token and get creator
@@ -72,7 +60,7 @@ export default async function handler(req, res) {
   const tiktokId = extractTikTokId(tiktok_url)
   const instagramCode = extractInstagramCode(instagram_url)
 
-  // Check for duplicate
+  // Check for duplicate TikTok
   if (tiktokId) {
     const { data: existing } = await supabase
       .from('creator_posts')
@@ -85,6 +73,7 @@ export default async function handler(req, res) {
     }
   }
 
+  // Check for duplicate Instagram
   if (instagramCode) {
     const { data: existing } = await supabase
       .from('creator_posts')
@@ -97,26 +86,8 @@ export default async function handler(req, res) {
     }
   }
 
-  // Scrape views
-  let tiktokViews = 0
-  let tiktokTimestamp = null
-
-  if (tiktok_url) {
-    const tiktokData = await scrapeTikTokViews(tiktok_url)
-    if (tiktokData) {
-      tiktokViews = tiktokData.views
-      tiktokTimestamp = tiktokData.timestamp
-    }
-  }
-
-  // Determine post date
-  let postDate = new Date()
-  if (tiktokTimestamp) {
-    postDate = new Date(tiktokTimestamp * 1000)
-  }
-  const postDateStr = postDate.toISOString().split('T')[0]
-
   // Calculate bonus eligible date (15 days after post)
+  const postDate = new Date(post_date)
   const bonusDate = new Date(postDate)
   bonusDate.setDate(bonusDate.getDate() + 15)
   const bonusDateStr = bonusDate.toISOString().split('T')[0]
@@ -126,13 +97,13 @@ export default async function handler(req, res) {
     .from('creator_posts')
     .insert({
       creator_id: creator.id,
-      post_date: postDateStr,
+      post_date: post_date,
       tiktok_url: tiktok_url || null,
       tiktok_post_id: tiktokId || null,
-      tiktok_views: tiktokViews,
+      tiktok_views: tiktok_views || 0,
       instagram_url: instagram_url || null,
       instagram_post_id: instagramCode || null,
-      instagram_views: 0, // Will need manual entry or RapidAPI
+      instagram_views: instagram_views || 0,
       base_paid: false,
       bonus_paid: false,
       bonus_eligible_date: bonusDateStr,
@@ -149,6 +120,5 @@ export default async function handler(req, res) {
   return res.status(200).json({
     success: true,
     post: newPost,
-    views_scraped: tiktokViews,
   })
 }

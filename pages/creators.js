@@ -55,7 +55,13 @@ function CreatorPortal({ token }) {
   const [error, setError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
   const [submitResult, setSubmitResult] = useState(null)
-  const [newPost, setNewPost] = useState({ tiktok_url: '', instagram_url: '' })
+  const [newPost, setNewPost] = useState({ 
+    tiktok_url: '', 
+    tiktok_views: '',
+    instagram_url: '', 
+    instagram_views: '',
+    post_date: new Date().toISOString().split('T')[0]
+  })
 
   async function loadCreatorData() {
     try {
@@ -84,7 +90,11 @@ function CreatorPortal({ token }) {
   async function submitPost(e) {
     e.preventDefault()
     if (!newPost.tiktok_url && !newPost.instagram_url) {
-      setSubmitResult({ error: 'Please enter at least one URL' })
+      setSubmitResult({ error: 'Please enter at least one platform (URL + views)' })
+      return
+    }
+    if (!newPost.post_date) {
+      setSubmitResult({ error: 'Please enter the post date' })
       return
     }
     
@@ -92,14 +102,17 @@ function CreatorPortal({ token }) {
     setSubmitResult(null)
     
     try {
-      // Call API to create post and scrape views
+      // Call API to create post
       const res = await fetch('/api/creator-submit-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           token,
+          post_date: newPost.post_date,
           tiktok_url: newPost.tiktok_url,
+          tiktok_views: parseInt(newPost.tiktok_views) || 0,
           instagram_url: newPost.instagram_url,
+          instagram_views: parseInt(newPost.instagram_views) || 0,
         }),
       })
       const data = await res.json()
@@ -108,7 +121,13 @@ function CreatorPortal({ token }) {
         setSubmitResult({ error: data.error })
       } else {
         setSubmitResult({ success: 'Post submitted successfully!' })
-        setNewPost({ tiktok_url: '', instagram_url: '' })
+        setNewPost({ 
+          tiktok_url: '', 
+          tiktok_views: '',
+          instagram_url: '', 
+          instagram_views: '',
+          post_date: new Date().toISOString().split('T')[0]
+        })
         await loadCreatorData()
       }
     } catch (err) {
@@ -191,22 +210,57 @@ function CreatorPortal({ token }) {
           <h2>📤 Submit New Post</h2>
           <form onSubmit={submitPost} className="submit-form">
             <div className="form-row">
-              <label>TikTok URL</label>
+              <label>Post Date</label>
               <input
-                type="url"
-                placeholder="https://www.tiktok.com/@you/video/..."
-                value={newPost.tiktok_url}
-                onChange={(e) => setNewPost({ ...newPost, tiktok_url: e.target.value })}
+                type="date"
+                value={newPost.post_date}
+                onChange={(e) => setNewPost({ ...newPost, post_date: e.target.value })}
+                required
               />
             </div>
-            <div className="form-row">
-              <label>Instagram URL</label>
-              <input
-                type="url"
-                placeholder="https://www.instagram.com/reel/..."
-                value={newPost.instagram_url}
-                onChange={(e) => setNewPost({ ...newPost, instagram_url: e.target.value })}
-              />
+            <div className="form-group">
+              <h3>🎵 TikTok</h3>
+              <div className="form-row">
+                <label>URL</label>
+                <input
+                  type="url"
+                  placeholder="https://www.tiktok.com/@you/video/..."
+                  value={newPost.tiktok_url}
+                  onChange={(e) => setNewPost({ ...newPost, tiktok_url: e.target.value })}
+                />
+              </div>
+              <div className="form-row">
+                <label>Views</label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  min="0"
+                  value={newPost.tiktok_views}
+                  onChange={(e) => setNewPost({ ...newPost, tiktok_views: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <h3>📸 Instagram</h3>
+              <div className="form-row">
+                <label>URL</label>
+                <input
+                  type="url"
+                  placeholder="https://www.instagram.com/reel/..."
+                  value={newPost.instagram_url}
+                  onChange={(e) => setNewPost({ ...newPost, instagram_url: e.target.value })}
+                />
+              </div>
+              <div className="form-row">
+                <label>Views</label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  min="0"
+                  value={newPost.instagram_views}
+                  onChange={(e) => setNewPost({ ...newPost, instagram_views: e.target.value })}
+                />
+              </div>
             </div>
             {submitResult && (
               <div className={`submit-result ${submitResult.error ? 'error' : 'success'}`}>
@@ -422,6 +476,19 @@ function CreatorPortal({ token }) {
           opacity: 0.6;
           cursor: not-allowed;
           transform: none;
+        }
+
+        .form-group {
+          background: #f9fafb;
+          border-radius: 12px;
+          padding: 16px;
+        }
+
+        .form-group h3 {
+          font-size: 14px;
+          font-weight: 600;
+          margin: 0 0 12px 0;
+          color: #374151;
         }
 
         .posts-grid {
