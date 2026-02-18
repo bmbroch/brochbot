@@ -189,6 +189,128 @@ export const mockDocuments: MemoryDocument[] = [
   },
 ];
 
+// ─── Creator Types & Data ────────────────────────────────────────────────────
+
+export interface Creator {
+  name: string;
+  posts: number;
+  ttViews: number;
+  igViews: number;
+  startDate: string;
+  earnings: number;
+  avgPerPost: number;
+}
+
+export interface CreatorTimeSeriesPoint {
+  date: string;
+  ttViews: number;
+  igViews: number;
+}
+
+export interface CreatorPost {
+  date: string;
+  ttViews: number;
+  igViews: number;
+  milestone?: string;
+  earnings: number;
+}
+
+export const creatorsData: Creator[] = [
+  { name: "Nick", posts: 39, ttViews: 331710, igViews: 50608, startDate: "2025-12-23", earnings: 975, avgPerPost: 9800 },
+  { name: "Abby", posts: 23, ttViews: 261095, igViews: 573481, startDate: "2026-01-08", earnings: 575, avgPerPost: 36286 },
+  { name: "Luke", posts: 24, ttViews: 61046, igViews: 306120, startDate: "2026-01-19", earnings: 600, avgPerPost: 15298 },
+  { name: "Jake", posts: 24, ttViews: 17427, igViews: 63777, startDate: "2026-01-23", earnings: 600, avgPerPost: 3383 },
+  { name: "Bobby", posts: 16, ttViews: 10364, igViews: 14621, startDate: "2026-01-30", earnings: 400, avgPerPost: 1562 },
+  { name: "Sheryl", posts: 5, ttViews: 2190, igViews: 4084, startDate: "2026-02-11", earnings: 125, avgPerPost: 1255 },
+  { name: "Flo", posts: 3, ttViews: 979, igViews: 12833, startDate: "2026-02-12", earnings: 75, avgPerPost: 4604 },
+];
+
+// Generate fake time-series data for each creator
+function generateTimeSeries(creator: Creator): CreatorTimeSeriesPoint[] {
+  const points: CreatorTimeSeriesPoint[] = [];
+  const start = new Date(creator.startDate);
+  const end = new Date("2026-02-18");
+  const totalDays = Math.floor((end.getTime() - start.getTime()) / 86400000);
+  if (totalDays <= 0) return points;
+
+  let cumulativeTT = 0;
+  let cumulativeIG = 0;
+  const seed = creator.name.charCodeAt(0);
+
+  for (let i = 0; i <= totalDays; i++) {
+    const date = new Date(start);
+    date.setDate(date.getDate() + i);
+    // Distribute views with some randomness
+    const progress = i / totalDays;
+    const baseTT = (creator.ttViews / totalDays) * (0.5 + Math.sin(seed + i * 0.3) * 0.5 + progress * 0.5);
+    const baseIG = (creator.igViews / totalDays) * (0.5 + Math.cos(seed + i * 0.2) * 0.5 + progress * 0.5);
+    cumulativeTT += Math.max(0, baseTT);
+    cumulativeIG += Math.max(0, baseIG);
+    points.push({
+      date: date.toISOString().split("T")[0],
+      ttViews: Math.round(cumulativeTT),
+      igViews: Math.round(cumulativeIG),
+    });
+  }
+
+  // Normalize to match actual totals
+  const lastPoint = points[points.length - 1];
+  const ttScale = lastPoint.ttViews > 0 ? creator.ttViews / lastPoint.ttViews : 1;
+  const igScale = lastPoint.igViews > 0 ? creator.igViews / lastPoint.igViews : 1;
+  points.forEach(p => {
+    p.ttViews = Math.round(p.ttViews * ttScale);
+    p.igViews = Math.round(p.igViews * igScale);
+  });
+
+  return points;
+}
+
+// Generate fake posts for each creator
+function generatePosts(creator: Creator): CreatorPost[] {
+  const posts: CreatorPost[] = [];
+  const start = new Date(creator.startDate);
+  const totalDays = Math.floor((new Date("2026-02-18").getTime() - start.getTime()) / 86400000);
+  const interval = Math.max(1, Math.floor(totalDays / creator.posts));
+  const earningsPerPost = creator.earnings / creator.posts;
+
+  for (let i = 0; i < creator.posts; i++) {
+    const date = new Date(start);
+    date.setDate(date.getDate() + i * interval + Math.floor(Math.random() * 2));
+    const ttV = Math.round((creator.ttViews / creator.posts) * (0.5 + Math.random()));
+    const igV = Math.round((creator.igViews / creator.posts) * (0.5 + Math.random()));
+    const milestone = (ttV + igV) > creator.avgPerPost * 2 ? "🔥 Viral" : (ttV + igV) > creator.avgPerPost * 1.5 ? "⭐ Hit" : undefined;
+    posts.push({
+      date: date.toISOString().split("T")[0],
+      ttViews: ttV,
+      igViews: igV,
+      milestone,
+      earnings: Math.round(earningsPerPost * 100) / 100,
+    });
+  }
+  return posts;
+}
+
+export const creatorsTimeSeries: Record<string, CreatorTimeSeriesPoint[]> = {};
+export const creatorsPosts: Record<string, CreatorPost[]> = {};
+creatorsData.forEach(c => {
+  creatorsTimeSeries[c.name] = generateTimeSeries(c);
+  creatorsPosts[c.name] = generatePosts(c);
+});
+
+export const creatorColors: Record<string, string> = {
+  Nick: "#3b82f6",
+  Abby: "#a855f7",
+  Luke: "#22c55e",
+  Jake: "#eab308",
+  Bobby: "#f97316",
+  Sheryl: "#ec4899",
+  Flo: "#06b6d4",
+};
+
+export function useCreators() { return creatorsData; }
+export function useCreatorTimeSeries(name: string) { return creatorsTimeSeries[name] || []; }
+export function useCreatorPosts(name: string) { return creatorsPosts[name] || []; }
+
 // ─── Data Access Hooks (mock implementations) ────────────────────────────────
 
 export function useTasks(): Task[] {
