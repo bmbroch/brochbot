@@ -7,8 +7,8 @@ export const useMockData = true;
 export type TaskStatus = "todo" | "in_progress" | "done";
 export type Priority = "low" | "medium" | "high";
 export type Product = "CLCP" | "ISK" | "SE";
-export type Assignee = "ben" | "sam" | "cara" | "dana" | "miles";
-export type ActivityType = "data_query" | "customer_lookup" | "report" | "cron_job" | "config_change" | "memory_update" | "task_completed";
+export type Assignee = "ben" | "sam" | "cara" | "dana" | "miles" | "penny" | "mia";
+export type ActivityType = "data_query" | "customer_lookup" | "report" | "cron_job" | "config_change" | "memory_update" | "task_completed" | "system_config";
 export type ActivityStatus = "success" | "error" | "running";
 
 export interface Task {
@@ -69,10 +69,12 @@ export interface TeamMember {
 
 export const teamMembers: TeamMember[] = [
   { id: "ben", name: "Ben", emoji: "👨‍💻", role: "Founder", description: "Founder & CEO. Sets the vision, reviews work, and keeps everything on track.", dataSources: ["All"], isAgent: false },
-  { id: "sam", name: "Sam", emoji: "🤝", role: "Hub & Orchestrator", description: "Coordinates all agents, manages workflows, and handles complex multi-step operations.", dataSources: ["Stripe", "Supabase", "Datafast", "GSC"], isAgent: true },
+  { id: "sam", name: "Sam", emoji: "🤝", role: "Chief of Staff", description: "Coordinates all agents, manages workflows, and handles complex multi-step operations.", dataSources: ["Stripe", "Supabase", "Datafast", "GSC"], isAgent: true },
   { id: "cara", name: "Cara", emoji: "🎧", role: "Customer Support", description: "Handles customer inquiries, subscription issues, and refund requests via Stripe.", dataSources: ["Stripe"], isAgent: true },
   { id: "dana", name: "Dana", emoji: "📊", role: "Data Analyst", description: "Runs analytics queries, generates reports, and monitors KPIs across all products.", dataSources: ["Supabase", "Datafast"], isAgent: true },
   { id: "miles", name: "Miles", emoji: "🚀", role: "GTM Lead", description: "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.", dataSources: ["Datafast", "GSC", "SEO Tools"], isAgent: true },
+  { id: "penny", name: "Penny", emoji: "📌", role: "Secretary", description: "Captures ideas, links, inspiration. Maintains the mood board. Keeps receipts on everything.", dataSources: ["Mood Board", "Workspace Files"], isAgent: true },
+  { id: "mia", name: "Mia", emoji: "📱", role: "Social Media Manager", description: "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram. Owns creator relationships.", dataSources: ["Google Sheets", "Datafast (UTM campaigns)"], isAgent: true },
 ];
 
 export const agentColors: Record<string, string> = {
@@ -81,6 +83,8 @@ export const agentColors: Record<string, string> = {
   cara: "#a855f7",
   dana: "#22c55e",
   miles: "#f97316",
+  penny: "#f43f5e",
+  mia: "#d946ef",
 };
 
 export const agentEmojis: Record<string, string> = {
@@ -89,6 +93,8 @@ export const agentEmojis: Record<string, string> = {
   cara: "🎧",
   dana: "📊",
   miles: "🚀",
+  penny: "📌",
+  mia: "📱",
 };
 
 // ─── Activity Config ─────────────────────────────────────────────────────────
@@ -101,6 +107,7 @@ export const activityTypeConfig: Record<ActivityType, { label: string; color: st
   config_change: { label: "Config", color: "text-orange-400", bg: "bg-orange-500/10", icon: "⚙️" },
   memory_update: { label: "Memory", color: "text-pink-400", bg: "bg-pink-500/10", icon: "🧠" },
   task_completed: { label: "Task Done", color: "text-green-400", bg: "bg-green-500/10", icon: "✅" },
+  system_config: { label: "System Config", color: "text-cyan-400", bg: "bg-cyan-500/10", icon: "🔧" },
 };
 
 export const productConfig: Record<Product, { label: string; color: string; bg: string }> = {
@@ -140,30 +147,28 @@ export const mockTasks: Task[] = [
   { _id: "t10", title: "SEO audit for Sales Echo", description: "Full technical SEO audit — meta tags, page speed, structured data, internal linking.", status: "todo", assignee: "miles", priority: "high", product: "SE", createdAt: now - h * 6, updatedAt: now - h * 6 },
 ];
 
+// Today's base: 8:00 AM = now - (current hour - 8) hours. We use fixed offsets from "now" for simplicity.
 export const mockActivities: Activity[] = [
-  { _id: "a1", agent: "sam", type: "config_change", title: "Mission Control deployed", description: "Built and deployed the Mission Control dashboard with all core pages.", product: "CLCP", status: "success", createdAt: now - h * 0.5 },
-  { _id: "a2", agent: "dana", type: "report", title: "Dana test run completed", description: "First successful analytics query — pulled revenue metrics from all 3 Stripe accounts.", product: "CLCP", status: "success", createdAt: now - h * 1 },
-  { _id: "a3", agent: "cara", type: "customer_lookup", title: "Cara test run completed", description: "Successfully looked up customer subscription and payment history via Stripe API.", product: "ISK", status: "success", createdAt: now - h * 1.5 },
-  { _id: "a4", agent: "sam", type: "config_change", title: "Stripe API connected", description: "Configured all three Stripe connected accounts with proper auth headers.", product: "CLCP", status: "success", createdAt: now - h * 3 },
-  { _id: "a5", agent: "dana", type: "data_query", title: "Supabase databases analyzed", description: "Crawled all Supabase tables across CLCP, ISK, and SE. Full schema documented.", status: "success", createdAt: now - h * 4 },
-  { _id: "a6", agent: "dana", type: "cron_job", title: "Morning report configured", description: "Set up daily 8 AM analytics report — pulls key metrics from Datafast and Stripe.", status: "success", createdAt: now - h * 5 },
-  { _id: "a7", agent: "miles", type: "data_query", title: "Datafast analytics reviewed", description: "Checked traffic and conversion data across all products. CLCP leading in organic traffic.", product: "CLCP", status: "success", createdAt: now - h * 6 },
-  { _id: "a8", agent: "sam", type: "memory_update", title: "Memory files organized", description: "Updated MEMORY.md and TOOLS.md with Stripe accounts, Supabase URLs, and Datafast keys.", status: "success", createdAt: now - h * 7 },
-  { _id: "a9", agent: "cara", type: "customer_lookup", title: "Refund request investigated", description: "Checked payment history for user requesting refund on Sales Echo — eligible for full refund.", product: "SE", status: "success", createdAt: now - h * 8 },
-  { _id: "a10", agent: "dana", type: "report", title: "Weekly analytics report", description: "Generated weekly traffic and conversion report. Visitors up 18% WoW for ISK.", product: "ISK", status: "success", createdAt: now - h * 24 },
-  { _id: "a11", agent: "miles", type: "data_query", title: "SEO keyword gap analysis", description: "Identified 45 high-volume keywords where competitors rank but we don't.", product: "CLCP", status: "success", createdAt: now - h * 25 },
-  { _id: "a12", agent: "sam", type: "cron_job", title: "Health check — all services", description: "Pinged all Supabase endpoints and Stripe webhooks. All systems operational.", status: "success", createdAt: now - h * 26 },
-  { _id: "a13", agent: "cara", type: "task_completed", title: "Customer onboarding email sent", description: "Sent welcome email to 12 new ISK subscribers from this week.", product: "ISK", status: "success", createdAt: now - h * 30 },
-  { _id: "a14", agent: "dana", type: "report", title: "Monthly revenue summary", description: "Full revenue breakdown for Feb 2026. MRR: $4,280 across all products.", status: "success", createdAt: now - h * 48 },
-  { _id: "a15", agent: "miles", type: "config_change", title: "UTM tracking configured", description: "Set up UTM parameters for all marketing campaigns. Integrated with Datafast.", product: "SE", status: "success", createdAt: now - h * 50 },
+  { _id: "a1", agent: "sam", type: "cron_job", title: "Nightly MC sync job scheduled", status: "success", createdAt: now - h * 0.25 },
+  { _id: "a2", agent: "sam", type: "task_completed", title: "Creators page built and deployed", status: "success", createdAt: now - h * 0.5 },
+  { _id: "a3", agent: "mia", type: "data_query", title: "UGC creator data analyzed — 7 creators, 835K+ views", description: "Pulled all creator metrics from Google Sheets. Analyzed TikTok and Instagram performance.", status: "success", createdAt: now - h * 0.75 },
+  { _id: "a4", agent: "mia", type: "system_config", title: "Google Sheets API connected", description: "Connected Google Service Account to read UGC creator spreadsheets.", status: "success", createdAt: now - h * 1 },
+  { _id: "a5", agent: "sam", type: "system_config", title: "Brave Search API connected", status: "success", createdAt: now - h * 1.5 },
+  { _id: "a6", agent: "sam", type: "task_completed", title: "Mission Control v2 with all pages", description: "Full dashboard with Activity, Tasks, Calendar, Creators, Memory, Team, and Office pages.", status: "success", createdAt: now - h * 2 },
+  { _id: "a7", agent: "sam", type: "memory_update", title: "SOUL.md personality upgrade", description: "Updated personality and voice guidelines for all agents.", status: "success", createdAt: now - h * 3 },
+  { _id: "a8", agent: "sam", type: "task_completed", title: "Mission Control v1 built and deployed", status: "success", createdAt: now - h * 4 },
+  { _id: "a9", agent: "cara", type: "customer_lookup", title: "Cara test run — active subscriptions", description: "Successfully looked up customer subscription and payment history via Stripe API.", status: "success", createdAt: now - h * 4.5 },
+  { _id: "a10", agent: "dana", type: "report", title: "Dana test run — weekly analytics", description: "First successful analytics query — pulled revenue metrics from all 3 Stripe accounts.", status: "success", createdAt: now - h * 4.75 },
+  { _id: "a11", agent: "sam", type: "cron_job", title: "Morning analytics report configured", description: "Set up daily 8 AM analytics report cron job with Dana.", status: "success", createdAt: now - h * 5 },
+  { _id: "a12", agent: "dana", type: "system_config", title: "All 3 Datafast dashboards connected", description: "Connected Datafast analytics for CLCP, ISK, and SE.", status: "success", createdAt: now - h * 5.5 },
+  { _id: "a13", agent: "dana", type: "data_query", title: "Supabase databases analyzed", description: "Crawled all Supabase tables across CLCP, ISK, and SE. Full schema documented.", status: "success", createdAt: now - h * 6 },
+  { _id: "a14", agent: "sam", type: "system_config", title: "Stripe API connected", description: "Configured all three Stripe connected accounts with proper auth headers.", status: "success", createdAt: now - h * 6.5 },
+  { _id: "a15", agent: "sam", type: "system_config", title: "Telegram connected", description: "Connected Telegram bot for agent communication.", status: "success", createdAt: now - h * 8 },
 ];
 
 export const mockScheduledTasks: ScheduledTask[] = [
-  { _id: "s1", name: "Morning Analytics Report", schedule: "0 8 * * *", nextRun: now + h * 12, lastRun: now - h * 12, agent: "dana", description: "Pull key metrics from Datafast and Stripe, generate summary report.", status: "active", product: "CLCP" },
-  { _id: "s2", name: "Nightly Growth Analysis", schedule: "0 2 * * *", agent: "miles", description: "Analyze daily traffic patterns, keyword rankings, and conversion funnels.", status: "active", product: "SE" },
-  { _id: "s3", name: "Service Health Check", schedule: "*/30 * * * *", nextRun: now + h * 0.5, lastRun: now - h * 0.25, agent: "sam", description: "Ping all API endpoints and verify webhook delivery.", status: "active" },
-  { _id: "s4", name: "Subscription Sync", schedule: "0 */6 * * *", nextRun: now + h * 4, lastRun: now - h * 2, agent: "cara", description: "Sync subscription status across Stripe and Supabase.", status: "active", product: "ISK" },
-  { _id: "s5", name: "Weekly SEO Report", schedule: "0 9 * * 1", nextRun: now + d * 5, agent: "miles", description: "Full SEO performance report with ranking changes and traffic analysis.", status: "active", product: "CLCP" },
+  { _id: "s1", name: "Morning Analytics Report", schedule: "0 8 * * *", nextRun: now + h * 12, lastRun: now - h * 12, agent: "dana", description: "Pull key metrics from Datafast and Stripe, generate summary report.", status: "active" },
+  { _id: "s2", name: "Nightly Mission Control Sync", schedule: "0 2 * * *", nextRun: now + h * 6, agent: "sam", description: "Sync live data into Mission Control dashboard. Update activity feed, tasks, and metrics.", status: "active" },
 ];
 
 export const mockDocuments: MemoryDocument[] = [
@@ -216,13 +221,13 @@ export interface CreatorPost {
 }
 
 export const creatorsData: Creator[] = [
-  { name: "Nick", posts: 39, ttViews: 331710, igViews: 50608, startDate: "2025-12-23", earnings: 975, avgPerPost: 9800 },
-  { name: "Abby", posts: 23, ttViews: 261095, igViews: 573481, startDate: "2026-01-08", earnings: 575, avgPerPost: 36286 },
+  { name: "Nick", posts: 39, ttViews: 2663086, igViews: 124821, startDate: "2025-12-23", earnings: 975, avgPerPost: 71484 },
+  { name: "Abby", posts: 23, ttViews: 274810, igViews: 607198, startDate: "2026-01-08", earnings: 575, avgPerPost: 38348 },
   { name: "Luke", posts: 24, ttViews: 61046, igViews: 306120, startDate: "2026-01-19", earnings: 600, avgPerPost: 15298 },
   { name: "Jake", posts: 24, ttViews: 17427, igViews: 63777, startDate: "2026-01-23", earnings: 600, avgPerPost: 3383 },
-  { name: "Bobby", posts: 16, ttViews: 10364, igViews: 14621, startDate: "2026-01-30", earnings: 400, avgPerPost: 1562 },
-  { name: "Sheryl", posts: 5, ttViews: 2190, igViews: 4084, startDate: "2026-02-11", earnings: 125, avgPerPost: 1255 },
-  { name: "Flo", posts: 3, ttViews: 979, igViews: 12833, startDate: "2026-02-12", earnings: 75, avgPerPost: 4604 },
+  { name: "Bobby", posts: 16, ttViews: 11212, igViews: 24448, startDate: "2026-01-30", earnings: 400, avgPerPost: 2228 },
+  { name: "Flo", posts: 3, ttViews: 979, igViews: 31233, startDate: "2026-02-12", earnings: 75, avgPerPost: 10737 },
+  { name: "Sheryl", posts: 5, ttViews: 2541, igViews: 4477, startDate: "2026-02-11", earnings: 125, avgPerPost: 1403 },
 ];
 
 // Generate fake time-series data for each creator

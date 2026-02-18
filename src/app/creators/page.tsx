@@ -4,6 +4,10 @@ import Shell from "@/components/Shell";
 import Link from "next/link";
 import { useState } from "react";
 import { useCreators, creatorsData, creatorsTimeSeries, creatorColors } from "@/lib/data-provider";
+import {
+  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+} from "recharts";
 
 function fmt(n: number): string {
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
@@ -21,6 +25,12 @@ function StatCard({ label, value, sub }: { label: string; value: string; sub?: s
   );
 }
 
+const darkTooltipStyle = {
+  contentStyle: { backgroundColor: "#1a1a1a", border: "1px solid #333", borderRadius: 8, fontSize: 12 },
+  labelStyle: { color: "#a1a1aa" },
+  itemStyle: { color: "#e4e4e7" },
+};
+
 export default function CreatorsPage() {
   const creators = useCreators();
   const [enabledCreators, setEnabledCreators] = useState<Record<string, boolean>>(() => {
@@ -35,7 +45,7 @@ export default function CreatorsPage() {
 
   const sorted = [...creators].sort((a, b) => (b.ttViews + b.igViews) - (a.ttViews + a.igViews));
 
-  // Build unified date set for chart
+  // Build unified time series data for the line chart
   const allDatesMap: Record<string, boolean> = {};
   creators.forEach(c => {
     if (enabledCreators[c.name]) {
@@ -44,24 +54,25 @@ export default function CreatorsPage() {
   });
   const dates = Object.keys(allDatesMap).sort();
 
-  // Chart dimensions
-  const chartW = 800, chartH = 250, padL = 50, padB = 30, padT = 10, padR = 10;
-  const innerW = chartW - padL - padR;
-  const innerH = chartH - padT - padB;
-
-  let maxViews = 0;
-  creators.forEach(c => {
-    if (!enabledCreators[c.name]) return;
-    const ts = creatorsTimeSeries[c.name];
-    if (ts?.length) {
-      const last = ts[ts.length - 1];
-      maxViews = Math.max(maxViews, last.ttViews + last.igViews);
-    }
+  const lineChartData = dates.map(date => {
+    const point: Record<string, string | number> = { date: date.slice(5) };
+    creators.forEach(c => {
+      if (!enabledCreators[c.name]) return;
+      const ts = creatorsTimeSeries[c.name] || [];
+      const match = ts.find(p => p.date === date);
+      if (match) {
+        point[c.name] = match.ttViews + match.igViews;
+      }
+    });
+    return point;
   });
-  if (maxViews === 0) maxViews = 1;
 
-  // Platform comparison max
-  const maxPlatform = Math.max(...creators.map(c => Math.max(c.ttViews, c.igViews)));
+  // Bar chart data for platform comparison
+  const barData = sorted.map(c => ({
+    name: c.name,
+    TikTok: c.ttViews,
+    Instagram: c.igViews,
+  }));
 
   const toggle = (name: string) => {
     setEnabledCreators(prev => ({ ...prev, [name]: !prev[name] }));
@@ -95,12 +106,8 @@ export default function CreatorsPage() {
                   <th className="text-left px-5 py-3 font-medium">#</th>
                   <th className="text-left px-5 py-3 font-medium">Creator</th>
                   <th className="text-right px-5 py-3 font-medium">Posts</th>
-                  <th className="text-right px-5 py-3 font-medium">
-                    <span className="text-cyan-400">TikTok</span>
-                  </th>
-                  <th className="text-right px-5 py-3 font-medium">
-                    <span className="text-pink-400">Instagram</span>
-                  </th>
+                  <th className="text-right px-5 py-3 font-medium"><span className="text-cyan-400">TikTok</span></th>
+                  <th className="text-right px-5 py-3 font-medium"><span className="text-pink-400">Instagram</span></th>
                   <th className="text-right px-5 py-3 font-medium">Total Views</th>
                   <th className="text-right px-5 py-3 font-medium">Avg/Post</th>
                   <th className="text-right px-5 py-3 font-medium">Earnings</th>
@@ -123,12 +130,8 @@ export default function CreatorsPage() {
                         </Link>
                       </td>
                       <td className="px-5 py-3 text-right text-zinc-400">{c.posts}</td>
-                      <td className="px-5 py-3 text-right">
-                        <span className="text-cyan-400">{fmt(c.ttViews)}</span>
-                      </td>
-                      <td className="px-5 py-3 text-right">
-                        <span className="text-pink-400">{fmt(c.igViews)}</span>
-                      </td>
+                      <td className="px-5 py-3 text-right"><span className="text-cyan-400">{fmt(c.ttViews)}</span></td>
+                      <td className="px-5 py-3 text-right"><span className="text-pink-400">{fmt(c.igViews)}</span></td>
                       <td className="px-5 py-3 text-right font-semibold">{fmt(total)}</td>
                       <td className="px-5 py-3 text-right text-zinc-400">{fmt(c.avgPerPost)}</td>
                       <td className="px-5 py-3 text-right text-green-400">${c.earnings}</td>
@@ -145,7 +148,7 @@ export default function CreatorsPage() {
           </div>
         </div>
 
-        {/* Views Over Time Chart */}
+        {/* Views Over Time Chart — recharts */}
         <div className="rounded-xl bg-[#141414] border border-[#262626] p-5 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold">Views Over Time</h2>
@@ -162,69 +165,33 @@ export default function CreatorsPage() {
               ))}
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <svg viewBox={`0 0 ${chartW} ${chartH}`} className="w-full" style={{ minWidth: 500 }}>
-              {/* Y-axis labels */}
-              {[0, 0.25, 0.5, 0.75, 1].map(pct => {
-                const y = padT + innerH * (1 - pct);
-                const val = Math.round(maxViews * pct);
-                return (
-                  <g key={pct}>
-                    <line x1={padL} y1={y} x2={chartW - padR} y2={y} stroke="#262626" strokeWidth="0.5" />
-                    <text x={padL - 5} y={y + 3} textAnchor="end" className="fill-zinc-600" fontSize="9">{fmt(val)}</text>
-                  </g>
-                );
-              })}
-              {/* Lines */}
-              {creators.filter(c => enabledCreators[c.name]).map(c => {
-                const ts = creatorsTimeSeries[c.name] || [];
-                if (ts.length < 2) return null;
-                const pathD = ts.map((p, i) => {
-                  const dateIdx = dates.indexOf(p.date);
-                  const x = padL + (dateIdx / Math.max(1, dates.length - 1)) * innerW;
-                  const y = padT + innerH * (1 - (p.ttViews + p.igViews) / maxViews);
-                  return `${i === 0 ? "M" : "L"}${x},${y}`;
-                }).join(" ");
-                return <path key={c.name} d={pathD} fill="none" stroke={creatorColors[c.name]} strokeWidth="2" strokeLinejoin="round" />;
-              })}
-              {/* X-axis labels (sparse) */}
-              {dates.filter((_, i) => i % Math.max(1, Math.floor(dates.length / 6)) === 0).map(date => {
-                const idx = dates.indexOf(date);
-                const x = padL + (idx / Math.max(1, dates.length - 1)) * innerW;
-                return <text key={date} x={x} y={chartH - 5} textAnchor="middle" className="fill-zinc-600" fontSize="9">{date.slice(5)}</text>;
-              })}
-            </svg>
-          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <LineChart data={lineChartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#262626" />
+              <XAxis dataKey="date" tick={{ fill: "#71717a", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#262626" }} />
+              <YAxis tick={{ fill: "#71717a", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#262626" }} tickFormatter={fmt} />
+              <Tooltip {...darkTooltipStyle} formatter={(value) => fmt(Number(value))} />
+              {creators.filter(c => enabledCreators[c.name]).map(c => (
+                <Line key={c.name} type="monotone" dataKey={c.name} stroke={creatorColors[c.name]} strokeWidth={2} dot={false} />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
         </div>
 
-        {/* Platform Comparison */}
+        {/* Platform Comparison — recharts BarChart */}
         <div className="rounded-xl bg-[#141414] border border-[#262626] p-5">
           <h2 className="text-sm font-semibold mb-4">Platform Comparison</h2>
-          <div className="space-y-4">
-            {sorted.map(c => (
-              <div key={c.name} className="flex items-center gap-3">
-                <span className="text-sm font-medium w-16 text-right">{c.name}</span>
-                <div className="flex-1 flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <div className="h-4 rounded-full bg-cyan-500/20 transition-all duration-500" style={{ width: `${(c.ttViews / maxPlatform) * 100}%` }}>
-                      <div className="h-full rounded-full bg-cyan-500" style={{ width: "100%" }} />
-                    </div>
-                    <span className="text-[11px] text-cyan-400 w-14 text-right">{fmt(c.ttViews)}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-4 rounded-full bg-pink-500/20 transition-all duration-500" style={{ width: `${(c.igViews / maxPlatform) * 100}%` }}>
-                      <div className="h-full rounded-full bg-pink-500" style={{ width: "100%" }} />
-                    </div>
-                    <span className="text-[11px] text-pink-400 w-14 text-right">{fmt(c.igViews)}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <div className="flex items-center gap-4 mt-2 text-[11px] text-zinc-500">
-              <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-cyan-500" /> TikTok</span>
-              <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-pink-500" /> Instagram</span>
-            </div>
-          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={barData} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" stroke="#262626" horizontal={false} />
+              <XAxis type="number" tick={{ fill: "#71717a", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#262626" }} tickFormatter={fmt} />
+              <YAxis type="category" dataKey="name" tick={{ fill: "#e4e4e7", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "#262626" }} width={60} />
+              <Tooltip {...darkTooltipStyle} formatter={(value) => fmt(Number(value))} />
+              <Legend wrapperStyle={{ fontSize: 11, color: "#a1a1aa" }} />
+              <Bar dataKey="TikTok" fill="#06b6d4" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="Instagram" fill="#ec4899" radius={[0, 4, 4, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </Shell>

@@ -180,11 +180,86 @@ function BenAvatar({ isWorking, color }: { isWorking: boolean; color: string }) 
   );
 }
 
+function PennyBot({ isWorking, color }: { isWorking: boolean; color: string }) {
+  return (
+    <svg width="80" height="90" viewBox="0 0 80 90" fill="none" className={isWorking ? "animate-typing" : "animate-float"} style={{ animationDelay: "2.0s" }}>
+      {/* Body */}
+      <rect x="16" y="30" width="48" height="42" rx="12" fill={color} fillOpacity="0.15" stroke={color} strokeWidth="2"/>
+      {/* Clipboard on body */}
+      <rect x="28" y="38" width="24" height="28" rx="3" fill={color} fillOpacity="0.1" stroke={color} strokeWidth="1.5"/>
+      <rect x="34" y="35" width="12" height="6" rx="2" fill={color} fillOpacity="0.3" stroke={color} strokeWidth="1"/>
+      {/* Clipboard lines */}
+      <line x1="32" y1="48" x2="48" y2="48" stroke={color} strokeWidth="1.5" strokeOpacity="0.4"/>
+      <line x1="32" y1="53" x2="44" y2="53" stroke={color} strokeWidth="1.5" strokeOpacity="0.3"/>
+      <line x1="32" y1="58" x2="46" y2="58" stroke={color} strokeWidth="1.5" strokeOpacity="0.2"/>
+      {/* Head */}
+      <rect x="12" y="4" width="56" height="32" rx="14" fill={color} fillOpacity="0.2" stroke={color} strokeWidth="2"/>
+      {/* Eyes */}
+      <circle cx="30" cy="18" r="3.5" fill={color}/>
+      <circle cx="50" cy="18" r="3.5" fill={color}/>
+      {/* Pin on head */}
+      <circle cx="56" cy="8" r="4" fill={color} fillOpacity="0.6" stroke={color} strokeWidth="1">
+        {isWorking && <animate attributeName="fillOpacity" values="0.4;0.8;0.4" dur="1.5s" repeatCount="indefinite"/>}
+      </circle>
+      <line x1="56" y1="12" x2="56" y2="16" stroke={color} strokeWidth="1.5"/>
+      {/* Smile */}
+      <path d="M33 26 Q40 30 47 26" stroke={color} strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Arms */}
+      <rect x="6" y="38" width="10" height="24" rx="5" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5"/>
+      <rect x="64" y="38" width="10" height="24" rx="5" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5"/>
+      {/* Legs */}
+      <rect x="24" y="72" width="12" height="14" rx="6" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5"/>
+      <rect x="44" y="72" width="12" height="14" rx="6" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5"/>
+    </svg>
+  );
+}
+
+function MiaBot({ isWorking, color }: { isWorking: boolean; color: string }) {
+  return (
+    <svg width="80" height="90" viewBox="0 0 80 90" fill="none" className={isWorking ? "animate-typing" : "animate-float"} style={{ animationDelay: "2.4s" }}>
+      {/* Body */}
+      <rect x="16" y="30" width="48" height="42" rx="12" fill={color} fillOpacity="0.15" stroke={color} strokeWidth="2"/>
+      {/* Phone on body */}
+      <rect x="30" y="38" width="20" height="30" rx="4" fill={color} fillOpacity="0.1" stroke={color} strokeWidth="1.5"/>
+      <rect x="33" y="42" width="14" height="20" rx="2" fill={color} fillOpacity="0.15"/>
+      {/* Play button / social icon on phone screen */}
+      <circle cx="40" cy="52" r="5" fill={color} fillOpacity="0.3">
+        {isWorking && <animate attributeName="fillOpacity" values="0.2;0.5;0.2" dur="1s" repeatCount="indefinite"/>}
+      </circle>
+      <polygon points="38,49 38,55 43,52" fill={color} fillOpacity="0.5"/>
+      {/* Head */}
+      <rect x="12" y="4" width="56" height="32" rx="14" fill={color} fillOpacity="0.2" stroke={color} strokeWidth="2"/>
+      {/* Eyes */}
+      <circle cx="30" cy="18" r="3.5" fill={color}/>
+      <circle cx="50" cy="18" r="3.5" fill={color}/>
+      {/* Wink when working */}
+      {isWorking && <line x1="47" y1="18" x2="53" y2="18" stroke={color} strokeWidth="2" strokeLinecap="round"/>}
+      {/* Smile */}
+      <path d="M32 26 Q40 32 48 26" stroke={color} strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Signal waves from head */}
+      <path d="M60 6 Q66 2 62 -2" stroke={color} strokeWidth="1.5" strokeLinecap="round" fill="none" strokeOpacity="0.4">
+        {isWorking && <animate attributeName="strokeOpacity" values="0.2;0.6;0.2" dur="1.2s" repeatCount="indefinite"/>}
+      </path>
+      <path d="M64 10 Q72 4 66 -2" stroke={color} strokeWidth="1" strokeLinecap="round" fill="none" strokeOpacity="0.3">
+        {isWorking && <animate attributeName="strokeOpacity" values="0.1;0.4;0.1" dur="1.2s" repeatCount="indefinite"/>}
+      </path>
+      {/* Arms */}
+      <rect x="6" y="38" width="10" height="24" rx="5" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5"/>
+      <rect x="64" y="38" width="10" height="24" rx="5" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5"/>
+      {/* Legs */}
+      <rect x="24" y="72" width="12" height="14" rx="6" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5"/>
+      <rect x="44" y="72" width="12" height="14" rx="6" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5"/>
+    </svg>
+  );
+}
+
 const botComponents: Record<string, React.FC<{ isWorking: boolean; color: string }>> = {
   sam: SamBot,
   cara: CaraBot,
   dana: DanaBot,
   miles: MilesBot,
+  penny: PennyBot,
+  mia: MiaBot,
   ben: BenAvatar,
 };
 
@@ -307,13 +382,15 @@ export default function OfficePage() {
     };
   };
 
-  // Semicircle layout positions
+  // Layout positions for 7 workstations
   const positions = [
-    { id: "sam" as const, x: 280, y: 120 },    // Center back (hub)
-    { id: "cara" as const, x: 80, y: 180 },     // Left
-    { id: "dana" as const, x: 480, y: 180 },    // Right
-    { id: "miles" as const, x: 130, y: 320 },   // Front left
-    { id: "ben" as const, x: 430, y: 320 },     // Front right (CEO desk)
+    { id: "sam" as const, x: 280, y: 80 },      // Center back (hub)
+    { id: "cara" as const, x: 60, y: 160 },      // Left row
+    { id: "dana" as const, x: 500, y: 160 },     // Right row
+    { id: "miles" as const, x: 60, y: 310 },     // Front left
+    { id: "penny" as const, x: 280, y: 230 },    // Center middle
+    { id: "mia" as const, x: 500, y: 310 },      // Front right
+    { id: "ben" as const, x: 280, y: 400 },      // Front center (CEO desk)
   ];
 
   return (
@@ -355,9 +432,9 @@ export default function OfficePage() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-gradient-to-b from-blue-500/[0.03] to-transparent rounded-full" />
 
           <svg
-            viewBox="0 0 650 500"
+            viewBox="0 0 700 580"
             className="w-full relative z-10"
-            style={{ minHeight: "500px" }}
+            style={{ minHeight: "580px" }}
           >
             {/* Floor perspective lines */}
             <defs>
@@ -366,7 +443,7 @@ export default function OfficePage() {
                 <stop offset="100%" stopColor="white" stopOpacity="0"/>
               </radialGradient>
             </defs>
-            <rect width="650" height="500" fill="url(#floorGlow)"/>
+            <rect width="700" height="580" fill="url(#floorGlow)"/>
 
             {/* Workstations */}
             {positions.map((pos) => {
@@ -394,7 +471,7 @@ export default function OfficePage() {
         </div>
 
         {/* Quick status cards below */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mt-4">
           {positions.map((pos) => {
             const info = getAgentInfo(pos.id);
             const color = agentColors[pos.id] || "#3b82f6";

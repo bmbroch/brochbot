@@ -4,12 +4,22 @@ import Shell from "@/components/Shell";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { creatorsData, creatorsTimeSeries, creatorsPosts, creatorColors } from "@/lib/data-provider";
+import {
+  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from "recharts";
 
 function fmt(n: number): string {
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
   if (n >= 1_000) return (n / 1_000).toFixed(n >= 10_000 ? 0 : 1) + "K";
   return n.toLocaleString();
 }
+
+const darkTooltipStyle = {
+  contentStyle: { backgroundColor: "#1a1a1a", border: "1px solid #333", borderRadius: 8, fontSize: 12 },
+  labelStyle: { color: "#a1a1aa" },
+  itemStyle: { color: "#e4e4e7" },
+};
 
 export default function CreatorDetailPage() {
   const params = useParams();
@@ -35,22 +45,23 @@ export default function CreatorDetailPage() {
   const ttPct = total > 0 ? Math.round((creator.ttViews / total) * 100) : 50;
   const igPct = 100 - ttPct;
 
-  // Chart
-  const chartW = 800, chartH = 220, padL = 50, padB = 30, padT = 10, padR = 10;
-  const innerW = chartW - padL - padR;
-  const innerH = chartH - padT - padB;
-  const maxV = ts.length ? Math.max(...ts.map(p => p.ttViews + p.igViews), 1) : 1;
+  // Line chart data
+  const lineData = ts.map(p => ({
+    date: p.date.slice(5),
+    total: p.ttViews + p.igViews,
+    TikTok: p.ttViews,
+    Instagram: p.igViews,
+  }));
 
-  const linePath = ts.map((p, i) => {
-    const x = padL + (i / Math.max(1, ts.length - 1)) * innerW;
-    const y = padT + innerH * (1 - (p.ttViews + p.igViews) / maxV);
-    return `${i === 0 ? "M" : "L"}${x},${y}`;
-  }).join(" ");
+  // Pie chart data
+  const pieData = [
+    { name: "TikTok", value: creator.ttViews, color: "#06b6d4" },
+    { name: "Instagram", value: creator.igViews, color: "#ec4899" },
+  ];
 
   return (
     <Shell>
       <div className="p-6 lg:p-8 max-w-5xl mx-auto">
-        {/* Back */}
         <Link href="/creators" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors mb-4 inline-block">← Back to Creators</Link>
 
         {/* Header */}
@@ -85,44 +96,35 @@ export default function CreatorDetailPage() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          {/* Views Chart */}
+          {/* Views Chart — recharts */}
           <div className="lg:col-span-2 rounded-xl bg-[#141414] border border-[#262626] p-5">
             <h2 className="text-sm font-semibold mb-4">Views Over Time</h2>
-            <svg viewBox={`0 0 ${chartW} ${chartH}`} className="w-full">
-              {[0, 0.25, 0.5, 0.75, 1].map(pct => {
-                const y = padT + innerH * (1 - pct);
-                return (
-                  <g key={pct}>
-                    <line x1={padL} y1={y} x2={chartW - padR} y2={y} stroke="#262626" strokeWidth="0.5" />
-                    <text x={padL - 5} y={y + 3} textAnchor="end" className="fill-zinc-600" fontSize="9">{fmt(Math.round(maxV * pct))}</text>
-                  </g>
-                );
-              })}
-              <path d={linePath} fill="none" stroke={color} strokeWidth="2.5" strokeLinejoin="round" />
-              {ts.filter((_, i) => i % Math.max(1, Math.floor(ts.length / 5)) === 0).map((p, idx) => {
-                const i = ts.indexOf(p);
-                const x = padL + (i / Math.max(1, ts.length - 1)) * innerW;
-                return <text key={idx} x={x} y={chartH - 5} textAnchor="middle" className="fill-zinc-600" fontSize="9">{p.date.slice(5)}</text>;
-              })}
-            </svg>
+            <ResponsiveContainer width="100%" height={220}>
+              <LineChart data={lineData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#262626" />
+                <XAxis dataKey="date" tick={{ fill: "#71717a", fontSize: 9 }} tickLine={false} axisLine={{ stroke: "#262626" }} />
+                <YAxis tick={{ fill: "#71717a", fontSize: 9 }} tickLine={false} axisLine={{ stroke: "#262626" }} tickFormatter={fmt} />
+                <Tooltip {...darkTooltipStyle} formatter={(value) => fmt(Number(value))} />
+                <Line type="monotone" dataKey="TikTok" stroke="#06b6d4" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="Instagram" stroke="#ec4899" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
 
-          {/* Platform Split */}
+          {/* Platform Split — recharts PieChart */}
           <div className="rounded-xl bg-[#141414] border border-[#262626] p-5 flex flex-col items-center justify-center">
             <h2 className="text-sm font-semibold mb-4">Platform Split</h2>
-            <svg viewBox="0 0 120 120" className="w-32 h-32">
-              {/* Pie chart */}
-              <circle cx="60" cy="60" r="50" fill="none" stroke="#06b6d4" strokeWidth="20"
-                strokeDasharray={`${ttPct * 3.14} ${igPct * 3.14}`}
-                strokeDashoffset="0" transform="rotate(-90 60 60)" />
-              <circle cx="60" cy="60" r="50" fill="none" stroke="#ec4899" strokeWidth="20"
-                strokeDasharray={`${igPct * 3.14} ${ttPct * 3.14}`}
-                strokeDashoffset={`${-ttPct * 3.14}`} transform="rotate(-90 60 60)" />
-              <circle cx="60" cy="60" r="40" fill="#141414" />
-              <text x="60" y="56" textAnchor="middle" className="fill-white" fontSize="14" fontWeight="bold">{fmt(total)}</text>
-              <text x="60" y="70" textAnchor="middle" className="fill-zinc-500" fontSize="8">total views</text>
-            </svg>
-            <div className="flex items-center gap-4 mt-4 text-[11px]">
+            <ResponsiveContainer width="100%" height={160}>
+              <PieChart>
+                <Pie data={pieData} cx="50%" cy="50%" innerRadius={40} outerRadius={60} dataKey="value" strokeWidth={0}>
+                  {pieData.map((entry, i) => (
+                    <Cell key={i} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #333", borderRadius: 8, fontSize: 12 }} formatter={(value) => fmt(Number(value))} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="flex items-center gap-4 text-[11px]">
               <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-cyan-500" /> TikTok {ttPct}%</span>
               <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-pink-500" /> IG {igPct}%</span>
             </div>

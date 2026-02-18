@@ -26,7 +26,7 @@ export default function Home() {
     groups[key].push(a);
   });
 
-  const agents = ["all", "sam", "cara", "dana", "miles"];
+  const agents = ["all", "sam", "cara", "dana", "miles", "penny", "mia"];
   const types = ["all", ...Object.keys(activityTypeConfig)];
   const products = ["all", "CLCP", "ISK", "SE"];
 
