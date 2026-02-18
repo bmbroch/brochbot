@@ -2,27 +2,43 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  tasks: defineTable({
+    title: v.string(),
+    description: v.optional(v.string()),
+    status: v.string(),
+    assignee: v.string(),
+    priority: v.string(),
+    product: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_status", ["status"])
+    .index("by_assignee", ["assignee"]),
+
   activities: defineTable({
-    timestamp: v.number(),
+    agent: v.string(),
     type: v.string(),
     title: v.string(),
-    description: v.string(),
-    product: v.string(),
+    description: v.optional(v.string()),
+    product: v.optional(v.string()),
     status: v.string(),
     metadata: v.optional(v.any()),
+    createdAt: v.number(),
   })
-    .index("by_timestamp", ["timestamp"])
-    .index("by_type", ["type", "timestamp"])
-    .index("by_product", ["product", "timestamp"]),
+    .index("by_agent", ["agent"])
+    .index("by_type", ["type"])
+    .index("by_createdAt", ["createdAt"]),
 
   scheduledTasks: defineTable({
     name: v.string(),
     schedule: v.string(),
-    nextRun: v.number(),
+    nextRun: v.optional(v.number()),
     lastRun: v.optional(v.number()),
+    agent: v.string(),
+    description: v.optional(v.string()),
     status: v.string(),
-    description: v.string(),
-  }).index("by_nextRun", ["nextRun"]),
+    product: v.optional(v.string()),
+  }).index("by_agent", ["agent"]),
 
   documents: defineTable({
     title: v.string(),
@@ -30,8 +46,8 @@ export default defineSchema({
     type: v.string(),
     path: v.string(),
     updatedAt: v.number(),
-  })
-    .index("by_type", ["type"])
-    .searchIndex("search_title", { searchField: "title" })
-    .searchIndex("search_content", { searchField: "content" }),
+  }).searchIndex("search_content", {
+    searchField: "content",
+    filterFields: ["type"],
+  }),
 });
