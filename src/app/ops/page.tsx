@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Shell from "@/components/Shell";
-import { agentColors, teamMembers, useTeam } from "@/lib/data-provider";
+import { useAgentMap } from "@/lib/data-provider";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -71,22 +71,16 @@ function isThisWeek(iso: string): boolean {
   return d >= start && d < end;
 }
 
-function getAvatar(agentId: string): string | undefined {
-  const member = teamMembers.find(m => m.id === agentId);
-  return member?.avatar;
-}
-
-function getAgentName(agentId: string): string {
-  const member = teamMembers.find(m => m.id === agentId);
-  return member?.name ?? agentId.charAt(0).toUpperCase() + agentId.slice(1);
-}
-
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function AgentAvatar({ agentId, size = 32 }: { agentId: string; size?: number }) {
-  const avatar = getAvatar(agentId);
-  const color = agentColors[agentId] || "#6b7280";
-  const name = getAgentName(agentId);
+type AgentMap = Record<string, { name: string; color: string; emoji: string; avatar?: string; role: string }>;
+
+function AgentAvatar({ agentId, size = 32, agentMap }: { agentId: string; size?: number; agentMap: AgentMap }) {
+  const info = agentMap[agentId];
+  const avatar = info?.avatar;
+  const color = info?.color || "#6b7280";
+  const name = info?.name || agentId.charAt(0).toUpperCase() + agentId.slice(1);
+
   if (avatar) {
     return (
       <Image
@@ -131,6 +125,7 @@ function StatusBadge({ status }: { status: string }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function SurveillancePage() {
+  const agentMap = useAgentMap();
   const [runs, setRuns] = useState<SubAgentRun[]>([]);
   const [samActivities, setSamActivities] = useState<McActivity[]>([]);
   const [loading, setLoading] = useState(true);
@@ -162,7 +157,6 @@ export default function SurveillancePage() {
     ratio > 0.8 ? "bg-green-500" : ratio >= 0.5 ? "bg-yellow-500" : "bg-red-500";
 
   // ── All-time fallback for feed ────────────────────────────────────────────
-  // Show all runs, most recent first (already sorted above)
   const feedRuns = runs;
 
   return (
@@ -256,8 +250,9 @@ export default function SurveillancePage() {
             <div className="rounded-xl border border-[#222] overflow-hidden">
               <div className="max-h-[480px] overflow-y-auto">
                 {feedRuns.map((run, i) => {
-                  const color = agentColors[run.agent] || "#6b7280";
-                  const agentName = getAgentName(run.agent);
+                  const info = agentMap[run.agent];
+                  const color = info?.color || "#6b7280";
+                  const agentName = info?.name || run.agent.charAt(0).toUpperCase() + run.agent.slice(1);
                   return (
                     <div
                       key={run.id}
@@ -265,7 +260,7 @@ export default function SurveillancePage() {
                         i < feedRuns.length - 1 ? "border-b border-[#1a1a1a]" : ""
                       }`}
                     >
-                      <AgentAvatar agentId={run.agent} size={32} />
+                      <AgentAvatar agentId={run.agent} size={32} agentMap={agentMap} />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate" style={{ color }}>
                           {agentName}

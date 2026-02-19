@@ -2,13 +2,15 @@
   {
     "id": "ben",
     "name": "Ben",
-    "emoji": "👨‍💻",
+    "emoji": "\ud83d\udc68\u200d\ud83d\udcbb",
     "avatar": "/avatars/ben.jpg",
     "role": "Founder",
     "color": "#f59e0b",
     "gradient": "from-zinc-700/30 to-slate-800/20",
     "description": "Founder & CEO. Sets the vision, reviews work, and keeps everything on track.",
-    "dataSources": ["All"],
+    "dataSources": [
+      "All"
+    ],
     "recurringTasks": [],
     "isAgent": false,
     "sortOrder": 0
@@ -16,27 +18,37 @@
   {
     "id": "sam",
     "name": "Sam",
-    "emoji": "🤝",
+    "emoji": "\ud83e\udd1d",
     "avatar": "/avatars/sam.png",
     "role": "Chief of Staff",
     "color": "#3b82f6",
     "gradient": "from-blue-700/30 to-blue-900/20",
     "description": "Coordinates all agents, manages workflows, and handles complex multi-step operations.",
-    "dataSources": ["Stripe", "Supabase", "Datafast", "GSC"],
-    "recurringTasks": ["Nightly Briefing (2 AM CAT daily)"],
+    "dataSources": [
+      "Stripe",
+      "Supabase",
+      "Datafast",
+      "GSC"
+    ],
+    "recurringTasks": [
+      "Nightly Briefing (2 AM CAT daily)"
+    ],
     "isAgent": true,
     "sortOrder": 1
   },
   {
     "id": "devin",
     "name": "Devin",
-    "emoji": "🛠️",
+    "emoji": "\ud83d\udee0\ufe0f",
     "avatar": "/avatars/dev.png",
     "role": "Web Developer",
     "color": "#f59e0b",
     "gradient": "from-yellow-700/30 to-yellow-900/20",
     "description": "Owns the Mission Control codebase. Handles all frontend changes, bug fixes, and deployments.",
-    "dataSources": ["GitHub", "Vercel"],
+    "dataSources": [
+      "GitHub",
+      "Vercel"
+    ],
     "recurringTasks": [],
     "isAgent": true,
     "sortOrder": 2
@@ -44,13 +56,15 @@
   {
     "id": "cara",
     "name": "Cara",
-    "emoji": "🎧",
+    "emoji": "\ud83c\udfa7",
     "avatar": "/avatars/cara.png",
     "role": "Customer Support",
     "color": "#a855f7",
     "gradient": "from-purple-700/30 to-purple-900/20",
     "description": "Handles customer inquiries, subscription issues, and refund requests via Stripe.",
-    "dataSources": ["Stripe"],
+    "dataSources": [
+      "Stripe"
+    ],
     "recurringTasks": [],
     "isAgent": true,
     "sortOrder": 3
@@ -58,70 +72,95 @@
   {
     "id": "dana",
     "name": "Dana",
-    "emoji": "📊",
+    "emoji": "\ud83d\udcca",
     "avatar": "/avatars/dana.png",
     "role": "Data Analyst",
     "color": "#22c55e",
     "gradient": "from-green-700/30 to-green-900/20",
     "description": "Runs analytics queries, generates reports, and monitors KPIs across all products.",
-    "dataSources": ["Supabase", "Datafast"],
-    "recurringTasks": ["Morning Analytics Report (8 AM CAT daily)"],
+    "dataSources": [
+      "Supabase",
+      "Datafast"
+    ],
+    "recurringTasks": [
+      "Morning Analytics Report (8 AM CAT daily)"
+    ],
     "isAgent": true,
     "sortOrder": 4
   },
   {
     "id": "miles",
     "name": "Miles",
-    "emoji": "🚀",
+    "emoji": "\ud83d\ude80",
     "avatar": "/avatars/miles.png",
     "role": "GTM Lead",
     "color": "#f97316",
     "gradient": "from-orange-600/30 to-orange-900/20",
     "description": "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.",
-    "dataSources": ["Datafast", "GSC", "SEO Tools"],
-    "recurringTasks": ["Weekly GSC Report (Monday 6 AM CAT)"],
+    "dataSources": [
+      "Datafast",
+      "GSC",
+      "SEO Tools"
+    ],
+    "recurringTasks": [
+      "Weekly GSC Report (Monday 6 AM CAT)"
+    ],
     "isAgent": true,
     "sortOrder": 5
   },
   {
     "id": "penny",
     "name": "Penny",
-    "emoji": "📌",
+    "emoji": "\ud83d\udccc",
     "avatar": "/avatars/penny.png",
     "role": "Secretary",
     "color": "#f43f5e",
     "gradient": "from-rose-600/30 to-pink-900/20",
     "description": "Captures ideas, maintains ops logs, runs delegation audits, and keeps the team accountable.",
-    "dataSources": ["Workspace Files"],
-    "recurringTasks": ["Daily Ops Check (4 PM CAT)", "Weekly Audit (Friday 9 AM CAT)"],
+    "dataSources": [
+      "Workspace Files"
+    ],
+    "recurringTasks": [
+      "Daily Ops Check (4 PM CAT)",
+      "Weekly Audit (Friday 9 AM CAT)"
+    ],
     "isAgent": true,
     "sortOrder": 6
   },
   {
     "id": "mia",
     "name": "Mia",
-    "emoji": "📱",
+    "emoji": "\ud83d\udcf1",
     "avatar": "/avatars/mia.png",
     "role": "Social Media Manager",
     "color": "#d946ef",
     "gradient": "from-fuchsia-600/30 to-fuchsia-900/20",
     "description": "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram.",
-    "dataSources": ["Google Sheets", "Datafast"],
-    "recurringTasks": [],
+    "dataSources": [
+      "Google Sheets",
+      "Datafast"
+    ],
+    "recurringTasks": [
+      "Creator Posts Sync (nightly 1 AM CAT)"
+    ],
     "isAgent": true,
     "sortOrder": 7
   },
   {
     "id": "frankie",
     "name": "Frankie",
-    "emoji": "💰",
+    "emoji": "\ud83d\udcb0",
     "avatar": "/avatars/frankie.png",
     "role": "Finance",
     "color": "#10b981",
     "gradient": "from-emerald-600/30 to-emerald-900/20",
     "description": "The money guy. Tracks banking, payouts, expenses, and revenue across all three businesses.",
-    "dataSources": ["Mercury"],
-    "recurringTasks": ["Mercury Creator Sync (daily noon CAT)"],
+    "dataSources": [
+      "Mercury"
+    ],
+    "recurringTasks": [
+      "Mercury Creator Sync (daily noon CAT)"
+    ],
     "isAgent": true,
     "sortOrder": 8
   }

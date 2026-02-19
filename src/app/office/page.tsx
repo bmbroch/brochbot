@@ -12,23 +12,14 @@ import {
   type Activity,
 } from "@/lib/data-provider";
 
-/* ── helpers ─────────────────────────────────────────────────────────────── */
-
-function timeAgo(ts: number): string {
-  const diff = Date.now() - ts;
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
-
 /* ── desk layout config ──────────────────────────────────────────────────── */
 
 // Positions are pixel offsets inside a 1000×600 container
+// x = centre of desk, y = top of desk
 // Top row (5): Ben, Sam, Devin, Cara, Frankie
 // Bottom row (4): Dana, Miles, Penny, Mia
+const DESK_W = 120; // must match the desk surface width in Desk component
+
 const deskLayout: Record<
   string,
   { x: number; y: number; facing: "down" | "left" | "right" | "up" }
@@ -62,16 +53,17 @@ function Desk({
   const pos = deskLayout[member.id];
   const color = agentColors[member.id] || "#666";
 
-  // desk rectangle + monitor on top, avatar below desk
+  // Use explicit left offset instead of CSS translate to avoid scaling artefacts.
+  // left = pos.x - DESK_W/2 so the desk is centred on pos.x in the unscaled canvas.
   return (
     <div
       className="absolute group cursor-pointer"
-      style={{ left: pos.x, top: pos.y, transform: "translate(-50%, 0)" }}
+      style={{ left: pos.x - DESK_W / 2, top: pos.y, width: DESK_W }}
       onClick={onClick}
     >
       {/* Desk surface */}
       <div
-        className={`relative w-[120px] h-[56px] rounded-sm transition-transform duration-200 ${
+        className={`relative w-full h-[56px] rounded-sm transition-transform duration-200 ${
           isSelected ? "scale-105" : "group-hover:scale-[1.04]"
         }`}
         style={{ backgroundColor: "#3a3a3a", boxShadow: "0 2px 6px rgba(0,0,0,0.5)" }}
@@ -115,7 +107,7 @@ function Desk({
         />
       </div>
 
-      {/* Avatar sitting at desk */}
+      {/* Avatar sitting at desk — centred inside the fixed-width wrapper */}
       <div className="flex flex-col items-center mt-1">
         <div className="relative">
           <div
@@ -140,7 +132,7 @@ function Desk({
             style={{ backgroundColor: isActive ? "#22c55e" : "#52525b" }}
           />
         </div>
-        <span className="text-[11px] text-white/80 mt-1 font-medium">{member.name}</span>
+        <span className="text-[11px] text-white/80 mt-1 font-medium text-center">{member.name}</span>
       </div>
     </div>
   );
@@ -152,39 +144,59 @@ export default function OfficePage() {
   const teamMembers = useTeam();
   const [selected, setSelected] = useState<string | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [agentStatusTs, setAgentStatusTs] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    fetch("/mc-data.json")
-      .then((r) => r.json())
-      .then((data) => {
-        const rawActs: Array<{
-          id: string;
-          agent: string;
-          title: string;
-          description?: string;
-          status: string;
-          date?: string;
-          type?: string;
-          product?: string;
-        }> = data.activities || [];
-        const mapped: Activity[] = rawActs
-          .map((a) => ({
-            _id: a.id,
-            agent: a.agent,
-            type: (a.type as Activity["type"]) || "task",
-            title: a.title,
-            description: a.description,
-            product: a.product as Activity["product"] | undefined,
-            status: (a.status as Activity["status"]) || "success",
-            createdAt: a.date ? new Date(a.date).getTime() : Date.now(),
-          }))
-          .reverse();
-        if (mapped.length > 0) setActivities(mapped);
-      })
-      .catch(() => {
-        // stay on empty fallback
-      });
+    Promise.all([
+      fetch("/mc-data.json").then(r => r.ok ? r.json() : {}).catch(() => ({})),
+      fetch("/agent-runs-history.json").then(r => r.ok ? r.json() : []).catch(() => []),
+    ]).then(([mcDataRaw, historyData]) => {
+      const mcData = mcDataRaw as Record<string, unknown>;
+      // Extract agentStatus fallback timestamps
+      if (mcData?.agentStatus) {
+        const ts: Record<string, number> = {};
+        for (const [key, val] of Object.entries(mcData.agentStatus as Record<string, { lastActive?: string }>)) {
+          if (val.lastActive) ts[key] = new Date(val.lastActive).getTime();
+        }
+        setAgentStatusTs(ts);
+      }
+
+      // Map agent-runs-history entries → Activity[]
+      const historyArr: Array<{
+        id: string; agent: string; label?: string; task: string;
+        status: string; timestamp: string;
+      }> = Array.isArray(historyData) ? historyData : [];
+
+      const historyActivities: Activity[] = historyArr.map(h => ({
+        _id: h.id,
+        agent: h.agent,
+        type: "task" as Activity["type"],
+        title: h.label || h.task.slice(0, 80),
+        description: h.task,
+        status: (h.status as Activity["status"]) || "success",
+        createdAt: new Date(h.timestamp).getTime(),
+      }));
+
+      // Most-recent first
+      historyActivities.sort((a, b) => b.createdAt - a.createdAt);
+      setActivities(historyActivities);
+    });
   }, []);
+
+  // Resolve latest activity timestamp per agent (for lastActiveTs fallback)
+  const latestActivityTs: Record<string, number> = {};
+  for (const a of activities) {
+    if (!latestActivityTs[a.agent] || a.createdAt > latestActivityTs[a.agent]) {
+      latestActivityTs[a.agent] = a.createdAt;
+    }
+  }
+
+  function getLastActiveTs(id: string): number | undefined {
+    const fromActivities = latestActivityTs[id] ?? 0;
+    const fromStatus = agentStatusTs[id] ?? 0;
+    const best = Math.max(fromActivities, fromStatus);
+    return best > 0 ? best : undefined;
+  }
 
   const getAgentActivities = (id: string) =>
     activities.filter((a) => a.agent === id).slice(0, 8);
@@ -212,6 +224,7 @@ export default function OfficePage() {
           activities={activities}
           getAgentActivities={getAgentActivities}
           selectedMember={selectedMember}
+          getLastActiveTs={getLastActiveTs}
         />
       </div>
     </Shell>
@@ -225,6 +238,7 @@ function OfficeCanvas({
   activities,
   getAgentActivities,
   selectedMember,
+  getLastActiveTs,
 }: {
   teamMembers: TeamMember[];
   selected: string | null;
@@ -232,6 +246,7 @@ function OfficeCanvas({
   activities: Activity[];
   getAgentActivities: (id: string) => Activity[];
   selectedMember: TeamMember | null | undefined;
+  getLastActiveTs: (id: string) => number | undefined;
 }) {
   const OFFICE_W = 1000;
   const OFFICE_H = 600;
@@ -376,8 +391,6 @@ function OfficeCanvas({
                   />
                 );
               })}
-
-              {/* Desktop side panel rendered outside scaled container */}
           </div>
         </div>
       </div>
@@ -389,6 +402,7 @@ function OfficeCanvas({
           activities={activities}
           isOpen={true}
           onClose={() => setSelected(null)}
+          lastActiveTs={getLastActiveTs(selectedMember.id)}
         />
       )}
 
@@ -399,6 +413,7 @@ function OfficeCanvas({
           activities={activities}
           isOpen={true}
           onClose={() => setSelected(null)}
+          lastActiveTs={getLastActiveTs(selectedMember.id)}
         />
       )}
     </>
