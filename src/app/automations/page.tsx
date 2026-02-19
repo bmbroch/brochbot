@@ -511,15 +511,17 @@ export default function AutomationsPage() {
           <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Weekly Grid</h2>
           <div className="rounded-xl border border-[#262626] bg-[#141414] overflow-hidden">
             {/* Header row */}
-            <div className="grid grid-cols-[1fr_repeat(7,minmax(0,1fr))] border-b border-[#262626]">
-              <div className="px-3 py-2.5 text-[10px] text-zinc-600 font-medium uppercase tracking-wider">Job</div>
+            <div className="grid grid-cols-[2fr_repeat(7,minmax(0,1fr))] border-b border-[#262626]">
+              <div className="px-3 py-2 text-[10px] text-zinc-600 font-medium uppercase tracking-wider">Job</div>
               {DAY_LABELS.map((day, i) => (
                 <div
                   key={day}
-                  className={`py-2.5 text-center text-[10px] font-bold uppercase tracking-wider ${
+                  className={`py-2 text-center text-[10px] font-semibold uppercase tracking-wider ${
                     i === catDayOfWeek
-                      ? "text-blue-400 bg-blue-500/5"
-                      : "text-zinc-600"
+                      ? "text-blue-400"
+                      : i < catDayOfWeek
+                      ? "text-zinc-500"
+                      : "text-zinc-700"
                   }`}
                 >
                   {day}
@@ -533,18 +535,22 @@ export default function AutomationsPage() {
             {/* Job rows */}
             {allScheduleJobs.map((job, rowIdx) => {
               const color = agentColors[job.agent] || "#6b7280";
-              const emoji = OWNER_EMOJI[job.agent] || "⚙️";
               return (
                 <div
-                  key={`${job.agent}-${job.catHour}`}
-                  className={`grid grid-cols-[1fr_repeat(7,minmax(0,1fr))] ${
+                  key={`${job.agent}-${job.catHour}-${rowIdx}`}
+                  className={`grid grid-cols-[2fr_repeat(7,minmax(0,1fr))] ${
                     rowIdx < allScheduleJobs.length - 1 ? "border-b border-[#1a1a1a]" : ""
                   }`}
                 >
-                  {/* Job label */}
-                  <div className="px-3 py-3 flex items-center gap-2 min-w-0">
-                    <span className="text-sm leading-none flex-shrink-0">{emoji}</span>
-                    <span className="text-[11px] text-zinc-400 truncate">{job.label}</span>
+                  {/* Job label — wider, colored, no truncation on wider screens */}
+                  <div className="px-3 py-2.5 flex items-center gap-2 min-w-0">
+                    <span
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0 opacity-80"
+                      style={{ backgroundColor: color }}
+                    />
+                    <span className="text-[11px] text-zinc-300 leading-tight break-words line-clamp-2 sm:whitespace-normal sm:overflow-visible sm:text-clip">
+                      {job.label}
+                    </span>
                   </div>
 
                   {/* Day cells */}
@@ -552,63 +558,46 @@ export default function AutomationsPage() {
                     const weekDayMatch = job.weekDay !== undefined ? job.weekDay - 1 : -1;
                     const scheduled = job.daily ? true : dayIdx === weekDayMatch;
                     const isToday = dayIdx === catDayOfWeek;
-                    // Past day = before today (in this week); future = after today
                     const isPast = dayIdx < catDayOfWeek;
-                    const isFuture = dayIdx > catDayOfWeek;
-                    // For today: did it already run?
                     const ranToday = isToday && catDecimalHour >= job.catHour;
 
-                    // Determine cell style
                     let cellContent: React.ReactNode = null;
                     if (scheduled) {
-                      if (isToday && ranToday) {
-                        // Ran today — full color cell with check
+                      if (isPast) {
+                        // Past day — small quiet dot, assumed ran
                         cellContent = (
                           <div
-                            className="w-7 h-7 rounded-md flex items-center justify-center text-[11px] font-bold shadow-sm"
-                            style={{
-                              backgroundColor: `${color}25`,
-                              border: `1px solid ${color}50`,
-                              color: color,
-                              boxShadow: `0 0 8px ${color}20`,
-                            }}
-                            title={`${job.label} — ran at ${formatCATHour(job.catHour)} CAT`}
-                          >
-                            ✓
-                          </div>
-                        );
-                      } else if (isToday && !ranToday) {
-                        // Today, not yet run — blue outline
-                        cellContent = (
-                          <div
-                            className="w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-mono"
-                            style={{
-                              border: `1px solid ${color}40`,
-                              color: `${color}80`,
-                            }}
-                            title={`${job.label} — at ${formatCATHour(job.catHour)} CAT (pending)`}
-                          >
-                            {formatCATHour(job.catHour)}
-                          </div>
-                        );
-                      } else if (isPast) {
-                        // Past day — dimmed filled cell (assumed ran)
-                        cellContent = (
-                          <div
-                            className="w-5 h-5 rounded-sm opacity-30"
-                            style={{ backgroundColor: color }}
+                            className="w-1.5 h-1.5 rounded-full bg-zinc-600 opacity-60"
                             title={`${job.label} — ${DAY_LABELS[dayIdx]}`}
                           />
                         );
-                      } else {
-                        // Future day — faint outline dot
+                      } else if (isToday && ranToday) {
+                        // Ran today — clean checkmark
                         cellContent = (
                           <div
-                            className="w-5 h-5 rounded-sm opacity-15"
-                            style={{
-                              border: `1px solid ${color}`,
-                              backgroundColor: "transparent",
-                            }}
+                            className="w-5 h-5 rounded-full flex items-center justify-center"
+                            style={{ backgroundColor: `${color}20`, border: `1px solid ${color}50` }}
+                            title={`${job.label} — ran at ${formatCATHour(job.catHour)} CAT`}
+                          >
+                            <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+                              <path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </div>
+                        );
+                      } else if (isToday && !ranToday) {
+                        // Today, pending — empty ring with color tint
+                        cellContent = (
+                          <div
+                            className="w-5 h-5 rounded-full"
+                            style={{ border: `1.5px solid ${color}45` }}
+                            title={`${job.label} — ${formatCATHour(job.catHour)} CAT (pending)`}
+                          />
+                        );
+                      } else {
+                        // Future — nearly invisible tiny dot
+                        cellContent = (
+                          <div
+                            className="w-1 h-1 rounded-full bg-zinc-700 opacity-40"
                             title={`${job.label} — ${DAY_LABELS[dayIdx]} (scheduled)`}
                           />
                         );
@@ -618,8 +607,8 @@ export default function AutomationsPage() {
                     return (
                       <div
                         key={dayIdx}
-                        className={`flex items-center justify-center py-3 ${
-                          isToday ? "bg-blue-500/[0.03]" : ""
+                        className={`flex items-center justify-center py-2.5 ${
+                          isToday ? "bg-blue-500/[0.04]" : ""
                         }`}
                       >
                         {cellContent}
@@ -631,22 +620,26 @@ export default function AutomationsPage() {
             })}
 
             {/* Legend footer */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 px-3 py-2.5 border-t border-[#1a1a1a] bg-[#0f0f0f]">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 px-3 py-2 border-t border-[#1a1a1a] bg-[#0f0f0f]">
               <div className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-                <div className="w-4 h-4 rounded-sm bg-white/10 border border-white/20 flex items-center justify-center text-green-400 text-[8px]">✓</div>
+                <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 opacity-60" />
                 ran
               </div>
               <div className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-                <div className="w-4 h-4 rounded-sm border border-white/20 text-[8px] flex items-center justify-center text-zinc-500">⏰</div>
+                <div className="w-3.5 h-3.5 rounded-full border border-blue-500/40" />
                 pending today
               </div>
               <div className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-                <div className="w-4 h-4 rounded-sm bg-white/20 opacity-40" />
-                past
+                <div className="w-3.5 h-3.5 rounded-full border border-zinc-500/30 flex items-center justify-center">
+                  <svg width="7" height="7" viewBox="0 0 9 9" fill="none">
+                    <path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                done today
               </div>
               <div className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-                <div className="w-4 h-4 rounded-sm border border-white/20 opacity-20" />
-                scheduled
+                <div className="w-1 h-1 rounded-full bg-zinc-700 opacity-40" />
+                upcoming
               </div>
             </div>
           </div>
