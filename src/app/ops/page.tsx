@@ -155,8 +155,8 @@ export default function OpsPage() {
 
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">📡 Agent Surveillance System</h1>
-          <p className="text-zinc-500 text-sm mt-1">Because even AIs need performance reviews</p>
+          <h1 className="text-3xl font-bold tracking-tight">🕵️ Surveillance</h1>
+          <p className="text-zinc-500 text-sm mt-1">We see everything. Even the one-line fixes.</p>
         </div>
 
         {/* Delegation Compliance */}
