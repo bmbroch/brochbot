@@ -48,6 +48,18 @@
     "timestamp": "2026-02-19T13:04:52.326Z"
   },
   {
+    "id": "62e23725-45b4-41de-b7c8-faf6c9855780",
+    "label": "devin-surveillance",
+    "agent": "devin",
+    "task": "**Task: Redesign the Surveillance page**",
+    "model": "Sonnet",
+    "tokens": 332881,
+    "cost": 0.324,
+    "durationSec": 118,
+    "status": "success",
+    "timestamp": "2026-02-19T13:58:01.750Z"
+  },
+  {
     "id": "ebea0ddb-cfae-41d3-8036-690033640639",
     "label": "devin-creator-earnings",
     "agent": "devin",
@@ -84,6 +96,18 @@
     "timestamp": "2026-02-19T13:22:03.750Z"
   },
   {
+    "id": "7097e4f4-c20e-4679-a707-3a83841264ba",
+    "label": "mia-creator-posts",
+    "agent": "mia",
+    "task": "**Task: Pull real creator post data from Google Sheets \u2192 write to public/creator-posts.json**",
+    "model": "Sonnet",
+    "tokens": 137751,
+    "cost": 0.2125,
+    "durationSec": 116,
+    "status": "success",
+    "timestamp": "2026-02-19T13:58:01.825Z"
+  },
+  {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
     "label": "Morning Analytics Report",
     "agent": "dana",
@@ -118,29 +142,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "7097e4f4-c20e-4679-a707-3a83841264ba",
-    "label": "mia-creator-posts",
-    "agent": "mia",
-    "task": "**Task: Pull real creator post data from Google Sheets \u2192 write to public/creator-posts.json**",
-    "model": "Sonnet",
-    "tokens": 25714,
-    "cost": 0.0363,
-    "durationSec": 5,
-    "status": "success",
-    "timestamp": "2026-02-19T13:58:01.825Z"
-  },
-  {
-    "id": "62e23725-45b4-41de-b7c8-faf6c9855780",
-    "label": "devin-surveillance",
-    "agent": "devin",
-    "task": "**Task: Redesign the Surveillance page**",
-    "model": "Sonnet",
-    "tokens": 25675,
-    "cost": 0.0368,
-    "durationSec": 5,
-    "status": "success",
-    "timestamp": "2026-02-19T13:58:01.750Z"
   }
 ]
