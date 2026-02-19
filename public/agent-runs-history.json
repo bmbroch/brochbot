@@ -12,6 +12,18 @@
     "timestamp": "2026-02-19T00:00:00.059Z"
   },
   {
+    "id": "sam-daily-2026-02-19",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben daily conversation",
+    "model": "Opus",
+    "tokens": 670394,
+    "cost": 0.2499,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T00:00:00Z"
+  },
+  {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
     "label": "Morning Analytics Report",
     "agent": "dana",
