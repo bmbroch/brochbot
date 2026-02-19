@@ -12,18 +12,6 @@
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
   {
-    "id": "d5fe3e9e-2bb8-4548-b8f9-15e325931cde",
-    "label": "devin-theme-system",
-    "agent": "devin",
-    "task": "**Task: Build a complete light/dark mode theme system for the brochbot Mission Control site.**",
-    "model": "Sonnet",
-    "tokens": 5083287,
-    "cost": 3.0084,
-    "durationSec": 970,
-    "status": "success",
-    "timestamp": "2026-02-19T20:08:45.695Z"
-  },
-  {
     "id": "aae63345-e753-451e-8902-32e9d6391345",
     "label": "aae63345-e75",
     "agent": "sam",
@@ -58,18 +46,6 @@
     "durationSec": 5899,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
-  },
-  {
-    "id": "0493e98e-af32-4e21-b61e-dc7bf6e7502b",
-    "label": "dana-weekly-traffic-v2",
-    "agent": "dana",
-    "task": "Pull TWO periods for each product:",
-    "model": "Sonnet",
-    "tokens": 118000,
-    "cost": 0.2199,
-    "durationSec": 83,
-    "status": "success",
-    "timestamp": "2026-02-19T20:04:14.540Z"
   },
   {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
