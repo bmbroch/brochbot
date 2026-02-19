@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T17:40:01Z",
+  "lastUpdated": "2026-02-19T18:00:01Z",
   "activities": [
     {
       "id": "s-aae63345",
@@ -8,34 +8,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T17:32:32.089Z",
-      "tokens": 1312769,
-      "cost": 2.0669,
+      "tokens": 1388154,
+      "cost": 2.492,
       "model": "Opus",
-      "durationSec": 370
-    },
-    {
-      "id": "s-cd396543",
-      "agent": "cara",
-      "title": "Cara: baymaxes2001 ISK lookup",
-      "description": "Look up this user for ISK (Interview Sidekick):",
-      "status": "success",
-      "date": "2026-02-19T16:56:30.999Z",
-      "tokens": 89110,
-      "cost": 0.1474,
-      "model": "Sonnet",
-      "durationSec": 74
-    },
-    {
-      "id": "s-6d5d4471",
-      "agent": "devin",
-      "title": "Devin: dynamic automations timeline",
-      "description": "**Task: Make the Automations page schedule timeline dynamic (t16)**",
-      "status": "success",
-      "date": "2026-02-19T16:50:32.035Z",
-      "tokens": 530600,
-      "cost": 0.4255,
-      "model": "Sonnet",
-      "durationSec": 184
+      "durationSec": 1548
     },
     {
       "id": "s-42b5ff85",
@@ -366,7 +342,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T17:37:56Z",
+      "lastActive": "2026-02-19T17:52:40Z",
       "statusText": ""
     }
   },
@@ -380,7 +356,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T17:40:01Z"
+      "lastRunAt": "2026-02-19T18:00:01Z"
     },
     {
       "id": "bash-frankie-sync",

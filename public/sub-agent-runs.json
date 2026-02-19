@@ -5,35 +5,11 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1312769,
-    "cost": 2.0669,
-    "durationSec": 370,
+    "tokens": 1388154,
+    "cost": 2.492,
+    "durationSec": 1548,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
-  },
-  {
-    "id": "6d5d4471-523a-4563-b95e-e15ff901840e",
-    "label": "Devin: dynamic automations timeline",
-    "agent": "devin",
-    "task": "**Task: Make the Automations page schedule timeline dynamic (t16)**",
-    "model": "Sonnet",
-    "tokens": 530600,
-    "cost": 0.4255,
-    "durationSec": 184,
-    "status": "success",
-    "timestamp": "2026-02-19T16:50:32.035Z"
-  },
-  {
-    "id": "cd396543-9ced-4e87-98c1-a251d0ddb1f1",
-    "label": "Cara: baymaxes2001 ISK lookup",
-    "agent": "cara",
-    "task": "Look up this user for ISK (Interview Sidekick):",
-    "model": "Sonnet",
-    "tokens": 89110,
-    "cost": 0.1474,
-    "durationSec": 74,
-    "status": "success",
-    "timestamp": "2026-02-19T16:56:30.999Z"
   },
   {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
