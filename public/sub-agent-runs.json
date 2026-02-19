@@ -1,5 +1,17 @@
 [
   {
+    "id": "94c294ca-ee85-48ff-9038-e5b865993885",
+    "label": "devin-usage-tracking",
+    "agent": "devin",
+    "task": "[Thu 2026-02-19 13:02 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+    "model": "Sonnet",
+    "tokens": 1136485,
+    "cost": 0.7258,
+    "durationSec": 313,
+    "status": "success",
+    "timestamp": "2026-02-19T13:02:10.048Z"
+  },
+  {
     "id": "8eba50d3-f299-4e49-824c-a72f60884fde",
     "label": "devin-supabase-wire",
     "agent": "devin",
@@ -12,16 +24,16 @@
     "timestamp": "2026-02-19T12:42:02.855Z"
   },
   {
-    "id": "94c294ca-ee85-48ff-9038-e5b865993885",
-    "label": "devin-usage-tracking",
-    "agent": "devin",
-    "task": "[Thu 2026-02-19 13:02 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+    "id": "e8cbb163-27f3-4504-8916-6db84e4e0f55",
+    "label": "frankie-mercury-recipients",
+    "agent": "frankie",
+    "task": "[Thu 2026-02-19 13:04 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
     "model": "Sonnet",
-    "tokens": 297759,
-    "cost": 0.3483,
-    "durationSec": 148,
+    "tokens": 384581,
+    "cost": 0.3214,
+    "durationSec": 154,
     "status": "success",
-    "timestamp": "2026-02-19T13:02:10.048Z"
+    "timestamp": "2026-02-19T13:04:52.326Z"
   },
   {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
@@ -58,17 +70,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "e8cbb163-27f3-4504-8916-6db84e4e0f55",
-    "label": "frankie-mercury-recipients",
-    "agent": "frankie",
-    "task": "[Thu 2026-02-19 13:04 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
-    "model": "Sonnet",
-    "tokens": 11987,
-    "cost": 0.0264,
-    "durationSec": 2,
-    "status": "success",
-    "timestamp": "2026-02-19T13:04:52.326Z"
   }
 ]
