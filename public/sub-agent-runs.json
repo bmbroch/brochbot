@@ -1,15 +1,15 @@
 [
   {
-    "id": "94c294ca-ee85-48ff-9038-e5b865993885",
-    "label": "devin-usage-tracking",
+    "id": "4fd7c391-5750-4e37-b3de-ba009e59370e",
+    "label": "devin-three-fixes",
     "agent": "devin",
-    "task": "We now have a new file at `public/agent-runs-history.json` \u2014 a growing, append-only log of every agent run. Each entry looks like:",
+    "task": "**Task: 3 targeted fixes \u2014 drawer activity feed, calendar bash crons, creator posts**",
     "model": "Sonnet",
-    "tokens": 1136485,
-    "cost": 0.7258,
-    "durationSec": 313,
+    "tokens": 1605678,
+    "cost": 1.5181,
+    "durationSec": 480,
     "status": "success",
-    "timestamp": "2026-02-19T13:02:10.048Z"
+    "timestamp": "2026-02-19T14:01:56.369Z"
   },
   {
     "id": "62e23725-45b4-41de-b7c8-faf6c9855780",
@@ -58,18 +58,6 @@
     "durationSec": 181,
     "status": "success",
     "timestamp": "2026-02-19T13:58:01.825Z"
-  },
-  {
-    "id": "e8cbb163-27f3-4504-8916-6db84e4e0f55",
-    "label": "frankie-mercury-recipients",
-    "agent": "frankie",
-    "task": "Mercury API key is in env as `MERCURY_API_KEY`. Base URL: `https://api.mercury.com/api/v1`. Auth header: `Authorization: Bearer $MERCURY_API_KEY`.",
-    "model": "Sonnet",
-    "tokens": 384581,
-    "cost": 0.3214,
-    "durationSec": 154,
-    "status": "success",
-    "timestamp": "2026-02-19T13:04:52.326Z"
   },
   {
     "id": "ebea0ddb-cfae-41d3-8036-690033640639",
@@ -142,18 +130,6 @@
     "durationSec": 17,
     "status": "success",
     "timestamp": "2026-02-19T11:52:45.805Z"
-  },
-  {
-    "id": "4fd7c391-5750-4e37-b3de-ba009e59370e",
-    "label": "devin-three-fixes",
-    "agent": "devin",
-    "task": "**Task: 3 targeted fixes \u2014 drawer activity feed, calendar bash crons, creator posts**",
-    "model": "Sonnet",
-    "tokens": 27952,
-    "cost": 0.0432,
-    "durationSec": 6,
-    "status": "success",
-    "timestamp": "2026-02-19T14:01:56.369Z"
   },
   {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",

@@ -4,7 +4,7 @@ import Shell from "@/components/Shell";
 import AgentDrawer from "@/components/AgentDrawer";
 import AgentSidePanel from "@/components/AgentSidePanel";
 import { useState, useEffect } from "react";
-import { useActivities, agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
+import { agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
 import Image from "next/image";
 
@@ -93,7 +93,7 @@ function MemberDetail({ member, activities }: { member: TeamMember; activities: 
 }
 
 export default function TeamPage() {
-  const activities = useActivities();
+  const [mcActivities, setMcActivities] = useState<Activity[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [agentStatusTs, setAgentStatusTs] = useState<Record<string, number>>({});
@@ -105,24 +105,42 @@ export default function TeamPage() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Fetch agentStatus fallback timestamps from mc-data.json
+  // Fetch agentStatus fallback timestamps + activities from mc-data
   useEffect(() => {
     fetch("/api/mc-data")
       .then(r => r.ok ? r.json() : null)
       .then(d => {
-        if (!d?.agentStatus) return;
-        const ts: Record<string, number> = {};
-        for (const [key, val] of Object.entries(d.agentStatus as Record<string, { lastActive?: string }>)) {
-          if (val.lastActive) ts[key] = new Date(val.lastActive).getTime();
+        if (!d) return;
+        if (d.agentStatus) {
+          const ts: Record<string, number> = {};
+          for (const [key, val] of Object.entries(d.agentStatus as Record<string, { lastActive?: string }>)) {
+            if (val.lastActive) ts[key] = new Date(val.lastActive).getTime();
+          }
+          setAgentStatusTs(ts);
         }
-        setAgentStatusTs(ts);
+        if (Array.isArray(d.activities)) {
+          const mapped: Activity[] = (d.activities as Array<{
+            id: string; agent: string; title: string; date?: string;
+            type?: string; description?: string; status?: string; product?: string;
+          }>).map(a => ({
+            _id: a.id,
+            agent: a.agent,
+            type: (a.type as Activity["type"]) || "task",
+            title: a.title,
+            description: a.description,
+            product: a.product as Activity["product"] | undefined,
+            status: (a.status as Activity["status"]) || "success",
+            createdAt: a.date ? new Date(a.date).getTime() : Date.now(),
+          }));
+          setMcActivities(mapped);
+        }
       })
       .catch(() => {});
   }, []);
 
   // Build a map of agentId → latest activity timestamp
   const latestActivityTs: Record<string, number> = {};
-  for (const a of activities) {
+  for (const a of mcActivities) {
     if (!latestActivityTs[a.agent] || a.createdAt > latestActivityTs[a.agent]) {
       latestActivityTs[a.agent] = a.createdAt;
     }
@@ -198,7 +216,7 @@ export default function TeamPage() {
         {!isMobile && selectedMember && (
           <AgentSidePanel
             member={selectedMember}
-            activities={activities}
+            activities={mcActivities}
             isOpen={true}
             onClose={() => setSelectedId(null)}
           />
@@ -208,7 +226,7 @@ export default function TeamPage() {
         {isMobile && selectedMember && (
           <AgentDrawer
             member={selectedMember}
-            activities={activities}
+            activities={mcActivities}
             isOpen={true}
             onClose={() => setSelectedId(null)}
           />

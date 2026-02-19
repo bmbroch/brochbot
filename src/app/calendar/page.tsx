@@ -18,6 +18,8 @@ interface CronJob {
   lastRunAt: string | null;
   nextRunAt: string | null;
   consecutiveErrors: number;
+  description?: string;
+  isBash?: boolean;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

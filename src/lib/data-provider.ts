@@ -228,8 +228,10 @@ export const mockDecisions: Decision[] = [
 
 
 // ─── Creator Types & Data ────────────────────────────────────────────────────
+// creatorsData and Creator are internal — used only to seed creatorsTimeSeries.
+// All UI reads from /creator-data.json (single source of truth).
 
-export interface Creator {
+interface Creator {
   name: string;
   posts: number;
   ttViews: number;
@@ -245,25 +247,17 @@ export interface CreatorTimeSeriesPoint {
   igViews: number;
 }
 
-export interface CreatorPost {
-  date: string;
-  ttViews: number;
-  igViews: number;
-  milestone?: string;
-  earnings: number;
-}
-
-export const creatorsData: Creator[] = [
-  { name: "Nick", posts: 39, ttViews: 2663086, igViews: 124821, startDate: "2025-12-23", earnings: 975, avgPerPost: 71484 },
-  { name: "Abby", posts: 23, ttViews: 274810, igViews: 607198, startDate: "2026-01-08", earnings: 575, avgPerPost: 38348 },
-  { name: "Luke", posts: 24, ttViews: 61046, igViews: 306120, startDate: "2026-01-19", earnings: 600, avgPerPost: 15298 },
+const creatorsData: Creator[] = [
+  { name: "Nick", posts: 39, ttViews: 2663086, igViews: 124821, startDate: "2025-12-23", earnings: 2830, avgPerPost: 71484 },
+  { name: "Abby", posts: 23, ttViews: 274810, igViews: 607198, startDate: "2026-01-08", earnings: 1055, avgPerPost: 38348 },
+  { name: "Luke", posts: 24, ttViews: 61046, igViews: 306120, startDate: "2026-01-19", earnings: 1035, avgPerPost: 15298 },
   { name: "Jake", posts: 24, ttViews: 17427, igViews: 63777, startDate: "2026-01-23", earnings: 600, avgPerPost: 3383 },
   { name: "Bobby", posts: 16, ttViews: 11212, igViews: 24448, startDate: "2026-01-30", earnings: 400, avgPerPost: 2228 },
   { name: "Flo", posts: 3, ttViews: 979, igViews: 31233, startDate: "2026-02-12", earnings: 75, avgPerPost: 10737 },
   { name: "Sheryl", posts: 5, ttViews: 2541, igViews: 4477, startDate: "2026-02-11", earnings: 125, avgPerPost: 1403 },
 ];
 
-// Generate fake time-series data for each creator
+// Generate time-series data for each creator (used by charts)
 function generateTimeSeries(creator: Creator): CreatorTimeSeriesPoint[] {
   const points: CreatorTimeSeriesPoint[] = [];
   const start = new Date(creator.startDate);
@@ -303,36 +297,9 @@ function generateTimeSeries(creator: Creator): CreatorTimeSeriesPoint[] {
   return points;
 }
 
-// Generate fake posts for each creator
-function generatePosts(creator: Creator): CreatorPost[] {
-  const posts: CreatorPost[] = [];
-  const start = new Date(creator.startDate);
-  const totalDays = Math.floor((new Date("2026-02-18").getTime() - start.getTime()) / 86400000);
-  const interval = Math.max(1, Math.floor(totalDays / creator.posts));
-  const earningsPerPost = creator.earnings / creator.posts;
-
-  for (let i = 0; i < creator.posts; i++) {
-    const date = new Date(start);
-    date.setDate(date.getDate() + i * interval + Math.floor(Math.random() * 2));
-    const ttV = Math.round((creator.ttViews / creator.posts) * (0.5 + Math.random()));
-    const igV = Math.round((creator.igViews / creator.posts) * (0.5 + Math.random()));
-    const milestone = (ttV + igV) > creator.avgPerPost * 2 ? "🔥 Viral" : (ttV + igV) > creator.avgPerPost * 1.5 ? "⭐ Hit" : undefined;
-    posts.push({
-      date: date.toISOString().split("T")[0],
-      ttViews: ttV,
-      igViews: igV,
-      milestone,
-      earnings: Math.round(earningsPerPost * 100) / 100,
-    });
-  }
-  return posts;
-}
-
 export const creatorsTimeSeries: Record<string, CreatorTimeSeriesPoint[]> = {};
-export const creatorsPosts: Record<string, CreatorPost[]> = {};
 creatorsData.forEach(c => {
   creatorsTimeSeries[c.name] = generateTimeSeries(c);
-  creatorsPosts[c.name] = generatePosts(c);
 });
 
 export const creatorColors: Record<string, string> = {
@@ -345,9 +312,7 @@ export const creatorColors: Record<string, string> = {
   Flo: "#06b6d4",
 };
 
-export function useCreators() { return creatorsData; }
 export function useCreatorTimeSeries(name: string) { return creatorsTimeSeries[name] || []; }
-export function useCreatorPosts(name: string) { return creatorsPosts[name] || []; }
 
 // ─── Data Access Hooks (mock implementations) ────────────────────────────────
 
