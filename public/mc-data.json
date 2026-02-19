@@ -1,0 +1,515 @@
+{
+  "lastUpdated": "2026-02-19T08:40:00Z",
+  "activities": [
+    {
+      "id": "a1",
+      "agent": "sam",
+      "title": "Nightly MC Sync",
+      "description": "Tracker was stale, updated. No code push needed.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771459200000,
+      "type": "cron"
+    },
+    {
+      "id": "a2",
+      "agent": "sam",
+      "title": "Team page accordion fix + mobile responsiveness",
+      "description": "Fixed accordion and full mobile responsiveness pass. ⚠️ Sam wrote code directly instead of delegating to Dev.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771459200000,
+      "type": "task"
+    },
+    {
+      "id": "a3",
+      "agent": "dana",
+      "title": "Morning Analytics Report",
+      "description": "Traffic down ~19% across all products vs last Wed. ISK -30%. CLCP revenue nearly tripled ($263 vs $95).",
+      "status": "success",
+      "product": "all",
+      "createdAt": 1771480800000,
+      "type": "cron"
+    },
+    {
+      "id": "a4",
+      "agent": "miles",
+      "title": "Enable GSC API check",
+      "description": "Confirmed GSC API is working and accessible.",
+      "status": "success",
+      "product": "ISK",
+      "createdAt": 1771482000000,
+      "type": "task"
+    },
+    {
+      "id": "a5",
+      "agent": "miles",
+      "title": "ISK keyword snapshot from GSC",
+      "description": "Pulled top 50 queries by clicks/impressions, tracked 9 target keywords, analyzed positioning gaps.",
+      "status": "success",
+      "product": "ISK",
+      "createdAt": 1771482300000,
+      "type": "task"
+    },
+    {
+      "id": "a6",
+      "agent": "miles",
+      "title": "ISK keyword trends (6-month)",
+      "description": "Generated 6-month trend report for ISK keyword positioning.",
+      "status": "success",
+      "product": "ISK",
+      "createdAt": 1771482600000,
+      "type": "task"
+    },
+    {
+      "id": "a7",
+      "agent": "miles",
+      "title": "ISK month-over-month comparison",
+      "description": "Compared ISK keyword performance month over month.",
+      "status": "success",
+      "product": "ISK",
+      "createdAt": 1771482900000,
+      "type": "task"
+    },
+    {
+      "id": "a8",
+      "agent": "miles",
+      "title": "ISK weekly report (new format)",
+      "description": "Weekly report with date-range column headers per Ben's preference.",
+      "status": "success",
+      "product": "ISK",
+      "createdAt": 1771483500000,
+      "type": "task"
+    },
+    {
+      "id": "a9",
+      "agent": "sam",
+      "title": "Create agent knowledge briefs",
+      "description": "Created agents/*.md briefs for all agents so sub-agents load context from files.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771484400000,
+      "type": "task"
+    },
+    {
+      "id": "a10",
+      "agent": "sam",
+      "title": "Create Dev agent (Devin 🛠️)",
+      "description": "New Web Developer agent to own the MC codebase. Sam should no longer write code directly.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771486200000,
+      "type": "task"
+    },
+    {
+      "id": "a11",
+      "agent": "sam",
+      "title": "Set up delegation audit cron",
+      "description": "Daily 6 PM CAT cron to review Sam's delegation compliance.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771487100000,
+      "type": "task"
+    },
+    {
+      "id": "a12",
+      "agent": "devin",
+      "title": "Team page DiceBear avatars + recurring tasks section",
+      "description": "Swapped emoji for DiceBear avatars, added recurring tasks section to team page.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771487400000,
+      "type": "task"
+    },
+    {
+      "id": "a13",
+      "agent": "sam",
+      "title": "Fix PostCSS breakage",
+      "description": "Sub-agent changed postcss.config.js, Sam reverted it.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771487400000,
+      "type": "task"
+    },
+    {
+      "id": "a14",
+      "agent": "devin",
+      "title": "Office page v1",
+      "description": "Built top-down virtual office with desks and furniture.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771487700000,
+      "type": "task"
+    },
+    {
+      "id": "a15",
+      "agent": "devin",
+      "title": "Fix office meeting table overlap",
+      "description": "Repositioned desks and furniture to fix overlap issues.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771487880000,
+      "type": "task"
+    },
+    {
+      "id": "a16",
+      "agent": "devin",
+      "title": "Add Dev agent to team + office pages",
+      "description": "New agent fully onboarded into team and office views.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771488300000,
+      "type": "task"
+    },
+    {
+      "id": "a17",
+      "agent": "penny",
+      "title": "Ops infrastructure overhaul",
+      "description": "Created ops/ directory, SOP, cron registry, daily log template.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771488480000,
+      "type": "task"
+    },
+    {
+      "id": "a18",
+      "agent": "devin",
+      "title": "Office mobile responsive fix",
+      "description": "Scales office scene on mobile instead of list fallback.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771488900000,
+      "type": "task"
+    },
+    {
+      "id": "a19",
+      "agent": "sam",
+      "title": "Penny cron setup (daily + weekly)",
+      "description": "Daily 4 PM CAT and Weekly Friday 9 AM CAT cron jobs for Penny.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771489140000,
+      "type": "task"
+    },
+    {
+      "id": "a20",
+      "agent": "devin",
+      "title": "Office mobile drawer",
+      "description": "Bottom sheet for agent activity on mobile.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771489200000,
+      "type": "task"
+    },
+    {
+      "id": "a21",
+      "agent": "devin",
+      "title": "Extract shared AgentDrawer component",
+      "description": "Shared component between team and office pages.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771489320000,
+      "type": "task"
+    },
+    {
+      "id": "a22",
+      "agent": "sam",
+      "title": "Rename Dev → Devin",
+      "description": "Updated all files, MEMORY, data-provider to use Devin name.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771489320000,
+      "type": "task"
+    },
+    {
+      "id": "a23",
+      "agent": "devin",
+      "title": "Build Ops Surveillance page",
+      "description": "/ops page with delegation score, violations ticker, agent status.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771489500000,
+      "type": "task"
+    },
+    {
+      "id": "a24",
+      "agent": "sam",
+      "title": "Update Mia avatar",
+      "description": "Generated new avatar, copied to public, pushed.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771489740000,
+      "type": "task"
+    },
+    {
+      "id": "a25",
+      "agent": "devin",
+      "title": "Rename Ops → Surveillance",
+      "description": "Updated nav and page title from Ops to Surveillance.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771489800000,
+      "type": "task"
+    },
+    {
+      "id": "a26",
+      "agent": "sam",
+      "title": "Ops infrastructure build",
+      "description": "Creating Penny brief, ops/ directory, SOP, HEARTBEAT config.",
+      "status": "in-progress",
+      "product": "internal",
+      "createdAt": 1771489800000,
+      "type": "task"
+    },
+    {
+      "id": "a27",
+      "agent": "sam",
+      "title": "Stripe + Supabase + Datafast integration setup",
+      "description": "Connected all 3 products to Stripe, Supabase, and Datafast APIs on Feb 18.",
+      "status": "success",
+      "product": "all",
+      "createdAt": 1771387200000,
+      "type": "task"
+    },
+    {
+      "id": "a28",
+      "agent": "mia",
+      "title": "UGC creator audit",
+      "description": "Verified 7 creators, 134 posts, 4.19M views. Found data issues in summary tab and UTM swaps.",
+      "status": "success",
+      "product": "SE",
+      "createdAt": 1771416000000,
+      "type": "task"
+    },
+    {
+      "id": "a29",
+      "agent": "sam",
+      "title": "Google Service Account setup",
+      "description": "Set up brochbot service account, enabled Sheets API, stored credentials.",
+      "status": "success",
+      "product": "all",
+      "createdAt": 1771405200000,
+      "type": "task"
+    },
+    {
+      "id": "a30",
+      "agent": "sam",
+      "title": "Mission Control dashboard initial build",
+      "description": "NextJS app with Activity Feed, Calendar, Global Search, Team page. Deployed on Vercel.",
+      "status": "success",
+      "product": "internal",
+      "createdAt": 1771398000000,
+      "type": "task"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "title": "Push 'ai interview assistant' to top 3",
+      "description": "Currently position 5.8 with 5.4K impressions. Need dedicated landing page and content strategy.",
+      "status": "todo",
+      "assignee": "miles",
+      "priority": "high",
+      "product": "ISK",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771484700000
+    },
+    {
+      "id": "t2",
+      "title": "Consolidate blog subdomain 301 redirects",
+      "description": "Blog subdomain still getting traffic — needs 301 redirects to main domain.",
+      "status": "todo",
+      "assignee": "miles",
+      "priority": "medium",
+      "product": "ISK",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771484700000
+    },
+    {
+      "id": "t3",
+      "title": "Enable GSC for CLCP and SE keyword tracking",
+      "description": "Currently only tracking ISK keywords. Need to expand GSC coverage to all products.",
+      "status": "todo",
+      "assignee": "miles",
+      "priority": "medium",
+      "product": "all",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771484700000
+    },
+    {
+      "id": "t4",
+      "title": "Wire Mission Control to real data",
+      "description": "Activity feed, calendar, memory pages need to pull from real data sources instead of mock data.",
+      "status": "in-progress",
+      "assignee": "devin",
+      "priority": "high",
+      "product": "internal",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771489800000
+    },
+    {
+      "id": "t5",
+      "title": "Build content strategy for ISK landing pages",
+      "description": "Create dedicated landing pages targeting high-impression keywords like 'ai interview assistant'.",
+      "status": "todo",
+      "assignee": "miles",
+      "priority": "high",
+      "product": "ISK",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771484700000
+    },
+    {
+      "id": "t6",
+      "title": "Define Cara's first real task",
+      "description": "Cara has never been used. Needs a defined scope — churn analysis, billing support, or customer health.",
+      "status": "todo",
+      "assignee": "sam",
+      "priority": "medium",
+      "product": "internal",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771484700000
+    },
+    {
+      "id": "t7",
+      "title": "Enable Search Console API in Google Cloud Console",
+      "description": "Ben needs to enable the GSC API in Cloud Console so Miles can pull keyword/ranking data programmatically.",
+      "status": "blocked",
+      "assignee": "ben",
+      "priority": "high",
+      "product": "all",
+      "createdAt": 1771416000000,
+      "updatedAt": 1771484700000
+    },
+    {
+      "id": "t8",
+      "title": "Set up competitor keyword tracking",
+      "description": "Track competitor keyword positions for all products.",
+      "status": "todo",
+      "assignee": "miles",
+      "priority": "medium",
+      "product": "all",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771484700000
+    },
+    {
+      "id": "t9",
+      "title": "Investigate ISK traffic drop (-30%)",
+      "description": "ISK traffic dropped 30% vs last Wednesday. Needs root cause analysis.",
+      "status": "todo",
+      "assignee": "dana",
+      "priority": "high",
+      "product": "ISK",
+      "createdAt": 1771480800000,
+      "updatedAt": 1771480800000
+    },
+    {
+      "id": "t10",
+      "title": "Set up weekly UGC performance tracking",
+      "description": "Mia needs a recurring task to track UGC creator performance weekly.",
+      "status": "todo",
+      "assignee": "mia",
+      "priority": "medium",
+      "product": "SE",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771484700000
+    },
+    {
+      "id": "t11",
+      "title": "Set up Convex for MC database",
+      "description": "Mission Control needs a proper database backend instead of static data.",
+      "status": "todo",
+      "assignee": "devin",
+      "priority": "medium",
+      "product": "internal",
+      "createdAt": 1771484700000,
+      "updatedAt": 1771484700000
+    }
+  ],
+  "calendar": [
+    {
+      "id": "c1",
+      "title": "Morning Analytics Report",
+      "type": "cron",
+      "agent": "dana",
+      "schedule": "8 AM CAT daily",
+      "nextRun": 1771570800000
+    },
+    {
+      "id": "c2",
+      "title": "Nightly MC Sync",
+      "type": "cron",
+      "agent": "sam",
+      "schedule": "2 AM CAT daily",
+      "nextRun": 1771549200000
+    },
+    {
+      "id": "c3",
+      "title": "Weekly GSC Report",
+      "type": "cron",
+      "agent": "miles",
+      "schedule": "Monday 8 AM CAT weekly",
+      "nextRun": 1771830000000
+    },
+    {
+      "id": "c4",
+      "title": "Delegation Audit",
+      "type": "cron",
+      "agent": "system",
+      "schedule": "6 PM CAT daily",
+      "nextRun": 1771506000000
+    },
+    {
+      "id": "c5",
+      "title": "Penny Daily Check",
+      "type": "cron",
+      "agent": "penny",
+      "schedule": "4 PM CAT daily",
+      "nextRun": 1771498800000
+    },
+    {
+      "id": "c6",
+      "title": "Penny Weekly Audit",
+      "type": "cron",
+      "agent": "penny",
+      "schedule": "Friday 9 AM CAT weekly",
+      "nextRun": 1771747200000
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d1",
+      "title": "Agent Knowledge Briefs",
+      "description": "Create persistent agent briefs in /workspace/agents/ so sub-agents load context from files instead of re-explaining everything. Reduces context waste, improves delegation efficiency.",
+      "madeBy": "Ben + Sam",
+      "createdAt": 1771484400000
+    },
+    {
+      "id": "d2",
+      "title": "Dev Agent Created (Devin 🛠️)",
+      "description": "Add a Web Developer agent to own the MC codebase. Sam was writing code directly, violating the orchestrator role.",
+      "madeBy": "Ben + Sam",
+      "createdAt": 1771486200000
+    },
+    {
+      "id": "d3",
+      "title": "Weekly GSC Report Format",
+      "description": "Use date ranges as column headers (e.g. '2/10-2/16'), current partial week + last full week + T-30 avg. Ben prefers concrete dates over ambiguous labels.",
+      "madeBy": "Ben",
+      "createdAt": 1771483500000
+    },
+    {
+      "id": "d4",
+      "title": "Delegation Audit Cron",
+      "description": "Daily cron at 6 PM CAT to review Sam's delegation compliance. Need oversight to ensure Sam orchestrates rather than executes.",
+      "madeBy": "Ben",
+      "createdAt": 1771487100000
+    },
+    {
+      "id": "d5",
+      "title": "ISK Keyword Focus: During-Interview Only",
+      "description": "Track 'during interview' keywords (ai interview assistant, helper, etc.) not prep keywords. ISK is a live interview tool, not a practice/prep tool.",
+      "madeBy": "Ben",
+      "createdAt": 1771482300000
+    }
+  ]
+}
