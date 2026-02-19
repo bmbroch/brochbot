@@ -19,6 +19,7 @@ const navItems = [
   { href: "/team", label: "Team", icon: "👥" },
   { href: "/office", label: "Office", icon: "🏢" },
   { href: "/ops", label: "Surveillance", icon: "📡" },
+  { href: "/usage", label: "Usage", icon: "📊" },
 ];
 
 export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: SidebarProps) {
