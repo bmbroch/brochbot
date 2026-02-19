@@ -1,6 +1,7 @@
 "use client";
 
 import Shell from "@/components/Shell";
+import AgentDrawer from "@/components/AgentDrawer";
 import { useState, useEffect } from "react";
 import { useActivities, agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
@@ -177,43 +178,13 @@ export default function TeamPage() {
         </div>
 
         {/* Mobile: Bottom Sheet */}
-        {selectedMember && isMobile && (
-          <div className="lg:hidden fixed inset-0 z-[100]" onClick={() => setSelectedId(null)}>
-            <div className="absolute inset-0 bg-black/60" />
-            <div
-              className="absolute bottom-0 left-0 right-0 max-h-[60vh] bg-[#141414] border-t border-[#262626] rounded-t-2xl overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-200"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Drag handle */}
-              <div className="flex justify-center pt-3 pb-2">
-                <div className="w-10 h-1 rounded-full bg-zinc-700" />
-              </div>
-
-              {/* Header */}
-              <div className="flex items-center gap-3 px-4 pb-3 border-b border-[#262626]">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br"
-                  style={{ backgroundColor: `${agentColors[selectedMember.id]}15` }}
-                >
-                  {selectedMember.avatar ? (
-                    <Image src={selectedMember.avatar} alt={selectedMember.name} width={40} height={40} className="w-full h-full rounded-full object-cover" />
-                  ) : (
-                    <span className="text-2xl">{selectedMember.emoji}</span>
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold">{selectedMember.name}</p>
-                  <p className="text-xs" style={{ color: agentColors[selectedMember.id] }}>{selectedMember.role}</p>
-                </div>
-                <button onClick={() => setSelectedId(null)} className="p-2 text-zinc-500 hover:text-white">✕</button>
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 overflow-y-auto px-4 py-4">
-                <MemberDetail member={selectedMember} activities={activities} />
-              </div>
-            </div>
-          </div>
+        {isMobile && selectedMember && (
+          <AgentDrawer
+            member={selectedMember}
+            activities={activities}
+            isOpen={true}
+            onClose={() => setSelectedId(null)}
+          />
         )}
       </div>
     </Shell>

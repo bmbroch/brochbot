@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Shell from "@/components/Shell";
+import AgentDrawer from "@/components/AgentDrawer";
 import {
   teamMembers,
   useActivities,
@@ -243,93 +244,6 @@ export default function OfficePage() {
   );
 }
 
-function MobileDrawer({
-  member,
-  activities,
-  onClose,
-}: {
-  member: TeamMember;
-  activities: Activity[];
-  onClose: () => void;
-}) {
-  const color = agentColors[member.id] || "#666";
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    // trigger enter animation on next frame
-    requestAnimationFrame(() => setVisible(true));
-  }, []);
-
-  const handleClose = () => {
-    setVisible(false);
-    setTimeout(onClose, 250);
-  };
-
-  return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 z-40 bg-black/40 transition-opacity duration-250"
-        style={{ opacity: visible ? 1 : 0 }}
-        onClick={handleClose}
-      />
-      {/* Drawer */}
-      <div
-        className="fixed left-0 right-0 bottom-0 z-50 rounded-t-2xl border-t border-[#262626] bg-[#141414] px-5 pb-6 pt-3 transition-transform duration-250 ease-out"
-        style={{ transform: visible ? "translateY(0)" : "translateY(100%)" }}
-      >
-        {/* Drag handle */}
-        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-white/20" />
-
-        {/* Close button */}
-        <button
-          onClick={handleClose}
-          className="absolute top-3 right-4 text-white/30 hover:text-white/60 text-sm"
-        >
-          ✕
-        </button>
-
-        {/* Agent info */}
-        <div className="flex items-center gap-3 mb-4">
-          <div
-            className="w-10 h-10 rounded-full overflow-hidden border-2 shrink-0"
-            style={{ borderColor: color }}
-          >
-            <Image
-              src={member.avatar || ""}
-              alt={member.name}
-              width={40}
-              height={40}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-white">{member.name}</p>
-            <p className="text-xs text-white/40">{member.role}</p>
-          </div>
-        </div>
-
-        {/* Activities */}
-        <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">
-          Recent activity
-        </p>
-        {activities.length === 0 ? (
-          <p className="text-xs text-white/30">No recent activity</p>
-        ) : (
-          <div className="space-y-2.5 max-h-48 overflow-y-auto">
-            {activities.slice(0, 5).map((a) => (
-              <div key={a._id} className="text-xs">
-                <p className="text-white/60 leading-snug">{a.title}</p>
-                <p className="text-white/25 text-[10px]">{timeAgo(a.createdAt)}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
-  );
-}
-
 function OfficeCanvas({
   selected,
   setSelected,
@@ -501,9 +415,10 @@ function OfficeCanvas({
 
       {/* Mobile bottom drawer */}
       {isMobile && selectedMember && (
-        <MobileDrawer
+        <AgentDrawer
           member={selectedMember}
-          activities={getAgentActivities(selectedMember.id)}
+          activities={activities}
+          isOpen={true}
           onClose={() => setSelected(null)}
         />
       )}
