@@ -142,17 +142,5 @@
     "durationSec": 5,
     "status": "success",
     "timestamp": "2026-02-19T13:28:30.563Z"
-  },
-  {
-    "id": "sam-sync-2026-02-19T13:37:06Z",
-    "label": "Conversation",
-    "agent": "sam",
-    "task": "Sam \u2194 Ben conversation",
-    "model": "Opus",
-    "tokens": 50325575,
-    "cost": 65.2438,
-    "durationSec": 0,
-    "status": "success",
-    "timestamp": "2026-02-19T13:37:06Z"
   }
 ]
