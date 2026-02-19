@@ -60,6 +60,18 @@
     "timestamp": "2026-02-19T19:20:11.977Z"
   },
   {
+    "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
+    "label": "c1c67e23-34e",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 432848,
+    "cost": 1.1863,
+    "durationSec": 5829,
+    "status": "success",
+    "timestamp": "2026-02-19T18:31:48.211Z"
+  },
+  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
@@ -70,18 +82,6 @@
     "durationSec": 5899,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
-  },
-  {
-    "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
-    "label": "c1c67e23-34e",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 401666,
-    "cost": 1.1642,
-    "durationSec": 5820,
-    "status": "success",
-    "timestamp": "2026-02-19T18:31:48.211Z"
   },
   {
     "id": "efed9647-2d3a-413c-ad87-581ac78b73af",
@@ -106,6 +106,18 @@
     "durationSec": 109,
     "status": "success",
     "timestamp": "2026-02-19T19:35:24.476Z"
+  },
+  {
+    "id": "d5fe3e9e-2bb8-4548-b8f9-15e325931cde",
+    "label": "devin-theme-system",
+    "agent": "devin",
+    "task": "**Task: Build a complete light/dark mode theme system for the brochbot Mission Control site.**",
+    "model": "Sonnet",
+    "tokens": 201349,
+    "cost": 0.2302,
+    "durationSec": 31,
+    "status": "success",
+    "timestamp": "2026-02-19T20:08:45.695Z"
   },
   {
     "id": "2921efcb-e29e-4d03-96d0-fad2ffc4e001",
@@ -202,17 +214,5 @@
     "durationSec": 7,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "d5fe3e9e-2bb8-4548-b8f9-15e325931cde",
-    "label": "devin-theme-system",
-    "agent": "devin",
-    "task": "**Task: Build a complete light/dark mode theme system for the brochbot Mission Control site.**",
-    "model": "Sonnet",
-    "tokens": 12519,
-    "cost": 0.0293,
-    "durationSec": 2,
-    "status": "success",
-    "timestamp": "2026-02-19T20:08:45.695Z"
   }
 ]
