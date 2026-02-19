@@ -152,15 +152,19 @@ const d = 86400000;
 export const mockTasks: Task[] = [
   { _id: "t1", title: "Push 'ai interview assistant' to top 3", description: "Currently position 5.8 with 5.4K impressions. Need dedicated landing page and content strategy.", status: "todo", assignee: "miles", priority: "high", product: "ISK", createdAt: 1771484700000, updatedAt: 1771484700000 },
   { _id: "t2", title: "Consolidate blog subdomain 301 redirects", description: "Blog subdomain still getting traffic — needs 301 redirects to main domain.", status: "todo", assignee: "miles", priority: "medium", product: "ISK", createdAt: 1771484700000, updatedAt: 1771484700000 },
-  { _id: "t3", title: "Enable GSC for CLCP and SE keyword tracking", description: "Currently only tracking ISK keywords. Need to expand GSC coverage to all products.", status: "todo", assignee: "miles", priority: "medium", product: "all", createdAt: 1771484700000, updatedAt: 1771484700000 },
-  { _id: "t4", title: "Wire Mission Control to real data", description: "Activity feed, calendar, memory pages need to pull from real data sources instead of mock data.", status: "in-progress", assignee: "devin", priority: "high", product: "internal", createdAt: 1771484700000, updatedAt: 1771489800000 },
+  { _id: "t3", title: "Enable GSC for CLCP and SE keyword tracking", description: "Currently only tracking ISK keywords. CLCP organic traffic is declining with zero attention. Need to expand GSC coverage to all 3 products.", status: "todo", assignee: "miles", priority: "high", product: "all", createdAt: 1771484700000, updatedAt: 1771491360000 },
+  { _id: "t4", title: "Wire Mission Control to live data", description: "Activity feed, calendar, memory pages need to pull from real data sources instead of the nightly JSON push. Future state: live API calls vs nightly mc-data.json sync.", status: "in-progress", assignee: "devin", priority: "high", product: "internal", createdAt: 1771484700000, updatedAt: 1771490400000 },
   { _id: "t5", title: "Build content strategy for ISK landing pages", description: "Create dedicated landing pages targeting high-impression keywords like 'ai interview assistant'.", status: "todo", assignee: "miles", priority: "high", product: "ISK", createdAt: 1771484700000, updatedAt: 1771484700000 },
   { _id: "t6", title: "Define Cara's first real task", description: "Cara has never been used. Needs a defined scope — churn analysis, billing support, or customer health.", status: "todo", assignee: "sam", priority: "medium", product: "internal", createdAt: 1771484700000, updatedAt: 1771484700000 },
   { _id: "t7", title: "Enable Search Console API in Google Cloud Console", description: "Ben needs to enable the GSC API in Cloud Console so Miles can pull keyword/ranking data programmatically.", status: "blocked", assignee: "ben", priority: "high", product: "all", createdAt: 1771416000000, updatedAt: 1771484700000 },
   { _id: "t8", title: "Set up competitor keyword tracking", description: "Track competitor keyword positions for all products.", status: "todo", assignee: "miles", priority: "medium", product: "all", createdAt: 1771484700000, updatedAt: 1771484700000 },
   { _id: "t9", title: "Investigate ISK traffic drop (-30%)", description: "ISK traffic dropped 30% vs last Wednesday. Needs root cause analysis.", status: "todo", assignee: "dana", priority: "high", product: "ISK", createdAt: 1771480800000, updatedAt: 1771480800000 },
   { _id: "t10", title: "Set up weekly UGC performance tracking", description: "Mia needs a recurring task to track UGC creator performance weekly.", status: "todo", assignee: "mia", priority: "medium", product: "SE", createdAt: 1771484700000, updatedAt: 1771484700000 },
-  { _id: "t11", title: "Set up Convex for MC database", description: "Mission Control needs a proper database backend instead of static data.", status: "todo", assignee: "devin", priority: "medium", product: "internal", createdAt: 1771484700000, updatedAt: 1771484700000 },
+  { _id: "t11", title: "Set up Convex for MC database", description: "Mission Control needs a proper database backend instead of static JSON push. Convex was the agreed direction.", status: "todo", assignee: "devin", priority: "medium", product: "internal", createdAt: 1771484700000, updatedAt: 1771484700000 },
+  { _id: "t12", title: "Create persistent weekly metrics file (Dana)", description: "Dana's morning reports vanish into Telegram. Need memory/weekly-metrics-YYYY-MM-DD.md every Monday covering all 3 products — traffic, revenue, MoM trends. Without this, spotting problems before they become crises is impossible.", status: "todo", assignee: "dana", priority: "high", product: "all", createdAt: 1771491360000, updatedAt: 1771491360000 },
+  { _id: "t13", title: "Run Cara's first churn/billing health report", description: "Churn rate, refund rate, cancellations within 7 days — none of this has been looked at. Data exists in Stripe. Cara should own memory/billing-health-YYYY-MM.md monthly.", status: "todo", assignee: "cara", priority: "medium", product: "all", createdAt: 1771491360000, updatedAt: 1771491360000 },
+  { _id: "t14", title: "Create HEARTBEAT.md", description: "Referenced in AGENTS.md and SOP but never created. Needed for heartbeat poll context and periodic check coordination.", status: "todo", assignee: "sam", priority: "low", product: "internal", createdAt: 1771491360000, updatedAt: 1771491360000 },
+  { _id: "t15", title: "CLCP organic SEO — stop the decline", description: "CLCP organic traffic is declining and Miles has spent zero time on it (ISK-only focus). Need GSC access + keyword audit + at least one actionable recommendation. This is real revenue being left on the table.", status: "todo", assignee: "miles", priority: "high", product: "CLCP", createdAt: 1771491360000, updatedAt: 1771491360000 },
 ];
 
 export const mockActivities: Activity[] = [
@@ -189,11 +193,20 @@ export const mockActivities: Activity[] = [
   { _id: "a23", agent: "devin", type: "task", title: "Build Ops Surveillance page", description: "/ops page with delegation score, violations ticker, agent status.", status: "success", product: "internal", createdAt: 1771489500000 },
   { _id: "a24", agent: "sam", type: "task", title: "Update Mia avatar", description: "Generated new avatar, copied to public, pushed.", status: "success", product: "internal", createdAt: 1771489740000 },
   { _id: "a25", agent: "devin", type: "task", title: "Rename Ops → Surveillance", description: "Updated nav and page title from Ops to Surveillance.", status: "success", product: "internal", createdAt: 1771489800000 },
-  { _id: "a26", agent: "sam", type: "task", title: "Ops infrastructure build", description: "Creating Penny brief, ops/ directory, SOP, HEARTBEAT config.", status: "in-progress", product: "internal", createdAt: 1771489800000 },
-  { _id: "a27", agent: "sam", type: "task", title: "Stripe + Supabase + Datafast integration setup", description: "Connected all 3 products to Stripe, Supabase, and Datafast APIs on Feb 18.", status: "success", product: "all", createdAt: 1771387200000 },
-  { _id: "a28", agent: "mia", type: "task", title: "UGC creator audit", description: "Verified 7 creators, 134 posts, 4.19M views. Found data issues in summary tab and UTM swaps.", status: "success", product: "SE", createdAt: 1771416000000 },
-  { _id: "a29", agent: "sam", type: "task", title: "Google Service Account setup", description: "Set up brochbot service account, enabled Sheets API, stored credentials.", status: "success", product: "all", createdAt: 1771405200000 },
-  { _id: "a30", agent: "sam", type: "task", title: "Mission Control dashboard initial build", description: "NextJS app with Activity Feed, Calendar, Global Search, Team page. Deployed on Vercel.", status: "success", product: "internal", createdAt: 1771398000000 },
+  { _id: "a26", agent: "sam", type: "task", title: "Ops infrastructure build (orchestration)", description: "Orchestrated: Penny brief creation, ops/ directory, SOP, HEARTBEAT config. Delegated to Penny sub-agent. Completed.", status: "success", product: "internal", createdAt: 1771489800000 },
+  { _id: "a27", agent: "sam", type: "task", title: "Stripe + Supabase + Datafast integration setup", description: "Connected all 3 products to Stripe, Supabase, and Datafast APIs on Feb 18. Pulled initial data snapshots.", status: "success", product: "all", createdAt: 1771387200000 },
+  { _id: "a28", agent: "mia", type: "task", title: "UGC creator audit", description: "Verified 7 creators, 134 posts, 4.19M combined views. Found data issues: summary tab undercounts, Jake/Bobby UTMs swapped, inconsistent date formats.", status: "success", product: "SE", createdAt: 1771416000000 },
+  { _id: "a29", agent: "sam", type: "task", title: "Google Service Account setup", description: "Set up brochbot service account, enabled Sheets API, stored credentials at .credentials/google-service-account.json.", status: "success", product: "all", createdAt: 1771405200000 },
+  { _id: "a30", agent: "sam", type: "task", title: "Mission Control dashboard initial build", description: "NextJS app with Activity Feed, Calendar, Global Search, Team page. Deployed on Vercel. GitHub PAT set up.", status: "success", product: "internal", createdAt: 1771398000000 },
+  { _id: "a31", agent: "sam", type: "task", title: "Brave Search API setup", description: "Connected Brave Search API, stored key in env vars. Available for all agents.", status: "success", product: "internal", createdAt: 1771408800000 },
+  { _id: "a32", agent: "sam", type: "task", title: "Initial cron jobs setup (Feb 18)", description: "Set up Morning Analytics Report (8 AM CAT, Dana) and Nightly MC Sync (2 AM CAT, Sam) on first day.", status: "success", product: "internal", createdAt: 1771426800000 },
+  { _id: "a33", agent: "sam", type: "task", title: "MC dashboard v2 — page builds (Feb 18)", description: "Upgraded to recharts (interactive hover), built Tasks Board, Creators page, Memory page. Team page went through 3 design iterations before landing on clean accordion layout.", status: "success", product: "internal", createdAt: 1771420200000 },
+  { _id: "a34", agent: "devin", type: "task", title: "AgentSidePanel component", description: "Built AgentSidePanel as a companion to AgentDrawer, used for desktop sidebar agent detail view.", status: "success", product: "internal", createdAt: 1771489380000 },
+  { _id: "a35", agent: "penny", type: "task", title: "First delegation audit report", description: "Full audit: 7 Sam violations documented, agent status assessed, process gaps identified, improvement priorities ranked. Saved: ops/penny-audit-2026-02-19.md", status: "success", product: "internal", createdAt: 1771488960000 },
+  { _id: "a36", agent: "sam", type: "task", title: "agentOrder fix — add Devin to team page", description: "Added Devin to agentOrder array in team page. ⚠️ Sam edited code directly instead of delegating to Devin. One-line fix but still a violation.", status: "success", product: "internal", createdAt: 1771489680000 },
+  { _id: "a37", agent: "sam", type: "task", title: "Model config changes — Sonnet fallback", description: "Configured Claude Sonnet as the model for sub-agents and background tasks. Opus remains the default for main sessions. Auto-fallback from Opus to Sonnet when context is high.", status: "success", product: "internal", createdAt: 1771490100000 },
+  { _id: "a38", agent: "sam", type: "task", title: "mc-data.json creation + data wiring to MC", description: "Created ops/mc-data.json as the canonical data source for Mission Control. Wired MC dashboard to consume JSON for activity feed, calendar, tasks, and decisions.", status: "success", product: "internal", createdAt: 1771490400000 },
+  { _id: "a39", agent: "penny", type: "task", title: "Full mc-data.json reconciliation", description: "Comprehensive sweep of all work Feb 18–19. Added 9 missing activities, 4 missing tasks, 3 missing decisions. Fixed a26 in-progress → success. Updated lastUpdated.", status: "success", product: "internal", createdAt: 1771491360000 },
 ];
 
 export const mockScheduledTasks: ScheduledTask[] = [
@@ -203,6 +216,27 @@ export const mockScheduledTasks: ScheduledTask[] = [
   { _id: "c4", name: "Delegation Audit", schedule: "6 PM CAT daily", nextRun: 1771506000000, agent: "system", description: "Review Sam's delegation compliance.", status: "active" },
   { _id: "c5", name: "Penny Daily Check", schedule: "4 PM CAT daily", nextRun: 1771498800000, agent: "penny", description: "Daily ops check and log update.", status: "active" },
   { _id: "c6", name: "Penny Weekly Audit", schedule: "Friday 9 AM CAT weekly", nextRun: 1771747200000, agent: "penny", description: "Weekly ops audit and summary.", status: "active" },
+];
+
+// ─── Decisions ───────────────────────────────────────────────────────────────
+
+export interface Decision {
+  _id: string;
+  title: string;
+  description: string;
+  madeBy: string;
+  createdAt: number;
+}
+
+export const mockDecisions: Decision[] = [
+  { _id: "d1", title: "Agent Knowledge Briefs", description: "Create persistent agent briefs in /workspace/agents/ so sub-agents load context from files instead of re-explaining everything. Reduces context waste, improves delegation efficiency.", madeBy: "Ben + Sam", createdAt: 1771484400000 },
+  { _id: "d2", title: "Dev Agent Created (Devin 🛠️)", description: "Add a Web Developer agent to own the MC codebase. Sam was writing code directly, violating the orchestrator role.", madeBy: "Ben + Sam", createdAt: 1771486200000 },
+  { _id: "d3", title: "Weekly GSC Report Format", description: "Use date ranges as column headers (e.g. '2/10-2/16'), current partial week + last full week + T-30 avg. Ben prefers concrete dates over ambiguous labels like 'this week'.", madeBy: "Ben", createdAt: 1771483500000 },
+  { _id: "d4", title: "Delegation Audit Cron", description: "Daily cron at 6 PM CAT to review Sam's delegation compliance. Need oversight to ensure Sam orchestrates rather than executes.", madeBy: "Ben", createdAt: 1771487100000 },
+  { _id: "d5", title: "ISK Keyword Focus: During-Interview Only", description: "Track 'during interview' keywords (ai interview assistant, helper, etc.) not prep keywords. ISK is a live interview tool, not a practice/prep tool.", madeBy: "Ben", createdAt: 1771482300000 },
+  { _id: "d6", title: "Sonnet for sub-agents", description: "Use Claude Sonnet (claude-sonnet-4-6) for sub-agents and background tasks. Opus (claude-opus-4-6) remains the default for main sessions. Balances cost and speed for autonomous background work.", madeBy: "Ben + Sam", createdAt: 1771490100000 },
+  { _id: "d7", title: "Auto-fallback model config", description: "When context gets long or for delegated tasks, automatically fall back from Opus to Sonnet. Configured in openclaw model settings. Prevents context blowout on expensive tasks.", madeBy: "Ben + Sam", createdAt: 1771490100000 },
+  { _id: "d8", title: "Sync after work chunks, not on fixed schedule", description: "The nightly MC sync (Sam, 2 AM CAT) updates data after work happens rather than on a rigid push schedule. mc-data.json is the canonical source; synced after meaningful work sessions, not every hour.", madeBy: "Ben + Sam", createdAt: 1771490400000 },
 ];
 
 export const mockDocuments: MemoryDocument[] = [
@@ -366,6 +400,10 @@ export function useScheduledTasks(): ScheduledTask[] {
 
 export function useDocuments(): MemoryDocument[] {
   return mockDocuments;
+}
+
+export function useDecisions(): Decision[] {
+  return mockDecisions;
 }
 
 export function useTeam(): TeamMember[] {
