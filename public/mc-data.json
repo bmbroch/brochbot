@@ -1,23 +1,35 @@
 {
-  "lastUpdated": "2026-02-19T13:24:19Z",
+  "lastUpdated": "2026-02-19T13:25:32Z",
   "activities": [
+    {
+      "id": "s-9d6d347d",
+      "agent": "devin",
+      "title": "devin-timezone",
+      "description": "## Task: Show all dates/times in CAT (Africa/Windhoek, UTC+2) throughout MC",
+      "status": "success",
+      "date": "2026-02-19T13:25:28.818Z",
+      "tokens": 12887,
+      "cost": 0.0297,
+      "model": "Sonnet",
+      "durationSec": 2
+    },
     {
       "id": "s-3efae561",
       "agent": "devin",
       "title": "devin-live-data-fixes",
-      "description": "[Thu 2026-02-19 13:24 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+      "description": "## Task: 3 fixes \u2014 live data everywhere, no hardcoded activity",
       "status": "success",
       "date": "2026-02-19T13:24:13.668Z",
-      "tokens": 25969,
-      "cost": 0.0382,
+      "tokens": 221210,
+      "cost": 0.1811,
       "model": "Sonnet",
-      "durationSec": 4
+      "durationSec": 63
     },
     {
       "id": "s-f6455e7c",
       "agent": "devin",
       "title": "devin-cpm",
-      "description": "[Thu 2026-02-19 13:22 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+      "description": "## Task: Add CPM column to /creators table",
       "status": "success",
       "date": "2026-02-19T13:22:03.750Z",
       "tokens": 160929,
@@ -29,7 +41,7 @@
       "id": "s-ebea0ddb",
       "agent": "devin",
       "title": "devin-creator-earnings",
-      "description": "[Thu 2026-02-19 13:16 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+      "description": "## Task: Replace hardcoded creator earnings with live Mercury data on /creators",
       "status": "success",
       "date": "2026-02-19T13:16:02.548Z",
       "tokens": 247738,
@@ -41,7 +53,7 @@
       "id": "s-e8cbb163",
       "agent": "frankie",
       "title": "frankie-mercury-recipients",
-      "description": "[Thu 2026-02-19 13:04 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+      "description": "## Task: Pull all Mercury recipients \u2014 creator payment analysis",
       "status": "success",
       "date": "2026-02-19T13:04:52.326Z",
       "tokens": 384581,
@@ -53,7 +65,7 @@
       "id": "s-94c294ca",
       "agent": "devin",
       "title": "devin-usage-tracking",
-      "description": "[Thu 2026-02-19 13:02 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+      "description": "## Task: Wire agent-runs-history.json into Mission Control",
       "status": "success",
       "date": "2026-02-19T13:02:10.048Z",
       "tokens": 1136485,
@@ -65,7 +77,7 @@
       "id": "s-8eba50d3",
       "agent": "devin",
       "title": "devin-supabase-wire",
-      "description": "[Thu 2026-02-19 12:42 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+      "description": "Task: Wire Mission Control to live Supabase data so the activity feed updates in real-time without needing a Vercel redeploy.",
       "status": "success",
       "date": "2026-02-19T12:42:02.855Z",
       "tokens": 682323,
@@ -77,7 +89,7 @@
       "id": "s-73688079",
       "agent": "devin",
       "title": "Nightly Mission Control Sync",
-      "description": "[cron:53f845d7-0a52-422a-93c2-4e9c1cca1279 Nightly Briefing] You're Sam \ud83e\udd1d, Chief of Staff. Generate a concise nightly briefing for Ben.",
+      "description": "Read these files:",
       "status": "success",
       "date": "2026-02-19T11:52:45.805Z",
       "tokens": 31663,
@@ -89,7 +101,7 @@
       "id": "s-531ad18a",
       "agent": "dana",
       "title": "Morning Analytics Report",
-      "description": "[cron:f436e186-ac23-4562-a32c-55e4ec7155b7 Morning Analytics Report] Read /home/ubuntu/.openclaw/workspace/agents/dana/AGENT.md for API instructions. Then generate a morning analytics report:",
+      "description": "1. Get YESTERDAY's data (visitors, sessions, revenue) for all 3 products (CLCP, ISK, SE) using Datafast timeseries endpoint with interval=day",
       "status": "success",
       "date": "2026-02-19T06:00:00.149Z",
       "tokens": 37595,
@@ -101,7 +113,7 @@
       "id": "s-dc7287f0",
       "agent": "devin",
       "title": "Nightly Mission Control Sync",
-      "description": "[cron:53f845d7-0a52-422a-93c2-4e9c1cca1279 Nightly Mission Control Sync] Read /home/ubuntu/.openclaw/workspace/memory/mission-control-sync.md to check for pending Mission Control updates. If there are",
+      "description": "Current time: Thursday, February 19th, 2026 \u2014 12:00 AM (UTC)",
       "status": "success",
       "date": "2026-02-19T00:00:00.059Z",
       "tokens": 27572,
@@ -428,7 +440,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T13:24:13.668Z",
+      "lastActive": "2026-02-19T13:25:28.818Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -456,7 +468,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T13:24:18Z",
+      "lastActive": "2026-02-19T13:25:32Z",
       "statusText": ""
     }
   }
