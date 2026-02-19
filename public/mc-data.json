@@ -1,23 +1,35 @@
 {
-  "lastUpdated": "2026-02-19T13:25:32Z",
+  "lastUpdated": "2026-02-19T13:28:38Z",
   "activities": [
+    {
+      "id": "s-38d720be",
+      "agent": "devin",
+      "title": "devin-ops-live",
+      "description": "`src/app/ops/page.tsx` is completely hardcoded and stale. It has a static AGENTS array with wrong statuses, missing Frankie, and times frozen from Feb 19 morning.",
+      "status": "success",
+      "date": "2026-02-19T13:28:30.563Z",
+      "tokens": 25972,
+      "cost": 0.0385,
+      "model": "Sonnet",
+      "durationSec": 5
+    },
     {
       "id": "s-9d6d347d",
       "agent": "devin",
       "title": "devin-timezone",
-      "description": "## Task: Show all dates/times in CAT (Africa/Windhoek, UTC+2) throughout MC",
+      "description": "Currently all timestamps display in UTC or browser-local time. Ben is in Windhoek, Namibia (CAT = UTC+2, `Africa/Windhoek`). All dates/times across the site should display in his timezone.",
       "status": "success",
       "date": "2026-02-19T13:25:28.818Z",
-      "tokens": 12887,
-      "cost": 0.0297,
+      "tokens": 855186,
+      "cost": 0.5875,
       "model": "Sonnet",
-      "durationSec": 2
+      "durationSec": 153
     },
     {
       "id": "s-3efae561",
       "agent": "devin",
       "title": "devin-live-data-fixes",
-      "description": "## Task: 3 fixes \u2014 live data everywhere, no hardcoded activity",
+      "description": "`src/app/office/page.tsx` currently uses `useActivities()` from data-provider which returns hardcoded mock data.",
       "status": "success",
       "date": "2026-02-19T13:24:13.668Z",
       "tokens": 221210,
@@ -29,7 +41,7 @@
       "id": "s-f6455e7c",
       "agent": "devin",
       "title": "devin-cpm",
-      "description": "## Task: Add CPM column to /creators table",
+      "description": "CPM = Cost Per Mille = (totalPaid / totalViews) \u00d7 1000. Shows how much is being paid per 1,000 views per creator.",
       "status": "success",
       "date": "2026-02-19T13:22:03.750Z",
       "tokens": 160929,
@@ -41,7 +53,7 @@
       "id": "s-ebea0ddb",
       "agent": "devin",
       "title": "devin-creator-earnings",
-      "description": "## Task: Replace hardcoded creator earnings with live Mercury data on /creators",
+      "description": "We now have `public/creator-payouts.json` \u2014 a daily-updated file from Mercury (our bank) with real payout totals per creator. Schema:",
       "status": "success",
       "date": "2026-02-19T13:16:02.548Z",
       "tokens": 247738,
@@ -53,7 +65,7 @@
       "id": "s-e8cbb163",
       "agent": "frankie",
       "title": "frankie-mercury-recipients",
-      "description": "## Task: Pull all Mercury recipients \u2014 creator payment analysis",
+      "description": "Mercury API key is in env as `MERCURY_API_KEY`. Base URL: `https://api.mercury.com/api/v1`. Auth header: `Authorization: Bearer $MERCURY_API_KEY`.",
       "status": "success",
       "date": "2026-02-19T13:04:52.326Z",
       "tokens": 384581,
@@ -65,7 +77,7 @@
       "id": "s-94c294ca",
       "agent": "devin",
       "title": "devin-usage-tracking",
-      "description": "## Task: Wire agent-runs-history.json into Mission Control",
+      "description": "We now have a new file at `public/agent-runs-history.json` \u2014 a growing, append-only log of every agent run. Each entry looks like:",
       "status": "success",
       "date": "2026-02-19T13:02:10.048Z",
       "tokens": 1136485,
@@ -440,7 +452,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T13:25:28.818Z",
+      "lastActive": "2026-02-19T13:28:30.563Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -468,7 +480,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T13:25:32Z",
+      "lastActive": "2026-02-19T13:28:37Z",
       "statusText": ""
     }
   }
