@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T14:50:02Z",
+  "lastUpdated": "2026-02-19T15:00:01Z",
   "activities": [
     {
       "id": "s-d0f9337f",
@@ -36,30 +36,6 @@
       "cost": 0.1473,
       "model": "Opus",
       "durationSec": 19
-    },
-    {
-      "id": "s-7097e4f4",
-      "agent": "mia",
-      "title": "mia-creator-posts",
-      "description": "**Task: Pull real creator post data from Google Sheets \u2192 write to public/creator-posts.json**",
-      "status": "success",
-      "date": "2026-02-19T13:58:01.825Z",
-      "tokens": 433927,
-      "cost": 0.3599,
-      "model": "Sonnet",
-      "durationSec": 181
-    },
-    {
-      "id": "s-62e23725",
-      "agent": "devin",
-      "title": "devin-surveillance",
-      "description": "**Task: Redesign the Surveillance page**",
-      "status": "success",
-      "date": "2026-02-19T13:58:01.750Z",
-      "tokens": 895776,
-      "cost": 0.5521,
-      "model": "Sonnet",
-      "durationSec": 201
     },
     {
       "id": "s-73688079",

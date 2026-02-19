@@ -24,30 +24,6 @@
     "timestamp": "2026-02-19T14:13:53.011Z"
   },
   {
-    "id": "62e23725-45b4-41de-b7c8-faf6c9855780",
-    "label": "devin-surveillance",
-    "agent": "devin",
-    "task": "**Task: Redesign the Surveillance page**",
-    "model": "Sonnet",
-    "tokens": 895776,
-    "cost": 0.5521,
-    "durationSec": 201,
-    "status": "success",
-    "timestamp": "2026-02-19T13:58:01.750Z"
-  },
-  {
-    "id": "7097e4f4-c20e-4679-a707-3a83841264ba",
-    "label": "mia-creator-posts",
-    "agent": "mia",
-    "task": "**Task: Pull real creator post data from Google Sheets \u2192 write to public/creator-posts.json**",
-    "model": "Sonnet",
-    "tokens": 433927,
-    "cost": 0.3599,
-    "durationSec": 181,
-    "status": "success",
-    "timestamp": "2026-02-19T13:58:01.825Z"
-  },
-  {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
     "label": "Penny Daily Check",
     "agent": "penny",
