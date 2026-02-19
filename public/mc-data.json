@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T19:10:01Z",
+  "lastUpdated": "2026-02-19T19:15:57Z",
   "activities": [
     {
       "id": "s-95a02d1a",
@@ -20,10 +20,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 852679,
-      "cost": 2.3391,
+      "tokens": 1263849,
+      "cost": 3.5071,
       "model": "Opus",
-      "durationSec": 522
+      "durationSec": 882
     },
     {
       "id": "s-b88a363c",
@@ -289,7 +289,78 @@
       "updatedAt": 1771491360000
     }
   ],
-  "calendar": [],
+  "calendar": [
+    {
+      "id": "0a4cf0db-5f2d-4c05-ab5e-6367d958ac58",
+      "title": "Penny Weekly Audit",
+      "schedule": "30 3 * * 5",
+      "timezone": "Africa/Windhoek",
+      "owner": "penny",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T01:30:00Z",
+      "consecutiveErrors": 0,
+      "description": "Penny's Friday sweep \u2014 reviews 7 days of ops logs, audits Sam's delegation compliance, curates MEMORY.md (distills lessons, prunes stale entries), and verifies bash-crons.json matches the live crontab."
+    },
+    {
+      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "schedule": "0 6 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T04:00:00Z",
+      "consecutiveErrors": 0,
+      "description": ""
+    },
+    {
+      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
+      "title": "Sam Morning Brief",
+      "schedule": "30 7 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T05:30:00Z",
+      "consecutiveErrors": 0,
+      "description": ""
+    },
+    {
+      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
+      "title": "Morning Analytics Report",
+      "schedule": "0 8 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "dana",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-19T06:00:00Z",
+      "nextRunAt": "2026-02-20T06:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Dana pulls live metrics across all 3 products (CLCP, ISK, SE) from Supabase and Datafast \u2014 visitors, revenue, signups, MoM trends \u2014 and sends a structured report to Telegram."
+    },
+    {
+      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
+      "title": "Penny Daily Check",
+      "schedule": "0 16 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "penny",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-19T14:00:00Z",
+      "nextRunAt": "2026-02-20T14:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Penny checks the day's work \u2014 flags any tasks Sam handled directly instead of delegating, notes idle agents, and confirms all scheduled cron jobs ran clean."
+    }
+  ],
   "decisions": [
     {
       "id": "d1",
@@ -416,7 +487,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T19:10:01Z"
+      "lastRunAt": "2026-02-19T19:15:57Z"
     },
     {
       "id": "bash-frankie-sync",
