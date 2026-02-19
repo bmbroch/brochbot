@@ -165,6 +165,7 @@ const DAILY_JOBS: ScheduleJob[] = [
   { agent: "mia",     label: "Creator Posts",      catHour: 1,    daily: true },
   { agent: "sam",     label: "Creator Merge",      catHour: 1.5,  daily: true },
   { agent: "sam",     label: "Nightly Briefing",   catHour: 2,    daily: true },
+  { agent: "sam",     label: "Drift Check",         catHour: 3,    daily: true },
   { agent: "dana",    label: "Morning Analytics",  catHour: 8,    daily: true },
   { agent: "frankie", label: "Mercury Sync",       catHour: 10,   daily: true },
   { agent: "sam",     label: "Creator Merge",      catHour: 12.5, daily: true },
@@ -174,7 +175,7 @@ const DAILY_JOBS: ScheduleJob[] = [
 
 // Weekly-only jobs
 const WEEKLY_JOBS: ScheduleJob[] = [
-  { agent: "penny", label: "Penny Audit", catHour: 9, daily: false, weekDay: 5 }, // Friday
+  { agent: "penny", label: "Penny Audit", catHour: 3.5, daily: false, weekDay: 5 }, // Friday 3:30 AM
 ];
 
 const ALL_JOBS: ScheduleJob[] = [...DAILY_JOBS, ...WEEKLY_JOBS];
