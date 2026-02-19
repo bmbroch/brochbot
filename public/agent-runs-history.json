@@ -1140,6 +1140,18 @@
     "timestamp": "2026-02-19T19:39:21.464Z"
   },
   {
+    "id": "0493e98e-af32-4e21-b61e-dc7bf6e7502b",
+    "label": "dana-weekly-traffic-v2",
+    "agent": "dana",
+    "task": "Pull TWO periods for each product:",
+    "model": "Sonnet",
+    "tokens": 12183,
+    "cost": 0.0271,
+    "durationSec": 1,
+    "status": "success",
+    "timestamp": "2026-02-19T20:04:14.540Z"
+  },
+  {
     "id": "sam-daily-2026-02-19",
     "label": "Daily total",
     "agent": "sam",
@@ -1149,6 +1161,6 @@
     "cost": 81.6857,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-19T20:00:01Z"
+    "timestamp": "2026-02-19T20:04:17Z"
   }
 ]
