@@ -36,18 +36,6 @@
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
   {
-    "id": "e5c6bc6e-ecd2-4b61-b16b-a2d80f07f7bf",
-    "label": "devin-auth-gate",
-    "agent": "devin",
-    "task": "**Task: Build a middleware-based password gate for the brochbot Mission Control site.**",
-    "model": "Sonnet",
-    "tokens": 638365,
-    "cost": 0.467,
-    "durationSec": 199,
-    "status": "success",
-    "timestamp": "2026-02-19T21:46:39.593Z"
-  },
-  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
