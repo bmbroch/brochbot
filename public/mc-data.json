@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T15:56:36Z",
+  "lastUpdated": "2026-02-19T15:57:22Z",
   "activities": [
     {
       "id": "s-cf70db60",
@@ -485,7 +485,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T15:56:36Z",
+      "lastActive": "2026-02-19T15:57:22Z",
       "statusText": ""
     }
   },
@@ -498,7 +498,8 @@
       "owner": "sam",
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
-      "log": "ops/mc-sync.log"
+      "log": "ops/mc-sync.log",
+      "lastRunAt": "2026-02-19T15:57:22Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -508,7 +509,8 @@
       "owner": "frankie",
       "description": "Frankie pulls all outgoing transactions from Mercury banking (3 accounts) and maps payments to the 7 UGC creators by name. Writes creator-payouts.json with total paid, payment count, and last payment date per creator.",
       "script": "scripts/frankie-creator-sync.sh",
-      "log": "ops/frankie-creator-sync.log"
+      "log": "ops/frankie-creator-sync.log",
+      "lastRunAt": "2026-02-19T13:14:28Z"
     },
     {
       "id": "bash-mia-sync",
@@ -518,7 +520,8 @@
       "owner": "mia",
       "description": "Mia pulls the latest post data for all 7 creators from Google Sheets \u2014 TikTok and Instagram URLs, view counts, and post dates. Writes creator-posts.json with 267+ posts sorted newest-first per creator.",
       "script": "scripts/mia-creator-sync.sh",
-      "log": "ops/mia-creator-sync.log"
+      "log": "ops/mia-creator-sync.log",
+      "lastRunAt": "2026-02-19T14:00:42Z"
     },
     {
       "id": "bash-creator-merge",
@@ -528,7 +531,8 @@
       "owner": "sam",
       "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
-      "log": "ops/creator-data-merge.log"
+      "log": "ops/creator-data-merge.log",
+      "lastRunAt": "2026-02-19T15:43:29Z"
     }
   ]
 }

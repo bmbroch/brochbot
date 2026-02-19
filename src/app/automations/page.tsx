@@ -234,7 +234,7 @@ export default function AutomationsPage() {
       .then((d) => {
         const cal: CronJob[] = d.calendar ?? [];
         const bashCrons: CronJob[] = (d.bashCrons ?? []).map(
-          (b: { id: string; title: string; schedule: string; timezone: string; owner: string; description?: string }) => ({
+          (b: { id: string; title: string; schedule: string; timezone: string; owner: string; description?: string; lastRunAt?: string | null }) => ({
             id: b.id,
             title: b.title,
             schedule: b.schedule,
@@ -243,7 +243,7 @@ export default function AutomationsPage() {
             enabled: true,
             status: "ok",
             lastStatus: "ok",
-            lastRunAt: null,
+            lastRunAt: b.lastRunAt ?? null,
             nextRunAt: null,
             consecutiveErrors: 0,
             description: b.description,
