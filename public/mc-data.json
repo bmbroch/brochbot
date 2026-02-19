@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T15:43:34Z",
+  "lastUpdated": "2026-02-19T15:44:55Z",
   "activities": [
     {
       "id": "s-cf70db60",
@@ -314,7 +314,7 @@
       "lastRunAt": "2026-02-19T11:52:45Z",
       "nextRunAt": "2026-02-20T00:00:00Z",
       "consecutiveErrors": 0,
-      "description": "2 AM CAT daily \u2014 reads ops log + run history, sends daily summary to Ben via Telegram"
+      "description": "Sam reviews the day \u2014 reads ops log, agent run history, and cost summary, then sends a 5\u20138 line Telegram briefing to Ben covering what got done, what's in-progress, and any flags."
     },
     {
       "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
@@ -328,7 +328,7 @@
       "lastRunAt": "2026-02-19T06:00:00Z",
       "nextRunAt": "2026-02-20T06:00:00Z",
       "consecutiveErrors": 0,
-      "description": "8 AM CAT daily \u2014 Dana pulls Supabase + Datafast metrics across all 3 products"
+      "description": "Dana pulls live metrics across all 3 products (CLCP, ISK, SE) from Supabase and Datafast \u2014 visitors, revenue, signups, MoM trends \u2014 and sends a structured report to Telegram."
     },
     {
       "id": "0a4cf0db-5f2d-4c05-ab5e-6367d958ac58",
@@ -342,7 +342,7 @@
       "lastRunAt": null,
       "nextRunAt": "2026-02-20T07:00:00Z",
       "consecutiveErrors": 0,
-      "description": "Friday 9 AM CAT \u2014 delegation audit, MEMORY.md curation, bash-crons.json drift check"
+      "description": "Penny's Friday sweep \u2014 reviews 7 days of ops logs, audits Sam's delegation compliance, curates MEMORY.md (distills lessons, prunes stale entries), and verifies bash-crons.json matches the live crontab."
     },
     {
       "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
@@ -356,7 +356,7 @@
       "lastRunAt": "2026-02-19T14:00:00Z",
       "nextRunAt": "2026-02-20T14:00:00Z",
       "consecutiveErrors": 0,
-      "description": "4 PM CAT daily \u2014 audits Sam's delegation, checks idle agents, reviews cron status"
+      "description": "Penny checks the day's work \u2014 flags any tasks Sam handled directly instead of delegating, notes idle agents, and confirms all scheduled cron jobs ran clean."
     },
     {
       "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
@@ -370,7 +370,7 @@
       "lastRunAt": null,
       "nextRunAt": "2026-02-23T04:00:00Z",
       "consecutiveErrors": 0,
-      "description": "Monday 6 AM CAT \u2014 Miles pulls GSC keyword data for ISK, reports ranking changes"
+      "description": "Miles pulls Google Search Console data for Interview Sidekick \u2014 top keywords by clicks and impressions, position trends, and ranking changes vs prior week. Runs Monday to catch weekend movement."
     }
   ],
   "decisions": [
@@ -485,7 +485,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T15:43:34Z",
+      "lastActive": "2026-02-19T15:44:55Z",
       "statusText": ""
     }
   },
@@ -496,7 +496,7 @@
       "schedule": "*/10 * * * *",
       "timezone": "",
       "owner": "sam",
-      "description": "Every 10 min \u2014 session JSONLs \u2192 mc-data.json + agent history \u2192 Supabase + GitHub (skips if no changes)",
+      "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log"
     },
@@ -506,7 +506,7 @@
       "schedule": "0 10 * * *",
       "timezone": "Africa/Windhoek",
       "owner": "frankie",
-      "description": "Daily noon CAT \u2014 Mercury API \u2192 creator-payouts.json",
+      "description": "Frankie pulls all outgoing transactions from Mercury banking (3 accounts) and maps payments to the 7 UGC creators by name. Writes creator-payouts.json with total paid, payment count, and last payment date per creator.",
       "script": "scripts/frankie-creator-sync.sh",
       "log": "ops/frankie-creator-sync.log"
     },
@@ -516,7 +516,7 @@
       "schedule": "0 23 * * *",
       "timezone": "Africa/Windhoek",
       "owner": "mia",
-      "description": "Daily 1 AM CAT \u2014 Google Sheets \u2192 creator-posts.json",
+      "description": "Mia pulls the latest post data for all 7 creators from Google Sheets \u2014 TikTok and Instagram URLs, view counts, and post dates. Writes creator-posts.json with 267+ posts sorted newest-first per creator.",
       "script": "scripts/mia-creator-sync.sh",
       "log": "ops/mia-creator-sync.log"
     },
@@ -526,7 +526,7 @@
       "schedule": "30 10,23 * * *",
       "timezone": "Africa/Windhoek",
       "owner": "sam",
-      "description": "12:30 PM + 1:30 AM CAT \u2014 merges creator-payouts.json + creator-posts.json \u2192 creator-data.json",
+      "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log"
     }
