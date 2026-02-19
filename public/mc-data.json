@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T19:32:43Z",
+  "lastUpdated": "2026-02-19T19:33:30Z",
   "activities": [
     {
       "id": "s-335eb8a6",
@@ -8,10 +8,10 @@
       "description": "**Task:** Redesign the Daily Schedule and Weekly Grid sections on the /automations page (`/home/ubuntu/.openclaw/workspace/mission-control/src/app/automations/page.tsx`).",
       "status": "success",
       "date": "2026-02-19T19:30:38.352Z",
-      "tokens": 132307,
-      "cost": 0.2315,
+      "tokens": 335100,
+      "cost": 0.3789,
       "model": "Sonnet",
-      "durationSec": 96
+      "durationSec": 170
     },
     {
       "id": "s-3df99d0f",
@@ -20,10 +20,10 @@
       "description": "**Bug fix:**",
       "status": "success",
       "date": "2026-02-19T19:25:05.594Z",
-      "tokens": 3694176,
-      "cost": 1.7394,
+      "tokens": 4279097,
+      "cost": 1.9489,
       "model": "Sonnet",
-      "durationSec": 458
+      "durationSec": 494
     },
     {
       "id": "s-fe0faccc",
@@ -68,10 +68,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 5068365,
-      "cost": 10.6326,
+      "tokens": 5424656,
+      "cost": 11.2947,
       "model": "Opus",
-      "durationSec": 1888
+      "durationSec": 1935
     },
     {
       "id": "s-b88a363c",
@@ -92,10 +92,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 311689,
-      "cost": 0.8489,
+      "tokens": 340650,
+      "cost": 0.9893,
       "model": "Opus",
-      "durationSec": 3306
+      "durationSec": 3700
     },
     {
       "id": "s-7612c9b5",
@@ -521,7 +521,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T19:32:43Z"
+      "lastRunAt": "2026-02-19T19:33:30Z"
     },
     {
       "id": "bash-frankie-sync",

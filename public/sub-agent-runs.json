@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 5068365,
-    "cost": 10.6326,
-    "durationSec": 1888,
+    "tokens": 5424656,
+    "cost": 11.2947,
+    "durationSec": 1935,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -17,9 +17,9 @@
     "agent": "devin",
     "task": "**Bug fix:**",
     "model": "Sonnet",
-    "tokens": 3694176,
-    "cost": 1.7394,
-    "durationSec": 458,
+    "tokens": 4279097,
+    "cost": 1.9489,
+    "durationSec": 494,
     "status": "success",
     "timestamp": "2026-02-19T19:25:05.594Z"
   },
@@ -53,11 +53,23 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 311689,
-    "cost": 0.8489,
-    "durationSec": 3306,
+    "tokens": 340650,
+    "cost": 0.9893,
+    "durationSec": 3700,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
+  },
+  {
+    "id": "335eb8a6-5a25-4611-9958-d891eeffde43",
+    "label": "devin-automations-charts",
+    "agent": "devin",
+    "task": "**Task:** Redesign the Daily Schedule and Weekly Grid sections on the /automations page (`/home/ubuntu/.openclaw/workspace/mission-control/src/app/automations/page.tsx`).",
+    "model": "Sonnet",
+    "tokens": 335100,
+    "cost": 0.3789,
+    "durationSec": 170,
+    "status": "success",
+    "timestamp": "2026-02-19T19:30:38.352Z"
   },
   {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
@@ -70,18 +82,6 @@
     "durationSec": 3270,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
-  },
-  {
-    "id": "335eb8a6-5a25-4611-9958-d891eeffde43",
-    "label": "devin-automations-charts",
-    "agent": "devin",
-    "task": "**Task:** Redesign the Daily Schedule and Weekly Grid sections on the /automations page (`/home/ubuntu/.openclaw/workspace/mission-control/src/app/automations/page.tsx`).",
-    "model": "Sonnet",
-    "tokens": 132307,
-    "cost": 0.2315,
-    "durationSec": 96,
-    "status": "success",
-    "timestamp": "2026-02-19T19:30:38.352Z"
   },
   {
     "id": "2921efcb-e29e-4d03-96d0-fad2ffc4e001",
