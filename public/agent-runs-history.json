@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 21245738,
-    "cost": 26.7717,
+    "tokens": 22407248,
+    "cost": 27.8698,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -298,5 +298,29 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T14:20:01Z"
+  },
+  {
+    "id": "e8a68d5a-48f7-4ecf-b06c-49f77378c835",
+    "label": "devin-drawer-office-agentmap",
+    "agent": "devin",
+    "task": "**Task: 3 fixes \u2014 drawer activity source, office alignment, reusable agent map**",
+    "model": "Sonnet",
+    "tokens": 13162,
+    "cost": 0.0306,
+    "durationSec": 2,
+    "status": "success",
+    "timestamp": "2026-02-19T15:05:25.056Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T15:05:30Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 1161510,
+    "cost": 1.0981,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T15:05:30Z"
   }
 ]

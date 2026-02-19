@@ -1,17 +1,5 @@
 [
   {
-    "id": "4fd7c391-5750-4e37-b3de-ba009e59370e",
-    "label": "devin-three-fixes",
-    "agent": "devin",
-    "task": "**Task: 3 targeted fixes \u2014 drawer activity feed, calendar bash crons, creator posts**",
-    "model": "Sonnet",
-    "tokens": 3462039,
-    "cost": 2.2366,
-    "durationSec": 664,
-    "status": "success",
-    "timestamp": "2026-02-19T14:01:56.369Z"
-  },
-  {
     "id": "d0f9337f-d977-42ec-a5b3-57e237470458",
     "label": "devin-arch-cleanup",
     "agent": "devin",
@@ -70,5 +58,17 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
+  },
+  {
+    "id": "e8a68d5a-48f7-4ecf-b06c-49f77378c835",
+    "label": "devin-drawer-office-agentmap",
+    "agent": "devin",
+    "task": "**Task: 3 fixes \u2014 drawer activity source, office alignment, reusable agent map**",
+    "model": "Sonnet",
+    "tokens": 13162,
+    "cost": 0.0306,
+    "durationSec": 2,
+    "status": "success",
+    "timestamp": "2026-02-19T15:05:25.056Z"
   }
 ]
