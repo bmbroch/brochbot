@@ -24,18 +24,6 @@
     "timestamp": "2026-02-19T15:34:56.870Z"
   },
   {
-    "id": "eaff488e-02de-4188-b4fb-e87ef1031b86",
-    "label": "devin-agent-pills",
-    "agent": "devin",
-    "task": "**Task: Replace agent dropdown filter on activity feed with avatar pill selectors**",
-    "model": "Sonnet",
-    "tokens": 244467,
-    "cost": 0.2349,
-    "durationSec": 92,
-    "status": "success",
-    "timestamp": "2026-02-19T15:22:07.474Z"
-  },
-  {
     "id": "15fb41fa-ff00-48e5-8750-8bcfc51eeabc",
     "label": "devin-automations-dynamic",
     "agent": "devin",
