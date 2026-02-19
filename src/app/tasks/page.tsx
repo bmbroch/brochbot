@@ -47,7 +47,7 @@ export default function TasksPage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         <div className="flex items-start justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Tasks</h1>
@@ -133,12 +133,12 @@ function TaskCard({ task, onMove }: { task: Task; onMove: (id: string, dir: 1 | 
           )}
           <span className="text-[10px] text-zinc-600">{formatRelativeDate(task.createdAt)}</span>
         </div>
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
           {task.status !== "todo" && (
-            <button onClick={() => onMove(task._id, -1)} className="w-6 h-6 rounded-md bg-white/5 hover:bg-white/10 flex items-center justify-center text-xs text-zinc-400 transition-colors">←</button>
+            <button onClick={() => onMove(task._id, -1)} className="w-8 h-8 sm:w-6 sm:h-6 rounded-md bg-white/5 hover:bg-white/10 flex items-center justify-center text-xs text-zinc-400 transition-colors">←</button>
           )}
           {task.status !== "done" && (
-            <button onClick={() => onMove(task._id, 1)} className="w-6 h-6 rounded-md bg-white/5 hover:bg-white/10 flex items-center justify-center text-xs text-zinc-400 transition-colors">→</button>
+            <button onClick={() => onMove(task._id, 1)} className="w-8 h-8 sm:w-6 sm:h-6 rounded-md bg-white/5 hover:bg-white/10 flex items-center justify-center text-xs text-zinc-400 transition-colors">→</button>
           )}
         </div>
       </div>

@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-8 max-w-4xl mx-auto">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight">Activity Feed</h1>
           <p className="text-sm text-zinc-500 mt-1">Everything that happened across all agents</p>
@@ -74,7 +74,7 @@ export default function Home() {
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-2">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-sm font-semibold">{activity.title}</span>
                             <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${typeConf.bg} ${typeConf.color}`}>

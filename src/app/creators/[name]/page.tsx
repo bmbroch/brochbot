@@ -29,7 +29,7 @@ export default function CreatorDetailPage() {
   if (!creator) {
     return (
       <Shell>
-        <div className="p-6 lg:p-8 max-w-4xl mx-auto">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
           <p className="text-zinc-500">Creator not found.</p>
           <Link href="/creators" className="text-blue-400 text-sm mt-2 inline-block">← Back to Creators</Link>
         </div>
@@ -61,7 +61,7 @@ export default function CreatorDetailPage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-8 max-w-5xl mx-auto">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
         <Link href="/creators" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors mb-4 inline-block">← Back to Creators</Link>
 
         {/* Header */}
@@ -80,7 +80,7 @@ export default function CreatorDetailPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-8">
           {[
             { label: "Total Posts", value: String(creator.posts) },
             { label: "TikTok Views", value: fmt(creator.ttViews) },

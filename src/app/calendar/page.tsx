@@ -63,8 +63,8 @@ export default function CalendarPage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-8">
-        <div className="flex items-center justify-between mb-6">
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Calendar</h1>
             <p className="text-sm text-zinc-500 mt-1">
@@ -72,16 +72,16 @@ export default function CalendarPage() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => setWeekOffset((o) => o - 1)} className="px-3 py-1.5 text-sm rounded-lg border border-[#262626] text-zinc-400 hover:bg-white/5 transition-colors">← Prev</button>
+            <button onClick={() => setWeekOffset((o) => o - 1)} className="px-3 py-1.5 text-sm rounded-lg border border-[#262626] text-zinc-400 hover:bg-white/5 transition-colors">←</button>
             <button onClick={() => setWeekOffset(0)} className="px-3 py-1.5 text-sm rounded-lg border border-[#262626] text-zinc-400 hover:bg-white/5 transition-colors">Today</button>
-            <button onClick={() => setWeekOffset((o) => o + 1)} className="px-3 py-1.5 text-sm rounded-lg border border-[#262626] text-zinc-400 hover:bg-white/5 transition-colors">Next →</button>
+            <button onClick={() => setWeekOffset((o) => o + 1)} className="px-3 py-1.5 text-sm rounded-lg border border-[#262626] text-zinc-400 hover:bg-white/5 transition-colors">→</button>
           </div>
         </div>
 
         {/* Upcoming tasks */}
-        <div className="mb-6 flex flex-wrap gap-3">
+        <div className="mb-6 flex flex-nowrap sm:flex-wrap gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
           {scheduled.filter(t => t.status === "active").map((task) => (
-            <div key={task._id} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#141414] border border-[#262626] text-xs">
+            <div key={task._id} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#141414] border border-[#262626] text-xs shrink-0">
               <span>{agentEmojis[task.agent]}</span>
               <span className="font-medium text-zinc-300">{task.name}</span>
               <span className="text-zinc-600">{task.schedule}</span>
@@ -91,7 +91,8 @@ export default function CalendarPage() {
         </div>
 
         {/* Week grid */}
-        <div className="rounded-xl border border-[#262626] overflow-hidden bg-[#141414]">
+        <div className="rounded-xl border border-[#262626] overflow-hidden bg-[#141414] overflow-x-auto -mx-4 sm:mx-0" style={{ WebkitOverflowScrolling: "touch" }}>
+          <div className="min-w-[700px]">
           {/* Day headers */}
           <div className="grid grid-cols-[60px_repeat(7,1fr)] border-b border-[#262626]">
             <div className="p-2" />
@@ -140,6 +141,7 @@ export default function CalendarPage() {
                 })}
               </div>
             ))}
+          </div>
           </div>
         </div>
       </div>

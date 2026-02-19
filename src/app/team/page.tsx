@@ -1,7 +1,7 @@
 "use client";
 
 import Shell from "@/components/Shell";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useActivities, agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
 
@@ -17,12 +17,11 @@ const gradientMap: Record<string, string> = {
   mia: "from-fuchsia-600/30 to-fuchsia-900/20",
 };
 
-function AccordionPanel({ member, activities }: { member: TeamMember; activities: Activity[] }) {
-  const color = agentColors[member.id] || "#3b82f6";
+function MemberDetail({ member, activities }: { member: TeamMember; activities: Activity[] }) {
   const recent = activities.filter(a => a.agent === member.id).slice(0, 5);
 
   return (
-    <div className="px-4 sm:px-6 py-4 sm:py-5 space-y-4">
+    <div className="space-y-4">
       {/* Description */}
       <div>
         <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">About</p>
@@ -63,6 +62,14 @@ function AccordionPanel({ member, activities }: { member: TeamMember; activities
 export default function TeamPage() {
   const activities = useActivities();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const selectedMember = selectedId ? teamMembers.find(m => m.id === selectedId) : null;
 
@@ -72,10 +79,10 @@ export default function TeamPage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-10">
+      <div className="p-4 sm:p-6 lg:p-10">
         {/* Header */}
-        <div className="mb-10 text-center">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">The Team</h1>
+        <div className="mb-8 sm:mb-10 text-center">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">The Team</h1>
           <p className="text-sm text-zinc-500">Meet the crew behind the operation</p>
         </div>
 
@@ -122,28 +129,64 @@ export default function TeamPage() {
           })}
         </div>
 
-        {/* Accordion Panel */}
+        {/* Desktop: Accordion Panel */}
         <div
-          className="transition-[grid-template-rows] duration-300 ease-in-out grid max-w-6xl mx-auto"
+          className="hidden lg:grid transition-[grid-template-rows] duration-300 ease-in-out max-w-6xl mx-auto"
           style={{ gridTemplateRows: selectedMember ? "1fr" : "0fr" }}
         >
           <div className="overflow-hidden">
             <div className="mt-6 rounded-xl border border-[#262626] bg-[#0e0e0e]">
               {selectedMember && (
                 <>
-                  <div className="px-4 sm:px-6 pt-4 pb-2 border-b border-[#1e1e1e] flex items-center gap-2">
+                  <div className="px-6 pt-4 pb-2 border-b border-[#1e1e1e] flex items-center gap-2">
                     <span className="text-base">{selectedMember.emoji}</span>
                     <span className="text-sm font-semibold">{selectedMember.name}</span>
                     <span className="text-xs text-zinc-500">— {selectedMember.role}</span>
                   </div>
-                  <div className="max-h-[60vh] overflow-y-auto">
-                    <AccordionPanel member={selectedMember} activities={activities} />
+                  <div className="max-h-[60vh] overflow-y-auto px-6 py-5">
+                    <MemberDetail member={selectedMember} activities={activities} />
                   </div>
                 </>
               )}
             </div>
           </div>
         </div>
+
+        {/* Mobile: Bottom Sheet */}
+        {selectedMember && isMobile && (
+          <div className="lg:hidden fixed inset-0 z-[100]" onClick={() => setSelectedId(null)}>
+            <div className="absolute inset-0 bg-black/60" />
+            <div
+              className="absolute bottom-0 left-0 right-0 max-h-[60vh] bg-[#141414] border-t border-[#262626] rounded-t-2xl overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Drag handle */}
+              <div className="flex justify-center pt-3 pb-2">
+                <div className="w-10 h-1 rounded-full bg-zinc-700" />
+              </div>
+
+              {/* Header */}
+              <div className="flex items-center gap-3 px-4 pb-3 border-b border-[#262626]">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br"
+                  style={{ backgroundColor: `${agentColors[selectedMember.id]}15` }}
+                >
+                  <span className="text-2xl">{selectedMember.emoji}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold">{selectedMember.name}</p>
+                  <p className="text-xs" style={{ color: agentColors[selectedMember.id] }}>{selectedMember.role}</p>
+                </div>
+                <button onClick={() => setSelectedId(null)} className="p-2 text-zinc-500 hover:text-white">✕</button>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto px-4 py-4">
+                <MemberDetail member={selectedMember} activities={activities} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Shell>
   );

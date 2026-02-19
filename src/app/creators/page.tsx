@@ -80,7 +80,7 @@ export default function CreatorsPage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-8 max-w-6xl mx-auto">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight">Creators</h1>
           <p className="text-sm text-zinc-500 mt-1">UGC creator performance dashboard</p>
@@ -150,7 +150,7 @@ export default function CreatorsPage() {
 
         {/* Views Over Time Chart — recharts */}
         <div className="rounded-xl bg-[#141414] border border-[#262626] p-5 mb-8">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <h2 className="text-sm font-semibold">Views Over Time</h2>
             <div className="flex flex-wrap gap-2">
               {creators.map(c => (

@@ -37,7 +37,7 @@ export default function MemoryPage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-8 max-w-5xl mx-auto">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight">Memory</h1>
           <p className="text-sm text-zinc-500 mt-1">All knowledge and documentation</p>
@@ -112,8 +112,8 @@ export default function MemoryPage() {
             })}
           </div>
 
-          {/* Preview pane */}
-          <div className="lg:sticky lg:top-6">
+          {/* Preview pane — desktop inline, mobile bottom sheet */}
+          <div className="hidden lg:block lg:sticky lg:top-6">
             {selectedDoc ? (
               <div className="rounded-xl bg-[#141414] border border-[#262626] p-6 max-h-[calc(100vh-200px)] overflow-y-auto">
                 <div className="flex items-center justify-between mb-4">
@@ -138,6 +138,34 @@ export default function MemoryPage() {
               </div>
             )}
           </div>
+
+          {/* Mobile bottom sheet preview */}
+          {selectedDoc && (
+            <div className="lg:hidden fixed inset-0 z-[100]" onClick={() => setSelectedDoc(null)}>
+              <div className="absolute inset-0 bg-black/60" />
+              <div className="absolute bottom-0 left-0 right-0 max-h-[70vh] bg-[#141414] border-t border-[#262626] rounded-t-2xl overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-3 pb-2">
+                  <div className="w-10 h-1 rounded-full bg-zinc-700" />
+                </div>
+                <div className="flex items-center justify-between px-4 pb-3 border-b border-[#262626]">
+                  <h2 className="text-base font-semibold truncate">{selectedDoc.title}</h2>
+                  <button onClick={() => setSelectedDoc(null)} className="text-zinc-500 hover:text-white text-sm p-2">✕</button>
+                </div>
+                <div className="flex-1 overflow-y-auto px-4 py-4">
+                  <p className="text-xs text-zinc-600 font-mono mb-4">{selectedDoc.path}</p>
+                  <div className="prose prose-invert prose-sm max-w-none">
+                    {selectedDoc.content.split("\n").map((line, i) => {
+                      if (line.startsWith("# ")) return <h1 key={i} className="text-lg font-bold text-white mt-4 mb-2">{line.slice(2)}</h1>;
+                      if (line.startsWith("## ")) return <h2 key={i} className="text-base font-semibold text-zinc-200 mt-3 mb-2">{line.slice(3)}</h2>;
+                      if (line.startsWith("- ")) return <div key={i} className="flex gap-2 text-sm text-zinc-400 mb-1"><span className="text-zinc-600">•</span><span>{line.slice(2)}</span></div>;
+                      if (line.trim() === "") return <div key={i} className="h-2" />;
+                      return <p key={i} className="text-sm text-zinc-400 mb-1">{line}</p>;
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Shell>
