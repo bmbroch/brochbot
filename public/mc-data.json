@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T12:50:01Z",
+  "lastUpdated": "2026-02-19T13:00:01Z",
   "activities": [
     {
       "id": "s-8eba50d3",
@@ -24,18 +24,6 @@
       "cost": 0.0865,
       "model": "Opus",
       "durationSec": 17
-    },
-    {
-      "id": "s-d7696770",
-      "agent": "devin",
-      "title": "devin-calendar-memory",
-      "description": "[Thu 2026-02-19 11:50 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
-      "status": "success",
-      "date": "2026-02-19T11:50:56.152Z",
-      "tokens": 1965671,
-      "cost": 1.2655,
-      "model": "Sonnet",
-      "durationSec": 495
     },
     {
       "id": "s-531ad18a",
@@ -342,7 +330,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T12:50:00Z",
+      "lastActive": "2026-02-19T12:59:46Z",
       "statusText": ""
     }
   }
