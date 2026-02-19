@@ -163,5 +163,16 @@
     "product": "CLCP",
     "createdAt": 1771491360000,
     "updatedAt": 1771491360000
+  },
+  {
+    "_id": "t16",
+    "title": "Make Automations page schedule timeline dynamic",
+    "description": "Daily Schedule timeline and Weekly Grid are hardcoded arrays in automations/page.tsx (DAILY_JOBS, WEEKLY_JOBS). New crons don't appear there without manual code edits. Should derive schedule from live cron data (d.calendar + d.bashCrons) so any new automation shows up automatically.",
+    "status": "todo",
+    "assignee": "devin",
+    "priority": "medium",
+    "product": "internal",
+    "createdAt": 1771519822183,
+    "updatedAt": 1771519822183
   }
 ]
