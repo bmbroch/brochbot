@@ -126,13 +126,13 @@ function Desk({
           </div>
           {/* Status dot */}
           <div
-            className={`absolute bottom-0 right-0 w-[14px] h-[14px] rounded-full border-2 border-[#1a1a1a] ${
+            className={`absolute bottom-0 right-0 w-[14px] h-[14px] rounded-full border-2 border-mc-subtle ${
               isActive ? "animate-pulse" : ""
             }`}
             style={{ backgroundColor: isActive ? "#22c55e" : "#52525b" }}
           />
         </div>
-        <span className="text-[11px] text-white/80 mt-1 font-medium text-center">{member.name}</span>
+        <span className="text-[11px] text-mc-primary/80 mt-1 font-medium text-center">{member.name}</span>
       </div>
     </div>
   );
@@ -210,8 +210,8 @@ export default function OfficePage() {
       <div className="h-full flex flex-col overflow-hidden">
         {/* Header */}
         <div className="shrink-0 px-6 py-4 border-b border-white/[0.06]">
-          <h1 className="text-lg font-semibold text-white">🏢 Virtual Office</h1>
-          <p className="text-xs text-white/30 mt-0.5">
+          <h1 className="text-lg font-semibold text-mc-primary">🏢 Virtual Office</h1>
+          <p className="text-xs text-mc-primary/30 mt-0.5">
             Click an agent to see their activity
           </p>
         </div>
@@ -310,7 +310,7 @@ function OfficeCanvas({
               />
               {/* Table label */}
               <div
-                className="absolute text-[9px] text-white/20 text-center"
+                className="absolute text-[9px] text-mc-primary/20 text-center"
                 style={{
                   left: "50%",
                   top: 285,
@@ -348,7 +348,7 @@ function OfficeCanvas({
                     boxShadow: "0 0 10px rgba(59,130,246,0.3)",
                   }}
                 />
-                <span className="text-[8px] text-white/20 mt-1">Water</span>
+                <span className="text-[8px] text-mc-primary/20 mt-1">Water</span>
               </div>
 
               {/* Whiteboard */}
@@ -365,7 +365,7 @@ function OfficeCanvas({
                 }}
               />
               <div
-                className="absolute text-[8px] text-white/15"
+                className="absolute text-[8px] text-mc-primary/15"
                 style={{ top: 16, left: "50%", transform: "translateX(-50%)" }}
               >
                 Whiteboard

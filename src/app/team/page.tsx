@@ -24,7 +24,8 @@ function lastActiveLabel(ts: number | null): string {
 
 const agentOrder = ["ben", "sam", "devin", "cara", "dana", "miles", "penny", "mia", "frankie"];
 
-const gradientMap: Record<string, string> = {
+// Light-friendly gradient map — subtle colored tints
+const gradientMapDark: Record<string, string> = {
   ben: "from-zinc-700/30 to-slate-800/20",
   sam: "from-blue-700/30 to-blue-900/20",
   cara: "from-purple-700/30 to-purple-900/20",
@@ -35,66 +36,16 @@ const gradientMap: Record<string, string> = {
   frankie: "from-emerald-600/30 to-emerald-900/20",
 };
 
-function MemberDetail({ member, activities, lastActiveTs }: { member: TeamMember; activities: Activity[]; lastActiveTs?: number }) {
-  const recent = activities.filter(a => a.agent === member.id).slice(0, 5);
-
-  return (
-    <div className="space-y-4">
-      {/* Description */}
-      <div>
-        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">About</p>
-        <p className="text-sm text-zinc-400 leading-relaxed">{member.description}</p>
-      </div>
-
-      {/* Recurring Tasks */}
-      {member.recurringTasks && member.recurringTasks.length > 0 && (
-        <div>
-          <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Recurring Tasks</p>
-          <div className="space-y-1">
-            {member.recurringTasks.map(task => (
-              <div key={task} className="flex items-center gap-2 text-sm text-zinc-400">
-                <span className="text-zinc-600">⏰</span>
-                <span>{task}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Data Sources */}
-      <div>
-        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Data Sources</p>
-        <div className="flex flex-wrap gap-1.5">
-          {member.dataSources.map(ds => (
-            <span key={ds} className="text-[11px] px-2.5 py-0.5 rounded-full bg-white/[0.04] text-zinc-400 border border-[#262626]">{ds}</span>
-          ))}
-        </div>
-      </div>
-
-      {/* Recent Activity */}
-      <div>
-        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Recent Activity</p>
-        {recent.length === 0 ? (
-          lastActiveTs ? (
-            <p className="text-xs text-zinc-500">Active {relativeAgo(lastActiveTs)} — no task detail captured</p>
-          ) : (
-            <p className="text-xs text-zinc-600">No recent activity</p>
-          )
-        ) : (
-          <div className="space-y-1.5">
-            {recent.map(a => (
-              <div key={a._id} className="flex items-center gap-3 text-xs">
-                <span className="text-zinc-600 shrink-0 w-20 text-right">{formatRelativeDate(a.createdAt)}</span>
-                <span className="w-1 h-1 rounded-full bg-zinc-700 shrink-0" />
-                <span className="text-zinc-400">{a.title}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+const gradientMapLight: Record<string, string> = {
+  ben: "from-zinc-100 to-zinc-50",
+  sam: "from-blue-50 to-sky-100",
+  cara: "from-purple-50 to-violet-100",
+  dana: "from-green-50 to-emerald-100",
+  miles: "from-orange-50 to-amber-100",
+  penny: "from-rose-50 to-pink-100",
+  mia: "from-fuchsia-50 to-pink-100",
+  frankie: "from-emerald-50 to-teal-100",
+};
 
 export default function TeamPage() {
   const teamMembers = useTeam();
@@ -102,6 +53,7 @@ export default function TeamPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [agentStatusTs, setAgentStatusTs] = useState<Record<string, number>>({});
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -110,13 +62,21 @@ export default function TeamPage() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  // Detect current theme
+  useEffect(() => {
+    const checkTheme = () => setIsDark(document.documentElement.classList.contains("dark"));
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
   // Fetch mc-data for agentStatus fallback timestamps + history for activity feed
   useEffect(() => {
     Promise.all([
       fetch("/api/mc-data").then(r => r.ok ? r.json() : null).catch(() => null),
       fetch("/agent-runs-history.json").then(r => r.ok ? r.json() : []).catch(() => []),
     ]).then(([mcData, historyData]) => {
-      // Extract agentStatus fallback timestamps
       if (mcData?.agentStatus) {
         const ts: Record<string, number> = {};
         for (const [key, val] of Object.entries(mcData.agentStatus as Record<string, { lastActive?: string }>)) {
@@ -125,7 +85,6 @@ export default function TeamPage() {
         setAgentStatusTs(ts);
       }
 
-      // Map agent-runs-history entries → Activity[]
       const historyArr: Array<{
         id: string; agent: string; label?: string; task: string;
         status: string; timestamp: string;
@@ -141,13 +100,12 @@ export default function TeamPage() {
         createdAt: new Date(h.timestamp).getTime(),
       }));
 
-      // Sort most-recent first
       historyActivities.sort((a, b) => b.createdAt - a.createdAt);
       setActivities(historyActivities);
     });
   }, []);
 
-  // Build a map of agentId → latest activity timestamp (for "last active" card label)
+  // Build a map of agentId → latest activity timestamp
   const latestActivityTs: Record<string, number> = {};
   for (const a of activities) {
     if (!latestActivityTs[a.agent] || a.createdAt > latestActivityTs[a.agent]) {
@@ -155,7 +113,6 @@ export default function TeamPage() {
     }
   }
 
-  // Resolve final lastActive for an agent: activities first, agentStatus fallback
   function getLastActive(id: string): number | null {
     const fromActivities = latestActivityTs[id] ?? 0;
     const fromStatus = agentStatusTs[id] ?? 0;
@@ -169,13 +126,15 @@ export default function TeamPage() {
     setSelectedId(prev => (prev === id ? null : id));
   };
 
+  const gradientMap = isDark ? gradientMapDark : gradientMapLight;
+
   return (
     <Shell>
       <div className="p-4 sm:p-6 lg:p-10">
         {/* Header */}
         <div className="mb-8 sm:mb-10 text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">The Team</h1>
-          <p className="text-sm text-zinc-500">Meet the crew behind the operation</p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2 text-[var(--text-primary)]">The Team</h1>
+          <p className="text-sm text-[var(--text-muted)]">Meet the crew behind the operation</p>
         </div>
 
         {/* Agent Grid */}
@@ -194,11 +153,11 @@ export default function TeamPage() {
               >
                 {/* Avatar Circle */}
                 <div
-                  className={`w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full flex items-center justify-center bg-gradient-to-br ${gradientMap[id] || "from-zinc-700/30 to-zinc-900/20"} transition-all duration-200 group-hover:scale-105`}
+                  className={`w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full flex items-center justify-center bg-gradient-to-br ${gradientMap[id] || (isDark ? "from-zinc-700/30 to-zinc-900/20" : "from-zinc-100 to-zinc-50")} transition-all duration-200 group-hover:scale-105`}
                   style={{
                     boxShadow: isSelected
-                      ? `0 0 30px ${color}30, 0 4px 20px rgba(0,0,0,0.4)`
-                      : "0 4px 20px rgba(0,0,0,0.3)",
+                      ? `0 0 30px ${color}30, 0 4px 20px rgba(0,0,0,0.2)`
+                      : "0 4px 20px rgba(0,0,0,0.1)",
                     border: isSelected ? `2px solid ${color}40` : "2px solid transparent",
                   }}
                 >
@@ -209,11 +168,11 @@ export default function TeamPage() {
                   )}
                 </div>
                 {/* Name */}
-                <span className="text-[14px] sm:text-[16px] font-semibold text-white leading-tight mt-1">{member.name}</span>
+                <span className="text-[14px] sm:text-[16px] font-semibold text-[var(--text-primary)] leading-tight mt-1">{member.name}</span>
                 {/* Role */}
                 <span className="text-[11px] sm:text-[13px] font-medium leading-tight text-center" style={{ color }}>{member.role}</span>
                 {/* Last active */}
-                <span className="text-[11px] text-zinc-600 text-center leading-tight">
+                <span className="text-[11px] text-[var(--text-faint)] text-center leading-tight">
                   {lastActiveLabel(lastActive)}
                 </span>
               </button>

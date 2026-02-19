@@ -433,11 +433,11 @@ export default function AutomationsPage() {
           <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Infrastructure</h2>
           <div className="grid grid-cols-1 gap-3">
             {/* MC Data Sync card */}
-            <div className="rounded-xl border border-[#262626] bg-[#141414] p-4 flex gap-3 items-start">
+            <div className="rounded-xl border border-mc-medium bg-mc-card p-4 flex gap-3 items-start">
               <div className="text-xl mt-0.5">⚡</div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-semibold text-zinc-100">MC Data Sync</span>
+                  <span className="text-sm font-semibold text-mc-primary">MC Data Sync</span>
                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-green-500/10 text-green-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400" />OK
                   </span>
@@ -473,9 +473,9 @@ export default function AutomationsPage() {
               <div key={key} className="mb-4">
                 {/* Window header */}
                 <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-xs font-semibold text-zinc-300">{label}</span>
+                  <span className="text-xs font-semibold text-mc-secondary">{label}</span>
                   <span className="text-[10px] text-zinc-600">{range}</span>
-                  <div className="flex-1 h-px bg-[#262626]" />
+                  <div className="flex-1 h-px bg-[var(--border-medium)]" />
                 </div>
                 {/* Job rows */}
                 <div className="space-y-1.5">
@@ -488,8 +488,8 @@ export default function AutomationsPage() {
                         key={`${job.agent}-${job.catHour}`}
                         className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
                           ran
-                            ? "border-[#2a2a2a] bg-[#141414]"
-                            : "border-[#1e1e1e] bg-[#0d0d0d]"
+                            ? "border-mc-medium bg-mc-card"
+                            : "border-mc-subtle bg-mc-base"
                         }`}
                       >
                         {/* Left accent bar */}
@@ -506,7 +506,7 @@ export default function AutomationsPage() {
                         {/* Job label */}
                         <span
                           className={`text-sm flex-1 min-w-0 truncate ${
-                            ran ? "text-zinc-200" : "text-zinc-500"
+                            ran ? "text-mc-secondary" : "text-zinc-500"
                           }`}
                         >
                           {job.label}
@@ -518,7 +518,7 @@ export default function AutomationsPage() {
                             done
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-800/60 text-zinc-500 flex-shrink-0">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-200/60 dark:bg-zinc-800/60 text-zinc-500 flex-shrink-0">
                             <span className="w-1 h-1 rounded-full bg-zinc-600" />
                             pending
                           </span>
@@ -535,9 +535,9 @@ export default function AutomationsPage() {
           {allScheduleJobs.filter((j) => !j.daily).length > 0 && (
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-xs font-semibold text-zinc-300">📅 Weekly</span>
+                <span className="text-xs font-semibold text-mc-secondary">📅 Weekly</span>
                 <span className="text-[10px] text-zinc-600">runs on a specific day</span>
-                <div className="flex-1 h-px bg-[#262626]" />
+                <div className="flex-1 h-px bg-[var(--border-medium)]" />
               </div>
               <div className="space-y-1.5">
                 {allScheduleJobs
@@ -558,7 +558,7 @@ export default function AutomationsPage() {
                         className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
                           isToday
                             ? "border-blue-500/25 bg-blue-500/5"
-                            : "border-[#1e1e1e] bg-[#0d0d0d]"
+                            : "border-mc-subtle bg-mc-base"
                         }`}
                       >
                         <div
@@ -579,7 +579,7 @@ export default function AutomationsPage() {
                         <span className="text-base leading-none flex-shrink-0">{emoji}</span>
                         <span
                           className={`text-sm flex-1 min-w-0 truncate ${
-                            isToday ? "text-zinc-200" : "text-zinc-500"
+                            isToday ? "text-mc-secondary" : "text-zinc-500"
                           }`}
                         >
                           {job.label}
@@ -621,10 +621,10 @@ export default function AutomationsPage() {
                 </span>
               </div>
 
-              <div className="rounded-xl border border-[#262626] bg-[#141414] overflow-hidden">
+              <div className="rounded-xl border border-mc-medium bg-mc-card overflow-hidden">
 
                 {/* 7-day activity strip */}
-                <div className="flex items-end gap-1 px-4 pt-3 pb-2.5 border-b border-[#1e1e1e]">
+                <div className="flex items-end gap-1 px-4 pt-3 pb-2.5 border-b border-mc-subtle">
                   {DAY_LABELS.map((day, i) => {
                     const isToday = i === catDayOfWeek;
                     const isPast = i < catDayOfWeek;
@@ -634,16 +634,16 @@ export default function AutomationsPage() {
                         <div
                           className={`w-full rounded-sm transition-all ${
                             isToday
-                              ? "bg-blue-500/50"
+                              ? "bg-blue-400/50 dark:bg-blue-500/50"
                               : isPast
-                              ? "bg-zinc-800/40"
-                              : "bg-zinc-700/30"
+                              ? "bg-zinc-200/40 dark:bg-zinc-800/40"
+                              : "bg-zinc-300/30 dark:bg-zinc-700/30"
                           }`}
                           style={{ height: `${barH}px` }}
                         />
                         <span
                           className={`text-[9px] font-semibold uppercase tracking-wider ${
-                            isToday ? "text-blue-400" : isPast ? "text-zinc-700" : "text-zinc-600"
+                            isToday ? "text-blue-400" : isPast ? "text-mc-faint" : "text-zinc-600"
                           }`}
                         >
                           {day}
@@ -670,12 +670,12 @@ export default function AutomationsPage() {
                         <div
                           key={`${job.agent}-${job.catHour}-${i}`}
                           className={`flex items-center gap-3 px-4 py-3 ${
-                            i < upcoming.length - 1 ? "border-b border-[#1a1a1a]" : ""
+                            i < upcoming.length - 1 ? "border-b border-mc-subtle" : ""
                           } ${isImminent ? "bg-amber-500/[0.03]" : ""}`}
                         >
                           {/* Time + countdown stacked */}
                           <div className="flex flex-col items-end w-20 flex-shrink-0">
-                            <span className="text-xs font-mono text-zinc-200 tabular-nums">{timeLabel}</span>
+                            <span className="text-xs font-mono text-mc-secondary tabular-nums">{timeLabel}</span>
                             <span
                               className={`text-[10px] font-semibold tabular-nums ${
                                 isImminent ? "text-amber-400" : "text-zinc-600"
@@ -694,7 +694,7 @@ export default function AutomationsPage() {
                           {/* Job name */}
                           <span
                             className={`text-sm flex-1 min-w-0 truncate ${
-                              isImminent ? "text-zinc-100" : "text-zinc-300"
+                              isImminent ? "text-mc-primary" : "text-mc-secondary"
                             }`}
                           >
                             {job.label}
@@ -717,15 +717,15 @@ export default function AutomationsPage() {
 
                 {/* Already ran today — compact footer */}
                 {alreadyRanToday.length > 0 && (
-                  <div className="border-t border-[#1a1a1a] bg-[#0f0f0f] px-4 py-2.5">
-                    <div className="text-[10px] text-zinc-700 font-semibold uppercase tracking-wider mb-1.5">
+                  <div className="border-t border-mc-subtle bg-mc-elevated px-4 py-2.5">
+                    <div className="text-[10px] text-mc-faint font-semibold uppercase tracking-wider mb-1.5">
                       ✓ Ran earlier today
                     </div>
                     <div className="flex flex-wrap gap-x-4 gap-y-1">
                       {alreadyRanToday.map(({ job, catRunHour }, i) => (
                         <span
                           key={`ran-${job.agent}-${catRunHour}-${i}`}
-                          className="text-[10px] text-zinc-700 font-mono"
+                          className="text-[10px] text-mc-faint font-mono"
                         >
                           {OWNER_EMOJI[job.agent] || "⚙️"}{" "}
                           <span className="tabular-nums">{formatCATHour(catRunHour)}</span>{" "}
@@ -743,7 +743,7 @@ export default function AutomationsPage() {
         {/* Summary bar */}
         {!loading && !error && (
           <div className="flex flex-wrap gap-3 mb-6">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#141414] border border-[#262626] text-sm">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-mc-card border border-mc-medium text-sm">
               <div className="w-2 h-2 rounded-full bg-zinc-500" />
               <span className="text-zinc-400 font-medium">{jobs.length} jobs</span>
             </div>
@@ -795,7 +795,7 @@ export default function AutomationsPage() {
                     className={`rounded-xl border transition-all duration-150 ${
                       badge.isError
                         ? "bg-red-950/20 border-red-500/30 shadow-sm shadow-red-500/10"
-                        : "bg-[#141414] border-[#262626] hover:border-[#333]"
+                        : "bg-mc-card border-mc-medium hover:border-mc-strong"
                     }`}
                   >
                     {badge.isError && (
@@ -818,7 +818,7 @@ export default function AutomationsPage() {
 
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <h3 className={`text-sm font-semibold ${badge.isError ? "text-red-300" : "text-zinc-100"}`}>
+                          <h3 className={`text-sm font-semibold ${badge.isError ? "text-red-300" : "text-mc-primary"}`}>
                             {job.title}
                           </h3>
                           <span
@@ -846,20 +846,20 @@ export default function AutomationsPage() {
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
                           <span style={{ color: `${color}cc` }} className="font-medium">{job.owner}</span>
                           <span className="font-mono text-zinc-400">{humanSchedule}</span>
-                          {!job.isBash && <span className="font-mono text-zinc-700">{job.schedule}</span>}
+                          {!job.isBash && <span className="font-mono text-mc-faint">{job.schedule}</span>}
                         </div>
                       </div>
 
                       <div className="flex gap-5 sm:gap-6 text-xs shrink-0">
                         <div>
                           <div className="text-zinc-600 mb-0.5 uppercase tracking-wide text-[10px] font-medium">Last run</div>
-                          <div className={`font-medium ${job.lastRunAt ? (badge.isError ? "text-red-400" : "text-zinc-300") : "text-zinc-600"}`}>
+                          <div className={`font-medium ${job.lastRunAt ? (badge.isError ? "text-red-400" : "text-mc-secondary") : "text-zinc-600"}`}>
                             {relativeTime(job.lastRunAt, false)}
                           </div>
                         </div>
                         <div>
                           <div className="text-zinc-600 mb-0.5 uppercase tracking-wide text-[10px] font-medium">Next run</div>
-                          <div className={`font-medium ${job.nextRunAt ? "text-zinc-300" : "text-zinc-600"}`}>
+                          <div className={`font-medium ${job.nextRunAt ? "text-mc-secondary" : "text-zinc-600"}`}>
                             {job.nextRunAt ? relativeTime(job.nextRunAt, true) : "—"}
                           </div>
                         </div>
@@ -879,7 +879,7 @@ export default function AutomationsPage() {
         )}
 
         {!loading && !error && jobs.length > 0 && (
-          <p className="mt-5 text-[11px] text-zinc-700 text-right">
+          <p className="mt-5 text-[11px] text-mc-faint text-right">
             AI crons + bash crons from mc-data.json · refreshes on reload
           </p>
         )}

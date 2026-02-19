@@ -171,14 +171,14 @@ export default function SurveillancePage() {
 
         {/* Delegation Ratio Card */}
         <section>
-          <div className="rounded-2xl border border-[#222] bg-[#111] p-6">
+          <div className="rounded-2xl border border-mc-subtle bg-mc-secondary p-6">
             <div className="flex items-start justify-between mb-4">
               <div>
                 <p className="text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-1">
                   Delegation Ratio — This Week
                 </p>
                 {loading ? (
-                  <div className="h-9 w-48 bg-[#222] rounded animate-pulse" />
+                  <div className="h-9 w-48 bg-mc-elevated rounded animate-pulse" />
                 ) : (
                   <p className={`text-3xl font-bold ${ratioColor}`}>
                     {delegated}{" "}
@@ -199,7 +199,7 @@ export default function SurveillancePage() {
 
             {/* Progress bar */}
             {!loading && total > 0 && (
-              <div className="w-full h-2 rounded-full bg-[#1e1e1e] overflow-hidden">
+              <div className="w-full h-2 rounded-full bg-mc-elevated overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-700 ${barColor}`}
                   style={{ width: `${ratio * 100}%` }}
@@ -210,10 +210,10 @@ export default function SurveillancePage() {
             {!loading && (
               <div className="flex gap-6 mt-4 text-[12px] text-zinc-500">
                 <span>
-                  <span className="text-white font-medium">{delegated}</span> delegated to agents
+                  <span className="text-mc-primary font-medium">{delegated}</span> delegated to agents
                 </span>
                 <span>
-                  <span className={samDirect > 0 ? "text-red-400 font-medium" : "text-white font-medium"}>
+                  <span className={samDirect > 0 ? "text-red-400 font-medium" : "text-mc-primary font-medium"}>
                     {samDirect}
                   </span>{" "}
                   Sam did herself
@@ -240,15 +240,15 @@ export default function SurveillancePage() {
           {loading ? (
             <div className="space-y-2">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-14 rounded-xl bg-[#111] border border-[#222] animate-pulse" />
+                <div key={i} className="h-14 rounded-xl bg-mc-secondary border border-mc-subtle animate-pulse" />
               ))}
             </div>
           ) : feedRuns.length === 0 ? (
-            <div className="rounded-xl border border-[#222] bg-[#111] px-5 py-8 text-center">
+            <div className="rounded-xl border border-mc-subtle bg-mc-secondary px-5 py-8 text-center">
               <p className="text-zinc-600 text-sm">No sub-agent runs found.</p>
             </div>
           ) : (
-            <div className="rounded-xl border border-[#222] overflow-hidden">
+            <div className="rounded-xl border border-mc-subtle overflow-hidden">
               <div className="max-h-[480px] overflow-y-auto">
                 {feedRuns.map((run, i) => {
                   const info = agentMap[run.agent];
@@ -257,8 +257,8 @@ export default function SurveillancePage() {
                   return (
                     <div
                       key={run.id}
-                      className={`flex items-center gap-3 px-4 py-3 hover:bg-white/[0.02] transition-colors ${
-                        i < feedRuns.length - 1 ? "border-b border-[#1a1a1a]" : ""
+                      className={`flex items-center gap-3 px-4 py-3 hover:bg-mc-hover transition-colors ${
+                        i < feedRuns.length - 1 ? "border-b border-mc-subtle" : ""
                       }`}
                     >
                       <AgentAvatar agentId={run.agent} size={32} agentMap={agentMap} />
@@ -290,15 +290,15 @@ export default function SurveillancePage() {
           <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
             <span>🚨</span> Violations Log
           </h2>
-          <div className="rounded-xl border border-[#222] bg-[#111] px-5 py-5">
+          <div className="rounded-xl border border-mc-subtle bg-mc-secondary px-5 py-5">
             <p className="text-zinc-600 text-sm text-center">
               No violations logged.{" "}
-              <span className="text-zinc-700">Add entries to ops/violations.md</span>
+              <span className="text-mc-faint">Add entries to ops/violations.md</span>
             </p>
           </div>
         </section>
 
-        <p className="text-center text-zinc-700 text-xs pb-8">
+        <p className="text-center text-mc-faint text-xs pb-8">
           🕵️ This page is always watching. Behave accordingly.
         </p>
       </div>

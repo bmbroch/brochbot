@@ -146,7 +146,7 @@ export default function CreatorDetailPage() {
   return (
     <Shell>
       <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
-        <Link href="/creators" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors mb-4 inline-block">← Back to Creators</Link>
+        <Link href="/creators" className="text-xs text-zinc-500 hover:text-mc-secondary transition-colors mb-4 inline-block">← Back to Creators</Link>
 
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
@@ -178,7 +178,7 @@ export default function CreatorDetailPage() {
             { label: "Avg Views/Post", value: fmt(creator.avgPerPost) },
             { label: "Best Post", value: bestPost > 0 ? fmt(bestPost) : "—" },
           ].map(s => (
-            <div key={s.label} className="p-4 rounded-xl bg-[#141414] border border-[#262626] hover:border-[#333] transition-all duration-200">
+            <div key={s.label} className="p-4 rounded-xl bg-mc-card border border-mc-medium hover:border-mc-strong transition-all duration-200">
               <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-medium">{s.label}</p>
               <p className="text-xl font-bold mt-1">{s.value}</p>
             </div>
@@ -187,7 +187,7 @@ export default function CreatorDetailPage() {
 
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
           {/* Views Chart */}
-          <div className="lg:col-span-2 rounded-xl bg-[#141414] border border-[#262626] p-5">
+          <div className="lg:col-span-2 rounded-xl bg-mc-card border border-mc-medium p-5">
             <h2 className="text-sm font-semibold mb-4">Views Over Time</h2>
             <ResponsiveContainer width="100%" height={220}>
               <LineChart data={lineData}>
@@ -202,7 +202,7 @@ export default function CreatorDetailPage() {
           </div>
 
           {/* Platform Split */}
-          <div className="rounded-xl bg-[#141414] border border-[#262626] p-5 flex flex-col items-center justify-center">
+          <div className="rounded-xl bg-mc-card border border-mc-medium p-5 flex flex-col items-center justify-center">
             <h2 className="text-sm font-semibold mb-4">Platform Split</h2>
             <ResponsiveContainer width="100%" height={160}>
               <PieChart>
@@ -222,14 +222,14 @@ export default function CreatorDetailPage() {
         </div>
 
         {/* Posts Table */}
-        <div className="rounded-xl bg-[#141414] border border-[#262626] overflow-hidden">
-          <div className="px-5 py-4 border-b border-[#262626]">
+        <div className="rounded-xl bg-mc-card border border-mc-medium overflow-hidden">
+          <div className="px-5 py-4 border-b border-mc-medium">
             <h2 className="text-sm font-semibold">Posts ({posts.length})</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[11px] text-zinc-500 uppercase tracking-wider border-b border-[#262626]">
+                <tr className="text-[11px] text-zinc-500 uppercase tracking-wider border-b border-mc-medium">
                   <th className="text-left px-5 py-3 font-medium">Date</th>
                   <th className="text-center px-4 py-3 font-medium">Platform</th>
                   <th className="text-right px-5 py-3 font-medium">Views</th>
@@ -238,7 +238,7 @@ export default function CreatorDetailPage() {
               </thead>
               <tbody>
                 {posts.map((p, i) => (
-                  <tr key={i} className="border-b border-[#1a1a1a] hover:bg-white/[0.02] transition-colors">
+                  <tr key={i} className="border-b border-mc-subtle hover:bg-mc-hover transition-colors">
                     <td className="px-5 py-2.5 text-zinc-400 text-xs">
                       {p.date ? formatDate(p.date) : <span className="text-zinc-600">—</span>}
                     </td>
@@ -259,7 +259,7 @@ export default function CreatorDetailPage() {
                           ↗
                         </a>
                       ) : (
-                        <span className="text-zinc-700">—</span>
+                        <span className="text-mc-faint">—</span>
                       )}
                     </td>
                   </tr>
