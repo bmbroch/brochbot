@@ -84,6 +84,29 @@ export default function CreatorsPage() {
   const totalViews = creators.reduce((s, c) => s + c.ttViews + c.igViews, 0);
   const avgViews = Math.round(totalViews / totalPosts);
 
+  /** Compute CPM for a creator: (paid / totalViews) * 1000 */
+  function getCreatorCpm(c: typeof creators[0]): number | null {
+    const views = c.ttViews + c.igViews;
+    if (!views) return null;
+    const mp = getMercuryPayout(c.name);
+    const paid = mp ? mp.totalPaid : c.earnings;
+    return (paid / views) * 1000;
+  }
+
+  function cpmColor(cpm: number): string {
+    if (cpm < 3) return "text-green-400";
+    if (cpm <= 10) return "text-yellow-400";
+    return "text-red-400";
+  }
+
+  // Best CPM stat (lowest CPM = most efficient)
+  const bestCpmCreator = creators.reduce<{ name: string; cpm: number } | null>((best, c) => {
+    const cpm = getCreatorCpm(c);
+    if (cpm === null) return best;
+    if (!best || cpm < best.cpm) return { name: c.name, cpm };
+    return best;
+  }, null);
+
   const sorted = [...creators].sort((a, b) => (b.ttViews + b.igViews) - (a.ttViews + a.igViews));
 
   // Build unified time series data for the line chart
@@ -128,11 +151,14 @@ export default function CreatorsPage() {
         </div>
 
         {/* Overview Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
           <StatCard label="Total Creators" value={String(creators.length)} sub="Active" />
           <StatCard label="Total Posts" value={String(totalPosts)} sub="All platforms" />
           <StatCard label="Total Views" value={fmt(totalViews)} sub="TikTok + Instagram" />
           <StatCard label="Avg Views/Post" value={fmt(avgViews)} />
+          {bestCpmCreator
+            ? <StatCard label="Best CPM" value={`${bestCpmCreator.name} · $${bestCpmCreator.cpm.toFixed(2)}`} sub="cost per 1K views" />
+            : <StatCard label="Best CPM" value="—" sub="cost per 1K views" />}
         </div>
 
         {/* Leaderboard */}
@@ -159,6 +185,7 @@ export default function CreatorsPage() {
                       </span>
                     )}
                   </th>
+                  <th className="text-right px-5 py-3 font-medium">CPM</th>
                   <th className="text-center px-5 py-3 font-medium">Status</th>
                 </tr>
               </thead>
@@ -194,6 +221,13 @@ export default function CreatorsPage() {
                             );
                           }
                           return <span className="text-green-400">${c.earnings}</span>;
+                        })()}
+                      </td>
+                      <td className="px-5 py-3 text-right font-mono">
+                        {(() => {
+                          const cpm = getCreatorCpm(c);
+                          if (cpm === null) return <span className="text-zinc-600">—</span>;
+                          return <span className={cpmColor(cpm)}>${cpm.toFixed(2)}</span>;
                         })()}
                       </td>
                       <td className="px-5 py-3 text-center">
