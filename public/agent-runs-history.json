@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 20802439,
-    "cost": 26.0234,
+    "tokens": 21154652,
+    "cost": 26.7386,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -262,5 +262,29 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T14:10:01Z"
+  },
+  {
+    "id": "d0f9337f-d977-42ec-a5b3-57e237470458",
+    "label": "devin-arch-cleanup",
+    "agent": "devin",
+    "task": "**Task: Big architecture cleanup \u2014 dynamic team config + remove all hardcoded data**",
+    "model": "Sonnet",
+    "tokens": 16148,
+    "cost": 0.0425,
+    "durationSec": 3,
+    "status": "success",
+    "timestamp": "2026-02-19T14:13:53.011Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T14:13:59Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 352213,
+    "cost": 0.7152,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T14:13:59Z"
   }
 ]
