@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Shell from "@/components/Shell";
 
 /* ─── Types ──────────────────────────────────────────────────────────── */
 
-type Model = "Opus" | "Sonnet";
+type Model = "Opus" | "Sonnet" | "unknown";
 type RunStatus = "success" | "failed";
 
 interface SubAgentRun {
@@ -15,49 +15,35 @@ interface SubAgentRun {
   task: string;
   model: Model;
   tokens: number;
+  cost: number;
   durationSec: number;
   status: RunStatus;
-  timestamp: string; // ISO 8601
+  timestamp: string;
 }
 
-interface TokenLogEntry {
-  ts: string;
-  date: string;
-  sessions: number;
-  mainCtx: number;
-  totalCtx: number;
-}
+type SortKey =
+  | "agent"
+  | "label"
+  | "model"
+  | "tokens"
+  | "cost"
+  | "durationSec"
+  | "status"
+  | "timestamp";
 
-interface McData {
-  lastUpdated: string;
-  [key: string]: unknown;
-}
+/* ─── Helpers ─────────────────────────────────────────────────────────── */
 
-type SortKey = "label" | "agent" | "model" | "tokens" | "durationSec" | "status";
-
-/* ─── Constants ─────────────────────────────────────────────────────── */
-
-// Math: 958K weekly tokens = 3% per Anthropic dashboard → 958K / 0.03 ≈ 32M
-const WEEKLY_BUDGET = 32_000_000;
-// Math: 132K session tokens = 22% per Anthropic dashboard → 132K / 0.22 ≈ 600K
-const MAIN_CTX_MAX = 600_000;
-
-/** Returns the most recent Thursday noon UTC (CAT = UTC+2, so noon CAT = 10:00 UTC) */
+/** Returns the most recent Thursday noon UTC (CAT = UTC+2, noon CAT = 10:00 UTC) */
 function lastThursdayNoonUTC(): Date {
   const now = new Date();
   const day = now.getUTCDay(); // 0=Sun, 4=Thu
-  const daysBack = ((day - 4) + 7) % 7; // days since last Thursday
+  const daysBack = ((day - 4) + 7) % 7;
   const thursday = new Date(now);
   thursday.setUTCDate(now.getUTCDate() - daysBack);
-  thursday.setUTCHours(10, 0, 0, 0); // noon CAT = 10:00 UTC
-  // If thursday is in the future (i.e. same day but before reset time), go back 7 days
-  if (thursday > now) {
-    thursday.setUTCDate(thursday.getUTCDate() - 7);
-  }
+  thursday.setUTCHours(10, 0, 0, 0);
+  if (thursday > now) thursday.setUTCDate(thursday.getUTCDate() - 7);
   return thursday;
 }
-
-/* ─── Helpers ─────────────────────────────────────────────────────────── */
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}M`;
@@ -65,67 +51,74 @@ function fmtTokens(n: number): string {
   return n.toString();
 }
 
-function fmtM(n: number): string {
-  return `${(n / 1_000_000).toFixed(1)}M`;
-}
-
-function fmtK(n: number): string {
-  return `${(n / 1_000).toFixed(0)}K`;
+function fmtCost(n: number): string {
+  if (n >= 10) return `$${n.toFixed(2)}`;
+  if (n >= 1) return `$${n.toFixed(2)}`;
+  return `$${n.toFixed(3)}`;
 }
 
 function fmtDuration(sec: number): string {
-  if (sec === 0) return "—";
+  if (!sec || sec === 0) return "—";
   if (sec < 60) return `${sec}s`;
   const m = Math.floor(sec / 60);
   const s = sec % 60;
   return s === 0 ? `${m}m` : `${m}m${s}s`;
 }
 
-function agentColor(agent: string): string {
-  const map: Record<string, string> = {
-    Miles: "bg-blue-500/15 text-blue-300 border-blue-500/20",
-    Devin: "bg-purple-500/15 text-purple-300 border-purple-500/20",
-    Penny: "bg-pink-500/15 text-pink-300 border-pink-500/20",
-    Dana: "bg-orange-500/15 text-orange-300 border-orange-500/20",
-    Sam: "bg-cyan-500/15 text-cyan-300 border-cyan-500/20",
-    System: "bg-zinc-500/15 text-zinc-300 border-zinc-500/20",
-  };
-  return map[agent] ?? "bg-zinc-500/15 text-zinc-300 border-zinc-500/20";
+function fmtTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "UTC",
+    hour12: false,
+  });
 }
 
-function modelColor(model: Model): string {
-  return model === "Opus"
-    ? "bg-violet-500/15 text-violet-300 border-violet-500/20"
-    : "bg-sky-500/15 text-sky-300 border-sky-500/20";
+function fmtDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
 }
 
-/* ─── Sub-components ──────────────────────────────────────────────────── */
+/* ─── Agent colors ────────────────────────────────────────────────────── */
 
-function UsageBar({
-  pct,
-  label,
-  resetLabel,
-}: {
-  pct: number;
-  label?: string;
-  resetLabel: string;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-1.5 rounded-full bg-[#2a2a2a] overflow-hidden">
-          <div
-            className="h-full rounded-full bg-blue-500 transition-all duration-700"
-            style={{ width: `${Math.min(pct, 100)}%` }}
-          />
-        </div>
-        <span className="text-[12px] tabular-nums text-zinc-300 w-8 text-right shrink-0">{pct}%</span>
-        {label && <span className="text-[12px] text-zinc-500 shrink-0">{label}</span>}
-      </div>
-      <p className="text-[11px] text-zinc-600">{resetLabel}</p>
-    </div>
-  );
+interface AgentStyle {
+  bg: string;
+  text: string;
+  border: string;
+  bar: string;
 }
+
+const AGENT_COLORS: Record<string, AgentStyle> = {
+  Devin:   { bg: "bg-purple-500/15", text: "text-purple-300",  border: "border-purple-500/20",  bar: "bg-purple-500"  },
+  Frankie: { bg: "bg-pink-500/15",   text: "text-pink-300",    border: "border-pink-500/20",    bar: "bg-pink-500"    },
+  Sam:     { bg: "bg-cyan-500/15",   text: "text-cyan-300",    border: "border-cyan-500/20",    bar: "bg-cyan-400"    },
+  Miles:   { bg: "bg-blue-500/15",   text: "text-blue-300",    border: "border-blue-500/20",    bar: "bg-blue-500"    },
+  Dana:    { bg: "bg-orange-500/15", text: "text-orange-300",  border: "border-orange-500/20",  bar: "bg-orange-500"  },
+  Penny:   { bg: "bg-rose-500/15",   text: "text-rose-300",    border: "border-rose-500/20",    bar: "bg-rose-500"    },
+  System:  { bg: "bg-zinc-500/15",   text: "text-zinc-300",    border: "border-zinc-500/20",    bar: "bg-zinc-500"    },
+};
+
+const DEFAULT_STYLE: AgentStyle = {
+  bg: "bg-zinc-500/15",
+  text: "text-zinc-300",
+  border: "border-zinc-500/20",
+  bar: "bg-zinc-500",
+};
+
+function agentStyle(agent: string): AgentStyle {
+  return AGENT_COLORS[agent] ?? DEFAULT_STYLE;
+}
+
+function modelBadgeClass(model: Model): string {
+  if (model === "Opus")   return "bg-violet-500/15 text-violet-300 border-violet-500/20";
+  if (model === "Sonnet") return "bg-sky-500/15 text-sky-300 border-sky-500/20";
+  return "bg-zinc-500/15 text-zinc-500 border-zinc-500/20";
+}
+
+/* ─── Shared UI ────────────────────────────────────────────────────────── */
 
 function StatCard({
   label,
@@ -141,15 +134,25 @@ function StatCard({
   return (
     <div className="rounded-2xl border border-[#222] bg-[#111] p-5 hover:border-[#333] transition-colors">
       <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-medium mb-1">{label}</p>
-      <p className={`text-3xl font-black tabular-nums tracking-tight ${accent ?? "text-white"}`}>{value}</p>
+      <p className={`text-3xl font-black tabular-nums tracking-tight ${accent ?? "text-white"}`}>
+        {value}
+      </p>
       {sub && <p className="text-xs text-zinc-500 mt-1">{sub}</p>}
     </div>
   );
 }
 
-function Badge({ children, className }: { children: React.ReactNode; className?: string }) {
+function Badge({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium border ${className}`}>
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium border ${className}`}
+    >
       {children}
     </span>
   );
@@ -160,227 +163,153 @@ function SortIcon({ active, dir }: { active: boolean; dir: "asc" | "desc" }) {
   return <span className="text-blue-400 ml-1">{dir === "asc" ? "↑" : "↓"}</span>;
 }
 
-/* ─── Plan Usage Limits ───────────────────────────────────────────────── */
+/* ─── Agent Cost Breakdown ─────────────────────────────────────────────── */
 
-function PlanUsageLimits({
-  allRuns,
-  latestLog,
-}: {
-  allRuns: SubAgentRun[];
-  latestLog: TokenLogEntry | null;
-}) {
-  // Weekly: tokens since last Thursday noon CAT
-  const resetDate = lastThursdayNoonUTC();
-  const weeklyTokens = allRuns
-    .filter((r) => new Date(r.timestamp) >= resetDate)
-    .reduce((s, r) => s + r.tokens, 0);
-  const weeklyPct = Math.round((weeklyTokens / WEEKLY_BUDGET) * 100);
-
-  // Session context from token log
-  const sessionCtx = latestLog?.mainCtx ?? 0;
-  const sessionPct = Math.round((sessionCtx / MAIN_CTX_MAX) * 100);
-  const sessionLabel = latestLog ? `${fmtK(sessionCtx)} / ${fmtK(MAIN_CTX_MAX)} tokens` : "—";
-
-  // Budget estimate based on today's burn
-  const today = new Date().toISOString().slice(0, 10);
-  const todayBurn = allRuns
-    .filter((r) => r.timestamp.startsWith(today))
-    .reduce((s, r) => s + r.tokens, 0);
-
-  const projectedWeekly = todayBurn * 7;
-  const projectedPct = projectedWeekly / WEEKLY_BUDGET;
-  const budgetColor =
-    projectedPct < 0.5 ? "text-green-400" : projectedPct < 0.8 ? "text-yellow-400" : "text-red-400";
-  const runwayX = projectedWeekly > 0 ? Math.round(WEEKLY_BUDGET / projectedWeekly) : 0;
-
-  // Sonnet-only tokens this week
-  const weeklySonnet = allRuns
-    .filter((r) => new Date(r.timestamp) >= resetDate && r.model === "Sonnet")
-    .reduce((s, r) => s + r.tokens, 0);
-  const weeklySonnetPct = Math.round((weeklySonnet / WEEKLY_BUDGET) * 100);
-
-  const resetLabel = `Resets Thu noon CAT · since ${resetDate.toISOString().slice(0, 10)}`;
-
-  return (
-    <section>
-      <h2 className="text-lg font-semibold mb-4">🎯 Plan Usage Limits</h2>
-      <div className="rounded-2xl border border-[#222] bg-[#111] p-6 space-y-6">
-
-        {/* Current Session */}
-        <div className="space-y-2">
-          <p className="text-[12px] text-zinc-400 font-medium uppercase tracking-wider">Current Session</p>
-          <UsageBar pct={sessionPct} label={sessionLabel} resetLabel="Resets on /new or /reset" />
-        </div>
-
-        <div className="border-t border-[#1e1e1e]" />
-
-        {/* Weekly Limits */}
-        <div className="space-y-4">
-          <p className="text-[12px] text-zinc-400 font-medium uppercase tracking-wider">Weekly Limits</p>
-
-          <div className="space-y-1">
-            <p className="text-[12px] text-zinc-400 mb-2">All Models <span className="text-zinc-600">(Opus)</span></p>
-            <UsageBar pct={weeklyPct} resetLabel={resetLabel} />
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-[12px] text-zinc-400 mb-2">Sonnet Only</p>
-            <UsageBar pct={weeklySonnetPct} resetLabel="Resets daily" />
-          </div>
-        </div>
-
-        <div className="border-t border-[#1e1e1e]" />
-
-        {/* Budget Estimate */}
-        <div className="space-y-2">
-          <p className="text-[12px] text-zinc-400 font-medium uppercase tracking-wider">Budget Estimate</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div className="rounded-xl bg-[#0d0d0d] border border-[#1e1e1e] px-4 py-3 space-y-0.5">
-              <p className="text-[11px] text-zinc-600">Weekly budget</p>
-              <p className="text-sm text-zinc-300">~{fmtM(WEEKLY_BUDGET)} tokens</p>
-              <p className="text-[11px] text-zinc-600">estimated from {fmtK(todayBurn)} = {weeklyPct}%</p>
-            </div>
-            <div className="rounded-xl bg-[#0d0d0d] border border-[#1e1e1e] px-4 py-3 space-y-0.5">
-              <p className="text-[11px] text-zinc-600">Daily burn rate</p>
-              <p className="text-sm text-zinc-300">{fmtK(todayBurn)} tokens</p>
-              <p className="text-[11px] text-zinc-600">today&apos;s observed rate</p>
-            </div>
-            <div className="rounded-xl bg-[#0d0d0d] border border-[#1e1e1e] px-4 py-3 space-y-0.5">
-              <p className="text-[11px] text-zinc-600">Projected weekly</p>
-              <p className={`text-sm font-semibold ${budgetColor}`}>~{fmtM(projectedWeekly)} tokens</p>
-              <p className="text-[11px] text-zinc-600">at today&apos;s rate</p>
-            </div>
-            <div className="rounded-xl bg-[#0d0d0d] border border-[#1e1e1e] px-4 py-3 space-y-0.5">
-              <p className="text-[11px] text-zinc-600">Runway</p>
-              <p className={`text-sm font-semibold ${budgetColor}`}>~{runwayX}x headroom</p>
-              <p className="text-[11px] text-zinc-600">
-                {projectedPct < 0.5 ? "✓ well within budget" : projectedPct < 0.8 ? "⚠ approaching limit" : "✗ over budget"}
-              </p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  );
-}
-
-/* ─── Model Breakdown ─────────────────────────────────────────────────── */
-
-function ModelBreakdown({ runs }: { runs: SubAgentRun[] }) {
-  const opusTokens = runs.filter((r) => r.model === "Opus").reduce((s, r) => s + r.tokens, 0);
-  const sonnetTokens = runs.filter((r) => r.model === "Sonnet").reduce((s, r) => s + r.tokens, 0);
-  const total = opusTokens + sonnetTokens;
-  const opusPct = total > 0 ? Math.round((opusTokens / total) * 100) : 0;
-  const sonnetPct = 100 - opusPct;
-
-  // Rough cost: Opus ~$15/Mtok in, Sonnet ~$3/Mtok in (blended estimate)
-  const opusCost = (opusTokens / 1_000_000) * 15;
-  const sonnetCost = (sonnetTokens / 1_000_000) * 3;
-
-  return (
-    <section>
-      <h2 className="text-lg font-semibold mb-4">🧠 Model Breakdown</h2>
-      <div className="rounded-2xl border border-[#222] bg-[#111] p-6 space-y-5">
-        {/* Bar */}
-        <div>
-          <div className="flex justify-between text-xs text-zinc-500 mb-1.5">
-            <span>Opus {opusPct}%</span>
-            <span>Sonnet {sonnetPct}%</span>
-          </div>
-          <div className="h-5 rounded-full overflow-hidden bg-[#1a1a1a] flex">
-            <div
-              className="h-full bg-gradient-to-r from-violet-600 to-violet-500 transition-all duration-700"
-              style={{ width: `${opusPct}%` }}
-            />
-            <div
-              className="h-full bg-gradient-to-r from-sky-500 to-sky-400 transition-all duration-700"
-              style={{ width: `${sonnetPct}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Legend rows */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="rounded-xl bg-[#0d0d0d] border border-violet-500/15 p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-violet-500" />
-              <span className="text-[12px] text-zinc-400 font-medium">Claude Opus 4</span>
-            </div>
-            <p className="text-2xl font-black text-violet-300">{fmtTokens(opusTokens)}</p>
-            <p className="text-[11px] text-zinc-500 mt-0.5">{opusPct}% of total · ~${opusCost.toFixed(2)}</p>
-          </div>
-          <div className="rounded-xl bg-[#0d0d0d] border border-sky-500/15 p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-sky-400" />
-              <span className="text-[12px] text-zinc-400 font-medium">Claude Sonnet 4</span>
-            </div>
-            <p className="text-2xl font-black text-sky-300">{fmtTokens(sonnetTokens)}</p>
-            <p className="text-[11px] text-zinc-500 mt-0.5">{sonnetPct}% of total · ~${sonnetCost.toFixed(2)}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Timeline ────────────────────────────────────────────────────────── */
-
-function Timeline({ runs }: { runs: SubAgentRun[] }) {
-  // Build 24-hour buckets
-  const hourly = useMemo(() => {
-    const buckets: { hour: number; tokens: number }[] = Array.from({ length: 24 }, (_, i) => ({
-      hour: i,
-      tokens: 0,
-    }));
+function AgentCostBreakdown({ runs }: { runs: SubAgentRun[] }) {
+  const byAgent = useMemo(() => {
+    const map: Record<string, { tokens: number; cost: number; runCount: number }> = {};
     for (const r of runs) {
-      const h = new Date(r.timestamp).getUTCHours();
-      buckets[h].tokens += r.tokens;
+      if (!map[r.agent]) map[r.agent] = { tokens: 0, cost: 0, runCount: 0 };
+      map[r.agent].tokens += r.tokens;
+      map[r.agent].cost += r.cost;
+      map[r.agent].runCount += 1;
     }
-    return buckets;
+    return Object.entries(map)
+      .map(([agent, data]) => ({ agent, ...data }))
+      .sort((a, b) => b.cost - a.cost);
   }, [runs]);
 
-  const max = Math.max(...hourly.map((h) => h.tokens), 1);
-  const nowHour = new Date().getUTCHours();
+  const maxCost = Math.max(...byAgent.map((a) => a.cost), 0.01);
+
+  if (byAgent.length === 0) return null;
 
   return (
     <section>
-      <h2 className="text-lg font-semibold mb-4">⏱ Token Burn Timeline</h2>
-      <div className="rounded-2xl border border-[#222] bg-[#111] p-6">
-        <div className="flex items-end gap-1.5 h-24">
-          {hourly.map(({ hour, tokens }) => {
-            const pct = (tokens / max) * 100;
-            const isActive = hour <= nowHour;
-            return (
-              <div
-                key={hour}
-                className="flex-1 flex flex-col items-center gap-1 group"
-                title={`${hour}:00 UTC — ${fmtTokens(tokens)} tokens`}
-              >
-                <div className="w-full relative flex items-end" style={{ height: "72px" }}>
-                  <div
-                    className={`w-full rounded-t transition-all duration-500 ${
-                      isActive && tokens > 0
-                        ? "bg-gradient-to-t from-blue-600 to-blue-400"
-                        : "bg-[#1e1e1e]"
-                    }`}
-                    style={{ height: `${Math.max(pct, tokens > 0 ? 5 : 0)}%` }}
-                  />
+      <h2 className="text-lg font-semibold mb-4">💸 Agent Cost Breakdown</h2>
+      <div className="rounded-2xl border border-[#222] bg-[#111] p-6 space-y-5">
+        {byAgent.map(({ agent, tokens, cost, runCount }) => {
+          const s = agentStyle(agent);
+          const pct = (cost / maxCost) * 100;
+          const rankLabel = cost === maxCost ? " 🔥 top spender" : "";
+          return (
+            <div key={agent} className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <Badge className={`${s.bg} ${s.text} ${s.border}`}>{agent}</Badge>
+                  <span className="text-zinc-500 text-xs">
+                    {runCount} run{runCount !== 1 ? "s" : ""} · {fmtTokens(tokens)} tokens
+                    {rankLabel}
+                  </span>
                 </div>
-                <span className="text-[9px] text-zinc-600">{hour}</span>
+                <span className="font-bold text-white tabular-nums">{fmtCost(cost)}</span>
               </div>
-            );
-          })}
-        </div>
-        <p className="text-[11px] text-zinc-500 mt-2 text-center">
-          Hour (UTC) · bars show approximate token usage
-        </p>
+              <div className="h-2 rounded-full bg-[#1a1a1a] overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-700 ${s.bar}`}
+                  style={{ width: `${Math.max(pct, 2)}%` }}
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
 }
 
-/* ─── Sub-agent Table ─────────────────────────────────────────────────── */
+/* ─── Per-Agent Model Breakdown ──────────────────────────────────────────── */
+
+function AgentModelBreakdown({ runs }: { runs: SubAgentRun[] }) {
+  const byAgent = useMemo(() => {
+    const map: Record<
+      string,
+      { opusTok: number; sonnetTok: number; opusCost: number; sonnetCost: number }
+    > = {};
+    for (const r of runs) {
+      if (!map[r.agent])
+        map[r.agent] = { opusTok: 0, sonnetTok: 0, opusCost: 0, sonnetCost: 0 };
+      if (r.model === "Opus") {
+        map[r.agent].opusTok += r.tokens;
+        map[r.agent].opusCost += r.cost;
+      } else if (r.model === "Sonnet") {
+        map[r.agent].sonnetTok += r.tokens;
+        map[r.agent].sonnetCost += r.cost;
+      }
+    }
+    return Object.entries(map)
+      .map(([agent, d]) => ({ agent, ...d }))
+      .sort((a, b) => b.opusTok + b.sonnetTok - (a.opusTok + a.sonnetTok));
+  }, [runs]);
+
+  if (byAgent.length === 0) return null;
+
+  return (
+    <section>
+      <h2 className="text-lg font-semibold mb-4">🧠 Model Usage by Agent</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {byAgent.map(({ agent, opusTok, sonnetTok, opusCost, sonnetCost }) => {
+          const total = opusTok + sonnetTok;
+          if (total === 0) return null;
+          const opusPct = Math.round((opusTok / total) * 100);
+          const sonnetPct = 100 - opusPct;
+          const s = agentStyle(agent);
+          return (
+            <div
+              key={agent}
+              className="rounded-xl border border-[#222] bg-[#111] p-4 space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <Badge className={`${s.bg} ${s.text} ${s.border}`}>{agent}</Badge>
+                <span className="text-xs text-zinc-500">{fmtTokens(total)}</span>
+              </div>
+
+              {/* Split bar */}
+              <div className="h-3 rounded-full overflow-hidden bg-[#1a1a1a] flex">
+                {opusTok > 0 && (
+                  <div
+                    className="h-full bg-violet-500 transition-all duration-700"
+                    style={{ width: `${opusPct}%` }}
+                  />
+                )}
+                {sonnetTok > 0 && (
+                  <div
+                    className="h-full bg-sky-400 transition-all duration-700"
+                    style={{ width: `${sonnetPct}%` }}
+                  />
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                {opusTok > 0 && (
+                  <div>
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <div className="w-2 h-2 rounded-full bg-violet-500 shrink-0" />
+                      <span className="text-zinc-400">Opus {opusPct}%</span>
+                    </div>
+                    <p className="text-violet-300 font-semibold">{fmtTokens(opusTok)}</p>
+                    <p className="text-zinc-600">{fmtCost(opusCost)}</p>
+                  </div>
+                )}
+                {sonnetTok > 0 && (
+                  <div>
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <div className="w-2 h-2 rounded-full bg-sky-400 shrink-0" />
+                      <span className="text-zinc-400">Sonnet {sonnetPct}%</span>
+                    </div>
+                    <p className="text-sky-300 font-semibold">{fmtTokens(sonnetTok)}</p>
+                    <p className="text-zinc-600">{fmtCost(sonnetCost)}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ─── Sub-Agent Runs Table ─────────────────────────────────────────────── */
 
 function RunsTable({
   runs,
@@ -391,8 +320,9 @@ function RunsTable({
   modelFilter: string;
   agentFilter: string;
 }) {
-  const [sortKey, setSortKey] = useState<SortKey>("tokens");
+  const [sortKey, setSortKey] = useState<SortKey>("timestamp");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     return runs.filter((r) => {
@@ -406,32 +336,34 @@ function RunsTable({
     return [...filtered].sort((a, b) => {
       const av = a[sortKey];
       const bv = b[sortKey];
-      const aStr = typeof av === "string" ? av.toLowerCase() : av;
-      const bStr = typeof bv === "string" ? bv.toLowerCase() : bv;
-      if (aStr < bStr) return sortDir === "asc" ? -1 : 1;
-      if (aStr > bStr) return sortDir === "asc" ? 1 : -1;
+      const aVal = typeof av === "string" ? av.toLowerCase() : (av as number);
+      const bVal = typeof bv === "string" ? bv.toLowerCase() : (bv as number);
+      if (aVal < bVal) return sortDir === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortDir === "asc" ? 1 : -1;
       return 0;
     });
   }, [filtered, sortKey, sortDir]);
 
   function handleSort(key: SortKey) {
-    if (sortKey === key) {
-      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-    } else {
+    if (sortKey === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else {
       setSortKey(key);
       setSortDir("desc");
     }
   }
 
   const totalTokens = filtered.reduce((s, r) => s + r.tokens, 0);
+  const totalCost = filtered.reduce((s, r) => s + r.cost, 0);
 
   const cols: { key: SortKey; label: string; align?: string }[] = [
-    { key: "label", label: "Task ID" },
-    { key: "agent", label: "Agent" },
-    { key: "model", label: "Model" },
-    { key: "tokens", label: "Tokens", align: "text-right" },
-    { key: "durationSec", label: "Duration", align: "text-right" },
-    { key: "status", label: "Status", align: "text-right" },
+    { key: "agent",      label: "Agent" },
+    { key: "label",      label: "Task" },
+    { key: "model",      label: "Model" },
+    { key: "tokens",     label: "Tokens",   align: "text-right" },
+    { key: "cost",       label: "Cost",     align: "text-right" },
+    { key: "durationSec",label: "Duration", align: "text-right" },
+    { key: "status",     label: "Status",   align: "text-center" },
+    { key: "timestamp",  label: "Time",     align: "text-right" },
   ];
 
   return (
@@ -443,7 +375,7 @@ function RunsTable({
               {cols.map((c) => (
                 <th
                   key={c.key}
-                  className={`px-4 py-3 text-[11px] text-zinc-500 uppercase tracking-wider font-medium cursor-pointer hover:text-zinc-300 select-none ${c.align ?? "text-left"}`}
+                  className={`px-4 py-3 text-[11px] text-zinc-500 uppercase tracking-wider font-medium cursor-pointer hover:text-zinc-300 select-none whitespace-nowrap ${c.align ?? "text-left"}`}
                   onClick={() => handleSort(c.key)}
                 >
                   {c.label}
@@ -453,47 +385,105 @@ function RunsTable({
             </tr>
           </thead>
           <tbody>
-            {sorted.map((r) => (
-              <tr
-                key={r.id}
-                className={`border-b border-[#1a1a1a] transition-colors ${
-                  r.status === "failed"
-                    ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]"
-                    : "hover:bg-white/[0.025]"
-                }`}
-              >
-                <td className="px-4 py-2.5 font-mono text-xs text-zinc-300">{r.label}</td>
-                <td className="px-4 py-2.5">
-                  <Badge className={agentColor(r.agent)}>{r.agent}</Badge>
-                </td>
-                <td className="px-4 py-2.5">
-                  <Badge className={modelColor(r.model)}>{r.model}</Badge>
-                </td>
-                <td className="px-4 py-2.5 text-right tabular-nums text-zinc-300">
-                  {r.tokens > 0 ? fmtTokens(r.tokens) : "—"}
-                </td>
-                <td className="px-4 py-2.5 text-right tabular-nums text-zinc-400">
-                  {fmtDuration(r.durationSec)}
-                </td>
-                <td className="px-4 py-2.5 text-right">
-                  {r.status === "success" ? (
-                    <span className="text-green-400 text-xs">✓ Done</span>
-                  ) : (
-                    <span className="text-red-400 text-xs">✗ Failed</span>
+            {sorted.map((r) => {
+              const s = agentStyle(r.agent);
+              const isExpanded = expanded === r.id;
+              return (
+                <React.Fragment key={r.id}>
+                  <tr
+                    className={`border-b border-[#1a1a1a] cursor-pointer transition-colors ${
+                      r.status === "failed"
+                        ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]"
+                        : isExpanded
+                        ? "bg-white/[0.03]"
+                        : "hover:bg-white/[0.025]"
+                    }`}
+                    onClick={() => setExpanded(isExpanded ? null : r.id)}
+                  >
+                    {/* Agent */}
+                    <td className="px-4 py-2.5">
+                      <Badge className={`${s.bg} ${s.text} ${s.border}`}>{r.agent}</Badge>
+                    </td>
+                    {/* Task label */}
+                    <td className="px-4 py-2.5 max-w-[200px]">
+                      <span
+                        className="text-zinc-300 text-xs font-mono truncate block"
+                        title={r.label}
+                      >
+                        {r.label}
+                      </span>
+                    </td>
+                    {/* Model */}
+                    <td className="px-4 py-2.5">
+                      <Badge className={modelBadgeClass(r.model)}>
+                        {r.model === "unknown" ? "—" : r.model}
+                      </Badge>
+                    </td>
+                    {/* Tokens */}
+                    <td className="px-4 py-2.5 text-right tabular-nums text-zinc-300 text-xs">
+                      {r.tokens > 0 ? fmtTokens(r.tokens) : "—"}
+                    </td>
+                    {/* Cost */}
+                    <td className="px-4 py-2.5 text-right tabular-nums text-xs font-semibold text-emerald-400">
+                      {r.cost > 0 ? fmtCost(r.cost) : "—"}
+                    </td>
+                    {/* Duration */}
+                    <td className="px-4 py-2.5 text-right tabular-nums text-zinc-400 text-xs">
+                      {fmtDuration(r.durationSec)}
+                    </td>
+                    {/* Status */}
+                    <td className="px-4 py-2.5 text-center">
+                      {r.status === "success" ? (
+                        <span className="text-emerald-400 text-xs">✓</span>
+                      ) : (
+                        <span className="text-red-400 text-xs">✗</span>
+                      )}
+                    </td>
+                    {/* Timestamp */}
+                    <td className="px-4 py-2.5 text-right text-xs whitespace-nowrap">
+                      <span className="text-zinc-400">{fmtDate(r.timestamp)}</span>{" "}
+                      <span className="text-zinc-600">{fmtTime(r.timestamp)}</span>
+                    </td>
+                  </tr>
+
+                  {/* Expandable task detail */}
+                  {isExpanded && (
+                    <tr className="border-b border-[#1a1a1a] bg-[#0a0a0a]">
+                      <td colSpan={8} className="px-6 py-4">
+                        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-2">
+                          Task Prompt
+                        </p>
+                        <p className="text-xs text-zinc-400 leading-relaxed font-mono whitespace-pre-wrap line-clamp-6">
+                          {r.task}
+                        </p>
+                      </td>
+                    </tr>
                   )}
+                </React.Fragment>
+              );
+            })}
+
+            {sorted.length === 0 && (
+              <tr>
+                <td colSpan={8} className="px-4 py-10 text-center text-zinc-600 text-sm">
+                  No runs match the current filters.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
+
           <tfoot>
-            <tr className="border-t border-[#222] bg-[#0d0d0d]">
+            <tr className="border-t border-[#333] bg-[#0d0d0d]">
               <td colSpan={3} className="px-4 py-2.5 text-[11px] text-zinc-500">
-                {sorted.length} runs
+                {sorted.length} run{sorted.length !== 1 ? "s" : ""}
               </td>
               <td className="px-4 py-2.5 text-right text-[12px] font-semibold text-zinc-300 tabular-nums">
                 {fmtTokens(totalTokens)}
               </td>
-              <td colSpan={2} />
+              <td className="px-4 py-2.5 text-right text-[12px] font-bold text-emerald-400 tabular-nums">
+                {fmtCost(totalCost)}
+              </td>
+              <td colSpan={3} />
             </tr>
           </tfoot>
         </table>
@@ -502,52 +492,22 @@ function RunsTable({
   );
 }
 
-/* ─── Page ────────────────────────────────────────────────────────────── */
+/* ─── Page ─────────────────────────────────────────────────────────────── */
 
 const MODEL_OPTIONS = ["All", "Opus", "Sonnet"];
 
 export default function UsagePage() {
-  // ── Data state ────────────────────────────────────────────────────────
   const [allRuns, setAllRuns] = useState<SubAgentRun[]>([]);
-  const [mcData, setMcData] = useState<McData | null>(null);
-  const [latestLog, setLatestLog] = useState<TokenLogEntry | null>(null);
   const [loading, setLoading] = useState(true);
-
-  // ── UI state ──────────────────────────────────────────────────────────
-  const [selectedDate, setSelectedDate] = useState<string>(() =>
-    new Date().toISOString().slice(0, 10)
-  );
   const [modelFilter, setModelFilter] = useState("All");
   const [agentFilter, setAgentFilter] = useState("All");
 
-  // ── Fetch all data on mount ───────────────────────────────────────────
   useEffect(() => {
     async function loadData() {
       try {
-        const [runsRes, mcRes, logRes] = await Promise.all([
-          fetch("/sub-agent-runs.json"),
-          fetch("/mc-data.json"),
-          fetch("/token-usage-log.jsonl"),
-        ]);
-
-        const runs: SubAgentRun[] = await runsRes.json();
+        const res = await fetch("/sub-agent-runs.json");
+        const runs: SubAgentRun[] = await res.json();
         setAllRuns(runs);
-
-        const mc: McData = await mcRes.json();
-        setMcData(mc);
-
-        const logText = await logRes.text();
-        const entries: TokenLogEntry[] = logText
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            try { return JSON.parse(line) as TokenLogEntry; }
-            catch { return null; }
-          })
-          .filter(Boolean) as TokenLogEntry[];
-        if (entries.length > 0) {
-          setLatestLog(entries[entries.length - 1]);
-        }
       } catch (err) {
         console.error("Failed to load usage data", err);
       } finally {
@@ -557,45 +517,42 @@ export default function UsagePage() {
     loadData();
   }, []);
 
-  // ── Derived: available dates from runs ────────────────────────────────
-  const availableDates = useMemo(() => {
-    const dates = new Set(allRuns.map((r) => r.timestamp.slice(0, 10)));
-    return Array.from(dates).sort().reverse();
-  }, [allRuns]);
+  const weekStart = useMemo(() => lastThursdayNoonUTC(), []);
+  const today = new Date().toISOString().slice(0, 10);
 
-  // ── Derived: runs for selected date ───────────────────────────────────
-  const dateRuns = useMemo(
-    () => allRuns.filter((r) => r.timestamp.startsWith(selectedDate)),
-    [allRuns, selectedDate]
+  const todayRuns = useMemo(
+    () => allRuns.filter((r) => r.timestamp.startsWith(today)),
+    [allRuns, today]
+  );
+  const weekRuns = useMemo(
+    () => allRuns.filter((r) => new Date(r.timestamp) >= weekStart),
+    [allRuns, weekStart]
   );
 
-  // ── Derived: unique agents for filter ─────────────────────────────────
+  const totalCostToday   = useMemo(() => todayRuns.reduce((s, r) => s + r.cost,   0), [todayRuns]);
+  const totalCostWeek    = useMemo(() => weekRuns.reduce((s, r) => s + r.cost,    0), [weekRuns]);
+  const totalTokensToday = useMemo(() => todayRuns.reduce((s, r) => s + r.tokens, 0), [todayRuns]);
+  const totalTokensWeek  = useMemo(() => weekRuns.reduce((s, r) => s + r.tokens,  0), [weekRuns]);
+
+  const topSpender = useMemo((): [string, number] | null => {
+    const byCost: Record<string, number> = {};
+    for (const r of weekRuns) {
+      byCost[r.agent] = (byCost[r.agent] ?? 0) + r.cost;
+    }
+    const entries = Object.entries(byCost).sort((a, b) => b[1] - a[1]);
+    return entries[0] ?? null;
+  }, [weekRuns]);
+
   const agentOptions = useMemo(() => {
-    const agents = new Set(dateRuns.map((r) => r.agent));
+    const agents = new Set(allRuns.map((r) => r.agent));
     return ["All", ...Array.from(agents).sort()];
-  }, [dateRuns]);
+  }, [allRuns]);
 
-  // ── Derived: summary stats for selected date ──────────────────────────
-  const totalTokens = useMemo(() => dateRuns.reduce((s, r) => s + r.tokens, 0), [dateRuns]);
-  const sessions = latestLog?.sessions ?? 0;
-  const mainCtx = latestLog?.mainCtx ?? 0;
-  const mainCtxPct = Math.round((mainCtx / MAIN_CTX_MAX) * 100);
-
-  // Rough cost estimate
-  const estimatedCost = useMemo(() => {
-    const opus = dateRuns.filter((r) => r.model === "Opus").reduce((s, r) => s + r.tokens, 0);
-    const sonnet = dateRuns.filter((r) => r.model === "Sonnet").reduce((s, r) => s + r.tokens, 0);
-    return (opus / 1_000_000) * 15 + (sonnet / 1_000_000) * 3;
-  }, [dateRuns]);
-  const costClass =
-    estimatedCost < 0.3 ? "text-green-400" : estimatedCost < 0.7 ? "text-yellow-400" : "text-red-400";
-
-  // ── Render ─────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <Shell>
         <div className="p-6 lg:p-10 max-w-7xl mx-auto flex items-center justify-center min-h-64">
-          <p className="text-zinc-500 text-sm animate-pulse">Loading usage data…</p>
+          <p className="text-zinc-500 text-sm animate-pulse">Loading cost data…</p>
         </div>
       </Shell>
     );
@@ -605,74 +562,56 @@ export default function UsagePage() {
     <Shell>
       <div className="p-6 lg:p-10 max-w-7xl mx-auto space-y-8">
 
-        {/* Header */}
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">📊 Token Usage</h1>
-            <p className="text-zinc-500 text-sm mt-1">Daily token burn across all sessions and sub-agents</p>
-          </div>
-          {/* Date selector */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {availableDates.map((d) => (
-              <button
-                key={d}
-                onClick={() => setSelectedDate(d)}
-                className={`px-4 py-2 rounded-xl border text-sm font-mono transition-all ${
-                  selectedDate === d
-                    ? "border-blue-500/50 bg-blue-500/10 text-blue-300"
-                    : "border-[#262626] bg-[#111] text-zinc-400 hover:border-[#333]"
-                }`}
-              >
-                {d}
-              </button>
-            ))}
-          </div>
+        {/* ── Header ── */}
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">💰 Cost Dashboard</h1>
+          <p className="text-zinc-500 text-sm mt-1">
+            Real spend across all agents · week resets Thu noon CAT
+          </p>
         </div>
 
-        {/* Plan Usage Limits */}
-        <PlanUsageLimits allRuns={allRuns} latestLog={latestLog} />
-
-        {/* Summary Cards */}
+        {/* ── Summary Cards ── */}
         <section>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <StatCard
-              label="Total tokens today"
-              value={fmtTokens(totalTokens)}
-              sub="Sub-agent runs combined"
+              label="Cost today"
+              value={fmtCost(totalCostToday)}
+              sub={`${fmtTokens(totalTokensToday)} tokens · ${today}`}
+              accent="text-emerald-400"
             />
             <StatCard
-              label="Sessions today"
-              value={sessions > 0 ? sessions.toString() : "—"}
-              sub="From token usage log"
+              label="Cost this week"
+              value={fmtCost(totalCostWeek)}
+              sub={`since ${weekStart.toISOString().slice(0, 10)} Thu noon`}
+              accent="text-yellow-400"
             />
             <StatCard
-              label="Main session ctx"
-              value={mainCtx > 0 ? fmtTokens(mainCtx) : "—"}
-              sub={mainCtx > 0 ? `${mainCtxPct}% of context window` : "No log data yet"}
-              accent={mainCtxPct >= 80 ? "text-red-400" : mainCtxPct >= 60 ? "text-yellow-400" : "text-green-400"}
+              label="Tokens this week"
+              value={fmtTokens(totalTokensWeek)}
+              sub={`${fmtTokens(totalTokensToday)} today`}
             />
             <StatCard
-              label="Estimated cost"
-              value={`$${estimatedCost.toFixed(2)}`}
-              sub="Sub-agents · Claude API"
-              accent={costClass}
+              label="Top spender"
+              value={topSpender ? topSpender[0] : "—"}
+              sub={topSpender ? `${fmtCost(topSpender[1])} this week` : "No data yet"}
+              accent={topSpender ? agentStyle(topSpender[0]).text : "text-white"}
             />
           </div>
         </section>
 
-        {/* Model Breakdown */}
-        <ModelBreakdown runs={dateRuns} />
-
-        {/* Timeline */}
-        <Timeline runs={dateRuns} />
-
-        {/* Sub-agent Table */}
+        {/* ── Sub-Agent Runs Table — star of the show ── */}
         <section>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-            <h2 className="text-lg font-semibold">🤖 Sub-Agent Runs</h2>
+            <div>
+              <h2 className="text-xl font-bold">🤖 Sub-Agent Runs</h2>
+              <p className="text-xs text-zinc-500 mt-0.5">
+                All runs · click a row to expand task details
+              </p>
+            </div>
+
             {/* Filters */}
             <div className="flex items-center gap-2 flex-wrap">
-              {/* Model filter */}
+              {/* Model */}
               <div className="flex items-center gap-1 bg-[#111] border border-[#222] rounded-lg p-1">
                 {MODEL_OPTIONS.map((m) => (
                   <button
@@ -688,7 +627,7 @@ export default function UsagePage() {
                   </button>
                 ))}
               </div>
-              {/* Agent filter */}
+              {/* Agent */}
               <div className="flex items-center gap-1 bg-[#111] border border-[#222] rounded-lg p-1 flex-wrap">
                 {agentOptions.map((a) => (
                   <button
@@ -707,24 +646,24 @@ export default function UsagePage() {
             </div>
           </div>
 
-          <RunsTable runs={dateRuns} modelFilter={modelFilter} agentFilter={agentFilter} />
+          <RunsTable
+            runs={allRuns}
+            modelFilter={modelFilter}
+            agentFilter={agentFilter}
+          />
         </section>
 
-        {/* Last synced footer */}
+        {/* ── Agent Cost Breakdown ── */}
+        <AgentCostBreakdown runs={allRuns} />
+
+        {/* ── Model Usage by Agent ── */}
+        <AgentModelBreakdown runs={allRuns} />
+
+        {/* ── Footer ── */}
         <p className="text-center text-zinc-700 text-xs pb-8">
-          Last synced:{" "}
-          {mcData?.lastUpdated
-            ? new Date(mcData.lastUpdated as string).toLocaleString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                timeZone: "UTC",
-                timeZoneName: "short",
-              })
-            : "unknown"}
-          {" · "}Token data from sub-agent-runs.json + token-usage-log.jsonl
+          Data from{" "}
+          <span className="font-mono">sub-agent-runs.json</span> · updated
+          after each run
         </p>
       </div>
     </Shell>
