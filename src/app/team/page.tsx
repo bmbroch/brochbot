@@ -5,37 +5,31 @@ import { useState, useRef, useEffect } from "react";
 import { useActivities, agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
 
-const agentOrder = ["sam", "cara", "dana", "miles", "penny", "mia", "ben"];
+const agentOrder = ["ben", "sam", "cara", "dana", "miles", "penny", "mia"];
+
+const gradientMap: Record<string, string> = {
+  ben: "from-zinc-700/30 to-slate-800/20",
+  sam: "from-blue-700/30 to-blue-900/20",
+  cara: "from-purple-700/30 to-purple-900/20",
+  dana: "from-green-700/30 to-green-900/20",
+  miles: "from-orange-600/30 to-orange-900/20",
+  penny: "from-rose-600/30 to-pink-900/20",
+  mia: "from-fuchsia-600/30 to-fuchsia-900/20",
+};
 
 function AccordionPanel({ member, activities }: { member: TeamMember; activities: Activity[] }) {
   const color = agentColors[member.id] || "#3b82f6";
   const recent = activities.filter(a => a.agent === member.id).slice(0, 5);
-  const todayCount = activities.filter(a => a.agent === member.id && Date.now() - a.createdAt < 86400000).length;
-  const lastAct = activities.find(a => a.agent === member.id);
 
   return (
     <div className="px-6 py-5 space-y-4">
-      <div className="flex items-start gap-6 flex-wrap">
-        {/* About */}
-        <div className="flex-1 min-w-[200px]">
-          <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">About</p>
-          <p className="text-sm text-zinc-400 leading-relaxed">{member.description}</p>
-        </div>
-
-        {/* Stats */}
-        <div className="flex gap-6">
-          <div>
-            <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1">Actions Today</p>
-            <p className="text-2xl font-bold" style={{ color }}>{todayCount}</p>
-          </div>
-          <div>
-            <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1">Last Active</p>
-            <p className="text-sm text-zinc-400">{lastAct ? formatRelativeDate(lastAct.createdAt) : "—"}</p>
-          </div>
-        </div>
+      {/* Description */}
+      <div>
+        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">About</p>
+        <p className="text-sm text-zinc-400 leading-relaxed">{member.description}</p>
       </div>
 
-      {/* Sources */}
+      {/* Data Sources */}
       <div>
         <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Data Sources</p>
         <div className="flex flex-wrap gap-1.5">
@@ -86,18 +80,15 @@ export default function TeamPage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-8">
+      <div className="p-6 lg:p-10">
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-1">
-            <h1 className="text-2xl font-bold tracking-tight">The Team</h1>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/[0.04] text-zinc-500 border border-[#262626]">7 agents</span>
-          </div>
-          <p className="text-sm text-zinc-500">Meet the crew that runs the show</p>
+        <div className="mb-10 text-center">
+          <h1 className="text-3xl font-bold tracking-tight mb-2">The Team</h1>
+          <p className="text-sm text-zinc-500">Meet the crew behind the operation</p>
         </div>
 
         {/* Agent Grid */}
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 max-w-4xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-8 max-w-5xl mx-auto">
           {agentOrder.map(id => {
             const member = teamMembers.find(m => m.id === id)!;
             const color = agentColors[id] || "#3b82f6";
@@ -109,28 +100,31 @@ export default function TeamPage() {
               <button
                 key={id}
                 onClick={() => handleSelect(id)}
-                className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all duration-200 cursor-pointer ${
-                  isSelected
-                    ? "border-[#444] bg-[#1a1a1a]"
-                    : "border-transparent hover:border-[#333] hover:bg-[#111]"
-                }`}
+                className="flex flex-col items-center gap-2 group cursor-pointer"
               >
-                {/* Avatar */}
+                {/* Avatar Circle */}
                 <div
-                  className="w-[60px] h-[60px] rounded-full flex items-center justify-center text-2xl"
+                  className={`w-[150px] h-[150px] rounded-full flex items-center justify-center bg-gradient-to-br ${gradientMap[id] || "from-zinc-700/30 to-zinc-900/20"} transition-all duration-200 group-hover:scale-105`}
                   style={{
-                    background: `linear-gradient(135deg, ${color}30, ${color}10)`,
-                    boxShadow: isSelected ? `0 0 20px ${color}20` : undefined,
+                    boxShadow: isSelected
+                      ? `0 0 30px ${color}30, 0 4px 20px rgba(0,0,0,0.4)`
+                      : "0 4px 20px rgba(0,0,0,0.3)",
+                    border: isSelected ? `2px solid ${color}40` : "2px solid transparent",
                   }}
                 >
-                  {member.emoji}
+                  <span className="text-[80px] leading-none select-none">{member.emoji}</span>
                 </div>
                 {/* Name */}
-                <span className="text-sm font-semibold leading-tight">{member.name}</span>
+                <span className="text-[16px] font-semibold text-white leading-tight mt-1">{member.name}</span>
                 {/* Role */}
-                <span className="text-[11px] font-medium leading-tight" style={{ color }}>{member.role}</span>
-                {/* Status dot */}
-                <div className={`w-2 h-2 rounded-full ${isActive ? "bg-green-400" : "bg-zinc-700"}`} />
+                <span className="text-[13px] font-medium leading-tight" style={{ color }}>{member.role}</span>
+                {/* Status */}
+                <div className="flex items-center gap-1.5">
+                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-green-400" : "bg-zinc-700"}`} />
+                  <span className={`text-[11px] ${isActive ? "text-green-400" : "text-zinc-600"}`}>
+                    {isActive ? "Active" : "Idle"}
+                  </span>
+                </div>
               </button>
             );
           })}
@@ -138,10 +132,10 @@ export default function TeamPage() {
 
         {/* Accordion Panel */}
         <div
-          className="overflow-hidden transition-all duration-300 ease-in-out max-w-4xl"
+          className="overflow-hidden transition-all duration-300 ease-in-out max-w-5xl mx-auto"
           style={{ maxHeight: selectedMember ? `${panelHeight}px` : "0px" }}
         >
-          <div ref={panelRef} className="mt-3 rounded-xl border border-[#262626] bg-[#0e0e0e]">
+          <div ref={panelRef} className="mt-6 rounded-xl border border-[#262626] bg-[#0e0e0e]">
             {selectedMember && (
               <>
                 <div className="px-6 pt-4 pb-2 border-b border-[#1e1e1e] flex items-center gap-2">
