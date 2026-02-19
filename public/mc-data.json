@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-19T18:50:01Z",
+  "lastUpdated": "2026-02-19T19:00:01Z",
   "activities": [
+    {
+      "id": "s-b88a363c",
+      "agent": "sam",
+      "title": "b88a363c-216",
+      "description": "Conversation info (untrusted metadata):",
+      "status": "success",
+      "date": "2026-02-19T18:55:11.223Z",
+      "tokens": 67059,
+      "cost": 0.2108,
+      "model": "Opus",
+      "durationSec": 21
+    },
     {
       "id": "s-c1c67e23",
       "agent": "sam",
@@ -8,10 +20,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 62952,
-      "cost": 0.2557,
+      "tokens": 84242,
+      "cost": 0.3436,
       "model": "Opus",
-      "durationSec": 108
+      "durationSec": 1632
     },
     {
       "id": "s-7612c9b5",
@@ -20,10 +32,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 41852,
-      "cost": 0.1704,
+      "tokens": 62971,
+      "cost": 0.2567,
       "model": "Opus",
-      "durationSec": 318
+      "durationSec": 1840
     },
     {
       "id": "s-aae63345",
@@ -32,10 +44,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T17:32:32.089Z",
-      "tokens": 2169028,
-      "cost": 6.1248,
+      "tokens": 2421562,
+      "cost": 7.1411,
       "model": "Opus",
-      "durationSec": 3663
+      "durationSec": 5194
     },
     {
       "id": "s-42b5ff85",
@@ -366,7 +378,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T18:49:59Z",
+      "lastActive": "2026-02-19T18:59:41Z",
       "statusText": ""
     }
   },
@@ -380,7 +392,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T18:50:01Z"
+      "lastRunAt": "2026-02-19T19:00:01Z"
     },
     {
       "id": "bash-frankie-sync",

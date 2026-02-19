@@ -5,11 +5,35 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 2169028,
-    "cost": 6.1248,
-    "durationSec": 3663,
+    "tokens": 2421562,
+    "cost": 7.1411,
+    "durationSec": 5194,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
+  },
+  {
+    "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
+    "label": "c1c67e23-34e",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 84242,
+    "cost": 0.3436,
+    "durationSec": 1632,
+    "status": "success",
+    "timestamp": "2026-02-19T18:31:48.211Z"
+  },
+  {
+    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
+    "label": "b88a363c-216",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 67059,
+    "cost": 0.2108,
+    "durationSec": 21,
+    "status": "success",
+    "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
@@ -24,26 +48,14 @@
     "timestamp": "2026-02-19T14:00:00.055Z"
   },
   {
-    "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
-    "label": "c1c67e23-34e",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 62952,
-    "cost": 0.2557,
-    "durationSec": 108,
-    "status": "success",
-    "timestamp": "2026-02-19T18:31:48.211Z"
-  },
-  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 41852,
-    "cost": 0.1704,
-    "durationSec": 318,
+    "tokens": 62971,
+    "cost": 0.2567,
+    "durationSec": 1840,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
