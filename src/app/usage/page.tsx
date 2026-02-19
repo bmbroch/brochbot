@@ -97,18 +97,18 @@ interface AgentStyle {
 }
 
 const AGENT_COLORS: Record<string, AgentStyle> = {
-  Devin:   { bg: "bg-purple-500/15", text: "text-purple-300",  border: "border-purple-500/20",  bar: "bg-purple-500"  },
-  Frankie: { bg: "bg-pink-500/15",   text: "text-pink-300",    border: "border-pink-500/20",    bar: "bg-pink-500"    },
-  Sam:     { bg: "bg-cyan-500/15",   text: "text-cyan-300",    border: "border-cyan-500/20",    bar: "bg-cyan-400"    },
-  Miles:   { bg: "bg-blue-500/15",   text: "text-blue-300",    border: "border-blue-500/20",    bar: "bg-blue-500"    },
-  Dana:    { bg: "bg-orange-500/15", text: "text-orange-300",  border: "border-orange-500/20",  bar: "bg-orange-500"  },
-  Penny:   { bg: "bg-rose-500/15",   text: "text-rose-300",    border: "border-rose-500/20",    bar: "bg-rose-500"    },
-  System:  { bg: "bg-zinc-500/15",   text: "text-zinc-300",    border: "border-zinc-500/20",    bar: "bg-zinc-500"    },
+  Devin:   { bg: "bg-purple-500/15", text: "text-purple-500 dark:text-purple-300",  border: "border-purple-500/20",  bar: "bg-purple-500"  },
+  Frankie: { bg: "bg-pink-500/15",   text: "text-pink-500 dark:text-pink-300",    border: "border-pink-500/20",    bar: "bg-pink-500"    },
+  Sam:     { bg: "bg-cyan-500/15",   text: "text-cyan-600 dark:text-cyan-300",    border: "border-cyan-500/20",    bar: "bg-cyan-400"    },
+  Miles:   { bg: "bg-blue-500/15",   text: "text-blue-600 dark:text-blue-300",    border: "border-blue-500/20",    bar: "bg-blue-500"    },
+  Dana:    { bg: "bg-orange-500/15", text: "text-orange-600 dark:text-orange-300",  border: "border-orange-500/20",  bar: "bg-orange-500"  },
+  Penny:   { bg: "bg-rose-500/15",   text: "text-rose-600 dark:text-rose-300",    border: "border-rose-500/20",    bar: "bg-rose-500"    },
+  System:  { bg: "bg-zinc-500/15",   text: "text-zinc-600 dark:text-zinc-300",    border: "border-zinc-500/20",    bar: "bg-zinc-500"    },
 };
 
 const DEFAULT_STYLE: AgentStyle = {
   bg: "bg-zinc-500/15",
-  text: "text-zinc-300",
+  text: "text-zinc-600 dark:text-zinc-300",
   border: "border-zinc-500/20",
   bar: "bg-zinc-500",
 };
@@ -118,8 +118,8 @@ function agentStyle(agent: string): AgentStyle {
 }
 
 function modelBadgeClass(model: Model): string {
-  if (model === "Opus")   return "bg-violet-500/15 text-violet-300 border-violet-500/20";
-  if (model === "Sonnet") return "bg-sky-500/15 text-sky-300 border-sky-500/20";
+  if (model === "Opus")   return "bg-violet-500/15 text-violet-600 dark:text-violet-300 border-violet-500/20";
+  if (model === "Sonnet") return "bg-sky-500/15 text-sky-600 dark:text-sky-300 border-sky-500/20";
   return "bg-zinc-500/15 text-zinc-500 border-zinc-500/20";
 }
 
@@ -137,12 +137,15 @@ function StatCard({
   accent?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-[#222] bg-[#111] p-5 hover:border-[#333] transition-colors">
-      <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-medium mb-1">{label}</p>
-      <p className={`text-3xl font-black tabular-nums tracking-tight ${accent ?? "text-white"}`}>
+    <div
+      className="rounded-2xl border p-5 hover:border-[var(--border-strong)] transition-colors"
+      style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)" }}
+    >
+      <p className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider font-medium mb-1">{label}</p>
+      <p className={`text-3xl font-black tabular-nums tracking-tight ${accent ?? "text-[var(--text-primary)]"}`}>
         {value}
       </p>
-      {sub && <p className="text-xs text-zinc-500 mt-1">{sub}</p>}
+      {sub && <p className="text-xs text-[var(--text-muted)] mt-1">{sub}</p>}
     </div>
   );
 }
@@ -164,8 +167,8 @@ function Badge({
 }
 
 function SortIcon({ active, dir }: { active: boolean; dir: "asc" | "desc" }) {
-  if (!active) return <span className="text-zinc-700 ml-1">↕</span>;
-  return <span className="text-blue-400 ml-1">{dir === "asc" ? "↑" : "↓"}</span>;
+  if (!active) return <span className="text-[var(--text-faint)] ml-1">↕</span>;
+  return <span className="text-blue-500 ml-1">{dir === "asc" ? "↑" : "↓"}</span>;
 }
 
 /* ─── Agent Cost Breakdown ─────────────────────────────────────────────── */
@@ -190,8 +193,11 @@ function AgentCostBreakdown({ runs }: { runs: SubAgentRun[] }) {
 
   return (
     <section>
-      <h2 className="text-lg font-semibold mb-4">💸 Agent Cost Breakdown</h2>
-      <div className="rounded-2xl border border-[#222] bg-[#111] p-6 space-y-5">
+      <h2 className="text-lg font-semibold mb-4 text-[var(--text-primary)]">💸 Agent Cost Breakdown</h2>
+      <div
+        className="rounded-2xl border p-6 space-y-5"
+        style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)" }}
+      >
         {byAgent.map(({ agent, tokens, cost, runCount }) => {
           const s = agentStyle(agent);
           const pct = (cost / maxCost) * 100;
@@ -201,14 +207,14 @@ function AgentCostBreakdown({ runs }: { runs: SubAgentRun[] }) {
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <Badge className={`${s.bg} ${s.text} ${s.border}`}>{agent}</Badge>
-                  <span className="text-zinc-500 text-xs">
+                  <span className="text-[var(--text-muted)] text-xs">
                     {runCount} run{runCount !== 1 ? "s" : ""} · {fmtTokens(tokens)} tokens
                     {rankLabel}
                   </span>
                 </div>
-                <span className="font-bold text-white tabular-nums">{fmtCost(cost)}</span>
+                <span className="font-bold text-[var(--text-primary)] tabular-nums">{fmtCost(cost)}</span>
               </div>
-              <div className="h-2 rounded-full bg-[#1a1a1a] overflow-hidden">
+              <div className="h-2 rounded-full bg-[var(--bg-elevated)] overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-700 ${s.bar}`}
                   style={{ width: `${Math.max(pct, 2)}%` }}
@@ -250,7 +256,7 @@ function AgentModelBreakdown({ runs }: { runs: SubAgentRun[] }) {
 
   return (
     <section>
-      <h2 className="text-lg font-semibold mb-4">🧠 Model Usage by Agent</h2>
+      <h2 className="text-lg font-semibold mb-4 text-[var(--text-primary)]">🧠 Model Usage by Agent</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {byAgent.map(({ agent, opusTok, sonnetTok, opusCost, sonnetCost }) => {
           const total = opusTok + sonnetTok;
@@ -261,15 +267,16 @@ function AgentModelBreakdown({ runs }: { runs: SubAgentRun[] }) {
           return (
             <div
               key={agent}
-              className="rounded-xl border border-[#222] bg-[#111] p-4 space-y-3"
+              className="rounded-xl border p-4 space-y-3"
+              style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)" }}
             >
               <div className="flex items-center justify-between">
                 <Badge className={`${s.bg} ${s.text} ${s.border}`}>{agent}</Badge>
-                <span className="text-xs text-zinc-500">{fmtTokens(total)}</span>
+                <span className="text-xs text-[var(--text-muted)]">{fmtTokens(total)}</span>
               </div>
 
               {/* Split bar */}
-              <div className="h-3 rounded-full overflow-hidden bg-[#1a1a1a] flex">
+              <div className="h-3 rounded-full overflow-hidden bg-[var(--bg-elevated)] flex">
                 {opusTok > 0 && (
                   <div
                     className="h-full bg-violet-500 transition-all duration-700"
@@ -289,20 +296,20 @@ function AgentModelBreakdown({ runs }: { runs: SubAgentRun[] }) {
                   <div>
                     <div className="flex items-center gap-1 mb-0.5">
                       <div className="w-2 h-2 rounded-full bg-violet-500 shrink-0" />
-                      <span className="text-zinc-400">Opus {opusPct}%</span>
+                      <span className="text-[var(--text-muted)]">Opus {opusPct}%</span>
                     </div>
-                    <p className="text-violet-300 font-semibold">{fmtTokens(opusTok)}</p>
-                    <p className="text-zinc-600">{fmtCost(opusCost)}</p>
+                    <p className="text-violet-500 dark:text-violet-300 font-semibold">{fmtTokens(opusTok)}</p>
+                    <p className="text-[var(--text-faint)]">{fmtCost(opusCost)}</p>
                   </div>
                 )}
                 {sonnetTok > 0 && (
                   <div>
                     <div className="flex items-center gap-1 mb-0.5">
                       <div className="w-2 h-2 rounded-full bg-sky-400 shrink-0" />
-                      <span className="text-zinc-400">Sonnet {sonnetPct}%</span>
+                      <span className="text-[var(--text-muted)]">Sonnet {sonnetPct}%</span>
                     </div>
-                    <p className="text-sky-300 font-semibold">{fmtTokens(sonnetTok)}</p>
-                    <p className="text-zinc-600">{fmtCost(sonnetCost)}</p>
+                    <p className="text-sky-600 dark:text-sky-300 font-semibold">{fmtTokens(sonnetTok)}</p>
+                    <p className="text-[var(--text-faint)]">{fmtCost(sonnetCost)}</p>
                   </div>
                 )}
               </div>
@@ -372,15 +379,15 @@ function RunsTable({
   ];
 
   return (
-    <div className="rounded-xl border border-[#222] overflow-hidden">
+    <div className="rounded-xl border border-[var(--border-subtle)] overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#222] bg-[#0d0d0d]">
+            <tr className="border-b border-[var(--border-medium)]" style={{ background: "var(--bg-elevated)" }}>
               {cols.map((c) => (
                 <th
                   key={c.key}
-                  className={`px-4 py-3 text-[11px] text-zinc-500 uppercase tracking-wider font-medium cursor-pointer hover:text-zinc-300 select-none whitespace-nowrap ${c.align ?? "text-left"}`}
+                  className={`px-4 py-3 text-[11px] text-[var(--text-muted)] uppercase tracking-wider font-medium cursor-pointer hover:text-[var(--text-secondary)] select-none whitespace-nowrap ${c.align ?? "text-left"}`}
                   onClick={() => handleSort(c.key)}
                 >
                   {c.label}
@@ -396,12 +403,12 @@ function RunsTable({
               return (
                 <React.Fragment key={r.id}>
                   <tr
-                    className={`border-b border-[#1a1a1a] cursor-pointer transition-colors ${
+                    className={`border-b border-[var(--border-subtle)] cursor-pointer transition-colors ${
                       r.status === "failed"
                         ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]"
                         : isExpanded
-                        ? "bg-white/[0.03]"
-                        : "hover:bg-white/[0.025]"
+                        ? "bg-[var(--bg-hover)]"
+                        : "hover:bg-[var(--bg-hover)]"
                     }`}
                     onClick={() => setExpanded(isExpanded ? null : r.id)}
                   >
@@ -412,7 +419,7 @@ function RunsTable({
                     {/* Task label */}
                     <td className="px-4 py-2.5 max-w-[200px]">
                       <span
-                        className="text-zinc-300 text-xs font-mono truncate block"
+                        className="text-[var(--text-secondary)] text-xs font-mono truncate block"
                         title={r.label}
                       >
                         {r.label}
@@ -425,40 +432,40 @@ function RunsTable({
                       </Badge>
                     </td>
                     {/* Tokens */}
-                    <td className="px-4 py-2.5 text-right tabular-nums text-zinc-300 text-xs">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-[var(--text-secondary)] text-xs">
                       {r.tokens > 0 ? fmtTokens(r.tokens) : "—"}
                     </td>
                     {/* Cost */}
-                    <td className="px-4 py-2.5 text-right tabular-nums text-xs font-semibold text-emerald-400">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-xs font-semibold text-emerald-500 dark:text-emerald-400">
                       {r.cost > 0 ? fmtCost(r.cost) : "—"}
                     </td>
                     {/* Duration */}
-                    <td className="px-4 py-2.5 text-right tabular-nums text-zinc-400 text-xs">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-[var(--text-muted)] text-xs">
                       {fmtDuration(r.durationSec)}
                     </td>
                     {/* Status */}
                     <td className="px-4 py-2.5 text-center">
                       {r.status === "success" ? (
-                        <span className="text-emerald-400 text-xs">✓</span>
+                        <span className="text-emerald-500 dark:text-emerald-400 text-xs">✓</span>
                       ) : (
                         <span className="text-red-400 text-xs">✗</span>
                       )}
                     </td>
                     {/* Timestamp */}
                     <td className="px-4 py-2.5 text-right text-xs whitespace-nowrap">
-                      <span className="text-zinc-400">{fmtDate(r.timestamp)}</span>{" "}
-                      <span className="text-zinc-600">{fmtTime(r.timestamp)}</span>
+                      <span className="text-[var(--text-secondary)]">{fmtDate(r.timestamp)}</span>{" "}
+                      <span className="text-[var(--text-faint)]">{fmtTime(r.timestamp)}</span>
                     </td>
                   </tr>
 
                   {/* Expandable task detail */}
                   {isExpanded && (
-                    <tr className="border-b border-[#1a1a1a] bg-[#0a0a0a]">
+                    <tr className="border-b border-[var(--border-subtle)]" style={{ background: "var(--bg-elevated)" }}>
                       <td colSpan={8} className="px-6 py-4">
-                        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-2">
+                        <p className="text-[10px] text-[var(--text-faint)] uppercase tracking-wider font-semibold mb-2">
                           Task Prompt
                         </p>
-                        <p className="text-xs text-zinc-400 leading-relaxed font-mono whitespace-pre-wrap line-clamp-6">
+                        <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-mono whitespace-pre-wrap line-clamp-6">
                           {r.task}
                         </p>
                       </td>
@@ -470,7 +477,7 @@ function RunsTable({
 
             {sorted.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-10 text-center text-zinc-600 text-sm">
+                <td colSpan={8} className="px-4 py-10 text-center text-[var(--text-muted)] text-sm">
                   No runs match the current filters.
                 </td>
               </tr>
@@ -478,14 +485,14 @@ function RunsTable({
           </tbody>
 
           <tfoot>
-            <tr className="border-t border-[#333] bg-[#0d0d0d]">
-              <td colSpan={3} className="px-4 py-2.5 text-[11px] text-zinc-500">
+            <tr className="border-t border-[var(--border-strong)]" style={{ background: "var(--bg-elevated)" }}>
+              <td colSpan={3} className="px-4 py-2.5 text-[11px] text-[var(--text-muted)]">
                 {sorted.length} run{sorted.length !== 1 ? "s" : ""}
               </td>
-              <td className="px-4 py-2.5 text-right text-[12px] font-semibold text-zinc-300 tabular-nums">
+              <td className="px-4 py-2.5 text-right text-[12px] font-semibold text-[var(--text-secondary)] tabular-nums">
                 {fmtTokens(totalTokens)}
               </td>
-              <td className="px-4 py-2.5 text-right text-[12px] font-bold text-emerald-400 tabular-nums">
+              <td className="px-4 py-2.5 text-right text-[12px] font-bold text-emerald-500 dark:text-emerald-400 tabular-nums">
                 {fmtCost(totalCost)}
               </td>
               <td colSpan={3} />
@@ -548,8 +555,8 @@ function UsageByAgent({ entries }: { entries: AgentRunEntry[] }) {
   return (
     <section>
       <div className="mb-4">
-        <h2 className="text-xl font-bold">👤 Usage by Agent</h2>
-        <p className="text-xs text-zinc-500 mt-0.5">Aggregated from agent-runs-history.json · all time</p>
+        <h2 className="text-xl font-bold text-[var(--text-primary)]">👤 Usage by Agent</h2>
+        <p className="text-xs text-[var(--text-muted)] mt-0.5">Aggregated from agent-runs-history.json · all time</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {summaries.map(({ agent, runs, tokens, cost, topModel }) => {
@@ -557,26 +564,27 @@ function UsageByAgent({ entries }: { entries: AgentRunEntry[] }) {
           return (
             <div
               key={agent}
-              className="rounded-2xl border border-[#222] bg-[#111] p-4 hover:border-[#333] transition-colors space-y-3"
+              className="rounded-2xl border p-4 hover:border-[var(--border-strong)] transition-colors space-y-3"
+              style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)" }}
             >
               <div className="flex items-center justify-between">
                 <Badge className={`${s.bg} ${s.text} ${s.border} capitalize`}>{agent}</Badge>
-                <span className="text-[10px] text-zinc-600 font-medium uppercase tracking-wider">
+                <span className="text-[10px] text-[var(--text-faint)] font-medium uppercase tracking-wider">
                   {runs} run{runs !== 1 ? "s" : ""}
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <p className="text-zinc-600 uppercase tracking-wider text-[10px] font-medium mb-0.5">Cost</p>
-                  <p className="text-emerald-400 font-bold tabular-nums">{fmtCost(cost)}</p>
+                  <p className="text-[var(--text-faint)] uppercase tracking-wider text-[10px] font-medium mb-0.5">Cost</p>
+                  <p className="text-emerald-500 dark:text-emerald-400 font-bold tabular-nums">{fmtCost(cost)}</p>
                 </div>
                 <div>
-                  <p className="text-zinc-600 uppercase tracking-wider text-[10px] font-medium mb-0.5">Tokens</p>
-                  <p className="text-zinc-200 font-semibold tabular-nums">{fmtTokens(tokens)}</p>
+                  <p className="text-[var(--text-faint)] uppercase tracking-wider text-[10px] font-medium mb-0.5">Tokens</p>
+                  <p className="text-[var(--text-primary)] font-semibold tabular-nums">{fmtTokens(tokens)}</p>
                 </div>
               </div>
-              <div className="pt-1 border-t border-[#1a1a1a] flex items-center justify-between">
-                <span className="text-[10px] text-zinc-600">Top model</span>
+              <div className="pt-1 border-t border-[var(--border-subtle)] flex items-center justify-between">
+                <span className="text-[10px] text-[var(--text-faint)]">Top model</span>
                 <Badge className={modelBadgeClass(topModel as Model)}>
                   {topModel === "unknown" ? "—" : topModel}
                 </Badge>
@@ -681,7 +689,7 @@ export default function UsagePage() {
     return (
       <Shell>
         <div className="p-6 lg:p-10 max-w-7xl mx-auto flex items-center justify-center min-h-64">
-          <p className="text-zinc-500 text-sm animate-pulse">Loading cost data…</p>
+          <p className="text-[var(--text-muted)] text-sm animate-pulse">Loading cost data…</p>
         </div>
       </Shell>
     );
@@ -693,8 +701,8 @@ export default function UsagePage() {
 
         {/* ── Header ── */}
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">💰 Cost Dashboard</h1>
-          <p className="text-zinc-500 text-sm mt-1">
+          <h1 className="text-3xl font-bold tracking-tight text-[var(--text-primary)]">💰 Cost Dashboard</h1>
+          <p className="text-[var(--text-muted)] text-sm mt-1">
             Real spend across all agents · week resets Thu noon CAT
           </p>
         </div>
@@ -706,7 +714,7 @@ export default function UsagePage() {
               label="Sam Today"
               value={`$${samTodayCost.toFixed(2)}`}
               sub={`${todayCat} · CAT`}
-              accent="text-blue-400"
+              accent="text-blue-500 dark:text-blue-400"
             />
           </div>
         </section>
@@ -718,13 +726,13 @@ export default function UsagePage() {
               label="Cost today"
               value={fmtCost(totalCostToday)}
               sub={`${fmtTokens(totalTokensToday)} tokens · all agents · from run history`}
-              accent="text-emerald-400"
+              accent="text-emerald-500 dark:text-emerald-400"
             />
             <StatCard
               label="Cost this week"
               value={fmtCost(totalCostWeek)}
               sub={`since ${weekStart.toISOString().slice(0, 10)} Thu noon · all agents · from run history`}
-              accent="text-yellow-400"
+              accent="text-yellow-600 dark:text-yellow-400"
             />
             <StatCard
               label="Tokens this week"
@@ -735,7 +743,7 @@ export default function UsagePage() {
               label="Top spender"
               value={topSpender ? topSpender[0] : "—"}
               sub={topSpender ? `${fmtCost(topSpender[1])} this week` : "No data yet"}
-              accent={topSpender ? agentStyle(topSpender[0]).text : "text-white"}
+              accent={topSpender ? agentStyle(topSpender[0]).text : "text-[var(--text-primary)]"}
             />
           </div>
         </section>
@@ -743,12 +751,12 @@ export default function UsagePage() {
         {/* ── Usage by Agent ── */}
         <UsageByAgent entries={historyEntries} />
 
-        {/* ── Sub-Agent Runs Table — star of the show ── */}
+        {/* ── Sub-Agent Runs Table ── */}
         <section>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
             <div>
-              <h2 className="text-xl font-bold">🤖 Sub-Agent Runs</h2>
-              <p className="text-xs text-zinc-500 mt-0.5">
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">🤖 Sub-Agent Runs</h2>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">
                 Current sessions · click a row to expand task details
               </p>
             </div>
@@ -756,15 +764,18 @@ export default function UsagePage() {
             {/* Filters */}
             <div className="flex items-center gap-2 flex-wrap">
               {/* Model */}
-              <div className="flex items-center gap-1 bg-[#111] border border-[#222] rounded-lg p-1">
+              <div
+                className="flex items-center gap-1 rounded-lg p-1 border border-[var(--border-medium)]"
+                style={{ background: "var(--bg-card)" }}
+              >
                 {MODEL_OPTIONS.map((m) => (
                   <button
                     key={m}
                     onClick={() => setModelFilter(m)}
                     className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
                       modelFilter === m
-                        ? "bg-white/10 text-white"
-                        : "text-zinc-500 hover:text-zinc-300"
+                        ? "bg-[var(--bg-active)] text-[var(--text-primary)]"
+                        : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
                     }`}
                   >
                     {m}
@@ -772,15 +783,18 @@ export default function UsagePage() {
                 ))}
               </div>
               {/* Agent */}
-              <div className="flex items-center gap-1 bg-[#111] border border-[#222] rounded-lg p-1 flex-wrap">
+              <div
+                className="flex items-center gap-1 rounded-lg p-1 border border-[var(--border-medium)] flex-wrap"
+                style={{ background: "var(--bg-card)" }}
+              >
                 {agentOptions.map((a) => (
                   <button
                     key={a}
                     onClick={() => setAgentFilter(a)}
                     className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
                       agentFilter === a
-                        ? "bg-white/10 text-white"
-                        : "text-zinc-500 hover:text-zinc-300"
+                        ? "bg-[var(--bg-active)] text-[var(--text-primary)]"
+                        : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
                     }`}
                   >
                     {a}
@@ -804,7 +818,7 @@ export default function UsagePage() {
         <AgentModelBreakdown runs={allRuns} />
 
         {/* ── Footer ── */}
-        <p className="text-center text-zinc-700 text-xs pb-8">
+        <p className="text-center text-[var(--text-faint)] text-xs pb-8">
           Data from{" "}
           <span className="font-mono">/api/sub-agent-runs</span> · live from Supabase
         </p>

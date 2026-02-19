@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Mission Control — BrochBot",
@@ -13,9 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#0a0a0a] text-white antialiased">
-        {children}
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className="min-h-screen antialiased" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

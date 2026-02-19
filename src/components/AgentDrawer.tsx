@@ -28,17 +28,17 @@ function MemberDetail({
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">About</p>
-        <p className="text-sm text-zinc-400 leading-relaxed">{member.description}</p>
+        <p className="text-[10px] text-[var(--text-faint)] uppercase tracking-wider font-semibold mb-1.5">About</p>
+        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{member.description}</p>
       </div>
 
       {member.recurringTasks && member.recurringTasks.length > 0 && (
         <div>
-          <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Recurring Tasks</p>
+          <p className="text-[10px] text-[var(--text-faint)] uppercase tracking-wider font-semibold mb-1.5">Recurring Tasks</p>
           <div className="space-y-1">
             {member.recurringTasks.map(task => (
-              <div key={task} className="flex items-center gap-2 text-sm text-zinc-400">
-                <span className="text-zinc-600">⏰</span>
+              <div key={task} className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+                <span className="text-[var(--text-faint)]">⏰</span>
                 <span>{task}</span>
               </div>
             ))}
@@ -47,29 +47,35 @@ function MemberDetail({
       )}
 
       <div>
-        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Data Sources</p>
+        <p className="text-[10px] text-[var(--text-faint)] uppercase tracking-wider font-semibold mb-1.5">Data Sources</p>
         <div className="flex flex-wrap gap-1.5">
           {member.dataSources.map(ds => (
-            <span key={ds} className="text-[11px] px-2.5 py-0.5 rounded-full bg-white/[0.04] text-zinc-400 border border-[#262626]">{ds}</span>
+            <span
+              key={ds}
+              className="text-[11px] px-2.5 py-0.5 rounded-full text-[var(--text-secondary)] border border-[var(--border-medium)]"
+              style={{ background: "var(--bg-hover)" }}
+            >
+              {ds}
+            </span>
           ))}
         </div>
       </div>
 
       <div>
-        <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Recent Activity</p>
+        <p className="text-[10px] text-[var(--text-faint)] uppercase tracking-wider font-semibold mb-1.5">Recent Activity</p>
         {recent.length === 0 ? (
           lastActiveTs ? (
-            <p className="text-xs text-zinc-500">Active {timeAgo(lastActiveTs)} — no task detail captured</p>
+            <p className="text-xs text-[var(--text-muted)]">Active {timeAgo(lastActiveTs)} — no task detail captured</p>
           ) : (
-            <p className="text-xs text-zinc-600">No recent activity</p>
+            <p className="text-xs text-[var(--text-faint)]">No recent activity</p>
           )
         ) : (
           <div className="space-y-1.5">
             {recent.map(a => (
               <div key={a._id} className="flex items-center gap-3 text-xs">
-                <span className="text-zinc-600 shrink-0 w-20 text-right">{formatRelativeDate(a.createdAt)}</span>
-                <span className="w-1 h-1 rounded-full bg-zinc-700 shrink-0" />
-                <span className="text-zinc-400">{a.title}</span>
+                <span className="text-[var(--text-faint)] shrink-0 w-20 text-right">{formatRelativeDate(a.createdAt)}</span>
+                <span className="w-1 h-1 rounded-full bg-[var(--border-strong)] shrink-0" />
+                <span className="text-[var(--text-secondary)]">{a.title}</span>
               </div>
             ))}
           </div>
@@ -114,25 +120,29 @@ export default function AgentDrawer({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-40 bg-black/60 transition-opacity duration-250"
-        style={{ opacity: visible ? 1 : 0 }}
+        className="fixed inset-0 z-40 transition-opacity duration-250"
+        style={{ background: "var(--bg-overlay)", opacity: visible ? 1 : 0 }}
         onClick={handleClose}
       />
       {/* Drawer */}
       <div
-        className="fixed left-0 right-0 bottom-0 z-50 max-h-[60vh] rounded-t-2xl border-t border-[#262626] bg-[#141414] overflow-hidden flex flex-col transition-transform duration-250 ease-out"
-        style={{ transform: visible ? "translateY(0)" : "translateY(100%)" }}
+        className="fixed left-0 right-0 bottom-0 z-50 max-h-[60vh] rounded-t-2xl border-t overflow-hidden flex flex-col transition-transform duration-250 ease-out"
+        style={{
+          background: "var(--bg-card)",
+          borderColor: "var(--border-medium)",
+          transform: visible ? "translateY(0)" : "translateY(100%)",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drag handle */}
         <div className="flex justify-center pt-3 pb-2">
-          <div className="w-10 h-1 rounded-full bg-zinc-700" />
+          <div className="w-10 h-1 rounded-full bg-[var(--border-strong)]" />
         </div>
 
         {/* Header */}
-        <div className="flex items-center gap-3 px-4 pb-3 border-b border-[#262626]">
+        <div className="flex items-center gap-3 px-4 pb-3 border-b border-[var(--border-medium)]">
           <div
-            className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br shrink-0 overflow-hidden"
+            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 overflow-hidden"
             style={{ backgroundColor: `${color}15` }}
           >
             {member.avatar ? (
@@ -142,10 +152,15 @@ export default function AgentDrawer({
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold">{member.name}</p>
+            <p className="text-sm font-semibold text-[var(--text-primary)]">{member.name}</p>
             <p className="text-xs" style={{ color }}>{member.role}</p>
           </div>
-          <button onClick={handleClose} className="p-2 text-zinc-500 hover:text-white">✕</button>
+          <button
+            onClick={handleClose}
+            className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+          >
+            ✕
+          </button>
         </div>
 
         {/* Content */}

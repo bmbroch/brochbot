@@ -102,14 +102,15 @@ export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[20vh]" onClick={() => onOpenChange(false)}>
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+      <div className="fixed inset-0 backdrop-blur-sm" style={{ background: "var(--bg-overlay)" }} />
       <div
-        className="relative w-full max-w-xl bg-[#141414] border border-[#262626] rounded-2xl shadow-2xl shadow-black/50 overflow-hidden animate-fade-in"
+        className="relative w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden animate-fade-in border border-[var(--border-medium)]"
+        style={{ background: "var(--bg-card)", boxShadow: "var(--shadow-modal)" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Input */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-[#262626]">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-zinc-500 flex-shrink-0">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--border-medium)]">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-[var(--text-muted)] flex-shrink-0">
             <circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
             <path d="M12 12L16.5 16.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>
@@ -119,22 +120,22 @@ export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search tasks, activities, team..."
-            className="flex-1 bg-transparent text-sm text-white placeholder:text-zinc-500 outline-none"
+            className="flex-1 bg-transparent text-sm placeholder:text-[var(--text-muted)] outline-none text-[var(--text-primary)]"
           />
-          <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.06] border border-[#262626] text-zinc-500 font-mono">ESC</kbd>
+          <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--bg-hover)] border border-[var(--border-medium)] text-[var(--text-muted)] font-mono">ESC</kbd>
         </div>
 
         {/* Results */}
         <div className="max-h-80 overflow-y-auto p-2">
           {query && results.length === 0 && (
-            <div className="py-8 text-center text-sm text-zinc-500">No results found</div>
+            <div className="py-8 text-center text-sm text-[var(--text-muted)]">No results found</div>
           )}
           {!query && (
-            <div className="py-8 text-center text-sm text-zinc-500">Start typing to search...</div>
+            <div className="py-8 text-center text-sm text-[var(--text-muted)]">Start typing to search...</div>
           )}
           {Object.entries(grouped).map(([type, items]) => (
             <div key={type}>
-              <div className="px-3 py-1.5 text-[10px] font-medium text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
+              <div className="px-3 py-1.5 text-[10px] font-medium text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-1.5">
                 <span>{typeIcons[type]}</span>
                 <span>{typeLabels[type]}</span>
               </div>
@@ -145,16 +146,18 @@ export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
                     key={result.id}
                     onClick={() => { router.push(result.href); onOpenChange(false); }}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                      idx === selectedIndex ? "bg-white/[0.08] text-white" : "text-zinc-400 hover:bg-white/[0.04]"
+                      idx === selectedIndex
+                        ? "bg-[var(--bg-active)] text-[var(--text-primary)]"
+                        : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
                     }`}
                   >
                     <span className="text-base w-5 text-center flex-shrink-0">{result.icon}</span>
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium truncate">{result.title}</div>
-                      <div className="text-xs text-zinc-500 truncate">{result.subtitle}</div>
+                      <div className="text-xs text-[var(--text-muted)] truncate">{result.subtitle}</div>
                     </div>
                     {idx === selectedIndex && (
-                      <span className="text-[10px] text-zinc-500">↵</span>
+                      <span className="text-[10px] text-[var(--text-muted)]">↵</span>
                     )}
                   </button>
                 );

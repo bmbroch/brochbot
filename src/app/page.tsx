@@ -133,20 +133,23 @@ export default function Home() {
     <Shell>
       <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold tracking-tight">Activity Feed</h1>
-          <p className="text-sm text-zinc-500 mt-1">Everything that happened across all agents</p>
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">Activity Feed</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Everything that happened across all agents</p>
         </div>
 
         {/* Date tabs */}
-        <div className="flex gap-1 mb-4 p-1 bg-[#141414] border border-[#262626] rounded-xl w-fit">
+        <div
+          className="flex gap-1 mb-4 p-1 rounded-xl w-fit border border-[var(--border-medium)]"
+          style={{ background: "var(--bg-card)" }}
+        >
           {dateTabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setDateTab(tab.key)}
               className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 dateTab === tab.key
-                  ? "bg-white/10 text-white"
-                  : "text-zinc-500 hover:text-zinc-300"
+                  ? "bg-[var(--bg-active)] text-[var(--text-primary)]"
+                  : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
               }`}
             >
               {tab.label}
@@ -167,7 +170,7 @@ export default function Home() {
 
         {/* Empty state */}
         {(fetchError || filtered.length === 0) && Object.keys(groups).length === 0 && (
-          <div className="flex flex-col items-center justify-center py-24 text-zinc-600">
+          <div className="flex flex-col items-center justify-center py-24 text-[var(--text-faint)]">
             <span className="text-4xl mb-4">📭</span>
             <p className="text-sm">No activity yet</p>
           </div>
@@ -178,9 +181,9 @@ export default function Home() {
           {Object.entries(groups).map(([dateGroup, items]) => (
             <div key={dateGroup}>
               <div className="flex items-center gap-3 mb-4">
-                <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">{dateGroup}</h2>
-                <div className="flex-1 h-px bg-[#262626]" />
-                <span className="text-xs text-zinc-600">{items.length} events</span>
+                <h2 className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">{dateGroup}</h2>
+                <div className="flex-1 h-px bg-[var(--border-medium)]" />
+                <span className="text-xs text-[var(--text-faint)]">{items.length} events</span>
               </div>
               <div className="space-y-2">
                 {items.map((activity, i) => {
@@ -198,8 +201,8 @@ export default function Home() {
                   return (
                     <div
                       key={activity._id}
-                      className="group relative flex gap-4 p-4 rounded-xl bg-[#141414] border border-[#262626] hover:border-[#333] transition-all duration-200"
-                      style={{ animationDelay: `${i * 40}ms` }}
+                      className="group relative flex gap-4 p-4 rounded-xl border border-[var(--border-medium)] hover:border-[var(--border-strong)] transition-all duration-200"
+                      style={{ background: "var(--bg-card)", animationDelay: `${i * 40}ms` }}
                     >
                       {/* Agent avatar */}
                       <div
@@ -212,7 +215,7 @@ export default function Home() {
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-2">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-sm font-semibold">{activity.title}</span>
+                            <span className="text-sm font-semibold text-[var(--text-primary)]">{activity.title}</span>
                             <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${typeConf.bg} ${typeConf.color}`}>
                               {typeConf.icon} {typeConf.label}
                             </span>
@@ -227,19 +230,19 @@ export default function Home() {
                               <div className={`w-1.5 h-1.5 rounded-full ${statConf.dot}`} />
                               {statConf.label}
                             </div>
-                            <span className="text-[11px] text-zinc-600">{formatRelativeDate(activity.createdAt)}</span>
+                            <span className="text-[11px] text-[var(--text-faint)]">{formatRelativeDate(activity.createdAt)}</span>
                           </div>
                         </div>
                         {activity.description && (
-                          <p className="text-sm text-zinc-500 mt-1 leading-relaxed line-clamp-2">{activity.description}</p>
+                          <p className="text-sm text-[var(--text-muted)] mt-1 leading-relaxed line-clamp-2">{activity.description}</p>
                         )}
                         {/* Metadata row: cost · tokens · model · duration */}
                         {metaParts.length > 0 ? (
-                          <p className="mt-1 text-[11px] text-zinc-500">
+                          <p className="mt-1 text-[11px] text-[var(--text-muted)]">
                             {metaParts.join(" · ")}
                           </p>
                         ) : (
-                          <div className="mt-1 text-[11px] text-zinc-600 capitalize">{activity.agent}</div>
+                          <div className="mt-1 text-[11px] text-[var(--text-faint)] capitalize">{activity.agent}</div>
                         )}
                       </div>
                     </div>
@@ -272,9 +275,10 @@ function AgentPills({ value, onChange, dateFiltered }: {
         onClick={() => onChange("all")}
         className={`flex-shrink-0 flex items-center h-8 px-3 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
           value === "all"
-            ? "bg-zinc-700 text-white ring-1 ring-zinc-500"
-            : "bg-zinc-800/60 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800"
+            ? "text-[var(--text-primary)] ring-1 ring-[var(--border-strong)] bg-[var(--bg-active)]"
+            : "text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
         }`}
+        style={value !== "all" ? { background: "var(--bg-elevated)" } : undefined}
       >
         All
       </button>
@@ -289,13 +293,11 @@ function AgentPills({ value, onChange, dateFiltered }: {
           <button
             key={id}
             onClick={() => onChange(isSelected ? "all" : id)}
-            className={`flex-shrink-0 flex items-center gap-1.5 h-8 px-2.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
-              isSelected ? "text-white" : "bg-[#1c1c1c] text-zinc-400 hover:text-zinc-300"
-            }`}
+            className={`flex-shrink-0 flex items-center gap-1.5 h-8 px-2.5 rounded-full text-xs font-medium transition-all whitespace-nowrap`}
             style={
               isSelected
-                ? { backgroundColor: `${color}22`, boxShadow: `0 0 0 1.5px ${color}` }
-                : undefined
+                ? { backgroundColor: `${color}22`, boxShadow: `0 0 0 1.5px ${color}`, color: "var(--text-primary)" }
+                : { background: "var(--bg-elevated)", color: "var(--text-muted)" }
             }
           >
             {agent.avatar ? (
@@ -325,7 +327,8 @@ function FilterSelect({ label, value, onChange, options }: { label: string; valu
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="text-xs bg-[#141414] border border-[#262626] text-zinc-400 rounded-lg px-3 py-1.5 outline-none focus:border-[#3b82f6] transition-colors appearance-none cursor-pointer"
+      className="text-xs border rounded-lg px-3 py-1.5 outline-none focus:border-blue-500 transition-colors appearance-none cursor-pointer text-[var(--text-muted)]"
+      style={{ background: "var(--bg-card)", borderColor: "var(--border-medium)", color: "var(--text-secondary)" }}
     >
       {options.map((o) => (
         <option key={o.value} value={o.value}>{o.label}</option>

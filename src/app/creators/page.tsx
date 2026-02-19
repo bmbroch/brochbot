@@ -4,6 +4,7 @@ import Shell from "@/components/Shell";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAllCreatorsTimeSeries, creatorColors } from "@/lib/data-provider";
+import { useTheme } from "@/components/ThemeProvider";
 import {
   LineChart, Line, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -42,33 +43,50 @@ function fmt(n: number): string {
 
 function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="p-5 rounded-xl bg-[#141414] border border-[#262626] hover:border-[#333] transition-all duration-200">
-      <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-medium">{label}</p>
-      <p className="text-2xl font-bold mt-1">{value}</p>
-      {sub && <p className="text-xs text-zinc-500 mt-1">{sub}</p>}
+    <div
+      className="p-5 rounded-xl border border-[var(--border-medium)] hover:border-[var(--border-strong)] transition-all duration-200"
+      style={{ background: "var(--bg-card)" }}
+    >
+      <p className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider font-medium">{label}</p>
+      <p className="text-2xl font-bold mt-1 text-[var(--text-primary)]">{value}</p>
+      {sub && <p className="text-xs text-[var(--text-muted)] mt-1">{sub}</p>}
     </div>
   );
 }
 
-const darkTooltipStyle = {
-  contentStyle: { backgroundColor: "#1a1a1a", border: "1px solid #333", borderRadius: 8, fontSize: 12 },
-  labelStyle: { color: "#a1a1aa" },
-  itemStyle: { color: "#e4e4e7" },
-};
-
 function cpmColor(cpm: number): string {
-  if (cpm < 3) return "text-green-400";
-  if (cpm <= 10) return "text-yellow-400";
-  return "text-red-400";
+  if (cpm < 3) return "text-green-500 dark:text-green-400";
+  if (cpm <= 10) return "text-yellow-600 dark:text-yellow-400";
+  return "text-red-500 dark:text-red-400";
 }
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function CreatorsPage() {
+  const { theme } = useTheme();
   const [creatorsMap, setCreatorsMap] = useState<Record<string, CreatorData> | null>(null);
   const [enabledCreators, setEnabledCreators] = useState<Record<string, boolean>>({});
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const creatorsTimeSeries = useAllCreatorsTimeSeries();
+
+  // Theme-aware chart tooltip styles
+  const tooltipStyle = theme === "dark"
+    ? {
+        contentStyle: { backgroundColor: "#1a1a1a", border: "1px solid #333", borderRadius: 8, fontSize: 12 },
+        labelStyle: { color: "#a1a1aa" },
+        itemStyle: { color: "#e4e4e7" },
+      }
+    : {
+        contentStyle: { backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" },
+        labelStyle: { color: "#6b7280" },
+        itemStyle: { color: "#374151" },
+      };
+
+  // Grid stroke color for charts
+  const gridColor = theme === "dark" ? "#262626" : "#e5e7eb";
+  const tickColor = theme === "dark" ? "#71717a" : "#9ca3af";
+  const axisColor = theme === "dark" ? "#262626" : "#e5e7eb";
+  const yLabelColor = theme === "dark" ? "#e4e4e7" : "#374151";
 
   useEffect(() => {
     fetch("/creator-data.json")
@@ -149,11 +167,11 @@ export default function CreatorsPage() {
       <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Creators</h1>
-            <p className="text-sm text-zinc-500 mt-1">UGC creator performance dashboard</p>
+            <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">Creators</h1>
+            <p className="text-sm text-[var(--text-muted)] mt-1">UGC creator performance dashboard</p>
           </div>
           {lastUpdated && (
-            <p className="text-[11px] text-zinc-600 shrink-0">synced {timeAgo(lastUpdated)}</p>
+            <p className="text-[11px] text-[var(--text-faint)] shrink-0">synced {timeAgo(lastUpdated)}</p>
           )}
         </div>
 
@@ -170,8 +188,8 @@ export default function CreatorsPage() {
 
         {/* Loading state */}
         {!creatorsMap && (
-          <div className="flex items-center gap-3 text-zinc-500 py-12 justify-center">
-            <div className="w-4 h-4 rounded-full border-2 border-zinc-700 border-t-zinc-400 animate-spin" />
+          <div className="flex items-center gap-3 text-[var(--text-muted)] py-12 justify-center">
+            <div className="w-4 h-4 rounded-full border-2 border-[var(--border-strong)] border-t-[var(--text-muted)] animate-spin" />
             <span className="text-sm">Loading creator data...</span>
           </div>
         )}
@@ -179,19 +197,22 @@ export default function CreatorsPage() {
         {/* Leaderboard */}
         {creatorsMap && (
           <>
-            <div className="rounded-xl bg-[#141414] border border-[#262626] overflow-hidden mb-8">
-              <div className="px-5 py-4 border-b border-[#262626]">
-                <h2 className="text-sm font-semibold">Leaderboard</h2>
+            <div
+              className="rounded-xl border overflow-hidden mb-8"
+              style={{ background: "var(--bg-card)", borderColor: "var(--border-medium)" }}
+            >
+              <div className="px-5 py-4 border-b border-[var(--border-medium)]">
+                <h2 className="text-sm font-semibold text-[var(--text-primary)]">Leaderboard</h2>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-[11px] text-zinc-500 uppercase tracking-wider border-b border-[#262626]">
+                    <tr className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider border-b border-[var(--border-medium)]">
                       <th className="text-left px-5 py-3 font-medium">#</th>
                       <th className="text-left px-5 py-3 font-medium">Creator</th>
                       <th className="text-right px-5 py-3 font-medium">Posts</th>
-                      <th className="text-right px-5 py-3 font-medium"><span className="text-cyan-400">TikTok</span></th>
-                      <th className="text-right px-5 py-3 font-medium"><span className="text-pink-400">Instagram</span></th>
+                      <th className="text-right px-5 py-3 font-medium"><span className="text-cyan-500 dark:text-cyan-400">TikTok</span></th>
+                      <th className="text-right px-5 py-3 font-medium"><span className="text-pink-500 dark:text-pink-400">Instagram</span></th>
                       <th className="text-right px-5 py-3 font-medium">Total Views</th>
                       <th className="text-right px-5 py-3 font-medium">Avg/Post</th>
                       <th className="text-right px-5 py-3 font-medium">Earnings</th>
@@ -205,34 +226,37 @@ export default function CreatorsPage() {
                       const dominant = c.igViews > c.ttViews ? "ig" : "tt";
                       const cpm = getCreatorCpm(c);
                       return (
-                        <tr key={c.name} className="border-b border-[#1a1a1a] hover:bg-white/[0.02] transition-colors">
-                          <td className="px-5 py-3 text-zinc-500 font-mono">{i + 1}</td>
+                        <tr
+                          key={c.name}
+                          className="border-b border-[var(--border-subtle)] hover:bg-[var(--bg-hover)] transition-colors"
+                        >
+                          <td className="px-5 py-3 text-[var(--text-muted)] font-mono">{i + 1}</td>
                           <td className="px-5 py-3">
-                            <Link href={`/creators/${c.name.toLowerCase()}`} className="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                            <Link href={`/creators/${c.name.toLowerCase()}`} className="flex items-center gap-2 hover:text-blue-500 transition-colors text-[var(--text-primary)]">
                               <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: `${creatorColors[c.name]}20`, color: creatorColors[c.name] }}>
                                 {c.name[0]}
                               </div>
                               <span className="font-medium">{c.name}</span>
                             </Link>
                           </td>
-                          <td className="px-5 py-3 text-right text-zinc-400">{c.posts}</td>
-                          <td className="px-5 py-3 text-right"><span className="text-cyan-400">{fmt(c.ttViews)}</span></td>
-                          <td className="px-5 py-3 text-right"><span className="text-pink-400">{fmt(c.igViews)}</span></td>
-                          <td className="px-5 py-3 text-right font-semibold">{fmt(total)}</td>
-                          <td className="px-5 py-3 text-right text-zinc-400">{fmt(c.avgPerPost)}</td>
+                          <td className="px-5 py-3 text-right text-[var(--text-secondary)]">{c.posts}</td>
+                          <td className="px-5 py-3 text-right"><span className="text-cyan-500 dark:text-cyan-400">{fmt(c.ttViews)}</span></td>
+                          <td className="px-5 py-3 text-right"><span className="text-pink-500 dark:text-pink-400">{fmt(c.igViews)}</span></td>
+                          <td className="px-5 py-3 text-right font-semibold text-[var(--text-primary)]">{fmt(total)}</td>
+                          <td className="px-5 py-3 text-right text-[var(--text-secondary)]">{fmt(c.avgPerPost)}</td>
                           <td className="px-5 py-3 text-right">
-                            <span className="text-green-400 font-semibold">${c.earnings.toLocaleString()}</span>
+                            <span className="text-green-500 dark:text-green-400 font-semibold">${c.earnings.toLocaleString()}</span>
                             {c.paymentCount > 0 && (
-                              <span className="block text-[10px] text-zinc-500">{c.paymentCount} payments</span>
+                              <span className="block text-[10px] text-[var(--text-muted)]">{c.paymentCount} payments</span>
                             )}
                           </td>
                           <td className="px-5 py-3 text-right font-mono">
                             {cpm !== null
                               ? <span className={cpmColor(cpm)}>${cpm.toFixed(2)}</span>
-                              : <span className="text-zinc-600">—</span>}
+                              : <span className="text-[var(--text-faint)]">—</span>}
                           </td>
                           <td className="px-5 py-3 text-center">
-                            <span className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full font-medium ${dominant === "ig" ? "bg-pink-500/10 text-pink-400" : "bg-cyan-500/10 text-cyan-400"}`}>
+                            <span className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full font-medium ${dominant === "ig" ? "bg-pink-500/10 text-pink-500 dark:text-pink-400" : "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400"}`}>
                               {dominant === "ig" ? "IG dominant" : "TT dominant"}
                             </span>
                           </td>
@@ -245,16 +269,19 @@ export default function CreatorsPage() {
             </div>
 
             {/* Views Over Time Chart */}
-            <div className="rounded-xl bg-[#141414] border border-[#262626] p-5 mb-8">
+            <div
+              className="rounded-xl border p-5 mb-8"
+              style={{ background: "var(--bg-card)", borderColor: "var(--border-medium)" }}
+            >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                <h2 className="text-sm font-semibold">Views Over Time</h2>
+                <h2 className="text-sm font-semibold text-[var(--text-primary)]">Views Over Time</h2>
                 <div className="flex flex-wrap gap-2">
                   {creators.map(c => (
                     <button
                       key={c.name}
                       onClick={() => toggle(c.name)}
-                      className={`text-[11px] px-2 py-1 rounded-full border transition-all ${enabledCreators[c.name] ? "border-transparent" : "border-[#262626] opacity-40"}`}
-                      style={enabledCreators[c.name] ? { backgroundColor: `${creatorColors[c.name]}20`, color: creatorColors[c.name] } : {}}
+                      className={`text-[11px] px-2 py-1 rounded-full border transition-all ${enabledCreators[c.name] ? "border-transparent" : "border-[var(--border-medium)] opacity-40"}`}
+                      style={enabledCreators[c.name] ? { backgroundColor: `${creatorColors[c.name]}20`, color: creatorColors[c.name] } : { color: "var(--text-muted)" }}
                     >
                       {c.name}
                     </button>
@@ -263,10 +290,10 @@ export default function CreatorsPage() {
               </div>
               <ResponsiveContainer width="100%" height={280}>
                 <LineChart data={lineChartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#262626" />
-                  <XAxis dataKey="date" tick={{ fill: "#71717a", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#262626" }} />
-                  <YAxis tick={{ fill: "#71717a", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#262626" }} tickFormatter={fmt} />
-                  <Tooltip {...darkTooltipStyle} formatter={(value) => fmt(Number(value))} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                  <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} />
+                  <YAxis tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
+                  <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
                   {creators.filter(c => enabledCreators[c.name]).map(c => (
                     <Line key={c.name} type="monotone" dataKey={c.name} stroke={creatorColors[c.name]} strokeWidth={2} dot={false} />
                   ))}
@@ -275,15 +302,18 @@ export default function CreatorsPage() {
             </div>
 
             {/* Platform Comparison */}
-            <div className="rounded-xl bg-[#141414] border border-[#262626] p-5">
-              <h2 className="text-sm font-semibold mb-4">Platform Comparison</h2>
+            <div
+              className="rounded-xl border p-5"
+              style={{ background: "var(--bg-card)", borderColor: "var(--border-medium)" }}
+            >
+              <h2 className="text-sm font-semibold mb-4 text-[var(--text-primary)]">Platform Comparison</h2>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={barData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="#262626" horizontal={false} />
-                  <XAxis type="number" tick={{ fill: "#71717a", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#262626" }} tickFormatter={fmt} />
-                  <YAxis type="category" dataKey="name" tick={{ fill: "#e4e4e7", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "#262626" }} width={60} />
-                  <Tooltip {...darkTooltipStyle} formatter={(value) => fmt(Number(value))} />
-                  <Legend wrapperStyle={{ fontSize: 11, color: "#a1a1aa" }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />
+                  <XAxis type="number" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
+                  <YAxis type="category" dataKey="name" tick={{ fill: yLabelColor, fontSize: 12 }} tickLine={false} axisLine={{ stroke: axisColor }} width={60} />
+                  <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
+                  <Legend wrapperStyle={{ fontSize: 11, color: tickColor }} />
                   <Bar dataKey="TikTok" fill="#06b6d4" radius={[0, 4, 4, 0]} />
                   <Bar dataKey="Instagram" fill="#ec4899" radius={[0, 4, 4, 0]} />
                 </BarChart>

@@ -4,22 +4,66 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* ── Light mode (default) ── */
 :root {
-  --bg: #0a0a0a;
-  --card-bg: #141414;
-  --border: #262626;
-  --text: #fafafa;
-  --text-muted: #71717a;
-  --accent: #3b82f6;
-  --green: #22c55e;
-  --yellow: #eab308;
-  --red: #ef4444;
-  --purple: #a855f7;
+  --bg-primary:    #f9fafb;
+  --bg-secondary:  #ffffff;
+  --bg-card:       #ffffff;
+  --bg-elevated:   #f3f4f6;
+  --bg-hover:      rgba(0, 0, 0, 0.04);
+  --bg-active:     rgba(0, 0, 0, 0.07);
+  --bg-overlay:    rgba(0, 0, 0, 0.35);
+
+  --border-subtle: #f3f4f6;
+  --border-medium: #e5e7eb;
+  --border-strong: #d1d5db;
+
+  --text-primary:   #111827;
+  --text-secondary: #374151;
+  --text-muted:     #6b7280;
+  --text-faint:     #9ca3af;
+
+  --accent:       #3b82f6;
+  --accent-hover: #2563eb;
+
+  --scrollbar:    #d1d5db;
+
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.12);
 }
 
+/* ── Dark mode ── */
+.dark {
+  --bg-primary:    #0a0a0a;
+  --bg-secondary:  #111111;
+  --bg-card:       #141414;
+  --bg-elevated:   #1a1a1a;
+  --bg-hover:      rgba(255, 255, 255, 0.04);
+  --bg-active:     rgba(255, 255, 255, 0.08);
+  --bg-overlay:    rgba(0, 0, 0, 0.6);
+
+  --border-subtle: #1a1a1a;
+  --border-medium: #262626;
+  --border-strong: #333333;
+
+  --text-primary:   #fafafa;
+  --text-secondary: #d4d4d8;
+  --text-muted:     #71717a;
+  --text-faint:     #52525b;
+
+  --accent:       #3b82f6;
+  --accent-hover: #2563eb;
+
+  --scrollbar:    #333333;
+
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Scrollbar ── */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #333 transparent;
+  scrollbar-color: var(--scrollbar) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -29,21 +73,43 @@
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: #333;
+  background: var(--scrollbar);
   border-radius: 3px;
 }
 
+/* ── Base ── */
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(59, 130, 246, 0.2);
 }
+
+/* ── Theme-aware semantic utilities ── */
+
+.bg-mc-base     { background: var(--bg-primary); }
+.bg-mc-card     { background: var(--bg-card); }
+.bg-mc-elevated { background: var(--bg-elevated); }
+.bg-mc-secondary{ background: var(--bg-secondary); }
+.bg-mc-hover    { background: var(--bg-hover); }
+.bg-mc-active   { background: var(--bg-active); }
+.bg-mc-overlay  { background: var(--bg-overlay); }
+
+.text-mc-primary   { color: var(--text-primary); }
+.text-mc-secondary { color: var(--text-secondary); }
+.text-mc-muted     { color: var(--text-muted); }
+.text-mc-faint     { color: var(--text-faint); }
+
+.border-mc-subtle { border-color: var(--border-subtle); }
+.border-mc-medium { border-color: var(--border-medium); }
+.border-mc-strong { border-color: var(--border-strong); }
+
+/* ── Animations ── */
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
@@ -80,4 +146,14 @@ body {
 
 .animate-screen-flicker {
   animation: screenFlicker 2s ease-in-out infinite;
+}
+
+/* ── Theme toggle transition ── */
+html {
+  color-scheme: light;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html.dark {
+  color-scheme: dark;
 }
