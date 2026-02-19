@@ -198,6 +198,21 @@ const bashCrons: CronJob[] = [
     description: "Daily 1 AM CAT — Google Sheets → creator-posts.json → feeds creator-data.json",
     isBash: true,
   },
+  {
+    id: "bash-creator-merge",
+    title: "Creator Data Merge",
+    schedule: "30 23,10 * * *",
+    timezone: "Africa/Windhoek",
+    owner: "sam",
+    enabled: true,
+    status: "ok",
+    lastStatus: "ok",
+    lastRunAt: null,
+    nextRunAt: null,
+    consecutiveErrors: 0,
+    description: "1:30 AM + 12:30 PM CAT — merges Mia's posts + Frankie's Mercury data → creator-data.json",
+    isBash: true,
+  },
 ];
 
 // ─── Daily schedule jobs ──────────────────────────────────────────────────────
@@ -210,13 +225,15 @@ interface ScheduleJob {
   weekDay?: number; // 1=Mon...7=Sun, undefined means daily
 }
 
-// All times in CAT hours (0–23)
+// All times in CAT hours (0–23, fractional supported e.g. 1.5 = 1:30 AM)
 const DAILY_JOBS: ScheduleJob[] = [
-  { agent: "mia",     label: "Creator Posts",      catHour: 1,  daily: true },
-  { agent: "sam",     label: "Nightly Briefing",   catHour: 2,  daily: true },
-  { agent: "dana",    label: "Morning Analytics",  catHour: 8,  daily: true },
-  { agent: "frankie", label: "Mercury Sync",       catHour: 10, daily: true },
-  { agent: "penny",   label: "Daily Check",        catHour: 16, daily: true },
+  { agent: "mia",     label: "Creator Posts",      catHour: 1,    daily: true },
+  { agent: "sam",     label: "Creator Merge",      catHour: 1.5,  daily: true },
+  { agent: "sam",     label: "Nightly Briefing",   catHour: 2,    daily: true },
+  { agent: "dana",    label: "Morning Analytics",  catHour: 8,    daily: true },
+  { agent: "frankie", label: "Mercury Sync",       catHour: 10,   daily: true },
+  { agent: "sam",     label: "Creator Merge",      catHour: 12.5, daily: true },
+  { agent: "penny",   label: "Daily Check",        catHour: 16,   daily: true },
 ];
 
 // Weekly-only jobs
@@ -238,6 +255,19 @@ function getNowCAT(): Date {
 
 function getCATHour(): number {
   return getNowCAT().getUTCHours();
+}
+
+/** Returns current CAT time as a decimal (e.g. 1:30 AM → 1.5) */
+function getCATDecimalHour(): number {
+  const now = getNowCAT();
+  return now.getUTCHours() + now.getUTCMinutes() / 60;
+}
+
+/** Formats a fractional CAT hour (e.g. 1.5 → "1:30", 12.5 → "12:30", 2 → "2:00") */
+function formatCATHour(h: number): string {
+  const hr = Math.floor(h);
+  const mn = Math.round((h - hr) * 60);
+  return mn === 0 ? `${hr}:00` : `${hr}:${mn.toString().padStart(2, "0")}`;
 }
 
 function getCATDayOfWeek(): number {
@@ -289,6 +319,7 @@ export default function AutomationsPage() {
   }, []);
 
   const catHour = getCATHour();
+  const catDecimalHour = getCATDecimalHour();
   const catDayOfWeek = getCATDayOfWeek();
 
   const errorCount = jobs.filter((j) => j.status.toLowerCase().startsWith("error")).length;
@@ -307,7 +338,7 @@ export default function AutomationsPage() {
         {/* ── Section A: Infrastructure ── */}
         <div className="mb-8">
           <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Infrastructure</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3">
             {/* MC Data Sync card */}
             <div className="rounded-xl border border-[#262626] bg-[#141414] p-4 flex gap-3 items-start">
               <div className="text-xl mt-0.5">⚡</div>
@@ -322,20 +353,6 @@ export default function AutomationsPage() {
                 <p className="text-[11px] text-zinc-600">
                   {mcLastRun ? `Last synced ${relativeTime(mcLastRun)}` : "Always on"}
                 </p>
-              </div>
-            </div>
-            {/* Creator Data Merge card */}
-            <div className="rounded-xl border border-[#262626] bg-[#141414] p-4 flex gap-3 items-start">
-              <div className="text-xl mt-0.5">🔀</div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-semibold text-zinc-100">Creator Data Merge</span>
-                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-green-500/10 text-green-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400" />OK
-                  </span>
-                </div>
-                <p className="text-xs text-zinc-500 mb-2">Every 10 min — runs with MC sync</p>
-                <p className="text-[11px] text-zinc-600">Merges creator-posts.json + payouts → creator-data.json</p>
               </div>
             </div>
           </div>
@@ -369,11 +386,11 @@ export default function AutomationsPage() {
                 {/* Job markers */}
                 {DAILY_JOBS.map((job) => {
                   const pct = (job.catHour / 24) * 100;
-                  const ran = catHour >= job.catHour;
+                  const ran = catDecimalHour >= job.catHour;
                   const color = agentColors[job.agent] || "#6b7280";
                   return (
                     <div
-                      key={job.agent}
+                      key={`${job.agent}-${job.catHour}`}
                       className="absolute flex flex-col items-center"
                       style={{ left: `${pct}%`, top: "-6px" }}
                     >
@@ -381,11 +398,11 @@ export default function AutomationsPage() {
                       <div
                         className="w-3.5 h-3.5 rounded-full border-2 border-[#141414] flex-shrink-0"
                         style={{ backgroundColor: ran ? color : "#374151", borderColor: ran ? color : "#374151" }}
-                        title={`${job.label} — ${job.catHour}:00 CAT`}
+                        title={`${job.label} — ${formatCATHour(job.catHour)} CAT`}
                       />
                       {/* Label below */}
                       <div className="mt-3 flex flex-col items-center">
-                        <span className="text-[9px] text-zinc-500 whitespace-nowrap">{job.agent}</span>
+                        <span className="text-[9px] text-zinc-500 whitespace-nowrap">{job.label}</span>
                         <span className="text-[8px] text-zinc-700 whitespace-nowrap">{ran ? "✓" : "⏳"}</span>
                       </div>
                     </div>
@@ -395,13 +412,13 @@ export default function AutomationsPage() {
               {/* Legend */}
               <div className="flex flex-wrap gap-3 mt-1">
                 {DAILY_JOBS.map((job) => {
-                  const ran = catHour >= job.catHour;
+                  const ran = catDecimalHour >= job.catHour;
                   const color = agentColors[job.agent] || "#6b7280";
                   return (
-                    <div key={job.agent} className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+                    <div key={`${job.agent}-${job.catHour}`} className="flex items-center gap-1.5 text-[11px] text-zinc-400">
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
                       <span>{job.label}</span>
-                      <span className="text-zinc-600">{job.catHour}:00</span>
+                      <span className="text-zinc-600">{formatCATHour(job.catHour)}</span>
                       <span className={ran ? "text-green-400" : "text-zinc-600"}>{ran ? "✓" : "⏳"}</span>
                     </div>
                   );

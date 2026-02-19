@@ -36,6 +36,18 @@
     "timestamp": "2026-02-19T15:22:07.474Z"
   },
   {
+    "id": "d50ff74d-16ba-4c2c-bafb-25f72d7df902",
+    "label": "devin-automations-update",
+    "agent": "devin",
+    "task": "**Task: Update /automations page to reflect new cron schedule**",
+    "model": "Sonnet",
+    "tokens": 182195,
+    "cost": 0.221,
+    "durationSec": 94,
+    "status": "success",
+    "timestamp": "2026-02-19T15:33:14.765Z"
+  },
+  {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
     "label": "Penny Daily Check",
     "agent": "penny",
@@ -84,15 +96,15 @@
     "timestamp": "2026-02-19T00:00:00.059Z"
   },
   {
-    "id": "d50ff74d-16ba-4c2c-bafb-25f72d7df902",
-    "label": "devin-automations-update",
+    "id": "d90dcbd9-b707-4ba2-b1ed-06f6eda7e75b",
+    "label": "devin-usage-fix",
     "agent": "devin",
-    "task": "**Task: Update /automations page to reflect new cron schedule**",
+    "task": "**Task: Fix usage page token double-counting**",
     "model": "Sonnet",
-    "tokens": 12633,
-    "cost": 0.0295,
-    "durationSec": 2,
+    "tokens": 26581,
+    "cost": 0.039,
+    "durationSec": 5,
     "status": "success",
-    "timestamp": "2026-02-19T15:33:14.765Z"
+    "timestamp": "2026-02-19T15:34:56.870Z"
   }
 ]

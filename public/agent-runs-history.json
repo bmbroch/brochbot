@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 27815260,
-    "cost": 34.2469,
+    "tokens": 28535983,
+    "cost": 35.0173,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -478,5 +478,29 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T15:33:18Z"
+  },
+  {
+    "id": "d90dcbd9-b707-4ba2-b1ed-06f6eda7e75b",
+    "label": "devin-usage-fix",
+    "agent": "devin",
+    "task": "**Task: Fix usage page token double-counting**",
+    "model": "Sonnet",
+    "tokens": 26581,
+    "cost": 0.039,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-02-19T15:34:56.870Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T15:35:02Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 720723,
+    "cost": 0.7705,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T15:35:02Z"
   }
 ]

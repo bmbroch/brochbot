@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-19T15:33:18Z",
+  "lastUpdated": "2026-02-19T15:35:02Z",
   "activities": [
+    {
+      "id": "s-d90dcbd9",
+      "agent": "devin",
+      "title": "devin-usage-fix",
+      "description": "**Task: Fix usage page token double-counting**",
+      "status": "success",
+      "date": "2026-02-19T15:34:56.870Z",
+      "tokens": 26581,
+      "cost": 0.039,
+      "model": "Sonnet",
+      "durationSec": 5
+    },
     {
       "id": "s-d50ff74d",
       "agent": "devin",
@@ -8,10 +20,10 @@
       "description": "**Task: Update /automations page to reflect new cron schedule**",
       "status": "success",
       "date": "2026-02-19T15:33:14.765Z",
-      "tokens": 12633,
-      "cost": 0.0295,
+      "tokens": 182195,
+      "cost": 0.221,
       "model": "Sonnet",
-      "durationSec": 2
+      "durationSec": 94
     },
     {
       "id": "s-eaff488e",
@@ -416,7 +428,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T15:33:14.765Z",
+      "lastActive": "2026-02-19T15:34:56.870Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -444,7 +456,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T15:33:18Z",
+      "lastActive": "2026-02-19T15:35:01Z",
       "statusText": ""
     }
   }
