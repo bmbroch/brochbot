@@ -1,15 +1,78 @@
 "use client";
 
 import Shell from "@/components/Shell";
-import { useActivities, activityTypeConfig, productConfig, statusConfig, agentEmojis, agentColors } from "@/lib/data-provider";
+import { activityTypeConfig, productConfig, statusConfig, agentEmojis, agentColors, mockActivities, Activity } from "@/lib/data-provider";
 import { formatRelativeDate, getDateGroup } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// Extended activity type with metadata fields from mc-data.json
+interface EnrichedActivity extends Activity {
+  tokens?: number;
+  cost?: number;
+  model?: string;
+  durationSec?: number;
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function fmtTokensCompact(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${Math.round(n / 1_000)}K`;
+  return n.toString();
+}
+
+function fmtCostActivity(n: number): string {
+  return `$${n.toFixed(2)}`;
+}
 
 export default function Home() {
-  const activities = useActivities();
+  const [activities, setActivities] = useState<EnrichedActivity[]>(mockActivities);
   const [filterAgent, setFilterAgent] = useState<string>("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterProduct, setFilterProduct] = useState<string>("all");
+
+  // Fetch enriched activities from mc-data.json (has cost/tokens/model/durationSec)
+  useEffect(() => {
+    fetch("/mc-data.json")
+      .then((r) => r.json())
+      .then((data) => {
+        const rawActs: Array<{
+          id: string;
+          agent: string;
+          title: string;
+          description?: string;
+          status: string;
+          date?: string;
+          type?: string;
+          product?: string;
+          tokens?: number;
+          cost?: number;
+          model?: string;
+          durationSec?: number;
+        }> = data.activities || [];
+        // Map to EnrichedActivity, newest first
+        const mapped: EnrichedActivity[] = rawActs
+          .map((a) => ({
+            _id: a.id,
+            agent: a.agent,
+            type: (a.type as Activity["type"]) || "task",
+            title: a.title,
+            description: a.description,
+            product: a.product as Activity["product"] | undefined,
+            status: (a.status as Activity["status"]) || "success",
+            createdAt: a.date ? new Date(a.date).getTime() : Date.now(),
+            tokens: a.tokens,
+            cost: a.cost,
+            model: a.model,
+            durationSec: a.durationSec,
+          }))
+          .reverse();
+        if (mapped.length > 0) setActivities(mapped);
+      })
+      .catch(() => {
+        // stay on mockActivities fallback
+      });
+  }, []);
 
   const filtered = activities.filter((a) => {
     if (filterAgent !== "all" && a.agent !== filterAgent) return false;
@@ -26,7 +89,7 @@ export default function Home() {
     groups[key].push(a);
   });
 
-  const agents = ["all", "sam", "cara", "dana", "miles", "penny", "mia"];
+  const agents = ["all", "sam", "cara", "dana", "miles", "penny", "mia", "devin", "frankie"];
   const types = ["all", ...Object.keys(activityTypeConfig)];
   const products = ["all", "CLCP", "ISK", "SE"];
 
@@ -56,9 +119,17 @@ export default function Home() {
               </div>
               <div className="space-y-2">
                 {items.map((activity, i) => {
-                  const typeConf = activityTypeConfig[activity.type];
-                  const statConf = statusConfig[activity.status];
+                  const typeConf = activityTypeConfig[activity.type] ?? activityTypeConfig["task"];
+                  const statConf = statusConfig[activity.status] ?? statusConfig["success"];
                   const color = agentColors[activity.agent] || "#3b82f6";
+
+                  // Metadata parts for the compact info row
+                  const metaParts: string[] = [];
+                  if (activity.cost != null && activity.cost > 0) metaParts.push(fmtCostActivity(activity.cost));
+                  if (activity.tokens != null && activity.tokens > 0) metaParts.push(`${fmtTokensCompact(activity.tokens)} tokens`);
+                  if (activity.model) metaParts.push(activity.model);
+                  if (activity.durationSec != null && activity.durationSec > 0) metaParts.push(`${activity.durationSec}s`);
+
                   return (
                     <div
                       key={activity._id}
@@ -80,7 +151,7 @@ export default function Home() {
                             <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${typeConf.bg} ${typeConf.color}`}>
                               {typeConf.icon} {typeConf.label}
                             </span>
-                            {activity.product && (
+                            {activity.product && productConfig[activity.product] && (
                               <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${productConfig[activity.product].bg} ${productConfig[activity.product].color}`}>
                                 {activity.product}
                               </span>
@@ -97,7 +168,14 @@ export default function Home() {
                         {activity.description && (
                           <p className="text-sm text-zinc-500 mt-1 leading-relaxed">{activity.description}</p>
                         )}
-                        <div className="mt-1.5 text-[11px] text-zinc-600 capitalize">{activity.agent}</div>
+                        {/* Metadata row: cost · tokens · model · duration */}
+                        {metaParts.length > 0 ? (
+                          <p className="mt-1 text-[11px] text-zinc-500">
+                            {metaParts.join(" · ")}
+                          </p>
+                        ) : (
+                          <div className="mt-1 text-[11px] text-zinc-600 capitalize">{activity.agent}</div>
+                        )}
                       </div>
                     </div>
                   );
