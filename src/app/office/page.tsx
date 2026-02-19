@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Shell from "@/components/Shell";
 import AgentDrawer from "@/components/AgentDrawer";
+import AgentSidePanel from "@/components/AgentSidePanel";
 import {
   teamMembers,
   useActivities,
@@ -139,70 +140,6 @@ function Desk({
         </div>
         <span className="text-[11px] text-white/80 mt-1 font-medium">{member.name}</span>
       </div>
-    </div>
-  );
-}
-
-function Tooltip({
-  member,
-  activities,
-  onClose,
-}: {
-  member: TeamMember;
-  activities: Activity[];
-  onClose: () => void;
-}) {
-  const color = agentColors[member.id] || "#666";
-  const pos = deskLayout[member.id];
-
-  return (
-    <div
-      className="absolute z-30 w-56 rounded-lg border border-white/10 bg-[#1e1e1e] shadow-xl p-3"
-      style={{
-        left: Math.min(Math.max(pos.x, 130), 770),
-        top: pos.y + 160,
-        transform: "translateX(-50%)",
-      }}
-    >
-      <button
-        onClick={onClose}
-        className="absolute top-2 right-2 text-white/30 hover:text-white/60 text-xs"
-      >
-        ✕
-      </button>
-      <div className="flex items-center gap-2 mb-2">
-        <div
-          className="w-8 h-8 rounded-full overflow-hidden border-2"
-          style={{ borderColor: color }}
-        >
-          <Image
-            src={member.avatar || ""}
-            alt={member.name}
-            width={32}
-            height={32}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div>
-          <p className="text-xs font-semibold text-white">{member.name}</p>
-          <p className="text-[10px] text-white/40">{member.role}</p>
-        </div>
-      </div>
-      <p className="text-[10px] text-white/25 uppercase tracking-wider mb-1">
-        Latest activity
-      </p>
-      {activities.length === 0 ? (
-        <p className="text-[10px] text-white/30">Idle</p>
-      ) : (
-        <div className="space-y-1.5">
-          {activities.slice(0, 3).map((a) => (
-            <div key={a._id} className="text-[10px]">
-              <p className="text-white/60 leading-snug">{a.title}</p>
-              <p className="text-white/25">{timeAgo(a.createdAt)}</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
@@ -401,17 +338,20 @@ function OfficeCanvas({
                 );
               })}
 
-              {/* Desktop tooltip */}
-              {!isMobile && selectedMember && (
-                <Tooltip
-                  member={selectedMember}
-                  activities={getAgentActivities(selectedMember.id)}
-                  onClose={() => setSelected(null)}
-                />
-              )}
+              {/* Desktop side panel rendered outside scaled container */}
           </div>
         </div>
       </div>
+
+      {/* Desktop: Side Panel */}
+      {!isMobile && selectedMember && (
+        <AgentSidePanel
+          member={selectedMember}
+          activities={activities}
+          isOpen={true}
+          onClose={() => setSelected(null)}
+        />
+      )}
 
       {/* Mobile bottom drawer */}
       {isMobile && selectedMember && (

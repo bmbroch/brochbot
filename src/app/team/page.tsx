@@ -2,6 +2,7 @@
 
 import Shell from "@/components/Shell";
 import AgentDrawer from "@/components/AgentDrawer";
+import AgentSidePanel from "@/components/AgentSidePanel";
 import { useState, useEffect } from "react";
 import { useActivities, agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
@@ -150,32 +151,15 @@ export default function TeamPage() {
           })}
         </div>
 
-        {/* Desktop: Accordion Panel */}
-        <div
-          className="hidden lg:grid transition-[grid-template-rows] duration-300 ease-in-out max-w-6xl mx-auto"
-          style={{ gridTemplateRows: selectedMember ? "1fr" : "0fr" }}
-        >
-          <div className="overflow-hidden">
-            <div className="mt-6 rounded-xl border border-[#262626] bg-[#0e0e0e]">
-              {selectedMember && (
-                <>
-                  <div className="px-6 pt-4 pb-2 border-b border-[#1e1e1e] flex items-center gap-2">
-                    {selectedMember.avatar ? (
-                      <Image src={selectedMember.avatar} alt={selectedMember.name} width={24} height={24} className="w-6 h-6 rounded-full object-cover" />
-                    ) : (
-                      <span className="text-base">{selectedMember.emoji}</span>
-                    )}
-                    <span className="text-sm font-semibold">{selectedMember.name}</span>
-                    <span className="text-xs text-zinc-500">— {selectedMember.role}</span>
-                  </div>
-                  <div className="max-h-[60vh] overflow-y-auto px-6 py-5">
-                    <MemberDetail member={selectedMember} activities={activities} />
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+        {/* Desktop: Side Panel */}
+        {!isMobile && selectedMember && (
+          <AgentSidePanel
+            member={selectedMember}
+            activities={activities}
+            isOpen={true}
+            onClose={() => setSelectedId(null)}
+          />
+        )}
 
         {/* Mobile: Bottom Sheet */}
         {isMobile && selectedMember && (
