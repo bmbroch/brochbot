@@ -60,6 +60,18 @@
     "timestamp": "2026-02-19T15:22:07.474Z"
   },
   {
+    "id": "15fb41fa-ff00-48e5-8750-8bcfc51eeabc",
+    "label": "devin-automations-dynamic",
+    "agent": "devin",
+    "task": "**Task: Wire Automations page to read bashCrons from mc-data.json (remove hardcoded array)**",
+    "model": "Sonnet",
+    "tokens": 194597,
+    "cost": 0.1642,
+    "durationSec": 62,
+    "status": "success",
+    "timestamp": "2026-02-19T15:37:06.841Z"
+  },
+  {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
     "label": "Penny Daily Check",
     "agent": "penny",
@@ -106,17 +118,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "15fb41fa-ff00-48e5-8750-8bcfc51eeabc",
-    "label": "devin-automations-dynamic",
-    "agent": "devin",
-    "task": "**Task: Wire Automations page to read bashCrons from mc-data.json (remove hardcoded array)**",
-    "model": "Sonnet",
-    "tokens": 26483,
-    "cost": 0.0391,
-    "durationSec": 5,
-    "status": "success",
-    "timestamp": "2026-02-19T15:37:06.841Z"
   }
 ]

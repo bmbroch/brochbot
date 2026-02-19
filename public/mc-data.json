@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T15:37:27Z",
+  "lastUpdated": "2026-02-19T15:39:08Z",
   "activities": [
     {
       "id": "s-15fb41fa",
@@ -8,10 +8,10 @@
       "description": "**Task: Wire Automations page to read bashCrons from mc-data.json (remove hardcoded array)**",
       "status": "success",
       "date": "2026-02-19T15:37:06.841Z",
-      "tokens": 26483,
-      "cost": 0.0391,
+      "tokens": 194597,
+      "cost": 0.1642,
       "model": "Sonnet",
-      "durationSec": 5
+      "durationSec": 62
     },
     {
       "id": "s-d90dcbd9",
@@ -301,7 +301,8 @@
       "lastStatus": "ok",
       "lastRunAt": "2026-02-19T11:52:45Z",
       "nextRunAt": "2026-02-20T00:00:00Z",
-      "consecutiveErrors": 0
+      "consecutiveErrors": 0,
+      "description": "2 AM CAT daily \u2014 reads ops log + run history, sends daily summary to Ben via Telegram"
     },
     {
       "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
@@ -314,7 +315,8 @@
       "lastStatus": "ok",
       "lastRunAt": "2026-02-19T06:00:00Z",
       "nextRunAt": "2026-02-20T06:00:00Z",
-      "consecutiveErrors": 0
+      "consecutiveErrors": 0,
+      "description": "8 AM CAT daily \u2014 Dana pulls Supabase + Datafast metrics across all 3 products"
     },
     {
       "id": "0a4cf0db-5f2d-4c05-ab5e-6367d958ac58",
@@ -327,7 +329,8 @@
       "lastStatus": "idle",
       "lastRunAt": null,
       "nextRunAt": "2026-02-20T07:00:00Z",
-      "consecutiveErrors": 0
+      "consecutiveErrors": 0,
+      "description": "Friday 9 AM CAT \u2014 delegation audit, MEMORY.md curation, bash-crons.json drift check"
     },
     {
       "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
@@ -340,7 +343,8 @@
       "lastStatus": "ok",
       "lastRunAt": "2026-02-19T14:00:00Z",
       "nextRunAt": "2026-02-20T14:00:00Z",
-      "consecutiveErrors": 0
+      "consecutiveErrors": 0,
+      "description": "4 PM CAT daily \u2014 audits Sam's delegation, checks idle agents, reviews cron status"
     },
     {
       "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
@@ -353,7 +357,8 @@
       "lastStatus": "idle",
       "lastRunAt": null,
       "nextRunAt": "2026-02-23T04:00:00Z",
-      "consecutiveErrors": 0
+      "consecutiveErrors": 0,
+      "description": "Monday 6 AM CAT \u2014 Miles pulls GSC keyword data for ISK, reports ranking changes"
     }
   ],
   "decisions": [
@@ -468,7 +473,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T15:37:26Z",
+      "lastActive": "2026-02-19T15:39:08Z",
       "statusText": ""
     }
   },
