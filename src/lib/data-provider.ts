@@ -7,7 +7,7 @@ export const useMockData = true;
 export type TaskStatus = "todo" | "in_progress" | "done";
 export type Priority = "low" | "medium" | "high";
 export type Product = "CLCP" | "ISK" | "SE";
-export type Assignee = "ben" | "sam" | "cara" | "dana" | "miles" | "penny" | "mia";
+export type Assignee = "ben" | "sam" | "dev" | "cara" | "dana" | "miles" | "penny" | "mia";
 export type ActivityType = "data_query" | "customer_lookup" | "report" | "cron_job" | "config_change" | "memory_update" | "task_completed" | "system_config";
 export type ActivityStatus = "success" | "error" | "running";
 
@@ -72,6 +72,7 @@ export interface TeamMember {
 export const teamMembers: TeamMember[] = [
   { id: "ben", name: "Ben", emoji: "👨‍💻", avatar: "/avatars/ben.jpg", role: "Founder", description: "Founder & CEO. Sets the vision, reviews work, and keeps everything on track.", dataSources: ["All"], isAgent: false },
   { id: "sam", name: "Sam", emoji: "🤝", avatar: "/avatars/sam.png", role: "Chief of Staff", description: "Coordinates all agents, manages workflows, and handles complex multi-step operations.", dataSources: ["Stripe", "Supabase", "Datafast", "GSC"], recurringTasks: ["Nightly MC Sync (2 AM CAT daily)"], isAgent: true },
+  { id: "dev", name: "Dev", emoji: "🛠️", avatar: "/avatars/dev.png", role: "Web Developer", description: "Owns the Mission Control codebase. Handles all frontend changes, bug fixes, and deployments.", dataSources: ["GitHub", "Vercel"], isAgent: true, recurringTasks: [] },
   { id: "cara", name: "Cara", emoji: "🎧", avatar: "/avatars/cara.png", role: "Customer Support", description: "Handles customer inquiries, subscription issues, and refund requests via Stripe.", dataSources: ["Stripe"], isAgent: true },
   { id: "dana", name: "Dana", emoji: "📊", avatar: "/avatars/dana.png", role: "Data Analyst", description: "Runs analytics queries, generates reports, and monitors KPIs across all products.", dataSources: ["Supabase", "Datafast"], recurringTasks: ["Morning Analytics Report (8 AM CAT daily)"], isAgent: true },
   { id: "miles", name: "Miles", emoji: "🚀", avatar: "/avatars/miles.png", role: "GTM Lead", description: "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.", dataSources: ["Datafast", "GSC", "SEO Tools"], recurringTasks: ["Weekly GSC Report (Monday 8 AM CAT)"], isAgent: true },
@@ -82,6 +83,7 @@ export const teamMembers: TeamMember[] = [
 export const agentColors: Record<string, string> = {
   ben: "#f59e0b",
   sam: "#3b82f6",
+  dev: "#f59e0b",
   cara: "#a855f7",
   dana: "#22c55e",
   miles: "#f97316",
@@ -92,6 +94,7 @@ export const agentColors: Record<string, string> = {
 export const agentEmojis: Record<string, string> = {
   ben: "👨‍💻",
   sam: "🤝",
+  dev: "🛠️",
   cara: "🎧",
   dana: "📊",
   miles: "🚀",

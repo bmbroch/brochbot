@@ -25,18 +25,19 @@ function timeAgo(ts: number): string {
 
 /* ── desk layout config ──────────────────────────────────────────────────── */
 
-// Positions are pixel offsets inside a 900×600 container
+// Positions are pixel offsets inside a 950×600 container
 const deskLayout: Record<
   string,
   { x: number; y: number; facing: "down" | "left" | "right" | "up" }
 > = {
-  ben:   { x: 150, y: 50,  facing: "down" },
-  sam:   { x: 450, y: 50,  facing: "down" },
-  cara:  { x: 750, y: 50,  facing: "down" },
-  dana:  { x: 100, y: 380, facing: "down" },
-  miles: { x: 300, y: 380, facing: "down" },
-  penny: { x: 600, y: 380, facing: "down" },
-  mia:   { x: 800, y: 380, facing: "down" },
+  ben:   { x: 130, y: 50,  facing: "down" },
+  sam:   { x: 370, y: 50,  facing: "down" },
+  dev:   { x: 610, y: 50,  facing: "down" },
+  cara:  { x: 850, y: 50,  facing: "down" },
+  dana:  { x: 130, y: 380, facing: "down" },
+  miles: { x: 370, y: 380, facing: "down" },
+  penny: { x: 610, y: 380, facing: "down" },
+  mia:   { x: 850, y: 380, facing: "down" },
 };
 
 /* ── components ──────────────────────────────────────────────────────────── */
@@ -234,7 +235,7 @@ export default function OfficePage() {
           <div
             className="relative"
             style={{
-              width: 900,
+              width: 950,
               height: 600,
               backgroundImage: `
                 repeating-conic-gradient(#1a1a1a 0% 25%, #151515 0% 50%)
