@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T15:35:02Z",
+  "lastUpdated": "2026-02-19T15:36:38Z",
   "activities": [
     {
       "id": "s-d90dcbd9",
@@ -8,10 +8,10 @@
       "description": "**Task: Fix usage page token double-counting**",
       "status": "success",
       "date": "2026-02-19T15:34:56.870Z",
-      "tokens": 26581,
-      "cost": 0.039,
+      "tokens": 264901,
+      "cost": 0.2184,
       "model": "Sonnet",
-      "durationSec": 5
+      "durationSec": 86
     },
     {
       "id": "s-d50ff74d",
@@ -20,10 +20,10 @@
       "description": "**Task: Update /automations page to reflect new cron schedule**",
       "status": "success",
       "date": "2026-02-19T15:33:14.765Z",
-      "tokens": 182195,
-      "cost": 0.221,
+      "tokens": 332174,
+      "cost": 0.3159,
       "model": "Sonnet",
-      "durationSec": 94
+      "durationSec": 156
     },
     {
       "id": "s-eaff488e",
@@ -456,8 +456,50 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T15:35:01Z",
+      "lastActive": "2026-02-19T15:36:37Z",
       "statusText": ""
     }
-  }
+  },
+  "bashCrons": [
+    {
+      "id": "bash-mc-sync",
+      "title": "MC Data Sync",
+      "schedule": "*/10 * * * *",
+      "timezone": "",
+      "owner": "sam",
+      "description": "Every 10 min \u2014 session JSONLs \u2192 mc-data.json + agent history \u2192 Supabase + GitHub (skips if no changes)",
+      "script": "scripts/mc-sync.sh",
+      "log": "ops/mc-sync.log"
+    },
+    {
+      "id": "bash-frankie-sync",
+      "title": "Mercury Creator Sync",
+      "schedule": "0 10 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "frankie",
+      "description": "Daily noon CAT \u2014 Mercury API \u2192 creator-payouts.json",
+      "script": "scripts/frankie-creator-sync.sh",
+      "log": "ops/frankie-creator-sync.log"
+    },
+    {
+      "id": "bash-mia-sync",
+      "title": "Creator Posts Sync",
+      "schedule": "0 23 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "mia",
+      "description": "Daily 1 AM CAT \u2014 Google Sheets \u2192 creator-posts.json",
+      "script": "scripts/mia-creator-sync.sh",
+      "log": "ops/mia-creator-sync.log"
+    },
+    {
+      "id": "bash-creator-merge",
+      "title": "Creator Data Merge",
+      "schedule": "30 10,23 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "description": "12:30 PM + 1:30 AM CAT \u2014 merges creator-payouts.json + creator-posts.json \u2192 creator-data.json",
+      "script": "scripts/creator-data-merge.sh",
+      "log": "ops/creator-data-merge.log"
+    }
+  ]
 }
