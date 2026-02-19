@@ -1,443 +1,77 @@
 {
-  "lastUpdated": "2026-02-19T11:50:29Z",
+  "lastUpdated": "2026-02-19T11:59:08Z",
   "activities": [
     {
-      "id": "a1",
-      "agent": "sam",
-      "title": "Nightly MC Sync",
-      "description": "Tracker was stale, updated. No code push needed.",
+      "id": "s-73688079",
+      "agent": "devin",
+      "title": "Nightly Mission Control Sync",
+      "description": "[cron:53f845d7-0a52-422a-93c2-4e9c1cca1279 Nightly Briefing] You're Sam \ud83e\udd1d, Chief of Staff. Generate a concise nightly briefing for Ben.",
       "status": "success",
-      "product": "internal",
-      "createdAt": 1771459200000,
-      "type": "cron"
+      "date": "2026-02-19T11:52:45.805Z",
+      "tokens": 31663,
+      "cost": 0.0865,
+      "model": "Opus",
+      "durationSec": 17
     },
     {
-      "id": "a2",
-      "agent": "sam",
-      "title": "Team page accordion fix + mobile responsiveness",
-      "description": "Fixed accordion and full mobile responsiveness pass. \u26a0\ufe0f Sam wrote code directly instead of delegating to Dev (Dev existed at this point).",
+      "id": "s-d7696770",
+      "agent": "devin",
+      "title": "devin-calendar-memory",
+      "description": "[Thu 2026-02-19 11:50 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
       "status": "success",
-      "product": "internal",
-      "createdAt": 1771459200000,
-      "type": "task"
+      "date": "2026-02-19T11:50:56.152Z",
+      "tokens": 1901180,
+      "cost": 1.2398,
+      "model": "Sonnet",
+      "durationSec": 486
     },
     {
-      "id": "a3",
+      "id": "s-8743c669",
+      "agent": "devin",
+      "title": "devin-usage-redesign",
+      "description": "[Thu 2026-02-19 11:36 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+      "status": "success",
+      "date": "2026-02-19T11:36:12.610Z",
+      "tokens": 442539,
+      "cost": 0.5566,
+      "model": "Sonnet",
+      "durationSec": 270
+    },
+    {
+      "id": "s-446bac23",
+      "agent": "devin",
+      "title": "devin-usage-fix",
+      "description": "[Thu 2026-02-19 11:08 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+      "status": "success",
+      "date": "2026-02-19T11:08:49.788Z",
+      "tokens": 431572,
+      "cost": 0.321,
+      "model": "Sonnet",
+      "durationSec": 152
+    },
+    {
+      "id": "s-531ad18a",
       "agent": "dana",
       "title": "Morning Analytics Report",
-      "description": "Traffic down ~19% across all products vs last Wed. ISK -30%. CLCP revenue nearly tripled ($263 vs $95).",
+      "description": "[cron:f436e186-ac23-4562-a32c-55e4ec7155b7 Morning Analytics Report] Read /home/ubuntu/.openclaw/workspace/agents/dana/AGENT.md for API instructions. Then generate a morning analytics report:",
       "status": "success",
-      "product": "all",
-      "createdAt": 1771480800000,
-      "type": "cron"
+      "date": "2026-02-19T06:00:00.149Z",
+      "tokens": 37595,
+      "cost": 0.1822,
+      "model": "Opus",
+      "durationSec": 24
     },
     {
-      "id": "a4",
-      "agent": "miles",
-      "title": "Enable GSC API check",
-      "description": "Confirmed GSC API is working and accessible.",
-      "status": "success",
-      "product": "ISK",
-      "createdAt": 1771482000000,
-      "type": "task"
-    },
-    {
-      "id": "a5",
-      "agent": "miles",
-      "title": "ISK keyword snapshot from GSC",
-      "description": "Pulled top 50 queries by clicks/impressions, tracked 9 target keywords, analyzed positioning gaps.",
-      "status": "success",
-      "product": "ISK",
-      "createdAt": 1771482300000,
-      "type": "task"
-    },
-    {
-      "id": "a6",
-      "agent": "miles",
-      "title": "ISK keyword trends (6-month)",
-      "description": "Generated 6-month trend report for ISK keyword positioning. Saved: memory/gsc-isk-trends-2026-02-19.md",
-      "status": "success",
-      "product": "ISK",
-      "createdAt": 1771482600000,
-      "type": "task"
-    },
-    {
-      "id": "a7",
-      "agent": "miles",
-      "title": "ISK month-over-month comparison",
-      "description": "Compared ISK keyword performance month over month. Saved: memory/gsc-isk-mom-2026-02-19.md",
-      "status": "success",
-      "product": "ISK",
-      "createdAt": 1771482900000,
-      "type": "task"
-    },
-    {
-      "id": "a8",
-      "agent": "miles",
-      "title": "ISK weekly report (new format)",
-      "description": "Weekly report with date-range column headers per Ben's preference. Saved: memory/gsc-isk-weekly-2026-02-19.md",
-      "status": "success",
-      "product": "ISK",
-      "createdAt": 1771483500000,
-      "type": "task"
-    },
-    {
-      "id": "a9",
-      "agent": "sam",
-      "title": "Create agent knowledge briefs",
-      "description": "Created agents/*.md briefs for all agents so sub-agents load context from files instead of Sam re-explaining everything.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771484400000,
-      "type": "task"
-    },
-    {
-      "id": "a10",
-      "agent": "sam",
-      "title": "Create Dev agent (Devin \ud83d\udee0\ufe0f)",
-      "description": "New Web Developer agent to own the MC codebase. Sam should no longer write code directly.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771486200000,
-      "type": "task"
-    },
-    {
-      "id": "a11",
-      "agent": "sam",
-      "title": "Set up delegation audit cron",
-      "description": "Daily 6 PM CAT cron to review Sam's delegation compliance.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771487100000,
-      "type": "task"
-    },
-    {
-      "id": "a12",
+      "id": "s-dc7287f0",
       "agent": "devin",
-      "title": "Team page DiceBear avatars + recurring tasks section",
-      "description": "Swapped emoji for DiceBear avatars, added recurring tasks section to team page.",
+      "title": "Nightly Mission Control Sync",
+      "description": "[cron:53f845d7-0a52-422a-93c2-4e9c1cca1279 Nightly Mission Control Sync] Read /home/ubuntu/.openclaw/workspace/memory/mission-control-sync.md to check for pending Mission Control updates. If there are",
       "status": "success",
-      "product": "internal",
-      "createdAt": 1771487400000,
-      "type": "task"
-    },
-    {
-      "id": "a13",
-      "agent": "sam",
-      "title": "Fix PostCSS breakage",
-      "description": "Sub-agent changed postcss.config.js during avatar work, Sam reverted it.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771487400000,
-      "type": "task"
-    },
-    {
-      "id": "a14",
-      "agent": "devin",
-      "title": "Office page v1",
-      "description": "Built top-down virtual office with desks and furniture.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771487700000,
-      "type": "task"
-    },
-    {
-      "id": "a15",
-      "agent": "devin",
-      "title": "Fix office meeting table overlap",
-      "description": "Repositioned desks and furniture to fix overlap issues.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771487880000,
-      "type": "task"
-    },
-    {
-      "id": "a16",
-      "agent": "devin",
-      "title": "Add Dev agent to team + office pages",
-      "description": "New agent fully onboarded into team and office views.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771488300000,
-      "type": "task"
-    },
-    {
-      "id": "a17",
-      "agent": "penny",
-      "title": "Ops infrastructure overhaul",
-      "description": "Created ops/ directory, SOP, cron registry, daily log template, agent-activity index.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771488480000,
-      "type": "task"
-    },
-    {
-      "id": "a18",
-      "agent": "devin",
-      "title": "Office mobile responsive fix",
-      "description": "Scales office scene on mobile instead of list fallback.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771488900000,
-      "type": "task"
-    },
-    {
-      "id": "a19",
-      "agent": "sam",
-      "title": "Penny cron setup (daily + weekly)",
-      "description": "Daily 4 PM CAT and Weekly Friday 9 AM CAT cron jobs for Penny's delegation audit.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489140000,
-      "type": "task"
-    },
-    {
-      "id": "a20",
-      "agent": "devin",
-      "title": "Office mobile drawer",
-      "description": "Bottom sheet for agent activity on mobile.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489200000,
-      "type": "task"
-    },
-    {
-      "id": "a21",
-      "agent": "devin",
-      "title": "Extract shared AgentDrawer component",
-      "description": "Shared drawer/panel component used between team and office pages.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489320000,
-      "type": "task"
-    },
-    {
-      "id": "a22",
-      "agent": "sam",
-      "title": "Rename Dev \u2192 Devin",
-      "description": "Updated all files, MEMORY.md, and data-provider to use Devin name throughout.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489320000,
-      "type": "task"
-    },
-    {
-      "id": "a23",
-      "agent": "devin",
-      "title": "Build Ops Surveillance page",
-      "description": "/ops page with delegation score, violations ticker, agent status.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489500000,
-      "type": "task"
-    },
-    {
-      "id": "a24",
-      "agent": "sam",
-      "title": "Update Mia avatar",
-      "description": "Generated new avatar for Mia, copied to public directory, pushed to repo.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489740000,
-      "type": "task"
-    },
-    {
-      "id": "a25",
-      "agent": "devin",
-      "title": "Rename Ops \u2192 Surveillance",
-      "description": "Updated nav and page title from Ops to Surveillance.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489800000,
-      "type": "task"
-    },
-    {
-      "id": "a26",
-      "agent": "sam",
-      "title": "Ops infrastructure build (orchestration)",
-      "description": "Orchestrated: Penny brief creation, ops/ directory, SOP, HEARTBEAT config. Delegated to Penny sub-agent. Completed.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489800000,
-      "type": "task"
-    },
-    {
-      "id": "a27",
-      "agent": "sam",
-      "title": "Stripe + Supabase + Datafast integration setup",
-      "description": "Connected all 3 products to Stripe, Supabase, and Datafast APIs on Feb 18. Pulled initial data snapshots.",
-      "status": "success",
-      "product": "all",
-      "createdAt": 1771387200000,
-      "type": "task"
-    },
-    {
-      "id": "a28",
-      "agent": "mia",
-      "title": "UGC creator audit",
-      "description": "Verified 7 creators, 134 posts, 4.19M combined views. Found data issues: summary tab undercounts, Jake/Bobby UTMs swapped, inconsistent date formats.",
-      "status": "success",
-      "product": "SE",
-      "createdAt": 1771416000000,
-      "type": "task"
-    },
-    {
-      "id": "a29",
-      "agent": "sam",
-      "title": "Google Service Account setup",
-      "description": "Set up brochbot service account, enabled Sheets API, stored credentials at .credentials/google-service-account.json.",
-      "status": "success",
-      "product": "all",
-      "createdAt": 1771405200000,
-      "type": "task"
-    },
-    {
-      "id": "a30",
-      "agent": "sam",
-      "title": "Mission Control dashboard initial build",
-      "description": "NextJS app with Activity Feed, Calendar, Global Search, Team page. Deployed on Vercel. GitHub PAT set up.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771398000000,
-      "type": "task"
-    },
-    {
-      "id": "a31",
-      "agent": "sam",
-      "title": "Brave Search API setup",
-      "description": "Connected Brave Search API, stored key in env vars. Available for all agents.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771408800000,
-      "type": "task"
-    },
-    {
-      "id": "a32",
-      "agent": "sam",
-      "title": "Initial cron jobs setup (Feb 18)",
-      "description": "Set up Morning Analytics Report (8 AM CAT, Dana) and Nightly MC Sync (2 AM CAT, Sam) on first day.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771426800000,
-      "type": "task"
-    },
-    {
-      "id": "a33",
-      "agent": "sam",
-      "title": "MC dashboard v2 \u2014 page builds (Feb 18)",
-      "description": "Upgraded to recharts (interactive hover), built Tasks Board, Creators page, Memory page. Team page went through 3 design iterations before landing on clean accordion layout.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771420200000,
-      "type": "task"
-    },
-    {
-      "id": "a34",
-      "agent": "devin",
-      "title": "AgentSidePanel component",
-      "description": "Built AgentSidePanel as a companion to AgentDrawer, used for desktop sidebar agent detail view.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489380000,
-      "type": "task"
-    },
-    {
-      "id": "a35",
-      "agent": "penny",
-      "title": "First delegation audit report",
-      "description": "Full audit: 7 Sam violations documented, agent status assessed, process gaps identified, improvement priorities ranked. Saved: ops/penny-audit-2026-02-19.md",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771488960000,
-      "type": "task"
-    },
-    {
-      "id": "a36",
-      "agent": "sam",
-      "title": "agentOrder fix \u2014 add Devin to team page",
-      "description": "Added Devin to agentOrder array in team page. \u26a0\ufe0f Sam edited code directly instead of delegating to Devin. One-line fix but still a violation.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771489680000,
-      "type": "task"
-    },
-    {
-      "id": "a37",
-      "agent": "sam",
-      "title": "Model config changes \u2014 Sonnet fallback",
-      "description": "Configured Claude Sonnet as the model for sub-agents and background tasks. Opus remains the default for main sessions. Auto-fallback from Opus to Sonnet when context is high.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771490100000,
-      "type": "task"
-    },
-    {
-      "id": "a38",
-      "agent": "sam",
-      "title": "mc-data.json creation + data wiring to MC",
-      "description": "Created ops/mc-data.json as the canonical data source for Mission Control. Wired MC dashboard to consume JSON for activity feed, calendar, tasks, and decisions.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771490400000,
-      "type": "task"
-    },
-    {
-      "id": "a39",
-      "agent": "penny",
-      "title": "Full mc-data.json reconciliation",
-      "description": "Comprehensive sweep of all work Feb 18\u201319. Added 9 missing activities, 4 missing tasks, 3 missing decisions. Fixed a26 in-progress \u2192 success. Updated lastUpdated.",
-      "status": "success",
-      "product": "internal",
-      "createdAt": 1771491360000,
-      "type": "task"
-    },
-    {
-      "id": "a40",
-      "agent": "miles",
-      "title": "ISK keyword snapshot",
-      "description": "Report: memory/gsc-isk-snapshot-2026-02-19.md",
-      "status": "completed",
-      "date": "2026-02-19T06:25:00Z"
-    },
-    {
-      "id": "a41",
-      "agent": "sam",
-      "title": "Create Dev agent",
-      "description": "New agent: Dev \ud83d\udee0\ufe0f for MC codebase",
-      "status": "completed",
-      "date": "2026-02-19T07:30:00Z"
-    },
-    {
-      "id": "a42",
-      "agent": "sam",
-      "title": "Build ops infrastructure",
-      "description": "Creating Penny brief, ops/, SOP, HEARTBEAT",
-      "status": "in-progress",
-      "date": "2026-02-19T08:00:00Z"
-    },
-    {
-      "id": "a43",
-      "agent": "devin",
-      "title": "Team page avatars (Personas style)",
-      "description": "Swapped emoji for DiceBear avatars, added recurring tasks section",
-      "status": "completed",
-      "date": "2026-02-19T07:50:00Z"
-    },
-    {
-      "id": "a44",
-      "agent": "devin",
-      "title": "Add Dev agent to team + office",
-      "description": "New agent fully onboarded",
-      "status": "completed",
-      "date": "2026-02-19T08:05:00Z"
-    },
-    {
-      "id": "a45",
-      "agent": "sam",
-      "title": "Add Devin to team page agentOrder",
-      "description": "VIOLATION: Sam edited code directly instead of delegating to Devin. One-line fix but still a violation.",
-      "status": "completed",
-      "date": "2026-02-19T08:28:00Z"
+      "date": "2026-02-19T00:00:00.059Z",
+      "tokens": 27572,
+      "cost": 0.1001,
+      "model": "Opus",
+      "durationSec": 8
     }
   ],
   "tasks": [
@@ -613,7 +247,7 @@
       "title": "Penny Daily Check",
       "schedule": "0 16 * * *",
       "timezone": "Africa/Windhoek",
-      "owner": "Penny",
+      "owner": "penny",
       "enabled": true,
       "status": "idle",
       "lastStatus": "idle",
@@ -623,23 +257,23 @@
     },
     {
       "id": "53f845d7-0a52-422a-93c2-4e9c1cca1279",
-      "title": "Nightly Mission Control Sync",
+      "title": "Nightly Briefing",
       "schedule": "0 2 * * *",
       "timezone": "Africa/Windhoek",
-      "owner": "Devin",
+      "owner": "sam",
       "enabled": true,
-      "status": "error (1 consecutive)",
-      "lastStatus": "error",
-      "lastRunAt": "2026-02-19T00:00:00Z",
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-19T11:52:45Z",
       "nextRunAt": "2026-02-20T00:00:00Z",
-      "consecutiveErrors": 1
+      "consecutiveErrors": 0
     },
     {
       "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
       "title": "Morning Analytics Report",
       "schedule": "0 8 * * *",
       "timezone": "Africa/Windhoek",
-      "owner": "Dana",
+      "owner": "dana",
       "enabled": true,
       "status": "ok",
       "lastStatus": "ok",
@@ -652,7 +286,7 @@
       "title": "Penny Weekly Audit",
       "schedule": "0 9 * * 5",
       "timezone": "Africa/Windhoek",
-      "owner": "Penny",
+      "owner": "penny",
       "enabled": true,
       "status": "idle",
       "lastStatus": "idle",
@@ -665,7 +299,7 @@
       "title": "Weekly GSC ISK Report (Miles)",
       "schedule": "0 6 * * 1",
       "timezone": "Africa/Windhoek",
-      "owner": "Miles",
+      "owner": "miles",
       "enabled": true,
       "status": "idle",
       "lastStatus": "idle",
@@ -758,20 +392,36 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T11:40:42Z",
-      "status": "Active, productive. Should be getting ALL code tasks from now on."
+      "lastActive": "2026-02-19T11:52:45.805Z",
+      "statusText": "Active, productive. Should be getting ALL code tasks from now on."
+    },
+    "dana": {
+      "lastActive": "2026-02-19T06:00:00.149Z",
+      "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
+    },
+    "miles": {
+      "lastActive": null,
+      "statusText": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted."
+    },
+    "cara": {
+      "lastActive": null,
+      "statusText": "\ud83d\udd34 Never been used. No churn/billing analysis done for any product."
+    },
+    "mia": {
+      "lastActive": null,
+      "statusText": "Idle. Needs recurring weekly UGC performance tracking."
+    },
+    "penny": {
+      "lastActive": null,
+      "statusText": "Active as of today. Owns daily delegation audit (6 PM CAT)."
     },
     "frankie": {
-      "lastActive": "2026-02-19T10:58:05Z",
-      "status": "unknown"
+      "lastActive": null,
+      "statusText": ""
+    },
+    "sam": {
+      "lastActive": null,
+      "statusText": ""
     }
-  },
-  "agentStatusText": {
-    "devin": "Active, productive. Should be getting ALL code tasks from now on.",
-    "dana": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking.",
-    "miles": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted.",
-    "cara": "\ud83d\udd34 Never been used. No churn/billing analysis done for any product.",
-    "penny": "Active as of today. Owns daily delegation audit (6 PM CAT).",
-    "mia": "Idle. Needs recurring weekly UGC performance tracking."
   }
 }
