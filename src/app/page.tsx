@@ -1,7 +1,7 @@
 "use client";
 
 import Shell from "@/components/Shell";
-import { activityTypeConfig, productConfig, statusConfig, agentEmojis, agentColors, Activity } from "@/lib/data-provider";
+import { activityTypeConfig, productConfig, statusConfig, agentEmojis, agentColors, Activity, useAgentMap } from "@/lib/data-provider";
 import { formatRelativeDate, getDateGroup } from "@/lib/utils";
 import { useState, useEffect } from "react";
 
@@ -120,7 +120,6 @@ export default function Home() {
     groups[key].push(a);
   });
 
-  const agents = ["all", "sam", "cara", "dana", "miles", "penny", "mia", "devin", "frankie"];
   const types = ["all", ...Object.keys(activityTypeConfig)];
   const products = ["all", "CLCP", "ISK", "SE"];
 
@@ -155,9 +154,13 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Filters */}
+        {/* Agent pills */}
+        <div className="mb-3">
+          <AgentPills value={filterAgent} onChange={setFilterAgent} dateFiltered={dateFiltered} />
+        </div>
+
+        {/* Type + Product filters */}
         <div className="flex flex-wrap gap-2 mb-6">
-          <FilterSelect label="Agent" value={filterAgent} onChange={setFilterAgent} options={agents.map(a => ({ value: a, label: a === "all" ? "All Agents" : `${agentEmojis[a] || ""} ${a.charAt(0).toUpperCase() + a.slice(1)}` }))} />
           <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={types.map(t => ({ value: t, label: t === "all" ? "All Types" : activityTypeConfig[t as keyof typeof activityTypeConfig]?.label || t }))} />
           <FilterSelect label="Product" value={filterProduct} onChange={setFilterProduct} options={products.map(p => ({ value: p, label: p === "all" ? "All Products" : p }))} />
         </div>
@@ -248,6 +251,72 @@ export default function Home() {
         </div>
       </div>
     </Shell>
+  );
+}
+
+const AGENT_ORDER = ["sam", "cara", "dana", "miles", "penny", "mia", "devin", "frankie"];
+
+function AgentPills({ value, onChange, dateFiltered }: {
+  value: string;
+  onChange: (v: string) => void;
+  dateFiltered: EnrichedActivity[];
+}) {
+  const agentMap = useAgentMap();
+  const agentsWithEntries = new Set(dateFiltered.map((a) => a.agent));
+  const visibleAgents = AGENT_ORDER.filter((id) => agentsWithEntries.has(id));
+
+  return (
+    <div className="flex gap-1.5 overflow-x-auto flex-nowrap" style={{ scrollbarWidth: "none" }}>
+      {/* All pill */}
+      <button
+        onClick={() => onChange("all")}
+        className={`flex-shrink-0 flex items-center h-8 px-3 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
+          value === "all"
+            ? "bg-zinc-700 text-white ring-1 ring-zinc-500"
+            : "bg-zinc-800/60 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800"
+        }`}
+      >
+        All
+      </button>
+
+      {visibleAgents.map((id) => {
+        const agent = agentMap[id];
+        if (!agent) return null;
+        const color = agent.color;
+        const isSelected = value === id;
+
+        return (
+          <button
+            key={id}
+            onClick={() => onChange(isSelected ? "all" : id)}
+            className={`flex-shrink-0 flex items-center gap-1.5 h-8 px-2.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
+              isSelected ? "text-white" : "bg-[#1c1c1c] text-zinc-400 hover:text-zinc-300"
+            }`}
+            style={
+              isSelected
+                ? { backgroundColor: `${color}22`, boxShadow: `0 0 0 1.5px ${color}` }
+                : undefined
+            }
+          >
+            {agent.avatar ? (
+              <img
+                src={agent.avatar}
+                alt={agent.name}
+                className="w-[18px] h-[18px] rounded-full object-cover flex-shrink-0"
+              />
+            ) : (
+              <span
+                className="w-[18px] h-[18px] rounded-full flex items-center justify-center text-[9px] flex-shrink-0"
+                style={{ backgroundColor: `${color}30` }}
+              >
+                {agent.emoji}
+              </span>
+            )}
+            {agent.name}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
