@@ -1,5 +1,17 @@
 [
   {
+    "id": "6d5d4471-523a-4563-b95e-e15ff901840e",
+    "label": "Devin: dynamic automations timeline",
+    "agent": "devin",
+    "task": "**Task: Make the Automations page schedule timeline dynamic (t16)**",
+    "model": "Sonnet",
+    "tokens": 530600,
+    "cost": 0.4255,
+    "durationSec": 184,
+    "status": "success",
+    "timestamp": "2026-02-19T16:50:32.035Z"
+  },
+  {
     "id": "00c01b59-a793-4c3c-b494-e386470fc395",
     "label": "Cara: Mohamed Aazick ISK lookup",
     "agent": "cara",
@@ -22,18 +34,6 @@
     "durationSec": 19,
     "status": "success",
     "timestamp": "2026-02-19T14:00:00.055Z"
-  },
-  {
-    "id": "6d5d4471-523a-4563-b95e-e15ff901840e",
-    "label": "Devin: dynamic automations timeline",
-    "agent": "devin",
-    "task": "**Task: Make the Automations page schedule timeline dynamic (t16)**",
-    "model": "Sonnet",
-    "tokens": 61727,
-    "cost": 0.1393,
-    "durationSec": 57,
-    "status": "success",
-    "timestamp": "2026-02-19T16:50:32.035Z"
   },
   {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",

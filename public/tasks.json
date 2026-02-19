@@ -1,14 +1,14 @@
 [
   {
     "_id": "t1",
-    "title": "Push 'ai interview assistant' to top 3",
-    "description": "Currently position 5.8 with 5.4K impressions. Need dedicated landing page and content strategy.",
+    "title": "ISK SEO: build landing pages to push 'ai interview assistant' to top 3",
+    "description": "Currently position 5.8 with 5.4K impressions. Build dedicated landing pages targeting this keyword and related variants. Merged from t5 (content strategy task).",
     "status": "todo",
     "assignee": "miles",
     "priority": "high",
     "product": "ISK",
     "createdAt": 1771484700000,
-    "updatedAt": 1771484700000
+    "updatedAt": 1771520031522
   },
   {
     "_id": "t2",
@@ -46,13 +46,13 @@
   {
     "_id": "t5",
     "title": "Build content strategy for ISK landing pages",
-    "description": "Create dedicated landing pages targeting high-impression keywords like 'ai interview assistant'.",
-    "status": "todo",
+    "description": "Merged into t1 \u2014 same project.",
+    "status": "done",
     "assignee": "miles",
     "priority": "high",
     "product": "ISK",
     "createdAt": 1771484700000,
-    "updatedAt": 1771484700000
+    "updatedAt": 1771520031522
   },
   {
     "_id": "t6",
@@ -112,13 +112,13 @@
   {
     "_id": "t11",
     "title": "Set up Convex for MC database",
-    "description": "Mission Control needs a proper database backend instead of static JSON push. Convex was the agreed direction.",
-    "status": "todo",
+    "description": "Superseded. MC is already running on Supabase (mc_realtime table, live updates via mc-sync.sh). Convex was never implemented.",
+    "status": "done",
     "assignee": "devin",
     "priority": "medium",
     "product": "internal",
     "createdAt": 1771484700000,
-    "updatedAt": 1771484700000
+    "updatedAt": 1771520031522
   },
   {
     "_id": "t12",
@@ -168,11 +168,11 @@
     "_id": "t16",
     "title": "Make Automations page schedule timeline dynamic",
     "description": "Daily Schedule timeline and Weekly Grid are hardcoded arrays in automations/page.tsx (DAILY_JOBS, WEEKLY_JOBS). New crons don't appear there without manual code edits. Should derive schedule from live cron data (d.calendar + d.bashCrons) so any new automation shows up automatically.",
-    "status": "todo",
+    "status": "done",
     "assignee": "devin",
     "priority": "medium",
     "product": "internal",
     "createdAt": 1771519822183,
-    "updatedAt": 1771519822183
+    "updatedAt": 1771520031522
   }
 ]

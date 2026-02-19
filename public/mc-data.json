@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T16:51:45Z",
+  "lastUpdated": "2026-02-19T16:53:57Z",
   "activities": [
     {
       "id": "s-6d5d4471",
@@ -8,10 +8,10 @@
       "description": "**Task: Make the Automations page schedule timeline dynamic (t16)**",
       "status": "success",
       "date": "2026-02-19T16:50:32.035Z",
-      "tokens": 61727,
-      "cost": 0.1393,
+      "tokens": 530600,
+      "cost": 0.4255,
       "model": "Sonnet",
-      "durationSec": 57
+      "durationSec": 184
     },
     {
       "id": "s-00c01b59",
@@ -439,7 +439,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T16:51:45Z",
+      "lastActive": "2026-02-19T16:53:57Z",
       "statusText": ""
     }
   },
@@ -453,7 +453,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T16:51:45Z"
+      "lastRunAt": "2026-02-19T16:53:57Z"
     },
     {
       "id": "bash-frankie-sync",
