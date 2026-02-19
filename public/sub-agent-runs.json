@@ -118,5 +118,17 @@
     "durationSec": 7,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
+    "id": "2921efcb-e29e-4d03-96d0-fad2ffc4e001",
+    "label": "dana-weekly-traffic",
+    "agent": "dana",
+    "task": "",
+    "model": "Sonnet",
+    "tokens": 12023,
+    "cost": 0.0461,
+    "durationSec": 2,
+    "status": "success",
+    "timestamp": "2026-02-19T19:19:56.558Z"
   }
 ]
