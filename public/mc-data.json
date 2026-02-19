@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T20:20:01Z",
+  "lastUpdated": "2026-02-19T20:30:01Z",
   "activities": [
     {
       "id": "s-d5fe3e9e",
@@ -8,10 +8,10 @@
       "description": "**Task: Build a complete light/dark mode theme system for the brochbot Mission Control site.**",
       "status": "success",
       "date": "2026-02-19T20:08:45.695Z",
-      "tokens": 1762908,
-      "cost": 1.6849,
+      "tokens": 5083287,
+      "cost": 3.0084,
       "model": "Sonnet",
-      "durationSec": 646
+      "durationSec": 970
     },
     {
       "id": "s-0493e98e",
@@ -62,30 +62,6 @@
       "durationSec": 237
     },
     {
-      "id": "s-3df99d0f",
-      "agent": "devin",
-      "title": "devin-hardcode-cleanup",
-      "description": "**Bug fix:**",
-      "status": "success",
-      "date": "2026-02-19T19:25:05.594Z",
-      "tokens": 4279097,
-      "cost": 1.9489,
-      "model": "Sonnet",
-      "durationSec": 494
-    },
-    {
-      "id": "s-fe0faccc",
-      "agent": "devin",
-      "title": "devin-hardcode-audit",
-      "description": "1. API keys, tokens, secrets hardcoded in source files (not in .env)",
-      "status": "success",
-      "date": "2026-02-19T19:20:11.977Z",
-      "tokens": 539551,
-      "cost": 1.1877,
-      "model": "Sonnet",
-      "durationSec": 145
-    },
-    {
       "id": "s-95a02d1a",
       "agent": "sam",
       "title": "95a02d1a-513",
@@ -104,10 +80,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 10606314,
-      "cost": 21.7018,
+      "tokens": 12261378,
+      "cost": 26.5293,
       "model": "Opus",
-      "durationSec": 4582
+      "durationSec": 5324
     },
     {
       "id": "s-b88a363c",
@@ -128,10 +104,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 432848,
-      "cost": 1.1863,
+      "tokens": 529747,
+      "cost": 1.6586,
       "model": "Opus",
-      "durationSec": 5829
+      "durationSec": 7081
     },
     {
       "id": "s-7612c9b5",
@@ -500,7 +476,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T20:20:01Z"
+      "lastRunAt": "2026-02-19T20:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
