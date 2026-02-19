@@ -1,17 +1,5 @@
 [
   {
-    "id": "e8a68d5a-48f7-4ecf-b06c-49f77378c835",
-    "label": "devin-drawer-office-agentmap",
-    "agent": "devin",
-    "task": "**Task: 3 fixes \u2014 drawer activity source, office alignment, reusable agent map**",
-    "model": "Sonnet",
-    "tokens": 1649473,
-    "cost": 1.1622,
-    "durationSec": 454,
-    "status": "success",
-    "timestamp": "2026-02-19T15:05:25.056Z"
-  },
-  {
     "id": "5ef128e4-6a54-47b6-8475-bbc9b7d39425",
     "label": "devin-automations-feed",
     "agent": "devin",
@@ -84,6 +72,18 @@
     "timestamp": "2026-02-19T15:39:30.121Z"
   },
   {
+    "id": "00c01b59-a793-4c3c-b494-e386470fc395",
+    "label": "Cara: Mohamed Aazick ISK lookup",
+    "agent": "cara",
+    "task": "Look up this user for ISK (Interview Sidekick):",
+    "model": "Sonnet",
+    "tokens": 127858,
+    "cost": 0.141,
+    "durationSec": 66,
+    "status": "success",
+    "timestamp": "2026-02-19T16:05:19.750Z"
+  },
+  {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
     "label": "Penny Daily Check",
     "agent": "penny",
@@ -130,17 +130,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "00c01b59-a793-4c3c-b494-e386470fc395",
-    "label": "Cara: Mohamed Aazick ISK lookup",
-    "agent": "cara",
-    "task": "Look up this user for ISK (Interview Sidekick):",
-    "model": "Sonnet",
-    "tokens": 11791,
-    "cost": 0.0255,
-    "durationSec": 2,
-    "status": "success",
-    "timestamp": "2026-02-19T16:05:19.750Z"
   }
 ]
