@@ -1,0 +1,86 @@
+[
+  {
+    "id": "bfae9197-c4f1-4c44-8b65-a6c2d75531e8",
+    "label": "main-session",
+    "agent": "Sam",
+    "task": "A new session was started via /new or /reset. Greet the user in your configured persona, if one is provided. Be yourself - use your defined voice, man",
+    "model": "unknown",
+    "tokens": 3805572,
+    "cost": 6.0482,
+    "durationSec": 1467,
+    "status": "success",
+    "timestamp": "2026-02-19T11:07:42.848Z"
+  },
+  {
+    "id": "446bac23-d42b-402b-8819-5855374e6d9f",
+    "label": "devin-usage-fix",
+    "agent": "Devin",
+    "task": "[Thu 2026-02-19 11:08 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for",
+    "model": "Sonnet",
+    "tokens": 431572,
+    "cost": 0.321,
+    "durationSec": 152,
+    "status": "success",
+    "timestamp": "2026-02-19T11:08:49.788Z"
+  },
+  {
+    "id": "352a9242-18be-4ad2-974c-7bf9e7bac494",
+    "label": "devin-usage-limits",
+    "agent": "Devin",
+    "task": "[Thu 2026-02-19 10:51 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for",
+    "model": "Sonnet",
+    "tokens": 324105,
+    "cost": 0.2333,
+    "durationSec": 99,
+    "status": "success",
+    "timestamp": "2026-02-19T10:51:12.382Z"
+  },
+  {
+    "id": "efb88558-5133-422e-872d-fc31714f0f06",
+    "label": "devin-usage-dynamic",
+    "agent": "Devin",
+    "task": "[Thu 2026-02-19 10:55 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for",
+    "model": "Sonnet",
+    "tokens": 203362,
+    "cost": 0.3655,
+    "durationSec": 158,
+    "status": "success",
+    "timestamp": "2026-02-19T10:55:20.074Z"
+  },
+  {
+    "id": "eff36f75-4aef-449f-8c5d-c5bff5f4c522",
+    "label": "frankie-explore",
+    "agent": "Frankie",
+    "task": "[Thu 2026-02-19 10:57 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for",
+    "model": "Sonnet",
+    "tokens": 163898,
+    "cost": 0.1906,
+    "durationSec": 50,
+    "status": "success",
+    "timestamp": "2026-02-19T10:57:15.419Z"
+  },
+  {
+    "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
+    "label": "Cron: Morning Analytics Report",
+    "agent": "Sam",
+    "task": "[cron:f436e186-ac23-4562-a32c-55e4ec7155b7 Morning Analytics Report] Read /home/ubuntu/.openclaw/workspace/agents/dana/AGENT.md for API instructions. ",
+    "model": "Opus",
+    "tokens": 37595,
+    "cost": 0.1822,
+    "durationSec": 24,
+    "status": "success",
+    "timestamp": "2026-02-19T06:00:00.149Z"
+  },
+  {
+    "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",
+    "label": "Cron: Nightly Mission Control Sync",
+    "agent": "Sam",
+    "task": "[cron:53f845d7-0a52-422a-93c2-4e9c1cca1279 Nightly Mission Control Sync] Read /home/ubuntu/.openclaw/workspace/memory/mission-control-sync.md to check",
+    "model": "Opus",
+    "tokens": 27572,
+    "cost": 0.1001,
+    "durationSec": 8,
+    "status": "success",
+    "timestamp": "2026-02-19T00:00:00.059Z"
+  }
+]
