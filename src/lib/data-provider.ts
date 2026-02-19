@@ -7,7 +7,7 @@ export const useMockData = true;
 export type TaskStatus = "todo" | "in_progress" | "in-progress" | "done" | "blocked";
 export type Priority = "low" | "medium" | "high";
 export type Product = "CLCP" | "ISK" | "SE" | "internal" | "all";
-export type Assignee = "ben" | "sam" | "dev" | "devin" | "cara" | "dana" | "miles" | "penny" | "mia";
+export type Assignee = "ben" | "sam" | "dev" | "devin" | "cara" | "dana" | "miles" | "penny" | "mia" | "frankie";
 export type ActivityType = "data_query" | "customer_lookup" | "report" | "cron_job" | "config_change" | "memory_update" | "task_completed" | "system_config" | "cron" | "task";
 export type ActivityStatus = "success" | "error" | "running" | "in-progress";
 
@@ -78,6 +78,7 @@ export const teamMembers: TeamMember[] = [
   { id: "miles", name: "Miles", emoji: "🚀", avatar: "/avatars/miles.png", role: "GTM Lead", description: "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.", dataSources: ["Datafast", "GSC", "SEO Tools"], recurringTasks: ["Weekly GSC Report (Monday 8 AM CAT)"], isAgent: true },
   { id: "penny", name: "Penny", emoji: "📌", avatar: "/avatars/penny.png", role: "Secretary", description: "Captures ideas, links, inspiration. Maintains the mood board. Keeps receipts on everything.", dataSources: ["Mood Board", "Workspace Files"], isAgent: true },
   { id: "mia", name: "Mia", emoji: "📱", avatar: "/avatars/mia.png", role: "Social Media Manager", description: "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram. Owns creator relationships.", dataSources: ["Google Sheets", "Datafast (UTM campaigns)"], isAgent: true },
+  { id: "frankie", name: "Frankie", emoji: "💰", avatar: "/avatars/frankie.png", role: "Finance", description: "The money guy. Tracks banking, payouts, expenses, and revenue across all three businesses. Read-only access to Mercury.", dataSources: ["Mercury"], isAgent: true, recurringTasks: [] },
 ];
 
 export const agentColors: Record<string, string> = {
@@ -90,6 +91,7 @@ export const agentColors: Record<string, string> = {
   penny: "#f43f5e",
   mia: "#d946ef",
   devin: "#f59e0b",
+  frankie: "#10b981",
   system: "#6b7280",
 };
 
@@ -103,6 +105,7 @@ export const agentEmojis: Record<string, string> = {
   penny: "📌",
   mia: "📱",
   devin: "🛠️",
+  frankie: "💰",
   system: "⚙️",
 };
 

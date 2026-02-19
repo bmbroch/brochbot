@@ -8,7 +8,7 @@ import { useActivities, agentColors, teamMembers, type TeamMember, type Activity
 import { formatRelativeDate } from "@/lib/utils";
 import Image from "next/image";
 
-const agentOrder = ["ben", "sam", "dev", "cara", "dana", "miles", "penny", "mia"];
+const agentOrder = ["ben", "sam", "dev", "cara", "dana", "miles", "penny", "mia", "frankie"];
 
 const gradientMap: Record<string, string> = {
   ben: "from-zinc-700/30 to-slate-800/20",
@@ -18,6 +18,7 @@ const gradientMap: Record<string, string> = {
   miles: "from-orange-600/30 to-orange-900/20",
   penny: "from-rose-600/30 to-pink-900/20",
   mia: "from-fuchsia-600/30 to-fuchsia-900/20",
+  frankie: "from-emerald-600/30 to-emerald-900/20",
 };
 
 function MemberDetail({ member, activities }: { member: TeamMember; activities: Activity[] }) {

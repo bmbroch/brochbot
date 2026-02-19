@@ -27,19 +27,22 @@ function timeAgo(ts: number): string {
 
 /* ── desk layout config ──────────────────────────────────────────────────── */
 
-// Positions are pixel offsets inside a 950×600 container
+// Positions are pixel offsets inside a 1000×600 container
+// Top row (5): Ben, Sam, Devin, Cara, Frankie
+// Bottom row (4): Dana, Miles, Penny, Mia
 const deskLayout: Record<
   string,
   { x: number; y: number; facing: "down" | "left" | "right" | "up" }
 > = {
-  ben:   { x: 130, y: 50,  facing: "down" },
-  sam:   { x: 370, y: 50,  facing: "down" },
-  dev:   { x: 610, y: 50,  facing: "down" },
-  cara:  { x: 850, y: 50,  facing: "down" },
-  dana:  { x: 130, y: 380, facing: "down" },
-  miles: { x: 370, y: 380, facing: "down" },
-  penny: { x: 610, y: 380, facing: "down" },
-  mia:   { x: 850, y: 380, facing: "down" },
+  ben:    { x: 100,  y: 50,  facing: "down" },
+  sam:    { x: 300,  y: 50,  facing: "down" },
+  dev:    { x: 500,  y: 50,  facing: "down" },
+  cara:   { x: 700,  y: 50,  facing: "down" },
+  frankie:{ x: 900,  y: 50,  facing: "down" },
+  dana:   { x: 150,  y: 380, facing: "down" },
+  miles:  { x: 383,  y: 380, facing: "down" },
+  penny:  { x: 617,  y: 380, facing: "down" },
+  mia:    { x: 850,  y: 380, facing: "down" },
 };
 
 /* ── components ──────────────────────────────────────────────────────────── */
@@ -168,7 +171,7 @@ export default function OfficePage() {
           </p>
         </div>
 
-        {/* Top-down office (responsive) */}
+        {/* Top-down office (responsive) — 1000×600 */}
         <OfficeCanvas
           selected={selected}
           setSelected={setSelected}
@@ -194,7 +197,7 @@ function OfficeCanvas({
   getAgentActivities: (id: string) => Activity[];
   selectedMember: TeamMember | null | undefined;
 }) {
-  const OFFICE_W = 950;
+  const OFFICE_W = 1000;
   const OFFICE_H = 600;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
