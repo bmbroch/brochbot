@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben daily conversation",
     "model": "Opus",
-    "tokens": 6083165,
-    "cost": 4.2121,
+    "tokens": 7510910,
+    "cost": 5.7937,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -82,5 +82,17 @@
     "durationSec": 2,
     "status": "success",
     "timestamp": "2026-02-19T13:04:52.326Z"
+  },
+  {
+    "id": "ebea0ddb-cfae-41d3-8036-690033640639",
+    "label": "devin-creator-earnings",
+    "agent": "devin",
+    "task": "[Thu 2026-02-19 13:16 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
+    "model": "Sonnet",
+    "tokens": 247738,
+    "cost": 0.1791,
+    "durationSec": 82,
+    "status": "success",
+    "timestamp": "2026-02-19T13:16:02.548Z"
   }
 ]
