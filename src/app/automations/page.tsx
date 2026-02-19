@@ -169,11 +169,11 @@ const DAILY_JOBS: ScheduleJob[] = [
   { agent: "frankie", label: "Mercury Sync",       catHour: 10,   daily: true },
   { agent: "sam",     label: "Creator Merge",      catHour: 12.5, daily: true },
   { agent: "penny",   label: "Daily Check",        catHour: 16,   daily: true },
+  { agent: "miles",   label: "GSC Report",          catHour: 6,    daily: true },
 ];
 
 // Weekly-only jobs
 const WEEKLY_JOBS: ScheduleJob[] = [
-  { agent: "miles", label: "Miles GSC",   catHour: 6, daily: false, weekDay: 1 }, // Monday
   { agent: "penny", label: "Penny Audit", catHour: 9, daily: false, weekDay: 5 }, // Friday
 ];
 
