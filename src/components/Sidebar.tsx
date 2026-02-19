@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useTheme } from "./ThemeProvider";
 
@@ -46,9 +46,25 @@ function MoonIcon({ size = 16 }: { size?: number }) {
   );
 }
 
+function LogOutIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
+    </svg>
+  );
+}
+
 export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
+
+  async function handleLogout() {
+    await fetch("/api/logout", { method: "POST" });
+    router.push("/login");
+  }
 
   return (
     <aside
@@ -108,8 +124,8 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
         })}
       </nav>
 
-      {/* Footer: Theme Toggle */}
-      <div className="px-3 pb-4 border-t border-[var(--border-medium)] pt-3">
+      {/* Footer: Theme Toggle + Logout */}
+      <div className="px-3 pb-4 border-t border-[var(--border-medium)] pt-3 space-y-0.5">
         <button
           onClick={toggleTheme}
           className={cn(
@@ -122,6 +138,19 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
             {theme === "dark" ? <SunIcon size={15} /> : <MoonIcon size={15} />}
           </span>
           <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+        </button>
+        <button
+          onClick={handleLogout}
+          className={cn(
+            "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150",
+            "text-[var(--text-muted)] hover:text-red-400 hover:bg-[var(--bg-hover)]"
+          )}
+          aria-label="Sign out"
+        >
+          <span className="w-5 text-center flex items-center justify-center">
+            <LogOutIcon size={15} />
+          </span>
+          <span>Sign out</span>
         </button>
       </div>
     </aside>
