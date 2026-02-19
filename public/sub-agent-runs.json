@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 2086788,
-    "cost": 5.6556,
-    "durationSec": 3389,
+    "tokens": 2169028,
+    "cost": 6.1248,
+    "durationSec": 3663,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
   },
@@ -22,6 +22,30 @@
     "durationSec": 19,
     "status": "success",
     "timestamp": "2026-02-19T14:00:00.055Z"
+  },
+  {
+    "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
+    "label": "c1c67e23-34e",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 62952,
+    "cost": 0.2557,
+    "durationSec": 108,
+    "status": "success",
+    "timestamp": "2026-02-19T18:31:48.211Z"
+  },
+  {
+    "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
+    "label": "7612c9b5-24c",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 41852,
+    "cost": 0.1704,
+    "durationSec": 318,
+    "status": "success",
+    "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
@@ -58,17 +82,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
-    "label": "7612c9b5-24c",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 20886,
-    "cost": 0.0844,
-    "durationSec": 2,
-    "status": "success",
-    "timestamp": "2026-02-19T18:28:22.953Z"
   }
 ]
