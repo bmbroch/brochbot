@@ -31,7 +31,7 @@ interface Agent {
 
 const AGENTS: Agent[] = [
   { name: "Sam", avatar: "/avatars/sam.png", role: "Chief of Staff", status: "Working", lastActivity: "Orchestrating ops infrastructure overhaul", lastTime: "08:00", badge: "⚠️ Under Surveillance" },
-  { name: "Dev", avatar: "/avatars/dev.png", role: "Web Developer", status: "Working", lastActivity: "Office mobile responsive fix", lastTime: "08:15", badge: "🏆 Employee of the Day" },
+  { name: "Devin", avatar: "/avatars/dev.png", role: "Web Developer", status: "Working", lastActivity: "Office mobile responsive fix", lastTime: "08:15", badge: "🏆 Employee of the Day" },
   { name: "Dana", avatar: "/avatars/dana.png", role: "Data Analyst", status: "Idle", lastActivity: "Morning analytics report", lastTime: "06:00" },
   { name: "Miles", avatar: "/avatars/miles.png", role: "GTM Lead", status: "Idle", lastActivity: "ISK weekly report (new format)", lastTime: "06:45" },
   { name: "Penny", avatar: "/avatars/penny.png", role: "Secretary / Ops", status: "Idle", lastActivity: "First audit report + ops infrastructure", lastTime: "08:16" },
@@ -60,14 +60,14 @@ const TASKS: TaskRow[] = [
   { time: "07:00", task: "Create agent knowledge briefs", assignedTo: "Sam", status: "✅" },
   { time: "07:30", task: "Create Dev agent", assignedTo: "Sam", status: "✅" },
   { time: "07:45", task: "Set up delegation audit cron", assignedTo: "Sam", status: "✅" },
-  { time: "07:50", task: "Team page avatars (Personas style)", assignedTo: "Dev", status: "✅" },
+  { time: "07:50", task: "Team page avatars (Personas style)", assignedTo: "Devin", status: "✅" },
   { time: "07:50", task: "Fix PostCSS breakage", assignedTo: "Sam", status: "✅", violation: true },
-  { time: "07:55", task: "Office page v1", assignedTo: "Dev", status: "✅" },
+  { time: "07:55", task: "Office page v1", assignedTo: "Devin", status: "✅" },
   { time: "07:58", task: "Fix office meeting table overlap", assignedTo: "Sam → Dev", status: "✅" },
   { time: "08:00", task: "Build ops infrastructure", assignedTo: "Sam", status: "🔄" },
-  { time: "08:05", task: "Add Dev agent to team + office", assignedTo: "Dev", status: "✅" },
+  { time: "08:05", task: "Add Devin agent to team + office", assignedTo: "Devin", status: "✅" },
   { time: "08:08", task: "Ops infrastructure overhaul", assignedTo: "Penny", status: "✅" },
-  { time: "08:15", task: "Office mobile responsive fix", assignedTo: "Dev", status: "✅" },
+  { time: "08:15", task: "Office mobile responsive fix", assignedTo: "Devin", status: "✅" },
 ];
 
 interface CronJob {

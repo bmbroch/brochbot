@@ -8,7 +8,21 @@ import { useActivities, agentColors, teamMembers, type TeamMember, type Activity
 import { formatRelativeDate } from "@/lib/utils";
 import Image from "next/image";
 
-const agentOrder = ["ben", "sam", "dev", "cara", "dana", "miles", "penny", "mia", "frankie"];
+function relativeAgo(ts: number): string {
+  const diff = Date.now() - ts;
+  if (diff < 60_000) return "just now";
+  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`;
+  if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}h ago`;
+  const days = Math.floor(diff / 86_400_000);
+  return days === 1 ? "yesterday" : `${days}d ago`;
+}
+
+function lastActiveLabel(ts: number | null): string {
+  if (ts === null) return "Never";
+  return `Last active ${relativeAgo(ts)}`;
+}
+
+const agentOrder = ["ben", "sam", "devin", "cara", "dana", "miles", "penny", "mia", "frankie"];
 
 const gradientMap: Record<string, string> = {
   ben: "from-zinc-700/30 to-slate-800/20",
@@ -82,6 +96,7 @@ export default function TeamPage() {
   const activities = useActivities();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [agentStatusTs, setAgentStatusTs] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -89,6 +104,34 @@ export default function TeamPage() {
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+
+  // Fetch agentStatus fallback timestamps from mc-data.json
+  useEffect(() => {
+    fetch("/mc-data.json")
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d?.agentStatus) return;
+        const ts: Record<string, number> = {};
+        for (const [key, val] of Object.entries(d.agentStatus as Record<string, { lastActive?: string }>)) {
+          if (val.lastActive) ts[key] = new Date(val.lastActive).getTime();
+        }
+        setAgentStatusTs(ts);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Build a map of agentId → latest activity timestamp
+  const latestActivityTs: Record<string, number> = {};
+  for (const a of activities) {
+    if (!latestActivityTs[a.agent] || a.createdAt > latestActivityTs[a.agent]) {
+      latestActivityTs[a.agent] = a.createdAt;
+    }
+  }
+
+  // Resolve final lastActive for an agent: activities first, agentStatus fallback
+  function getLastActive(id: string): number | null {
+    return latestActivityTs[id] ?? agentStatusTs[id] ?? null;
+  }
 
   const selectedMember = selectedId ? teamMembers.find(m => m.id === selectedId) : null;
 
@@ -110,8 +153,7 @@ export default function TeamPage() {
           {agentOrder.map(id => {
             const member = teamMembers.find(m => m.id === id)!;
             const color = agentColors[id] || "#3b82f6";
-            const todayCount = activities.filter(a => a.agent === id && Date.now() - a.createdAt < 86400000).length;
-            const isActive = todayCount > 0;
+            const lastActive = getLastActive(id);
             const isSelected = selectedId === id;
 
             return (
@@ -140,13 +182,10 @@ export default function TeamPage() {
                 <span className="text-[14px] sm:text-[16px] font-semibold text-white leading-tight mt-1">{member.name}</span>
                 {/* Role */}
                 <span className="text-[11px] sm:text-[13px] font-medium leading-tight text-center" style={{ color }}>{member.role}</span>
-                {/* Status */}
-                <div className="flex items-center gap-1.5">
-                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-green-400" : "bg-zinc-700"}`} />
-                  <span className={`text-[11px] ${isActive ? "text-green-400" : "text-zinc-600"}`}>
-                    {isActive ? "Active" : "Idle"}
-                  </span>
-                </div>
+                {/* Last active */}
+                <span className="text-[11px] text-zinc-600 text-center leading-tight">
+                  {lastActiveLabel(lastActive)}
+                </span>
               </button>
             );
           })}

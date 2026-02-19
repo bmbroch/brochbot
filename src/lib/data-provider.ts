@@ -7,7 +7,7 @@ export const useMockData = true;
 export type TaskStatus = "todo" | "in_progress" | "in-progress" | "done" | "blocked";
 export type Priority = "low" | "medium" | "high";
 export type Product = "CLCP" | "ISK" | "SE" | "internal" | "all";
-export type Assignee = "ben" | "sam" | "dev" | "devin" | "cara" | "dana" | "miles" | "penny" | "mia" | "frankie";
+export type Assignee = "ben" | "sam" | "devin" | "cara" | "dana" | "miles" | "penny" | "mia" | "frankie";
 export type ActivityType = "data_query" | "customer_lookup" | "report" | "cron_job" | "config_change" | "memory_update" | "task_completed" | "system_config" | "cron" | "task";
 export type ActivityStatus = "success" | "error" | "running" | "in-progress";
 
@@ -46,15 +46,6 @@ export interface ScheduledTask {
   product?: Product;
 }
 
-export interface MemoryDocument {
-  _id: string;
-  title: string;
-  content: string;
-  type: "memory" | "note" | "config" | "schema";
-  path: string;
-  updatedAt: number;
-}
-
 export interface TeamMember {
   id: Assignee;
   name: string;
@@ -72,7 +63,7 @@ export interface TeamMember {
 export const teamMembers: TeamMember[] = [
   { id: "ben", name: "Ben", emoji: "👨‍💻", avatar: "/avatars/ben.jpg", role: "Founder", description: "Founder & CEO. Sets the vision, reviews work, and keeps everything on track.", dataSources: ["All"], isAgent: false },
   { id: "sam", name: "Sam", emoji: "🤝", avatar: "/avatars/sam.png", role: "Chief of Staff", description: "Coordinates all agents, manages workflows, and handles complex multi-step operations.", dataSources: ["Stripe", "Supabase", "Datafast", "GSC"], recurringTasks: ["Nightly MC Sync (2 AM CAT daily)"], isAgent: true },
-  { id: "dev", name: "Devin", emoji: "🛠️", avatar: "/avatars/dev.png", role: "Web Developer", description: "Owns the Mission Control codebase. Handles all frontend changes, bug fixes, and deployments.", dataSources: ["GitHub", "Vercel"], isAgent: true, recurringTasks: [] },
+  { id: "devin", name: "Devin", emoji: "🛠️", avatar: "/avatars/dev.png", role: "Web Developer", description: "Owns the Mission Control codebase. Handles all frontend changes, bug fixes, and deployments.", dataSources: ["GitHub", "Vercel"], isAgent: true, recurringTasks: [] },
   { id: "cara", name: "Cara", emoji: "🎧", avatar: "/avatars/cara.png", role: "Customer Support", description: "Handles customer inquiries, subscription issues, and refund requests via Stripe.", dataSources: ["Stripe"], isAgent: true },
   { id: "dana", name: "Dana", emoji: "📊", avatar: "/avatars/dana.png", role: "Data Analyst", description: "Runs analytics queries, generates reports, and monitors KPIs across all products.", dataSources: ["Supabase", "Datafast"], recurringTasks: ["Morning Analytics Report (8 AM CAT daily)"], isAgent: true },
   { id: "miles", name: "Miles", emoji: "🚀", avatar: "/avatars/miles.png", role: "GTM Lead", description: "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.", dataSources: ["Datafast", "GSC", "SEO Tools"], recurringTasks: ["Weekly GSC Report (Monday 8 AM CAT)"], isAgent: true },
@@ -144,11 +135,6 @@ export const priorityConfig: Record<Priority, { label: string; color: string; bg
   medium: { label: "Medium", color: "text-yellow-400", bg: "bg-yellow-500/10" },
   high: { label: "High", color: "text-red-400", bg: "bg-red-500/10" },
 };
-
-// ─── Time helpers (for documents that still use relative timestamps) ─────────
-const now = Date.now();
-const h = 3600000;
-const d = 86400000;
 
 // ─── Real Data (from mc-data.json) ───────────────────────────────────────────
 
@@ -242,28 +228,6 @@ export const mockDecisions: Decision[] = [
   { _id: "d8", title: "Sync after work chunks, not on fixed schedule", description: "The nightly MC sync (Sam, 2 AM CAT) updates data after work happens rather than on a rigid push schedule. mc-data.json is the canonical source; synced after meaningful work sessions, not every hour.", madeBy: "Ben + Sam", createdAt: 1771490400000 },
 ];
 
-export const mockDocuments: MemoryDocument[] = [
-  {
-    _id: "d1", title: "MEMORY.md", type: "memory", path: "MEMORY.md", updatedAt: now - h * 7,
-    content: `# Long-Term Memory\n\n## Key Decisions\n- Using Convex for real-time database\n- Three products: CLCP, ISK, SE\n- Agent team: Sam (hub), Cara (support), Dana (analytics), Miles (GTM)\n\n## Lessons Learned\n- Stripe API needs Stripe-Context header for connected accounts\n- Supabase row-level security must be considered for direct queries\n- Datafast API has rate limits — use caching for dashboards`,
-  },
-  {
-    _id: "d2", title: "2026-02-18.md", type: "memory", path: "memory/2026-02-18.md", updatedAt: now - h * 1,
-    content: `# February 18, 2026\n\n## What Happened\n- Connected all Stripe accounts (CLCP, ISK, SE)\n- Analyzed all Supabase databases — full schema documented\n- Dana ran first successful analytics query\n- Cara ran first customer lookup\n- Configured morning analytics cron job (8 AM daily)\n- Built Mission Control dashboard v2\n\n## Key Findings\n- MRR across all products: ~$4,280\n- ISK has highest growth rate\n- CLCP leads in organic traffic\n- SE needs SEO work`,
-  },
-  {
-    _id: "d3", title: "2026-02-17.md", type: "memory", path: "memory/2026-02-17.md", updatedAt: now - d,
-    content: `# February 17, 2026\n\n## Setup Day\n- Initial agent framework configured\n- Sam orchestrator role defined\n- Explored Stripe, Supabase, and Datafast APIs\n- Created TOOLS.md with all credentials and endpoints\n- Started planning Mission Control dashboard`,
-  },
-  {
-    _id: "d4", title: "Database Schema Reference", type: "schema", path: "memory/database-schema.md", updatedAt: now - h * 4,
-    content: `# Database Schema\n\n## CLCP (Cover Letter Co-pilot)\n- users: id, email, created_at, subscription_status\n- cover_letters: id, user_id, content, created_at\n- subscriptions: id, user_id, stripe_id, plan, status\n\n## ISK (Interview Sidekick)\n- users: id, email, created_at\n- sessions: id, user_id, type, score, created_at\n- subscriptions: id, user_id, stripe_id, plan\n\n## SE (Sales Echo)\n- users: id, email, created_at\n- calls: id, user_id, duration, score, created_at\n- credits: id, user_id, remaining, purchased`,
-  },
-  {
-    _id: "d5", title: "TOOLS.md", type: "config", path: "TOOLS.md", updatedAt: now - h * 3,
-    content: `# Tools & Integrations\n\n## Stripe\n- CLCP Account: acct_1MrVbLI7ukYHG3kU\n- SE Account: acct_1RYkJJLODuyz63yL\n- Auth: Bearer $STRIPE_ORG_KEY + Stripe-Context header\n\n## Supabase\n- CLCP: $SUPABASE_CLC_URL / $SUPABASE_CLC_KEY\n- ISK: $SUPABASE_ISK_URL / $SUPABASE_ISK_KEY\n- SE: $SUPABASE_SE_URL / $SUPABASE_SE_KEY\n\n## Datafast\n- CLCP: $DATAFAST_CLCP_KEY\n- ISK: $DATAFAST_ISK_KEY\n- SE: $DATAFAST_SE_KEY`,
-  },
-];
 
 // ─── Creator Types & Data ────────────────────────────────────────────────────
 
@@ -401,10 +365,6 @@ export function useScheduledTasks(): ScheduledTask[] {
   return mockScheduledTasks;
 }
 
-export function useDocuments(): MemoryDocument[] {
-  return mockDocuments;
-}
-
 export function useDecisions(): Decision[] {
   return mockDecisions;
 }
@@ -416,7 +376,7 @@ export function useTeam(): TeamMember[] {
 // ─── Search ──────────────────────────────────────────────────────────────────
 
 export interface SearchResult {
-  type: "task" | "activity" | "memory" | "team";
+  type: "task" | "activity" | "team";
   id: string;
   title: string;
   subtitle: string;
@@ -437,11 +397,6 @@ export function searchAll(query: string): SearchResult[] {
   for (const a of mockActivities) {
     if (a.title.toLowerCase().includes(q) || a.description?.toLowerCase().includes(q)) {
       results.push({ type: "activity", id: a._id, title: a.title, subtitle: `${a.agent} · ${a.type}`, icon: "⚡", href: "/" });
-    }
-  }
-  for (const d of mockDocuments) {
-    if (d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q)) {
-      results.push({ type: "memory", id: d._id, title: d.title, subtitle: d.path, icon: "📝", href: "/memory" });
     }
   }
   for (const m of teamMembers) {

@@ -12,14 +12,12 @@ interface SearchModalProps {
 const typeIcons: Record<string, string> = {
   task: "📋",
   activity: "⚡",
-  memory: "📝",
   team: "👥",
 };
 
 const typeLabels: Record<string, string> = {
   task: "Tasks",
   activity: "Activities",
-  memory: "Memory",
   team: "Team",
 };
 
@@ -89,7 +87,7 @@ export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search tasks, activities, memory, team..."
+            placeholder="Search tasks, activities, team..."
             className="flex-1 bg-transparent text-sm text-white placeholder:text-zinc-500 outline-none"
           />
           <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.06] border border-[#262626] text-zinc-500 font-mono">ESC</kbd>
