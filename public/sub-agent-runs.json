@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1137813,
-    "cost": 3.6041,
-    "durationSec": 15931,
+    "tokens": 1194046,
+    "cost": 3.7458,
+    "durationSec": 16242,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
@@ -118,17 +118,5 @@
     "durationSec": 7,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "eff19922-a89f-40cf-9865-b7c58b45f344",
-    "label": "Devin: Nightly site audit",
-    "agent": "devin",
-    "task": "**OBSERVE ONLY. Do NOT edit any files or push any code. Report findings only.**",
-    "model": "Sonnet",
-    "tokens": 14221,
-    "cost": 0.0089,
-    "durationSec": 2,
-    "status": "success",
-    "timestamp": "2026-02-19T23:00:00.083Z"
   }
 ]
