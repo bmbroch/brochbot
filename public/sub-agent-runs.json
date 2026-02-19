@@ -36,6 +36,18 @@
     "timestamp": "2026-02-19T12:42:02.855Z"
   },
   {
+    "id": "38d720be-f25e-4c79-be0d-39b0b18e2da3",
+    "label": "devin-ops-live",
+    "agent": "devin",
+    "task": "`src/app/ops/page.tsx` is completely hardcoded and stale. It has a static AGENTS array with wrong statuses, missing Frankie, and times frozen from Feb 19 morning.",
+    "model": "Sonnet",
+    "tokens": 563338,
+    "cost": 0.415,
+    "durationSec": 142,
+    "status": "success",
+    "timestamp": "2026-02-19T13:28:30.563Z"
+  },
+  {
     "id": "e8cbb163-27f3-4504-8916-6db84e4e0f55",
     "label": "frankie-mercury-recipients",
     "agent": "frankie",
@@ -70,18 +82,6 @@
     "durationSec": 63,
     "status": "success",
     "timestamp": "2026-02-19T13:24:13.668Z"
-  },
-  {
-    "id": "38d720be-f25e-4c79-be0d-39b0b18e2da3",
-    "label": "devin-ops-live",
-    "agent": "devin",
-    "task": "`src/app/ops/page.tsx` is completely hardcoded and stale. It has a static AGENTS array with wrong statuses, missing Frankie, and times frozen from Feb 19 morning.",
-    "model": "Sonnet",
-    "tokens": 196399,
-    "cost": 0.2535,
-    "durationSec": 88,
-    "status": "success",
-    "timestamp": "2026-02-19T13:28:30.563Z"
   },
   {
     "id": "f6455e7c-7e80-4084-a4a1-4fffac8070c9",
