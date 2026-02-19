@@ -828,15 +828,39 @@
     "timestamp": "2026-02-19T16:53:57Z"
   },
   {
+    "id": "cd396543-9ced-4e87-98c1-a251d0ddb1f1",
+    "label": "Cara: baymaxes2001 ISK lookup",
+    "agent": "cara",
+    "task": "Look up this user for ISK (Interview Sidekick):",
+    "model": "Sonnet",
+    "tokens": 11873,
+    "cost": 0.0258,
+    "durationSec": 2,
+    "status": "success",
+    "timestamp": "2026-02-19T16:56:30.999Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T16:56:35Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 517328,
+    "cost": 0.736,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T16:56:35Z"
+  },
+  {
     "id": "sam-daily-2026-02-19",
     "label": "Daily total",
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 54618358,
-    "cost": 62.5932,
+    "tokens": 55135686,
+    "cost": 63.3292,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-19T16:53:57Z"
+    "timestamp": "2026-02-19T16:56:35Z"
   }
 ]

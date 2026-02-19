@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-19T16:53:57Z",
+  "lastUpdated": "2026-02-19T16:56:35Z",
   "activities": [
+    {
+      "id": "s-cd396543",
+      "agent": "cara",
+      "title": "Cara: baymaxes2001 ISK lookup",
+      "description": "Look up this user for ISK (Interview Sidekick):",
+      "status": "success",
+      "date": "2026-02-19T16:56:30.999Z",
+      "tokens": 11873,
+      "cost": 0.0258,
+      "model": "Sonnet",
+      "durationSec": 2
+    },
     {
       "id": "s-6d5d4471",
       "agent": "devin",
@@ -423,7 +435,7 @@
       "statusText": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted."
     },
     "cara": {
-      "lastActive": "2026-02-19T16:05:19.750Z",
+      "lastActive": "2026-02-19T16:56:30.999Z",
       "statusText": "\ud83d\udd34 Never been used. No churn/billing analysis done for any product."
     },
     "mia": {
@@ -439,7 +451,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T16:53:57Z",
+      "lastActive": "2026-02-19T16:56:35Z",
       "statusText": ""
     }
   },
@@ -453,7 +465,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T16:53:57Z"
+      "lastRunAt": "2026-02-19T16:56:35Z"
     },
     {
       "id": "bash-frankie-sync",
