@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T09:00:00Z",
+  "lastUpdated": "2026-02-19T11:42:16Z",
   "activities": [
     {
       "id": "a1",
@@ -15,7 +15,7 @@
       "id": "a2",
       "agent": "sam",
       "title": "Team page accordion fix + mobile responsiveness",
-      "description": "Fixed accordion and full mobile responsiveness pass. ⚠️ Sam wrote code directly instead of delegating to Dev (Dev existed at this point).",
+      "description": "Fixed accordion and full mobile responsiveness pass. \u26a0\ufe0f Sam wrote code directly instead of delegating to Dev (Dev existed at this point).",
       "status": "success",
       "product": "internal",
       "createdAt": 1771459200000,
@@ -94,7 +94,7 @@
     {
       "id": "a10",
       "agent": "sam",
-      "title": "Create Dev agent (Devin 🛠️)",
+      "title": "Create Dev agent (Devin \ud83d\udee0\ufe0f)",
       "description": "New Web Developer agent to own the MC codebase. Sam should no longer write code directly.",
       "status": "success",
       "product": "internal",
@@ -214,7 +214,7 @@
     {
       "id": "a22",
       "agent": "sam",
-      "title": "Rename Dev → Devin",
+      "title": "Rename Dev \u2192 Devin",
       "description": "Updated all files, MEMORY.md, and data-provider to use Devin name throughout.",
       "status": "success",
       "product": "internal",
@@ -244,7 +244,7 @@
     {
       "id": "a25",
       "agent": "devin",
-      "title": "Rename Ops → Surveillance",
+      "title": "Rename Ops \u2192 Surveillance",
       "description": "Updated nav and page title from Ops to Surveillance.",
       "status": "success",
       "product": "internal",
@@ -324,7 +324,7 @@
     {
       "id": "a33",
       "agent": "sam",
-      "title": "MC dashboard v2 — page builds (Feb 18)",
+      "title": "MC dashboard v2 \u2014 page builds (Feb 18)",
       "description": "Upgraded to recharts (interactive hover), built Tasks Board, Creators page, Memory page. Team page went through 3 design iterations before landing on clean accordion layout.",
       "status": "success",
       "product": "internal",
@@ -354,8 +354,8 @@
     {
       "id": "a36",
       "agent": "sam",
-      "title": "agentOrder fix — add Devin to team page",
-      "description": "Added Devin to agentOrder array in team page. ⚠️ Sam edited code directly instead of delegating to Devin. One-line fix but still a violation.",
+      "title": "agentOrder fix \u2014 add Devin to team page",
+      "description": "Added Devin to agentOrder array in team page. \u26a0\ufe0f Sam edited code directly instead of delegating to Devin. One-line fix but still a violation.",
       "status": "success",
       "product": "internal",
       "createdAt": 1771489680000,
@@ -364,7 +364,7 @@
     {
       "id": "a37",
       "agent": "sam",
-      "title": "Model config changes — Sonnet fallback",
+      "title": "Model config changes \u2014 Sonnet fallback",
       "description": "Configured Claude Sonnet as the model for sub-agents and background tasks. Opus remains the default for main sessions. Auto-fallback from Opus to Sonnet when context is high.",
       "status": "success",
       "product": "internal",
@@ -385,11 +385,59 @@
       "id": "a39",
       "agent": "penny",
       "title": "Full mc-data.json reconciliation",
-      "description": "Comprehensive sweep of all work Feb 18–19. Added 9 missing activities, 4 missing tasks, 3 missing decisions. Fixed a26 in-progress → success. Updated lastUpdated.",
+      "description": "Comprehensive sweep of all work Feb 18\u201319. Added 9 missing activities, 4 missing tasks, 3 missing decisions. Fixed a26 in-progress \u2192 success. Updated lastUpdated.",
       "status": "success",
       "product": "internal",
       "createdAt": 1771491360000,
       "type": "task"
+    },
+    {
+      "id": "a40",
+      "agent": "miles",
+      "title": "ISK keyword snapshot",
+      "description": "Report: memory/gsc-isk-snapshot-2026-02-19.md",
+      "status": "completed",
+      "date": "2026-02-19T06:25:00Z"
+    },
+    {
+      "id": "a41",
+      "agent": "sam",
+      "title": "Create Dev agent",
+      "description": "New agent: Dev \ud83d\udee0\ufe0f for MC codebase",
+      "status": "completed",
+      "date": "2026-02-19T07:30:00Z"
+    },
+    {
+      "id": "a42",
+      "agent": "sam",
+      "title": "Build ops infrastructure",
+      "description": "Creating Penny brief, ops/, SOP, HEARTBEAT",
+      "status": "in-progress",
+      "date": "2026-02-19T08:00:00Z"
+    },
+    {
+      "id": "a43",
+      "agent": "devin",
+      "title": "Team page avatars (Personas style)",
+      "description": "Swapped emoji for DiceBear avatars, added recurring tasks section",
+      "status": "completed",
+      "date": "2026-02-19T07:50:00Z"
+    },
+    {
+      "id": "a44",
+      "agent": "devin",
+      "title": "Add Dev agent to team + office",
+      "description": "New agent fully onboarded",
+      "status": "completed",
+      "date": "2026-02-19T08:05:00Z"
+    },
+    {
+      "id": "a45",
+      "agent": "sam",
+      "title": "Add Devin to team page agentOrder",
+      "description": "VIOLATION: Sam edited code directly instead of delegating to Devin. One-line fix but still a violation.",
+      "status": "completed",
+      "date": "2026-02-19T08:28:00Z"
     }
   ],
   "tasks": [
@@ -440,7 +488,7 @@
     {
       "id": "t5",
       "title": "Build content strategy for ISK landing pages",
-      "description": "Create dedicated landing pages targeting high-impression keywords like 'ai interview assistant'. ISK is a live interview tool, not prep — content must reflect that.",
+      "description": "Create dedicated landing pages targeting high-impression keywords like 'ai interview assistant'. ISK is a live interview tool, not prep \u2014 content must reflect that.",
       "status": "todo",
       "assignee": "miles",
       "priority": "high",
@@ -473,7 +521,7 @@
     {
       "id": "t8",
       "title": "Set up competitor keyword tracking",
-      "description": "Track competitor keyword positions for all products. Alternative pages are ISK's #1 non-brand traffic driver — need to know what competitors are doing.",
+      "description": "Track competitor keyword positions for all products. Alternative pages are ISK's #1 non-brand traffic driver \u2014 need to know what competitors are doing.",
       "status": "todo",
       "assignee": "miles",
       "priority": "medium",
@@ -484,7 +532,7 @@
     {
       "id": "t9",
       "title": "Investigate ISK traffic drop (-30%)",
-      "description": "ISK traffic dropped 30% vs last Wednesday per Dana's morning report. Needs root cause analysis — algorithm change, seasonal, or something else.",
+      "description": "ISK traffic dropped 30% vs last Wednesday per Dana's morning report. Needs root cause analysis \u2014 algorithm change, seasonal, or something else.",
       "status": "todo",
       "assignee": "dana",
       "priority": "high",
@@ -495,7 +543,7 @@
     {
       "id": "t10",
       "title": "Set up weekly UGC performance tracking (Mia)",
-      "description": "Mia audited the sheet once on Feb 18. Needs recurring weekly pull — is Nick's 2.8M still growing or plateauing? Track milestones.",
+      "description": "Mia audited the sheet once on Feb 18. Needs recurring weekly pull \u2014 is Nick's 2.8M still growing or plateauing? Track milestones.",
       "status": "todo",
       "assignee": "mia",
       "priority": "medium",
@@ -517,7 +565,7 @@
     {
       "id": "t12",
       "title": "Create persistent weekly metrics file (Dana)",
-      "description": "Dana's morning reports vanish into Telegram. Need memory/weekly-metrics-YYYY-MM-DD.md every Monday covering all 3 products — traffic, revenue, MoM trends. Without this, spotting problems before they become crises is impossible.",
+      "description": "Dana's morning reports vanish into Telegram. Need memory/weekly-metrics-YYYY-MM-DD.md every Monday covering all 3 products \u2014 traffic, revenue, MoM trends. Without this, spotting problems before they become crises is impossible.",
       "status": "todo",
       "assignee": "dana",
       "priority": "high",
@@ -528,7 +576,7 @@
     {
       "id": "t13",
       "title": "Run Cara's first churn/billing health report",
-      "description": "Churn rate, refund rate, cancellations within 7 days — none of this has been looked at. Data exists in Stripe. Cara should own memory/billing-health-YYYY-MM.md monthly.",
+      "description": "Churn rate, refund rate, cancellations within 7 days \u2014 none of this has been looked at. Data exists in Stripe. Cara should own memory/billing-health-YYYY-MM.md monthly.",
       "status": "todo",
       "assignee": "cara",
       "priority": "medium",
@@ -549,7 +597,7 @@
     },
     {
       "id": "t15",
-      "title": "CLCP organic SEO — stop the decline",
+      "title": "CLCP organic SEO \u2014 stop the decline",
       "description": "CLCP organic traffic is declining and Miles has spent zero time on it (ISK-only focus). Need GSC access + keyword audit + at least one actionable recommendation. This is real revenue being left on the table.",
       "status": "todo",
       "assignee": "miles",
@@ -563,50 +611,50 @@
     {
       "id": "c1",
       "title": "Morning Analytics Report",
-      "type": "cron",
-      "agent": "dana",
       "schedule": "8 AM CAT daily",
-      "nextRun": 1771570800000
+      "owner": "Dana",
+      "description": "Cross-product traffic & revenue summary",
+      "status": "\u2705 Active"
     },
     {
       "id": "c2",
       "title": "Nightly MC Sync",
-      "type": "cron",
-      "agent": "sam",
       "schedule": "2 AM CAT daily",
-      "nextRun": 1771549200000
+      "owner": "Sam",
+      "description": "Update Mission Control with latest data",
+      "status": "\u2705 Active"
     },
     {
       "id": "c3",
       "title": "Weekly GSC Report",
-      "type": "cron",
-      "agent": "miles",
-      "schedule": "Monday 8 AM CAT weekly",
-      "nextRun": 1771830000000
+      "schedule": "Monday 8 AM CAT",
+      "owner": "Miles",
+      "description": "ISK keyword positioning & trends",
+      "status": "\u2705 Active"
     },
     {
       "id": "c4",
       "title": "Delegation Audit",
-      "type": "cron",
-      "agent": "system",
       "schedule": "6 PM CAT daily",
-      "nextRun": 1771506000000
+      "owner": "System",
+      "description": "Reviews Sam's delegation compliance",
+      "status": "\u2705 Active"
     },
     {
       "id": "c5",
       "title": "Penny Daily Check",
-      "type": "cron",
-      "agent": "penny",
       "schedule": "4 PM CAT daily",
-      "nextRun": 1771498800000
+      "owner": "Penny",
+      "description": "Delegation violations, idle agents, cron status",
+      "status": "\u2705 Active"
     },
     {
       "id": "c6",
       "title": "Penny Weekly Audit",
-      "type": "cron",
-      "agent": "penny",
-      "schedule": "Friday 9 AM CAT weekly",
-      "nextRun": 1771747200000
+      "schedule": "Friday 9 AM CAT",
+      "owner": "Penny",
+      "description": "Full team audit with delegation score and recommendations",
+      "status": "\u2705 Active"
     }
   ],
   "decisions": [
@@ -619,7 +667,7 @@
     },
     {
       "id": "d2",
-      "title": "Dev Agent Created (Devin 🛠️)",
+      "title": "Dev Agent Created (Devin \ud83d\udee0\ufe0f)",
       "description": "Add a Web Developer agent to own the MC codebase. Sam was writing code directly, violating the orchestrator role.",
       "madeBy": "Ben + Sam",
       "createdAt": 1771486200000
@@ -665,6 +713,48 @@
       "description": "The nightly MC sync (Sam, 2 AM CAT) updates data after work happens rather than on a rigid push schedule. mc-data.json is the canonical source; synced after meaningful work sessions, not every hour.",
       "madeBy": "Ben + Sam",
       "createdAt": 1771490400000
+    },
+    {
+      "id": "d9",
+      "title": "Dev Agent Created",
+      "description": "- **Decision:** Add a Web Developer agent (Dev \ud83d\udee0\ufe0f) to own the MC codebase",
+      "date": "2026-02-19"
+    },
+    {
+      "id": "d10",
+      "title": "Delegation Audit",
+      "description": "- **Decision:** Daily cron at 6 PM CAT to review Sam's delegation compliance",
+      "date": "2026-02-19"
+    },
+    {
+      "id": "d11",
+      "title": "ISK Keyword Focus",
+      "description": "- **Decision:** Track \"during interview\" keywords (ai interview assistant, helper, etc.) not prep keywords",
+      "date": "2026-02-19"
+    },
+    {
+      "id": "d12",
+      "title": "Sync After Work Chunks (Not Fixed Schedule)",
+      "description": "- **Decision:** mc-data.json syncs after meaningful work sessions, not on a rigid hourly push. Nightly MC sync at 2 AM CAT is the floor, not the ceiling.",
+      "date": "2026-02-19"
     }
-  ]
+  ],
+  "agentStatus": {
+    "devin": {
+      "lastActive": "2026-02-19T11:40:42Z",
+      "status": "Active, productive. Should be getting ALL code tasks from now on."
+    },
+    "frankie": {
+      "lastActive": "2026-02-19T10:58:05Z",
+      "status": "unknown"
+    }
+  },
+  "agentStatusText": {
+    "devin": "Active, productive. Should be getting ALL code tasks from now on.",
+    "dana": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking.",
+    "miles": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted.",
+    "cara": "\ud83d\udd34 Never been used. No churn/billing analysis done for any product.",
+    "penny": "Active as of today. Owns daily delegation audit (6 PM CAT).",
+    "mia": "Idle. Needs recurring weekly UGC performance tracking."
+  }
 }
