@@ -30,13 +30,13 @@ const deskLayout: Record<
   string,
   { x: number; y: number; facing: "down" | "left" | "right" | "up" }
 > = {
-  ben:   { x: 120, y: 60,  facing: "down" },
-  sam:   { x: 380, y: 60,  facing: "down" },
-  cara:  { x: 640, y: 60,  facing: "down" },
-  dana:  { x: 100, y: 300, facing: "right" },
-  miles: { x: 260, y: 300, facing: "right" },
-  penny: { x: 600, y: 300, facing: "left" },
-  mia:   { x: 760, y: 300, facing: "left" },
+  ben:   { x: 150, y: 50,  facing: "down" },
+  sam:   { x: 450, y: 50,  facing: "down" },
+  cara:  { x: 750, y: 50,  facing: "down" },
+  dana:  { x: 100, y: 380, facing: "down" },
+  miles: { x: 300, y: 380, facing: "down" },
+  penny: { x: 600, y: 380, facing: "down" },
+  mia:   { x: 800, y: 380, facing: "down" },
 };
 
 /* ── components ──────────────────────────────────────────────────────────── */
@@ -254,12 +254,12 @@ export default function OfficePage() {
               className="absolute rounded-full"
               style={{
                 width: 200,
-                height: 110,
+                height: 100,
                 backgroundColor: "#4a4038",
                 border: "2px solid #5a5048",
                 left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
+                top: 250,
+                transform: "translateX(-50%)",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
               }}
             />
@@ -268,8 +268,8 @@ export default function OfficePage() {
               className="absolute text-[9px] text-white/20 text-center"
               style={{
                 left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
+                top: 285,
+                transform: "translateX(-50%)",
               }}
             >
               Meeting Table
@@ -292,7 +292,7 @@ export default function OfficePage() {
             {/* Water cooler */}
             <div
               className="absolute flex flex-col items-center"
-              style={{ right: 30, top: 220 }}
+              style={{ left: 445, top: 230 }}
             >
               <div
                 className="rounded-sm"
