@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T14:20:01Z",
+  "lastUpdated": "2026-02-19T14:30:01Z",
   "activities": [
     {
       "id": "s-d0f9337f",
@@ -60,54 +60,6 @@
       "cost": 0.5521,
       "model": "Sonnet",
       "durationSec": 201
-    },
-    {
-      "id": "s-38d720be",
-      "agent": "devin",
-      "title": "devin-ops-live",
-      "description": "`src/app/ops/page.tsx` is completely hardcoded and stale. It has a static AGENTS array with wrong statuses, missing Frankie, and times frozen from Feb 19 morning.",
-      "status": "success",
-      "date": "2026-02-19T13:28:30.563Z",
-      "tokens": 563338,
-      "cost": 0.415,
-      "model": "Sonnet",
-      "durationSec": 142
-    },
-    {
-      "id": "s-9d6d347d",
-      "agent": "devin",
-      "title": "devin-timezone",
-      "description": "Currently all timestamps display in UTC or browser-local time. Ben is in Windhoek, Namibia (CAT = UTC+2, `Africa/Windhoek`). All dates/times across the site should display in his timezone.",
-      "status": "success",
-      "date": "2026-02-19T13:25:28.818Z",
-      "tokens": 855186,
-      "cost": 0.5875,
-      "model": "Sonnet",
-      "durationSec": 153
-    },
-    {
-      "id": "s-3efae561",
-      "agent": "devin",
-      "title": "devin-live-data-fixes",
-      "description": "`src/app/office/page.tsx` currently uses `useActivities()` from data-provider which returns hardcoded mock data.",
-      "status": "success",
-      "date": "2026-02-19T13:24:13.668Z",
-      "tokens": 221210,
-      "cost": 0.1811,
-      "model": "Sonnet",
-      "durationSec": 63
-    },
-    {
-      "id": "s-f6455e7c",
-      "agent": "devin",
-      "title": "devin-cpm",
-      "description": "CPM = Cost Per Mille = (totalPaid / totalViews) \u00d7 1000. Shows how much is being paid per 1,000 views per creator.",
-      "status": "success",
-      "date": "2026-02-19T13:22:03.750Z",
-      "tokens": 160929,
-      "cost": 0.1456,
-      "model": "Sonnet",
-      "durationSec": 67
     },
     {
       "id": "s-73688079",
