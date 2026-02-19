@@ -5,11 +5,23 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 4629396,
-    "cost": 9.9325,
-    "durationSec": 1766,
+    "tokens": 5068365,
+    "cost": 10.6326,
+    "durationSec": 1888,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
+  },
+  {
+    "id": "3df99d0f-2d02-4f49-bfaa-5bde7e7b01c5",
+    "label": "devin-hardcode-cleanup",
+    "agent": "devin",
+    "task": "**Bug fix:**",
+    "model": "Sonnet",
+    "tokens": 3694176,
+    "cost": 1.7394,
+    "durationSec": 458,
+    "status": "success",
+    "timestamp": "2026-02-19T19:25:05.594Z"
   },
   {
     "id": "aae63345-e753-451e-8902-32e9d6391345",
@@ -22,18 +34,6 @@
     "durationSec": 5516,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
-  },
-  {
-    "id": "3df99d0f-2d02-4f49-bfaa-5bde7e7b01c5",
-    "label": "devin-hardcode-cleanup",
-    "agent": "devin",
-    "task": "**Bug fix:**",
-    "model": "Sonnet",
-    "tokens": 1894755,
-    "cost": 1.0934,
-    "durationSec": 334,
-    "status": "success",
-    "timestamp": "2026-02-19T19:25:05.594Z"
   },
   {
     "id": "fe0faccc-271c-40a0-91a0-befe33887a89",
@@ -70,6 +70,18 @@
     "durationSec": 3270,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
+  },
+  {
+    "id": "335eb8a6-5a25-4611-9958-d891eeffde43",
+    "label": "devin-automations-charts",
+    "agent": "devin",
+    "task": "**Task:** Redesign the Daily Schedule and Weekly Grid sections on the /automations page (`/home/ubuntu/.openclaw/workspace/mission-control/src/app/automations/page.tsx`).",
+    "model": "Sonnet",
+    "tokens": 132307,
+    "cost": 0.2315,
+    "durationSec": 96,
+    "status": "success",
+    "timestamp": "2026-02-19T19:30:38.352Z"
   },
   {
     "id": "2921efcb-e29e-4d03-96d0-fad2ffc4e001",
@@ -154,17 +166,5 @@
     "durationSec": 7,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "335eb8a6-5a25-4611-9958-d891eeffde43",
-    "label": "devin-automations-charts",
-    "agent": "devin",
-    "task": "**Task:** Redesign the Daily Schedule and Weekly Grid sections on the /automations page (`/home/ubuntu/.openclaw/workspace/mission-control/src/app/automations/page.tsx`).",
-    "model": "Sonnet",
-    "tokens": 12584,
-    "cost": 0.0293,
-    "durationSec": 2,
-    "status": "success",
-    "timestamp": "2026-02-19T19:30:38.352Z"
   }
 ]

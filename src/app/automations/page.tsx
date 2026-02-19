@@ -354,74 +354,156 @@ export default function AutomationsPage() {
           </div>
         </div>
 
-        {/* ── Section B: Daily Schedule timeline ── */}
+        {/* ── Section B: Daily Schedule (grouped vertical cards) ── */}
         <div className="mb-8">
-          <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Daily Schedule (CAT)</h2>
-          <div className="rounded-xl border border-[#262626] bg-[#141414] p-4 overflow-x-auto">
-            <div className="min-w-[560px]">
-              {/* Hour labels */}
-              <div className="relative flex mb-2" style={{ paddingLeft: "0px" }}>
-                {[0, 4, 8, 12, 16, 20, 24].map((h) => (
-                  <div
-                    key={h}
-                    className="absolute text-[10px] text-zinc-600 -translate-x-1/2"
-                    style={{ left: `${(h / 24) * 100}%` }}
-                  >
-                    {h === 24 ? "24h" : `${h}h`}
-                  </div>
-                ))}
-              </div>
-              {/* Timeline bar */}
-              <div className="relative h-2 bg-[#262626] rounded-full mb-8 mt-5">
-                {/* Current time cursor */}
-                <div
-                  className="absolute top-0 w-0.5 h-4 bg-blue-400/60 -translate-y-1 rounded"
-                  style={{ left: `${(catDecimalHour / 24) * 100}%` }}
-                  title={`Now: ${formatCATHour(catDecimalHour)} CAT`}
-                />
-                {/* Job markers */}
-                {dailyScheduleJobs.map((job) => {
-                  const pct = (job.catHour / 24) * 100;
-                  const ran = catDecimalHour >= job.catHour;
-                  const color = agentColors[job.agent] || "#6b7280";
-                  return (
-                    <div
-                      key={`${job.agent}-${job.catHour}`}
-                      className="absolute flex flex-col items-center"
-                      style={{ left: `${pct}%`, top: "-6px" }}
-                    >
-                      {/* Dot */}
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Daily Schedule (CAT)</h2>
+            <span className="text-[10px] text-zinc-600">Now: {formatCATHour(catDecimalHour)} CAT</span>
+          </div>
+
+          {/* Daily jobs — grouped by time window */}
+          {[
+            { key: "overnight", label: "🌙 Overnight", range: "12 AM – 6 AM", start: 0, end: 6 },
+            { key: "morning",   label: "☀️ Morning",   range: "6 AM – 12 PM", start: 6, end: 12 },
+            { key: "afternoon", label: "🌤 Afternoon",  range: "12 PM – 6 PM", start: 12, end: 18 },
+            { key: "evening",   label: "🌆 Evening",   range: "6 PM – 12 AM", start: 18, end: 24 },
+          ].map(({ key, label, range, start, end }) => {
+            const windowJobs = dailyScheduleJobs.filter(
+              (j) => j.catHour >= start && j.catHour < end
+            );
+            if (windowJobs.length === 0) return null;
+            return (
+              <div key={key} className="mb-4">
+                {/* Window header */}
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-xs font-semibold text-zinc-300">{label}</span>
+                  <span className="text-[10px] text-zinc-600">{range}</span>
+                  <div className="flex-1 h-px bg-[#262626]" />
+                </div>
+                {/* Job rows */}
+                <div className="space-y-1.5">
+                  {windowJobs.map((job) => {
+                    const ran = catDecimalHour >= job.catHour;
+                    const color = agentColors[job.agent] || "#6b7280";
+                    const emoji = OWNER_EMOJI[job.agent] || "⚙️";
+                    return (
                       <div
-                        className="w-3.5 h-3.5 rounded-full border-2 border-[#141414] flex-shrink-0"
-                        style={{ backgroundColor: ran ? color : "#374151", borderColor: ran ? color : "#374151" }}
-                        title={`${job.label} — ${formatCATHour(job.catHour)} CAT`}
-                      />
-                      {/* Label below */}
-                      <div className="mt-3 flex flex-col items-center">
-                        <span className="text-[9px] text-zinc-500 whitespace-nowrap">{job.label}</span>
-                        <span className="text-[8px] text-zinc-700 whitespace-nowrap">{ran ? "✓" : "⏳"}</span>
+                        key={`${job.agent}-${job.catHour}`}
+                        className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
+                          ran
+                            ? "border-[#2a2a2a] bg-[#141414]"
+                            : "border-[#1e1e1e] bg-[#0d0d0d]"
+                        }`}
+                      >
+                        {/* Left accent bar */}
+                        <div
+                          className="w-0.5 h-6 rounded-full flex-shrink-0 opacity-70"
+                          style={{ backgroundColor: color }}
+                        />
+                        {/* Time */}
+                        <span className="text-xs font-mono text-zinc-500 w-10 flex-shrink-0 tabular-nums">
+                          {formatCATHour(job.catHour)}
+                        </span>
+                        {/* Agent emoji */}
+                        <span className="text-base leading-none flex-shrink-0">{emoji}</span>
+                        {/* Job label */}
+                        <span
+                          className={`text-sm flex-1 min-w-0 truncate ${
+                            ran ? "text-zinc-200" : "text-zinc-500"
+                          }`}
+                        >
+                          {job.label}
+                        </span>
+                        {/* Status pill */}
+                        {ran ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-500/10 text-green-400 flex-shrink-0">
+                            <span className="w-1 h-1 rounded-full bg-green-400" />
+                            done
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-800/60 text-zinc-500 flex-shrink-0">
+                            <span className="w-1 h-1 rounded-full bg-zinc-600" />
+                            pending
+                          </span>
+                        )}
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-              {/* Legend */}
-              <div className="flex flex-wrap gap-3 mt-1">
-                {dailyScheduleJobs.map((job) => {
-                  const ran = catDecimalHour >= job.catHour;
-                  const color = agentColors[job.agent] || "#6b7280";
-                  return (
-                    <div key={`${job.agent}-${job.catHour}`} className="flex items-center gap-1.5 text-[11px] text-zinc-400">
-                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-                      <span>{job.label}</span>
-                      <span className="text-zinc-600">{formatCATHour(job.catHour)}</span>
-                      <span className={ran ? "text-green-400" : "text-zinc-600"}>{ran ? "✓" : "⏳"}</span>
-                    </div>
-                  );
-                })}
+            );
+          })}
+
+          {/* Weekly-only jobs (not daily) */}
+          {allScheduleJobs.filter((j) => !j.daily).length > 0 && (
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-xs font-semibold text-zinc-300">📅 Weekly</span>
+                <span className="text-[10px] text-zinc-600">runs on a specific day</span>
+                <div className="flex-1 h-px bg-[#262626]" />
+              </div>
+              <div className="space-y-1.5">
+                {allScheduleJobs
+                  .filter((j) => !j.daily)
+                  .map((job) => {
+                    const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+                    const dayName =
+                      job.weekDay !== undefined ? dayNames[(job.weekDay - 1) % 7] : "?";
+                    // weekDay: 1=Mon…7=Sun; catDayOfWeek: Mon=0…Sun=6
+                    const isToday =
+                      job.weekDay !== undefined && job.weekDay - 1 === catDayOfWeek;
+                    const ran = isToday && catDecimalHour >= job.catHour;
+                    const color = agentColors[job.agent] || "#6b7280";
+                    const emoji = OWNER_EMOJI[job.agent] || "⚙️";
+                    return (
+                      <div
+                        key={`${job.agent}-${job.catHour}`}
+                        className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
+                          isToday
+                            ? "border-blue-500/25 bg-blue-500/5"
+                            : "border-[#1e1e1e] bg-[#0d0d0d]"
+                        }`}
+                      >
+                        <div
+                          className="w-0.5 h-6 rounded-full flex-shrink-0 opacity-70"
+                          style={{ backgroundColor: color }}
+                        />
+                        {/* Day tag */}
+                        <span
+                          className={`text-[10px] font-bold uppercase tracking-wide w-7 flex-shrink-0 ${
+                            isToday ? "text-blue-400" : "text-zinc-600"
+                          }`}
+                        >
+                          {dayName}
+                        </span>
+                        <span className="text-xs font-mono text-zinc-500 w-10 flex-shrink-0 tabular-nums">
+                          {formatCATHour(job.catHour)}
+                        </span>
+                        <span className="text-base leading-none flex-shrink-0">{emoji}</span>
+                        <span
+                          className={`text-sm flex-1 min-w-0 truncate ${
+                            isToday ? "text-zinc-200" : "text-zinc-500"
+                          }`}
+                        >
+                          {job.label}
+                        </span>
+                        {isToday && ran ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-500/10 text-green-400 flex-shrink-0">
+                            <span className="w-1 h-1 rounded-full bg-green-400" />
+                            done
+                          </span>
+                        ) : isToday ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/10 text-blue-400 flex-shrink-0">
+                            <span className="w-1 h-1 rounded-full bg-blue-400" />
+                            today
+                          </span>
+                        ) : null}
+                      </div>
+                    );
+                  })}
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* ── Section C: Weekly Grid ── */}
