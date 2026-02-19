@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Shell from "@/components/Shell";
 import { useAgentMap } from "@/lib/data-provider";
+import { TZ as CAT_TZ } from "@/lib/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -35,7 +36,7 @@ interface McActivity {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const CAT_TZ = "Africa/Windhoek";
+// CAT_TZ imported from @/lib/utils as TZ
 
 function formatCAT(iso: string): string {
   try {

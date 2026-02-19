@@ -3,6 +3,7 @@
 import Shell from "@/components/Shell";
 import { useEffect, useState } from "react";
 import { agentColors } from "@/lib/data-provider";
+import { TZ } from "@/lib/utils";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -25,7 +26,7 @@ interface CronJob {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const TZ_ABBR: Record<string, string> = {
-  "Africa/Windhoek": "CAT",
+  [TZ]: "CAT",
   "Africa/Johannesburg": "SAST",
   "Europe/London": "UTC",
   "America/New_York": "ET",
@@ -162,13 +163,13 @@ interface ScheduleJob {
 
 // Fixed UTC offsets for known timezones (standard time; close enough for display)
 const TZ_OFFSET_HOURS: Record<string, number> = {
-  "Africa/Windhoek":    2,
+  [TZ]:                  2,
   "Africa/Johannesburg": 2,
-  "Europe/London":      0,
-  "America/New_York":   -5,
+  "Europe/London":       0,
+  "America/New_York":    -5,
   "America/Los_Angeles": -8,
-  "UTC":                0,
-  "":                   0,
+  "UTC":                 0,
+  "":                    0,
 };
 
 /**

@@ -81,21 +81,7 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
         })}
       </nav>
 
-      {/* Status footer */}
-      <div className="p-4 border-t border-[#262626] space-y-3">
-        <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mb-2">
-          <span>Services</span>
-        </div>
-        {["Stripe", "Supabase", "Datafast"].map((s) => (
-          <div key={s} className="flex items-center justify-between text-[12px]">
-            <span className="text-zinc-500">{s}</span>
-            <div className="flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-green-400 text-[11px]">Live</span>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Status footer — service dots removed (were static/fake) */}
     </aside>
   );
 }
