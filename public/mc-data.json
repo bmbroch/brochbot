@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-19T19:22:12Z",
+  "lastUpdated": "2026-02-19T19:25:15Z",
   "activities": [
+    {
+      "id": "s-3df99d0f",
+      "agent": "devin",
+      "title": "devin-hardcode-cleanup",
+      "description": "**Bug fix:**",
+      "status": "success",
+      "date": "2026-02-19T19:25:05.594Z",
+      "tokens": 25600,
+      "cost": 0.0366,
+      "model": "Sonnet",
+      "durationSec": 6
+    },
     {
       "id": "s-fe0faccc",
       "agent": "devin",
@@ -8,10 +20,10 @@
       "description": "1. API keys, tokens, secrets hardcoded in source files (not in .env)",
       "status": "success",
       "date": "2026-02-19T19:20:11.977Z",
-      "tokens": 475157,
-      "cost": 0.9505,
+      "tokens": 539551,
+      "cost": 1.1877,
       "model": "Sonnet",
-      "durationSec": 83
+      "durationSec": 145
     },
     {
       "id": "s-2921efcb",
@@ -44,10 +56,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 2452300,
-      "cost": 5.8681,
+      "tokens": 2522726,
+      "cost": 5.9097,
       "model": "Opus",
-      "durationSec": 1257
+      "durationSec": 1266
     },
     {
       "id": "s-b88a363c",
@@ -68,10 +80,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 150659,
-      "cost": 0.4705,
+      "tokens": 227997,
+      "cost": 0.6738,
       "model": "Opus",
-      "durationSec": 2912
+      "durationSec": 3206
     },
     {
       "id": "s-7612c9b5",
@@ -80,10 +92,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 151918,
-      "cost": 0.4804,
+      "tokens": 175563,
+      "cost": 0.5846,
       "model": "Opus",
-      "durationSec": 3171
+      "durationSec": 3270
     },
     {
       "id": "s-aae63345",
@@ -455,7 +467,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T19:20:11.977Z",
+      "lastActive": "2026-02-19T19:25:05.594Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -497,7 +509,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T19:22:12Z"
+      "lastRunAt": "2026-02-19T19:25:15Z"
     },
     {
       "id": "bash-frankie-sync",

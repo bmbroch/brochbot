@@ -1092,6 +1092,18 @@
     "timestamp": "2026-02-19T19:20:11.977Z"
   },
   {
+    "id": "3df99d0f-2d02-4f49-bfaa-5bde7e7b01c5",
+    "label": "devin-hardcode-cleanup",
+    "agent": "devin",
+    "task": "**Bug fix:**",
+    "model": "Sonnet",
+    "tokens": 25600,
+    "cost": 0.0366,
+    "durationSec": 6,
+    "status": "success",
+    "timestamp": "2026-02-19T19:25:05.594Z"
+  },
+  {
     "id": "sam-daily-2026-02-19",
     "label": "Daily total",
     "agent": "sam",
@@ -1101,6 +1113,6 @@
     "cost": 81.6857,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-19T19:22:12Z"
+    "timestamp": "2026-02-19T19:25:15Z"
   }
 ]
