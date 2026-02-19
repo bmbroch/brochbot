@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-19T20:06:36Z",
+  "lastUpdated": "2026-02-19T20:08:48Z",
   "activities": [
+    {
+      "id": "s-d5fe3e9e",
+      "agent": "devin",
+      "title": "devin-theme-system",
+      "description": "**Task: Build a complete light/dark mode theme system for the brochbot Mission Control site.**",
+      "status": "success",
+      "date": "2026-02-19T20:08:45.695Z",
+      "tokens": 12519,
+      "cost": 0.0293,
+      "model": "Sonnet",
+      "durationSec": 2
+    },
     {
       "id": "s-0493e98e",
       "agent": "dana",
@@ -104,10 +116,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 9661358,
-      "cost": 18.5899,
+      "tokens": 9776099,
+      "cost": 18.652,
       "model": "Opus",
-      "durationSec": 3921
+      "durationSec": 3928
     },
     {
       "id": "s-b88a363c",
@@ -128,10 +140,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 340650,
-      "cost": 0.9893,
+      "tokens": 401666,
+      "cost": 1.1642,
       "model": "Opus",
-      "durationSec": 5114
+      "durationSec": 5820
     },
     {
       "id": "s-7612c9b5",
@@ -140,10 +152,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 357837,
-      "cost": 1.0138,
+      "tokens": 414335,
+      "cost": 1.0484,
       "model": "Opus",
-      "durationSec": 5893
+      "durationSec": 5899
     },
     {
       "id": "s-aae63345",
@@ -613,7 +625,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T19:39:21.464Z",
+      "lastActive": "2026-02-19T20:08:45.695Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -655,7 +667,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T20:06:36Z"
+      "lastRunAt": "2026-02-19T20:08:48Z"
     },
     {
       "id": "bash-frankie-sync",
