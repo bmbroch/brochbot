@@ -125,9 +125,9 @@
     "agent": "devin",
     "task": "**Task: Show descriptions on Automations page cron cards + ensure count is correct**",
     "model": "Sonnet",
-    "tokens": 12296,
-    "cost": 0.028,
-    "durationSec": 4,
+    "tokens": 25721,
+    "cost": 0.0397,
+    "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T15:39:30.121Z"
   }
