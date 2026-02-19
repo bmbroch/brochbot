@@ -93,6 +93,16 @@ const RUNS: SubAgentRun[] = [
   { id: "add-frankie", label: "add-frankie", agent: "Sam", task: "Add Frankie to team", model: "Sonnet", tokens: 6000, durationSec: 131, hour: 9, status: "success" },
 ];
 
+/* ─── Plan Usage Limits (hardcoded — update as needed) ───────────────── */
+
+const planUsage = {
+  currentSession: { used: 66, total: 100, label: "132k / 200k tokens" },
+  weeklyAllModels: { used: 2, resetLabel: "Resets Thu 11:59 AM CAT" },
+  weeklySonnet: { used: 3, resetLabel: "Resets daily" },
+  estimatedWeeklyBudget: 48_000_000,
+  todayBurn: 958_000,
+};
+
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
 
 function fmtTokens(n: number): string {
@@ -134,6 +144,113 @@ function modelColor(model: Model): string {
 }
 
 /* ─── Sub-components ──────────────────────────────────────────────────── */
+
+function UsageBar({
+  pct,
+  label,
+  resetLabel,
+}: {
+  pct: number;
+  label?: string;
+  resetLabel: string;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-1.5 rounded-full bg-[#2a2a2a] overflow-hidden">
+          <div
+            className="h-full rounded-full bg-blue-500 transition-all duration-700"
+            style={{ width: `${Math.min(pct, 100)}%` }}
+          />
+        </div>
+        <span className="text-[12px] tabular-nums text-zinc-300 w-8 text-right shrink-0">{pct}%</span>
+        {label && <span className="text-[12px] text-zinc-500 shrink-0">{label}</span>}
+      </div>
+      <p className="text-[11px] text-zinc-600">{resetLabel}</p>
+    </div>
+  );
+}
+
+function PlanUsageLimits() {
+  const { currentSession, weeklyAllModels, weeklySonnet, estimatedWeeklyBudget, todayBurn } = planUsage;
+
+  const projectedWeekly = todayBurn * 7;
+  const projectedPct = projectedWeekly / estimatedWeeklyBudget;
+  const runwayX = Math.round(estimatedWeeklyBudget / projectedWeekly);
+
+  const budgetColor =
+    projectedPct < 0.5 ? "text-green-400" : projectedPct < 0.8 ? "text-yellow-400" : "text-red-400";
+
+  function fmtM(n: number): string {
+    return `${(n / 1_000_000).toFixed(1)}M`;
+  }
+  function fmtK(n: number): string {
+    return `${(n / 1_000).toFixed(0)}K`;
+  }
+
+  return (
+    <section>
+      <h2 className="text-lg font-semibold mb-4">🎯 Plan Usage Limits</h2>
+      <div className="rounded-2xl border border-[#222] bg-[#111] p-6 space-y-6">
+
+        {/* Current Session */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <p className="text-[12px] text-zinc-400 font-medium uppercase tracking-wider">Current Session</p>
+          </div>
+          <UsageBar pct={currentSession.used} label={currentSession.label} resetLabel="Resets on /new or /reset" />
+        </div>
+
+        <div className="border-t border-[#1e1e1e]" />
+
+        {/* Weekly Limits */}
+        <div className="space-y-4">
+          <p className="text-[12px] text-zinc-400 font-medium uppercase tracking-wider">Weekly Limits</p>
+
+          <div className="space-y-1">
+            <p className="text-[12px] text-zinc-400 mb-2">All Models <span className="text-zinc-600">(Opus)</span></p>
+            <UsageBar pct={weeklyAllModels.used} resetLabel={weeklyAllModels.resetLabel} />
+          </div>
+
+          <div className="space-y-1">
+            <p className="text-[12px] text-zinc-400 mb-2">Sonnet Only</p>
+            <UsageBar pct={weeklySonnet.used} resetLabel={weeklySonnet.resetLabel} />
+          </div>
+        </div>
+
+        <div className="border-t border-[#1e1e1e]" />
+
+        {/* Budget Estimate */}
+        <div className="space-y-2">
+          <p className="text-[12px] text-zinc-400 font-medium uppercase tracking-wider">Budget Estimate</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="rounded-xl bg-[#0d0d0d] border border-[#1e1e1e] px-4 py-3 space-y-0.5">
+              <p className="text-[11px] text-zinc-600">Weekly budget</p>
+              <p className="text-sm text-zinc-300">~{fmtM(estimatedWeeklyBudget)} tokens</p>
+              <p className="text-[11px] text-zinc-600">estimated from {fmtK(todayBurn)} = {weeklyAllModels.used}%</p>
+            </div>
+            <div className="rounded-xl bg-[#0d0d0d] border border-[#1e1e1e] px-4 py-3 space-y-0.5">
+              <p className="text-[11px] text-zinc-600">Daily burn rate</p>
+              <p className="text-sm text-zinc-300">{fmtK(todayBurn)} tokens</p>
+              <p className="text-[11px] text-zinc-600">today&apos;s observed rate</p>
+            </div>
+            <div className="rounded-xl bg-[#0d0d0d] border border-[#1e1e1e] px-4 py-3 space-y-0.5">
+              <p className="text-[11px] text-zinc-600">Projected weekly</p>
+              <p className={`text-sm font-semibold ${budgetColor}`}>~{fmtM(projectedWeekly)} tokens</p>
+              <p className="text-[11px] text-zinc-600">at today&apos;s rate</p>
+            </div>
+            <div className="rounded-xl bg-[#0d0d0d] border border-[#1e1e1e] px-4 py-3 space-y-0.5">
+              <p className="text-[11px] text-zinc-600">Runway</p>
+              <p className={`text-sm font-semibold ${budgetColor}`}>~{runwayX}x headroom</p>
+              <p className="text-[11px] text-zinc-600">{projectedPct < 0.5 ? "✓ well within budget" : projectedPct < 0.8 ? "⚠ approaching limit" : "✗ over budget"}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
 
 function StatCard({
   label,
@@ -402,6 +519,9 @@ export default function UsagePage() {
             </div>
           </div>
         </div>
+
+        {/* Plan Usage Limits */}
+        <PlanUsageLimits />
 
         {/* Summary Cards */}
         <section>
