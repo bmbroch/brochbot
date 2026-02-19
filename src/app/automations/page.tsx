@@ -1,7 +1,7 @@
 "use client";
 
 import Shell from "@/components/Shell";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { agentColors } from "@/lib/data-provider";
 import { TZ } from "@/lib/utils";
 
