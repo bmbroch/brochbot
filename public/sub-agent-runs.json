@@ -4,12 +4,24 @@
     "label": "main-session",
     "agent": "Sam",
     "task": "A new session was started via /new or /reset. Greet the user in your configured persona, if one is provided. Be yourself - use your defined voice, man",
-    "model": "unknown",
-    "tokens": 3805572,
-    "cost": 6.0482,
-    "durationSec": 1467,
+    "model": "Opus",
+    "tokens": 8021616,
+    "cost": 11.515,
+    "durationSec": 2192,
     "status": "success",
     "timestamp": "2026-02-19T11:07:42.848Z"
+  },
+  {
+    "id": "8743c669-0a48-4387-8209-d74417b59492",
+    "label": "devin-usage-redesign",
+    "agent": "Devin",
+    "task": "[Thu 2026-02-19 11:36 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for",
+    "model": "Sonnet",
+    "tokens": 442539,
+    "cost": 0.5566,
+    "durationSec": 270,
+    "status": "success",
+    "timestamp": "2026-02-19T11:36:12.610Z"
   },
   {
     "id": "446bac23-d42b-402b-8819-5855374e6d9f",
@@ -62,7 +74,7 @@
   {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
     "label": "Cron: Morning Analytics Report",
-    "agent": "Sam",
+    "agent": "Dana",
     "task": "[cron:f436e186-ac23-4562-a32c-55e4ec7155b7 Morning Analytics Report] Read /home/ubuntu/.openclaw/workspace/agents/dana/AGENT.md for API instructions. ",
     "model": "Opus",
     "tokens": 37595,
@@ -74,7 +86,7 @@
   {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",
     "label": "Cron: Nightly Mission Control Sync",
-    "agent": "Sam",
+    "agent": "Devin",
     "task": "[cron:53f845d7-0a52-422a-93c2-4e9c1cca1279 Nightly Mission Control Sync] Read /home/ubuntu/.openclaw/workspace/memory/mission-control-sync.md to check",
     "model": "Opus",
     "tokens": 27572,
