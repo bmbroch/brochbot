@@ -75,7 +75,6 @@ export const teamMembers: TeamMember[] = [
 export const agentColors: Record<string, string> = {
   ben: "#f59e0b",
   sam: "#3b82f6",
-  dev: "#f59e0b",
   cara: "#a855f7",
   dana: "#22c55e",
   miles: "#f97316",
@@ -89,7 +88,6 @@ export const agentColors: Record<string, string> = {
 export const agentEmojis: Record<string, string> = {
   ben: "👨‍💻",
   sam: "🤝",
-  dev: "🛠️",
   cara: "🎧",
   dana: "📊",
   miles: "🚀",

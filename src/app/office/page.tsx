@@ -36,7 +36,7 @@ const deskLayout: Record<
 > = {
   ben:    { x: 100,  y: 50,  facing: "down" },
   sam:    { x: 300,  y: 50,  facing: "down" },
-  dev:    { x: 500,  y: 50,  facing: "down" },
+  devin:  { x: 500,  y: 50,  facing: "down" },
   cara:   { x: 700,  y: 50,  facing: "down" },
   frankie:{ x: 900,  y: 50,  facing: "down" },
   dana:   { x: 150,  y: 380, facing: "down" },
