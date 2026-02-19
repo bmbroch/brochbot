@@ -7,7 +7,7 @@ import { useActivities, agentColors, teamMembers, type TeamMember, type Activity
 import { formatRelativeDate } from "@/lib/utils";
 import Image from "next/image";
 
-const agentOrder = ["ben", "sam", "cara", "dana", "miles", "penny", "mia"];
+const agentOrder = ["ben", "sam", "dev", "cara", "dana", "miles", "penny", "mia"];
 
 const gradientMap: Record<string, string> = {
   ben: "from-zinc-700/30 to-slate-800/20",
