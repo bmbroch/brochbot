@@ -169,7 +169,7 @@ export default function CalendarPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/mc-data.json")
+    fetch("/api/mc-data")
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
@@ -341,14 +341,14 @@ export default function CalendarPage() {
 
         {!loading && !error && jobs.length === 0 && (
           <div className="py-16 text-center text-zinc-600 text-sm">
-            No scheduled jobs found in mc-data.json
+            No scheduled jobs found in Supabase
           </div>
         )}
 
         {/* Footer note */}
         {!loading && !error && jobs.length > 0 && (
           <p className="mt-5 text-[11px] text-zinc-700 text-right">
-            Data from mc-data.json · refreshes on reload
+            Live from Supabase · refreshes on reload
           </p>
         )}
       </div>

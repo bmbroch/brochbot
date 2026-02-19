@@ -107,7 +107,7 @@ export default function TeamPage() {
 
   // Fetch agentStatus fallback timestamps from mc-data.json
   useEffect(() => {
-    fetch("/mc-data.json")
+    fetch("/api/mc-data")
       .then(r => r.ok ? r.json() : null)
       .then(d => {
         if (!d?.agentStatus) return;

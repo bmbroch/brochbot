@@ -505,7 +505,7 @@ export default function UsagePage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch("/sub-agent-runs.json");
+        const res = await fetch("/api/sub-agent-runs");
         const runs: SubAgentRun[] = await res.json();
         setAllRuns(runs);
       } catch (err) {
@@ -662,8 +662,7 @@ export default function UsagePage() {
         {/* ── Footer ── */}
         <p className="text-center text-zinc-700 text-xs pb-8">
           Data from{" "}
-          <span className="font-mono">sub-agent-runs.json</span> · updated
-          after each run
+          <span className="font-mono">/api/sub-agent-runs</span> · live from Supabase
         </p>
       </div>
     </Shell>
