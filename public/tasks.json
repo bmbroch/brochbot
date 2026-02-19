@@ -77,17 +77,6 @@
     "updatedAt": 1771484700000
   },
   {
-    "_id": "t9",
-    "title": "Investigate ISK traffic drop (-30%)",
-    "description": "ISK traffic dropped 30% vs last Wednesday. Needs root cause analysis.",
-    "status": "todo",
-    "assignee": "dana",
-    "priority": "high",
-    "product": "ISK",
-    "createdAt": 1771480800000,
-    "updatedAt": 1771480800000
-  },
-  {
     "_id": "t10",
     "title": "Set up weekly UGC performance tracking",
     "description": "Mia needs a recurring task to track UGC creator performance weekly.",
