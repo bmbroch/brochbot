@@ -285,6 +285,11 @@ export default function AutomationsPage() {
         <div className="mb-6">
           <h1 className="text-2xl font-bold tracking-tight">Automations</h1>
           <p className="text-sm text-zinc-500 mt-1">Infrastructure, scheduled jobs, and their current status</p>
+          {!loading && !error && (
+            <p className="text-xs text-zinc-600 mt-1">
+              {jobs.length} automations · {jobs.filter((j) => !j.isBash).length} AI · {jobs.filter((j) => j.isBash).length} bash
+            </p>
+          )}
         </div>
 
         {/* ── Section A: Infrastructure ── */}
@@ -530,13 +535,19 @@ export default function AutomationsPage() {
                           )}
                         </div>
 
+                        {job.description && (
+                          <p
+                            className="text-xs text-zinc-500 mb-1 truncate"
+                            title={job.description}
+                          >
+                            {job.description}
+                          </p>
+                        )}
+
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
                           <span style={{ color: `${color}cc` }} className="font-medium">{job.owner}</span>
                           <span className="font-mono text-zinc-400">{humanSchedule}</span>
-                          {job.isBash && job.description
-                            ? <span className="text-zinc-600">{job.description}</span>
-                            : <span className="font-mono text-zinc-700">{job.schedule}</span>
-                          }
+                          {!job.isBash && <span className="font-mono text-zinc-700">{job.schedule}</span>}
                         </div>
                       </div>
 
