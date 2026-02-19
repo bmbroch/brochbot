@@ -243,6 +243,93 @@ export default function OfficePage() {
   );
 }
 
+function MobileDrawer({
+  member,
+  activities,
+  onClose,
+}: {
+  member: TeamMember;
+  activities: Activity[];
+  onClose: () => void;
+}) {
+  const color = agentColors[member.id] || "#666";
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    // trigger enter animation on next frame
+    requestAnimationFrame(() => setVisible(true));
+  }, []);
+
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(onClose, 250);
+  };
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 z-40 bg-black/40 transition-opacity duration-250"
+        style={{ opacity: visible ? 1 : 0 }}
+        onClick={handleClose}
+      />
+      {/* Drawer */}
+      <div
+        className="fixed left-0 right-0 bottom-0 z-50 rounded-t-2xl border-t border-[#262626] bg-[#141414] px-5 pb-6 pt-3 transition-transform duration-250 ease-out"
+        style={{ transform: visible ? "translateY(0)" : "translateY(100%)" }}
+      >
+        {/* Drag handle */}
+        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-white/20" />
+
+        {/* Close button */}
+        <button
+          onClick={handleClose}
+          className="absolute top-3 right-4 text-white/30 hover:text-white/60 text-sm"
+        >
+          ✕
+        </button>
+
+        {/* Agent info */}
+        <div className="flex items-center gap-3 mb-4">
+          <div
+            className="w-10 h-10 rounded-full overflow-hidden border-2 shrink-0"
+            style={{ borderColor: color }}
+          >
+            <Image
+              src={member.avatar || ""}
+              alt={member.name}
+              width={40}
+              height={40}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-white">{member.name}</p>
+            <p className="text-xs text-white/40">{member.role}</p>
+          </div>
+        </div>
+
+        {/* Activities */}
+        <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">
+          Recent activity
+        </p>
+        {activities.length === 0 ? (
+          <p className="text-xs text-white/30">No recent activity</p>
+        ) : (
+          <div className="space-y-2.5 max-h-48 overflow-y-auto">
+            {activities.slice(0, 5).map((a) => (
+              <div key={a._id} className="text-xs">
+                <p className="text-white/60 leading-snug">{a.title}</p>
+                <p className="text-white/25 text-[10px]">{timeAgo(a.createdAt)}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
 function OfficeCanvas({
   selected,
   setSelected,
@@ -260,11 +347,13 @@ function OfficeCanvas({
   const OFFICE_H = 600;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
 
   const recalc = useCallback(() => {
     if (!wrapperRef.current) return;
     const w = wrapperRef.current.clientWidth;
     setScale(Math.min(w / OFFICE_W, 1));
+    setIsMobile(window.innerWidth < 768);
   }, []);
 
   useEffect(() => {
@@ -274,139 +363,150 @@ function OfficeCanvas({
   }, [recalc]);
 
   return (
-    <div ref={wrapperRef} className="flex flex-1 items-start justify-center overflow-auto p-4 md:p-6 md:items-center">
-      <div
-        style={{
-          width: OFFICE_W * scale,
-          height: OFFICE_H * scale,
-        }}
-      >
+    <>
+      <div ref={wrapperRef} className="flex flex-1 items-start justify-center overflow-auto p-4 md:p-6 md:items-center">
         <div
-          className="relative"
           style={{
-            width: OFFICE_W,
-            height: OFFICE_H,
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-            backgroundImage: `repeating-conic-gradient(#1a1a1a 0% 25%, #151515 0% 50%)`,
-            backgroundSize: "40px 40px",
-            borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.06)",
-          }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setSelected(null);
+            width: OFFICE_W * scale,
+            height: OFFICE_H * scale,
           }}
         >
-            {/* ── Furniture ──────────────────────────────── */}
+          <div
+            className="relative"
+            style={{
+              width: OFFICE_W,
+              height: OFFICE_H,
+              transform: `scale(${scale})`,
+              transformOrigin: "top left",
+              backgroundImage: `repeating-conic-gradient(#1a1a1a 0% 25%, #151515 0% 50%)`,
+              backgroundSize: "40px 40px",
+              borderRadius: 12,
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setSelected(null);
+            }}
+          >
+              {/* ── Furniture ──────────────────────────────── */}
 
-            {/* Meeting table (center ellipse) */}
-            <div
-              className="absolute rounded-full"
-              style={{
-                width: 200,
-                height: 100,
-                backgroundColor: "#4a4038",
-                border: "2px solid #5a5048",
-                left: "50%",
-                top: 250,
-                transform: "translateX(-50%)",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-              }}
-            />
-            {/* Table label */}
-            <div
-              className="absolute text-[9px] text-white/20 text-center"
-              style={{
-                left: "50%",
-                top: 285,
-                transform: "translateX(-50%)",
-              }}
-            >
-              Meeting Table
-            </div>
-
-            {/* Plants */}
-            <div className="absolute text-2xl" style={{ left: 20, top: 20 }}>
-              🌳
-            </div>
-            <div className="absolute text-2xl" style={{ right: 20, top: 20 }}>
-              🌿
-            </div>
-            <div className="absolute text-2xl" style={{ left: 20, bottom: 20 }}>
-              🪴
-            </div>
-            <div className="absolute text-xl" style={{ right: 24, bottom: 24 }}>
-              🌳
-            </div>
-
-            {/* Water cooler */}
-            <div
-              className="absolute flex flex-col items-center"
-              style={{ left: 445, top: 230 }}
-            >
+              {/* Meeting table (center ellipse) */}
               <div
-                className="rounded-sm"
+                className="absolute rounded-full"
                 style={{
-                  width: 22,
-                  height: 34,
-                  backgroundColor: "#3b82f6",
-                  boxShadow: "0 0 10px rgba(59,130,246,0.3)",
+                  width: 200,
+                  height: 100,
+                  backgroundColor: "#4a4038",
+                  border: "2px solid #5a5048",
+                  left: "50%",
+                  top: 250,
+                  transform: "translateX(-50%)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
                 }}
               />
-              <span className="text-[8px] text-white/20 mt-1">Water</span>
-            </div>
+              {/* Table label */}
+              <div
+                className="absolute text-[9px] text-white/20 text-center"
+                style={{
+                  left: "50%",
+                  top: 285,
+                  transform: "translateX(-50%)",
+                }}
+              >
+                Meeting Table
+              </div>
 
-            {/* Whiteboard */}
-            <div
-              className="absolute rounded-sm"
-              style={{
-                width: 140,
-                height: 10,
-                backgroundColor: "#e8e8e8",
-                top: 4,
-                left: "50%",
-                transform: "translateX(-50%)",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
-              }}
-            />
-            <div
-              className="absolute text-[8px] text-white/15"
-              style={{ top: 16, left: "50%", transform: "translateX(-50%)" }}
-            >
-              Whiteboard
-            </div>
+              {/* Plants */}
+              <div className="absolute text-2xl" style={{ left: 20, top: 20 }}>
+                🌳
+              </div>
+              <div className="absolute text-2xl" style={{ right: 20, top: 20 }}>
+                🌿
+              </div>
+              <div className="absolute text-2xl" style={{ left: 20, bottom: 20 }}>
+                🪴
+              </div>
+              <div className="absolute text-xl" style={{ right: 24, bottom: 24 }}>
+                🌳
+              </div>
 
-            {/* ── Agents ─────────────────────────────────── */}
-            {teamMembers.map((member) => {
-              const agentActs = getAgentActivities(member.id);
-              const latest = agentActs[0];
-              const isActive =
-                !!latest && Date.now() - latest.createdAt < 24 * 3600000;
-
-              return (
-                <Desk
-                  key={member.id}
-                  member={member}
-                  latestActivity={latest}
-                  isActive={isActive}
-                  isSelected={selected === member.id}
-                  onClick={() =>
-                    setSelected(selected === member.id ? null : member.id)
-                  }
+              {/* Water cooler */}
+              <div
+                className="absolute flex flex-col items-center"
+                style={{ left: 445, top: 230 }}
+              >
+                <div
+                  className="rounded-sm"
+                  style={{
+                    width: 22,
+                    height: 34,
+                    backgroundColor: "#3b82f6",
+                    boxShadow: "0 0 10px rgba(59,130,246,0.3)",
+                  }}
                 />
-              );
-            })}
+                <span className="text-[8px] text-white/20 mt-1">Water</span>
+              </div>
 
-            {/* Tooltip */}
-            {selectedMember && (
-              <Tooltip
-                member={selectedMember}
-                activities={getAgentActivities(selectedMember.id)}
-                onClose={() => setSelected(null)}
+              {/* Whiteboard */}
+              <div
+                className="absolute rounded-sm"
+                style={{
+                  width: 140,
+                  height: 10,
+                  backgroundColor: "#e8e8e8",
+                  top: 4,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+                }}
               />
-            )}
+              <div
+                className="absolute text-[8px] text-white/15"
+                style={{ top: 16, left: "50%", transform: "translateX(-50%)" }}
+              >
+                Whiteboard
+              </div>
+
+              {/* ── Agents ─────────────────────────────────── */}
+              {teamMembers.map((member) => {
+                const agentActs = getAgentActivities(member.id);
+                const latest = agentActs[0];
+                const isActive =
+                  !!latest && Date.now() - latest.createdAt < 24 * 3600000;
+
+                return (
+                  <Desk
+                    key={member.id}
+                    member={member}
+                    latestActivity={latest}
+                    isActive={isActive}
+                    isSelected={selected === member.id}
+                    onClick={() =>
+                      setSelected(selected === member.id ? null : member.id)
+                    }
+                  />
+                );
+              })}
+
+              {/* Desktop tooltip */}
+              {!isMobile && selectedMember && (
+                <Tooltip
+                  member={selectedMember}
+                  activities={getAgentActivities(selectedMember.id)}
+                  onClose={() => setSelected(null)}
+                />
+              )}
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Mobile bottom drawer */}
+      {isMobile && selectedMember && (
+        <MobileDrawer
+          member={selectedMember}
+          activities={getAgentActivities(selectedMember.id)}
+          onClose={() => setSelected(null)}
+        />
+      )}
+    </>
   );
 }
