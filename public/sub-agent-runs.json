@@ -17,9 +17,9 @@
     "agent": "devin",
     "task": "**Task: 3 fixes \u2014 drawer activity source, office alignment, reusable agent map**",
     "model": "Sonnet",
-    "tokens": 419904,
-    "cost": 0.5329,
-    "durationSec": 235,
+    "tokens": 1649473,
+    "cost": 1.1622,
+    "durationSec": 454,
     "status": "success",
     "timestamp": "2026-02-19T15:05:25.056Z"
   },
@@ -58,6 +58,18 @@
     "durationSec": 17,
     "status": "success",
     "timestamp": "2026-02-19T11:52:45.805Z"
+  },
+  {
+    "id": "5ef128e4-6a54-47b6-8475-bbc9b7d39425",
+    "label": "devin-automations-feed",
+    "agent": "devin",
+    "task": "**Task: 3 things \u2014 fix activity feed data source, rename Calendar \u2192 Automations + redesign, add Mia to bash crons**",
+    "model": "Sonnet",
+    "tokens": 28989,
+    "cost": 0.0453,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-02-19T15:13:39.078Z"
   },
   {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",

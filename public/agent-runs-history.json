@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 23050773,
-    "cost": 28.8272,
+    "tokens": 24354620,
+    "cost": 30.8802,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -334,5 +334,29 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T15:10:01Z"
+  },
+  {
+    "id": "5ef128e4-6a54-47b6-8475-bbc9b7d39425",
+    "label": "devin-automations-feed",
+    "agent": "devin",
+    "task": "**Task: 3 things \u2014 fix activity feed data source, rename Calendar \u2192 Automations + redesign, add Mia to bash crons**",
+    "model": "Sonnet",
+    "tokens": 28989,
+    "cost": 0.0453,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-02-19T15:13:39.078Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T15:13:45Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 1303847,
+    "cost": 2.053,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T15:13:45Z"
   }
 ]
