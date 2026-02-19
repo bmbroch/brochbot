@@ -12,18 +12,6 @@
     "timestamp": "2026-02-19T16:50:32.035Z"
   },
   {
-    "id": "00c01b59-a793-4c3c-b494-e386470fc395",
-    "label": "Cara: Mohamed Aazick ISK lookup",
-    "agent": "cara",
-    "task": "Look up this user for ISK (Interview Sidekick):",
-    "model": "Sonnet",
-    "tokens": 127858,
-    "cost": 0.141,
-    "durationSec": 66,
-    "status": "success",
-    "timestamp": "2026-02-19T16:05:19.750Z"
-  },
-  {
     "id": "cd396543-9ced-4e87-98c1-a251d0ddb1f1",
     "label": "Cara: baymaxes2001 ISK lookup",
     "agent": "cara",
