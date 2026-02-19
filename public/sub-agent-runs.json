@@ -5,9 +5,9 @@
     "agent": "Sam",
     "task": "A new session was started via /new or /reset. Greet the user in your configured persona, if one is provided. Be yourself - use your defined voice, man",
     "model": "Opus",
-    "tokens": 8021616,
-    "cost": 11.515,
-    "durationSec": 2192,
+    "tokens": 10052205,
+    "cost": 15.5673,
+    "durationSec": 2565,
     "status": "success",
     "timestamp": "2026-02-19T11:07:42.848Z"
   },

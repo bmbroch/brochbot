@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T11:44:15Z",
+  "lastUpdated": "2026-02-19T11:50:29Z",
   "activities": [
     {
       "id": "a1",
@@ -609,52 +609,69 @@
   ],
   "calendar": [
     {
-      "id": "c1",
-      "title": "Morning Analytics Report",
-      "schedule": "8 AM CAT daily",
-      "owner": "Dana",
-      "description": "Cross-product traffic & revenue summary",
-      "status": "\u2705 Active"
-    },
-    {
-      "id": "c2",
-      "title": "Nightly MC Sync",
-      "schedule": "2 AM CAT daily",
-      "owner": "Sam",
-      "description": "Update Mission Control with latest data",
-      "status": "\u2705 Active"
-    },
-    {
-      "id": "c3",
-      "title": "Weekly GSC Report",
-      "schedule": "Monday 8 AM CAT",
-      "owner": "Miles",
-      "description": "ISK keyword positioning & trends",
-      "status": "\u2705 Active"
-    },
-    {
-      "id": "c4",
-      "title": "Delegation Audit",
-      "schedule": "6 PM CAT daily",
-      "owner": "System",
-      "description": "Reviews Sam's delegation compliance",
-      "status": "\u2705 Active"
-    },
-    {
-      "id": "c5",
+      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
       "title": "Penny Daily Check",
-      "schedule": "4 PM CAT daily",
+      "schedule": "0 16 * * *",
+      "timezone": "Africa/Windhoek",
       "owner": "Penny",
-      "description": "Delegation violations, idle agents, cron status",
-      "status": "\u2705 Active"
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-19T14:00:00Z",
+      "consecutiveErrors": 0
     },
     {
-      "id": "c6",
+      "id": "53f845d7-0a52-422a-93c2-4e9c1cca1279",
+      "title": "Nightly Mission Control Sync",
+      "schedule": "0 2 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "Devin",
+      "enabled": true,
+      "status": "error (1 consecutive)",
+      "lastStatus": "error",
+      "lastRunAt": "2026-02-19T00:00:00Z",
+      "nextRunAt": "2026-02-20T00:00:00Z",
+      "consecutiveErrors": 1
+    },
+    {
+      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
+      "title": "Morning Analytics Report",
+      "schedule": "0 8 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "Dana",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-19T06:00:00Z",
+      "nextRunAt": "2026-02-20T06:00:00Z",
+      "consecutiveErrors": 0
+    },
+    {
+      "id": "0a4cf0db-5f2d-4c05-ab5e-6367d958ac58",
       "title": "Penny Weekly Audit",
-      "schedule": "Friday 9 AM CAT",
+      "schedule": "0 9 * * 5",
+      "timezone": "Africa/Windhoek",
       "owner": "Penny",
-      "description": "Full team audit with delegation score and recommendations",
-      "status": "\u2705 Active"
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T07:00:00Z",
+      "consecutiveErrors": 0
+    },
+    {
+      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
+      "title": "Weekly GSC ISK Report (Miles)",
+      "schedule": "0 6 * * 1",
+      "timezone": "Africa/Windhoek",
+      "owner": "Miles",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-23T04:00:00Z",
+      "consecutiveErrors": 0
     }
   ],
   "decisions": [
