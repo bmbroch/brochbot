@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-19T19:35:29Z",
+  "lastUpdated": "2026-02-19T19:39:23Z",
   "activities": [
+    {
+      "id": "s-efed9647",
+      "agent": "devin",
+      "title": "devin-rolling-24h",
+      "description": "**Task:** Redesign the Weekly Grid on the /automations page to be forward-looking with a rolling 24h window. ONLY touch the Weekly Grid section \u2014 Daily Schedule stays as-is.",
+      "status": "success",
+      "date": "2026-02-19T19:39:21.464Z",
+      "tokens": 12580,
+      "cost": 0.0284,
+      "model": "Sonnet",
+      "durationSec": 2
+    },
     {
       "id": "s-ca2c9505",
       "agent": "devin",
@@ -8,10 +20,10 @@
       "description": "**Task:** Improve the Weekly Grid section on the /automations page. The Daily Schedule section is GOOD \u2014 don't touch it. Only modify the Weekly Grid.",
       "status": "success",
       "date": "2026-02-19T19:35:24.476Z",
-      "tokens": 12454,
-      "cost": 0.028,
+      "tokens": 256823,
+      "cost": 0.2501,
       "model": "Sonnet",
-      "durationSec": 3
+      "durationSec": 109
     },
     {
       "id": "s-335eb8a6",
@@ -80,10 +92,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 5789658,
-      "cost": 12.4585,
+      "tokens": 6260150,
+      "cost": 13.7368,
       "model": "Opus",
-      "durationSec": 2054
+      "durationSec": 2288
     },
     {
       "id": "s-b88a363c",
@@ -491,7 +503,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T19:35:24.476Z",
+      "lastActive": "2026-02-19T19:39:21.464Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -519,7 +531,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T19:25:50Z",
+      "lastActive": "2026-02-19T19:37:20Z",
       "statusText": ""
     }
   },
@@ -533,7 +545,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T19:35:29Z"
+      "lastRunAt": "2026-02-19T19:39:23Z"
     },
     {
       "id": "bash-frankie-sync",

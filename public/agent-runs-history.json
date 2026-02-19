@@ -1128,6 +1128,18 @@
     "timestamp": "2026-02-19T19:35:24.476Z"
   },
   {
+    "id": "efed9647-2d3a-413c-ad87-581ac78b73af",
+    "label": "devin-rolling-24h",
+    "agent": "devin",
+    "task": "**Task:** Redesign the Weekly Grid on the /automations page to be forward-looking with a rolling 24h window. ONLY touch the Weekly Grid section \u2014 Daily Schedule stays as-is.",
+    "model": "Sonnet",
+    "tokens": 12580,
+    "cost": 0.0284,
+    "durationSec": 2,
+    "status": "success",
+    "timestamp": "2026-02-19T19:39:21.464Z"
+  },
+  {
     "id": "sam-daily-2026-02-19",
     "label": "Daily total",
     "agent": "sam",
@@ -1137,6 +1149,6 @@
     "cost": 81.6857,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-19T19:35:29Z"
+    "timestamp": "2026-02-19T19:39:23Z"
   }
 ]
