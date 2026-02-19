@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 6355714,
-    "cost": 13.7889,
-    "durationSec": 2295,
+    "tokens": 6451662,
+    "cost": 13.8562,
+    "durationSec": 2509,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -72,6 +72,18 @@
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
   {
+    "id": "efed9647-2d3a-413c-ad87-581ac78b73af",
+    "label": "devin-rolling-24h",
+    "agent": "devin",
+    "task": "**Task:** Redesign the Weekly Grid on the /automations page to be forward-looking with a rolling 24h window. ONLY touch the Weekly Grid section \u2014 Daily Schedule stays as-is.",
+    "model": "Sonnet",
+    "tokens": 280795,
+    "cost": 0.3854,
+    "durationSec": 215,
+    "status": "success",
+    "timestamp": "2026-02-19T19:39:21.464Z"
+  },
+  {
     "id": "ca2c9505-f9ca-413a-97f3-c60d64ebe8d3",
     "label": "devin-weekly-grid-v2",
     "agent": "devin",
@@ -118,18 +130,6 @@
     "durationSec": 21,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
-  },
-  {
-    "id": "efed9647-2d3a-413c-ad87-581ac78b73af",
-    "label": "devin-rolling-24h",
-    "agent": "devin",
-    "task": "**Task:** Redesign the Weekly Grid on the /automations page to be forward-looking with a rolling 24h window. ONLY touch the Weekly Grid section \u2014 Daily Schedule stays as-is.",
-    "model": "Sonnet",
-    "tokens": 65693,
-    "cost": 0.0568,
-    "durationSec": 13,
-    "status": "success",
-    "timestamp": "2026-02-19T19:39:21.464Z"
   },
   {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
