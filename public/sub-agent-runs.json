@@ -1,5 +1,17 @@
 [
   {
+    "id": "38288c66-a39b-4401-b323-608bcb891ee7",
+    "label": "38288c66-a39",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 2952559,
+    "cost": 7.2348,
+    "durationSec": 1512,
+    "status": "success",
+    "timestamp": "2026-02-19T19:01:14.726Z"
+  },
+  {
     "id": "aae63345-e753-451e-8902-32e9d6391345",
     "label": "aae63345-e75",
     "agent": "sam",
@@ -10,18 +22,6 @@
     "durationSec": 5516,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
-  },
-  {
-    "id": "38288c66-a39b-4401-b323-608bcb891ee7",
-    "label": "38288c66-a39",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 2522726,
-    "cost": 5.9097,
-    "durationSec": 1266,
-    "status": "success",
-    "timestamp": "2026-02-19T19:01:14.726Z"
   },
   {
     "id": "fe0faccc-271c-40a0-91a0-befe33887a89",
@@ -36,14 +36,26 @@
     "timestamp": "2026-02-19T19:20:11.977Z"
   },
   {
+    "id": "3df99d0f-2d02-4f49-bfaa-5bde7e7b01c5",
+    "label": "devin-hardcode-cleanup",
+    "agent": "devin",
+    "task": "**Bug fix:**",
+    "model": "Sonnet",
+    "tokens": 340186,
+    "cost": 0.3211,
+    "durationSec": 79,
+    "status": "success",
+    "timestamp": "2026-02-19T19:25:05.594Z"
+  },
+  {
     "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
     "label": "c1c67e23-34e",
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 227997,
-    "cost": 0.6738,
-    "durationSec": 3206,
+    "tokens": 255625,
+    "cost": 0.6995,
+    "durationSec": 3215,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
@@ -130,18 +142,6 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "3df99d0f-2d02-4f49-bfaa-5bde7e7b01c5",
-    "label": "devin-hardcode-cleanup",
-    "agent": "devin",
-    "task": "**Bug fix:**",
-    "model": "Sonnet",
-    "tokens": 25600,
-    "cost": 0.0366,
-    "durationSec": 6,
-    "status": "success",
-    "timestamp": "2026-02-19T19:25:05.594Z"
   },
   {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
