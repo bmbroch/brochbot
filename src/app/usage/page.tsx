@@ -608,7 +608,11 @@ export default function UsagePage() {
         }
         if (histRes.status === "fulfilled") {
           const hist: AgentRunEntry[] = await histRes.value.json();
-          setHistoryEntries(Array.isArray(hist) ? hist : []);
+          // Filter out sam-sync-* delta entries — they overlap with sam-daily-* totals
+          const cleaned = Array.isArray(hist)
+            ? hist.filter((e: AgentRunEntry) => !e.id.startsWith("sam-sync-"))
+            : [];
+          setHistoryEntries(cleaned);
         }
       } catch (err) {
         console.error("Failed to load usage data", err);
@@ -627,19 +631,22 @@ export default function UsagePage() {
     []
   );
 
-  const todayRuns = useMemo(
-    () => allRuns.filter((r) => r.timestamp.startsWith(today)),
-    [allRuns, today]
+  // Stat card memos use historyEntries (full filtered log) — more complete than allRuns
+  const histTodayEntries = useMemo(
+    () => historyEntries.filter((e) =>
+      new Date(e.timestamp).toLocaleDateString("en-CA", { timeZone: "Africa/Windhoek" }) === todayCat
+    ),
+    [historyEntries, todayCat]
   );
-  const weekRuns = useMemo(
-    () => allRuns.filter((r) => new Date(r.timestamp) >= weekStart),
-    [allRuns, weekStart]
+  const histWeekEntries = useMemo(
+    () => historyEntries.filter((e) => new Date(e.timestamp) >= weekStart),
+    [historyEntries, weekStart]
   );
 
-  const totalCostToday   = useMemo(() => todayRuns.reduce((s, r) => s + r.cost,   0), [todayRuns]);
-  const totalCostWeek    = useMemo(() => weekRuns.reduce((s, r) => s + r.cost,    0), [weekRuns]);
-  const totalTokensToday = useMemo(() => todayRuns.reduce((s, r) => s + r.tokens, 0), [todayRuns]);
-  const totalTokensWeek  = useMemo(() => weekRuns.reduce((s, r) => s + r.tokens,  0), [weekRuns]);
+  const totalCostToday   = useMemo(() => histTodayEntries.reduce((s, r) => s + (r.cost ?? 0),   0), [histTodayEntries]);
+  const totalCostWeek    = useMemo(() => histWeekEntries.reduce((s, r) => s + (r.cost ?? 0),    0), [histWeekEntries]);
+  const totalTokensToday = useMemo(() => histTodayEntries.reduce((s, r) => s + (r.tokens ?? 0), 0), [histTodayEntries]);
+  const totalTokensWeek  = useMemo(() => histWeekEntries.reduce((s, r) => s + (r.tokens ?? 0),  0), [histWeekEntries]);
 
   // Sam Today: find the sam-daily-YYYY-MM-DD entry for today (CAT)
   const samTodayCost = useMemo(() => {
@@ -654,12 +661,12 @@ export default function UsagePage() {
 
   const topSpender = useMemo((): [string, number] | null => {
     const byCost: Record<string, number> = {};
-    for (const r of weekRuns) {
-      byCost[r.agent] = (byCost[r.agent] ?? 0) + r.cost;
+    for (const r of histWeekEntries) {
+      byCost[r.agent] = (byCost[r.agent] ?? 0) + (r.cost ?? 0);
     }
     const entries = Object.entries(byCost).sort((a, b) => b[1] - a[1]);
     return entries[0] ?? null;
-  }, [weekRuns]);
+  }, [histWeekEntries]);
 
   const agentOptions = useMemo(() => {
     const agents = new Set(allRuns.map((r) => r.agent));

@@ -380,8 +380,8 @@ export default function AutomationsPage() {
                 {/* Current time cursor */}
                 <div
                   className="absolute top-0 w-0.5 h-4 bg-blue-400/60 -translate-y-1 rounded"
-                  style={{ left: `${(catHour / 24) * 100}%` }}
-                  title={`Now: ${catHour}:00 CAT`}
+                  style={{ left: `${(catDecimalHour / 24) * 100}%` }}
+                  title={`Now: ${formatCATHour(catDecimalHour)} CAT`}
                 />
                 {/* Job markers */}
                 {DAILY_JOBS.map((job) => {
