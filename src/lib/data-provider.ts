@@ -159,56 +159,9 @@ export const mockTasks: Task[] = [
   { _id: "t15", title: "CLCP organic SEO — stop the decline", description: "CLCP organic traffic is declining and Miles has spent zero time on it (ISK-only focus). Need GSC access + keyword audit + at least one actionable recommendation. This is real revenue being left on the table.", status: "todo", assignee: "miles", priority: "high", product: "CLCP", createdAt: 1771491360000, updatedAt: 1771491360000 },
 ];
 
-export const mockActivities: Activity[] = [
-  { _id: "a1", agent: "sam", type: "cron", title: "Nightly MC Sync", description: "Tracker was stale, updated. No code push needed.", status: "success", product: "internal", createdAt: 1771459200000 },
-  { _id: "a2", agent: "sam", type: "task", title: "Team page accordion fix + mobile responsiveness", description: "Fixed accordion and full mobile responsiveness pass. ⚠️ Sam wrote code directly instead of delegating to Dev.", status: "success", product: "internal", createdAt: 1771459200000 },
-  { _id: "a3", agent: "dana", type: "cron", title: "Morning Analytics Report", description: "Traffic down ~19% across all products vs last Wed. ISK -30%. CLCP revenue nearly tripled ($263 vs $95).", status: "success", product: "all", createdAt: 1771480800000 },
-  { _id: "a4", agent: "miles", type: "task", title: "Enable GSC API check", description: "Confirmed GSC API is working and accessible.", status: "success", product: "ISK", createdAt: 1771482000000 },
-  { _id: "a5", agent: "miles", type: "task", title: "ISK keyword snapshot from GSC", description: "Pulled top 50 queries by clicks/impressions, tracked 9 target keywords, analyzed positioning gaps.", status: "success", product: "ISK", createdAt: 1771482300000 },
-  { _id: "a6", agent: "miles", type: "task", title: "ISK keyword trends (6-month)", description: "Generated 6-month trend report for ISK keyword positioning.", status: "success", product: "ISK", createdAt: 1771482600000 },
-  { _id: "a7", agent: "miles", type: "task", title: "ISK month-over-month comparison", description: "Compared ISK keyword performance month over month.", status: "success", product: "ISK", createdAt: 1771482900000 },
-  { _id: "a8", agent: "miles", type: "task", title: "ISK weekly report (new format)", description: "Weekly report with date-range column headers per Ben's preference.", status: "success", product: "ISK", createdAt: 1771483500000 },
-  { _id: "a9", agent: "sam", type: "task", title: "Create agent knowledge briefs", description: "Created agents/*.md briefs for all agents so sub-agents load context from files.", status: "success", product: "internal", createdAt: 1771484400000 },
-  { _id: "a10", agent: "sam", type: "task", title: "Create Dev agent (Devin 🛠️)", description: "New Web Developer agent to own the MC codebase. Sam should no longer write code directly.", status: "success", product: "internal", createdAt: 1771486200000 },
-  { _id: "a11", agent: "sam", type: "task", title: "Set up delegation audit cron", description: "Daily 6 PM CAT cron to review Sam's delegation compliance.", status: "success", product: "internal", createdAt: 1771487100000 },
-  { _id: "a12", agent: "devin", type: "task", title: "Team page DiceBear avatars + recurring tasks section", description: "Swapped emoji for DiceBear avatars, added recurring tasks section to team page.", status: "success", product: "internal", createdAt: 1771487400000 },
-  { _id: "a13", agent: "sam", type: "task", title: "Fix PostCSS breakage", description: "Sub-agent changed postcss.config.js, Sam reverted it.", status: "success", product: "internal", createdAt: 1771487400000 },
-  { _id: "a14", agent: "devin", type: "task", title: "Office page v1", description: "Built top-down virtual office with desks and furniture.", status: "success", product: "internal", createdAt: 1771487700000 },
-  { _id: "a15", agent: "devin", type: "task", title: "Fix office meeting table overlap", description: "Repositioned desks and furniture to fix overlap issues.", status: "success", product: "internal", createdAt: 1771487880000 },
-  { _id: "a16", agent: "devin", type: "task", title: "Add Dev agent to team + office pages", description: "New agent fully onboarded into team and office views.", status: "success", product: "internal", createdAt: 1771488300000 },
-  { _id: "a17", agent: "penny", type: "task", title: "Ops infrastructure overhaul", description: "Created ops/ directory, SOP, cron registry, daily log template.", status: "success", product: "internal", createdAt: 1771488480000 },
-  { _id: "a18", agent: "devin", type: "task", title: "Office mobile responsive fix", description: "Scales office scene on mobile instead of list fallback.", status: "success", product: "internal", createdAt: 1771488900000 },
-  { _id: "a19", agent: "sam", type: "task", title: "Penny cron setup (daily + weekly)", description: "Daily 4 PM CAT and Weekly Friday 9 AM CAT cron jobs for Penny.", status: "success", product: "internal", createdAt: 1771489140000 },
-  { _id: "a20", agent: "devin", type: "task", title: "Office mobile drawer", description: "Bottom sheet for agent activity on mobile.", status: "success", product: "internal", createdAt: 1771489200000 },
-  { _id: "a21", agent: "devin", type: "task", title: "Extract shared AgentDrawer component", description: "Shared component between team and office pages.", status: "success", product: "internal", createdAt: 1771489320000 },
-  { _id: "a22", agent: "sam", type: "task", title: "Rename Dev → Devin", description: "Updated all files, MEMORY, data-provider to use Devin name.", status: "success", product: "internal", createdAt: 1771489320000 },
-  { _id: "a23", agent: "devin", type: "task", title: "Build Ops Surveillance page", description: "/ops page with delegation score, violations ticker, agent status.", status: "success", product: "internal", createdAt: 1771489500000 },
-  { _id: "a24", agent: "sam", type: "task", title: "Update Mia avatar", description: "Generated new avatar, copied to public, pushed.", status: "success", product: "internal", createdAt: 1771489740000 },
-  { _id: "a25", agent: "devin", type: "task", title: "Rename Ops → Surveillance", description: "Updated nav and page title from Ops to Surveillance.", status: "success", product: "internal", createdAt: 1771489800000 },
-  { _id: "a26", agent: "sam", type: "task", title: "Ops infrastructure build (orchestration)", description: "Orchestrated: Penny brief creation, ops/ directory, SOP, HEARTBEAT config. Delegated to Penny sub-agent. Completed.", status: "success", product: "internal", createdAt: 1771489800000 },
-  { _id: "a27", agent: "sam", type: "task", title: "Stripe + Supabase + Datafast integration setup", description: "Connected all 3 products to Stripe, Supabase, and Datafast APIs on Feb 18. Pulled initial data snapshots.", status: "success", product: "all", createdAt: 1771387200000 },
-  { _id: "a28", agent: "mia", type: "task", title: "UGC creator audit", description: "Verified 7 creators, 134 posts, 4.19M combined views. Found data issues: summary tab undercounts, Jake/Bobby UTMs swapped, inconsistent date formats.", status: "success", product: "SE", createdAt: 1771416000000 },
-  { _id: "a29", agent: "sam", type: "task", title: "Google Service Account setup", description: "Set up brochbot service account, enabled Sheets API, stored credentials at .credentials/google-service-account.json.", status: "success", product: "all", createdAt: 1771405200000 },
-  { _id: "a30", agent: "sam", type: "task", title: "Mission Control dashboard initial build", description: "NextJS app with Activity Feed, Calendar, Global Search, Team page. Deployed on Vercel. GitHub PAT set up.", status: "success", product: "internal", createdAt: 1771398000000 },
-  { _id: "a31", agent: "sam", type: "task", title: "Brave Search API setup", description: "Connected Brave Search API, stored key in env vars. Available for all agents.", status: "success", product: "internal", createdAt: 1771408800000 },
-  { _id: "a32", agent: "sam", type: "task", title: "Initial cron jobs setup (Feb 18)", description: "Set up Morning Analytics Report (8 AM CAT, Dana) and Nightly MC Sync (2 AM CAT, Sam) on first day.", status: "success", product: "internal", createdAt: 1771426800000 },
-  { _id: "a33", agent: "sam", type: "task", title: "MC dashboard v2 — page builds (Feb 18)", description: "Upgraded to recharts (interactive hover), built Tasks Board, Creators page, Memory page. Team page went through 3 design iterations before landing on clean accordion layout.", status: "success", product: "internal", createdAt: 1771420200000 },
-  { _id: "a34", agent: "devin", type: "task", title: "AgentSidePanel component", description: "Built AgentSidePanel as a companion to AgentDrawer, used for desktop sidebar agent detail view.", status: "success", product: "internal", createdAt: 1771489380000 },
-  { _id: "a35", agent: "penny", type: "task", title: "First delegation audit report", description: "Full audit: 7 Sam violations documented, agent status assessed, process gaps identified, improvement priorities ranked. Saved: ops/penny-audit-2026-02-19.md", status: "success", product: "internal", createdAt: 1771488960000 },
-  { _id: "a36", agent: "sam", type: "task", title: "agentOrder fix — add Devin to team page", description: "Added Devin to agentOrder array in team page. ⚠️ Sam edited code directly instead of delegating to Devin. One-line fix but still a violation.", status: "success", product: "internal", createdAt: 1771489680000 },
-  { _id: "a37", agent: "sam", type: "task", title: "Model config changes — Sonnet fallback", description: "Configured Claude Sonnet as the model for sub-agents and background tasks. Opus remains the default for main sessions. Auto-fallback from Opus to Sonnet when context is high.", status: "success", product: "internal", createdAt: 1771490100000 },
-  { _id: "a38", agent: "sam", type: "task", title: "mc-data.json creation + data wiring to MC", description: "Created ops/mc-data.json as the canonical data source for Mission Control. Wired MC dashboard to consume JSON for activity feed, calendar, tasks, and decisions.", status: "success", product: "internal", createdAt: 1771490400000 },
-  { _id: "a39", agent: "penny", type: "task", title: "Full mc-data.json reconciliation", description: "Comprehensive sweep of all work Feb 18–19. Added 9 missing activities, 4 missing tasks, 3 missing decisions. Fixed a26 in-progress → success. Updated lastUpdated.", status: "success", product: "internal", createdAt: 1771491360000 },
-];
+// mockActivities removed — useActivities() now fetches live from /api/mc-data
 
-export const mockScheduledTasks: ScheduledTask[] = [
-  { _id: "c1", name: "Morning Analytics Report", schedule: "8 AM CAT daily", nextRun: 1771570800000, agent: "dana", description: "Daily analytics report across all products.", status: "active" },
-  { _id: "c2", name: "Nightly MC Sync", schedule: "2 AM CAT daily", nextRun: 1771549200000, agent: "sam", description: "Sync Mission Control data and tracker.", status: "active" },
-  { _id: "c3", name: "Weekly GSC Report", schedule: "Monday 8 AM CAT weekly", nextRun: 1771830000000, agent: "miles", description: "Weekly Google Search Console keyword report.", status: "active", product: "ISK" },
-  { _id: "c4", name: "Delegation Audit", schedule: "6 PM CAT daily", nextRun: 1771506000000, agent: "system", description: "Review Sam's delegation compliance.", status: "active" },
-  { _id: "c5", name: "Penny Daily Check", schedule: "4 PM CAT daily", nextRun: 1771498800000, agent: "penny", description: "Daily ops check and log update.", status: "active" },
-  { _id: "c6", name: "Penny Weekly Audit", schedule: "Friday 9 AM CAT weekly", nextRun: 1771747200000, agent: "penny", description: "Weekly ops audit and summary.", status: "active" },
-];
+// mockScheduledTasks removed — useScheduledTasks() now fetches live from /api/mc-data
 
 // ─── Decisions ───────────────────────────────────────────────────────────────
 
@@ -220,16 +173,7 @@ export interface Decision {
   createdAt: number;
 }
 
-export const mockDecisions: Decision[] = [
-  { _id: "d1", title: "Agent Knowledge Briefs", description: "Create persistent agent briefs in /workspace/agents/ so sub-agents load context from files instead of re-explaining everything. Reduces context waste, improves delegation efficiency.", madeBy: "Ben + Sam", createdAt: 1771484400000 },
-  { _id: "d2", title: "Dev Agent Created (Devin 🛠️)", description: "Add a Web Developer agent to own the MC codebase. Sam was writing code directly, violating the orchestrator role.", madeBy: "Ben + Sam", createdAt: 1771486200000 },
-  { _id: "d3", title: "Weekly GSC Report Format", description: "Use date ranges as column headers (e.g. '2/10-2/16'), current partial week + last full week + T-30 avg. Ben prefers concrete dates over ambiguous labels like 'this week'.", madeBy: "Ben", createdAt: 1771483500000 },
-  { _id: "d4", title: "Delegation Audit Cron", description: "Daily cron at 6 PM CAT to review Sam's delegation compliance. Need oversight to ensure Sam orchestrates rather than executes.", madeBy: "Ben", createdAt: 1771487100000 },
-  { _id: "d5", title: "ISK Keyword Focus: During-Interview Only", description: "Track 'during interview' keywords (ai interview assistant, helper, etc.) not prep keywords. ISK is a live interview tool, not a practice/prep tool.", madeBy: "Ben", createdAt: 1771482300000 },
-  { _id: "d6", title: "Sonnet for sub-agents", description: "Use Claude Sonnet (claude-sonnet-4-6) for sub-agents and background tasks. Opus (claude-opus-4-6) remains the default for main sessions. Balances cost and speed for autonomous background work.", madeBy: "Ben + Sam", createdAt: 1771490100000 },
-  { _id: "d7", title: "Auto-fallback model config", description: "When context gets long or for delegated tasks, automatically fall back from Opus to Sonnet. Configured in openclaw model settings. Prevents context blowout on expensive tasks.", madeBy: "Ben + Sam", createdAt: 1771490100000 },
-  { _id: "d8", title: "Sync after work chunks, not on fixed schedule", description: "The nightly MC sync (Sam, 2 AM CAT) updates data after work happens rather than on a rigid push schedule. mc-data.json is the canonical source; synced after meaningful work sessions, not every hour.", madeBy: "Ben + Sam", createdAt: 1771490400000 },
-];
+// mockDecisions removed — useDecisions() now fetches live from /api/mc-data
 
 
 // ─── Creator Types & Data ────────────────────────────────────────────────────
@@ -319,22 +263,83 @@ export const creatorColors: Record<string, string> = {
 
 export function useCreatorTimeSeries(name: string) { return creatorsTimeSeries[name] || []; }
 
-// ─── Data Access Hooks (mock implementations) ────────────────────────────────
+// Fetches /creator-data.json and builds time series dynamically.
+// Starts empty (no stale hardcoded data); populates once fetch resolves.
+export function useAllCreatorsTimeSeries(): Record<string, CreatorTimeSeriesPoint[]> {
+  const [timeSeries, setTimeSeries] = useState<Record<string, CreatorTimeSeriesPoint[]>>({});
+  useEffect(() => {
+    fetch("/creator-data.json")
+      .then((r) => r.json())
+      .then((data: Record<string, Creator & { lastUpdated?: string }>) => {
+        const result: Record<string, CreatorTimeSeriesPoint[]> = {};
+        for (const [key, value] of Object.entries(data)) {
+          if (key === "lastUpdated" || typeof value !== "object" || !value.name) continue;
+          result[value.name] = generateTimeSeries(value as Creator);
+        }
+        setTimeSeries(result);
+      })
+      .catch(() => {});
+  }, []);
+  return timeSeries;
+}
 
+// ─── Data Access Hooks ────────────────────────────────────────────────────────
+
+// Fetches /tasks.json; falls back to empty array on error
 export function useTasks(): Task[] {
-  return mockTasks;
+  const [tasks, setTasks] = useState<Task[]>([]);
+  useEffect(() => {
+    fetch("/tasks.json")
+      .then((r) => r.json())
+      .then((data: Task[]) => {
+        if (Array.isArray(data) && data.length > 0) setTasks(data);
+      })
+      .catch(() => {});
+  }, []);
+  return tasks;
 }
 
+// Fetches activities from /api/mc-data; falls back to empty array on error
 export function useActivities(): Activity[] {
-  return [];
+  const [activities, setActivities] = useState<Activity[]>([]);
+  useEffect(() => {
+    fetch("/api/mc-data")
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.activities)) setActivities(d.activities);
+      })
+      .catch(() => {});
+  }, []);
+  return activities;
 }
 
+// Fetches scheduled tasks from /api/mc-data (calendar array); falls back to empty array on error
 export function useScheduledTasks(): ScheduledTask[] {
-  return mockScheduledTasks;
+  const [scheduled, setScheduled] = useState<ScheduledTask[]>([]);
+  useEffect(() => {
+    fetch("/api/mc-data")
+      .then((r) => r.json())
+      .then((d) => {
+        const data = d.scheduledTasks ?? d.calendar ?? [];
+        if (Array.isArray(data)) setScheduled(data);
+      })
+      .catch(() => {});
+  }, []);
+  return scheduled;
 }
 
+// Fetches decisions from /api/mc-data; falls back to empty array on error
 export function useDecisions(): Decision[] {
-  return mockDecisions;
+  const [decisions, setDecisions] = useState<Decision[]>([]);
+  useEffect(() => {
+    fetch("/api/mc-data")
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.decisions)) setDecisions(d.decisions);
+      })
+      .catch(() => {});
+  }, []);
+  return decisions;
 }
 
 // Sync fallback — used by pages that don't need live team data

@@ -3,7 +3,7 @@
 import Shell from "@/components/Shell";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { creatorsTimeSeries, creatorColors } from "@/lib/data-provider";
+import { useAllCreatorsTimeSeries, creatorColors } from "@/lib/data-provider";
 import {
   LineChart, Line, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
