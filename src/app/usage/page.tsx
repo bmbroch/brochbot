@@ -69,7 +69,7 @@ function fmtTime(iso: string): string {
   return new Date(iso).toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
-    timeZone: "UTC",
+    timeZone: "Africa/Windhoek",
     hour12: false,
   });
 }
@@ -78,7 +78,7 @@ function fmtDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
-    timeZone: "UTC",
+    timeZone: "Africa/Windhoek",
   });
 }
 

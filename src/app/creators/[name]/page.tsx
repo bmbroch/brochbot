@@ -4,6 +4,7 @@ import Shell from "@/components/Shell";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { creatorsData, creatorsTimeSeries, creatorsPosts, creatorColors } from "@/lib/data-provider";
+import { formatDate } from "@/lib/utils";
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -72,7 +73,7 @@ export default function CreatorDetailPage() {
           <div>
             <h1 className="text-2xl font-bold tracking-tight">{creator.name}</h1>
             <div className="flex items-center gap-3 text-sm text-zinc-500 mt-1">
-              <span>Started {creator.startDate}</span>
+              <span>Started {formatDate(creator.startDate)}</span>
               <span>·</span>
               <span className="text-green-400">${creator.earnings} earned</span>
             </div>
@@ -151,7 +152,7 @@ export default function CreatorDetailPage() {
               <tbody>
                 {[...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((p, i) => (
                   <tr key={i} className="border-b border-[#1a1a1a] hover:bg-white/[0.02] transition-colors">
-                    <td className="px-5 py-3 text-zinc-400">{p.date}</td>
+                    <td className="px-5 py-3 text-zinc-400">{formatDate(p.date)}</td>
                     <td className="px-5 py-3 text-right text-cyan-400">{fmt(p.ttViews)}</td>
                     <td className="px-5 py-3 text-right text-pink-400">{fmt(p.igViews)}</td>
                     <td className="px-5 py-3 text-right font-medium">{fmt(p.ttViews + p.igViews)}</td>
