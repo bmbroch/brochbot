@@ -1,16 +1,5 @@
 [
   {
-    "_id": "t1",
-    "title": "ISK SEO: build landing pages to push 'ai interview assistant' to top 3",
-    "description": "Currently position 5.8 with 5.4K impressions. Build dedicated landing pages targeting this keyword and related variants. Merged from t5 (content strategy task).",
-    "status": "todo",
-    "assignee": "miles",
-    "priority": "high",
-    "product": "ISK",
-    "createdAt": 1771484700000,
-    "updatedAt": 1771520031522
-  },
-  {
     "_id": "t2",
     "title": "Consolidate blog subdomain 301 redirects",
     "description": "Blog subdomain still getting traffic \u2014 needs 301 redirects to main domain.",

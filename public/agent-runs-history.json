@@ -912,15 +912,27 @@
     "timestamp": "2026-02-19T18:00:01Z"
   },
   {
+    "id": "sam-sync-2026-02-19T18:20:00Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 852379,
+    "cost": 1.9689,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T18:20:00Z"
+  },
+  {
     "id": "sam-daily-2026-02-19",
     "label": "Daily total",
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 57341085,
-    "cost": 66.8357,
+    "tokens": 58193464,
+    "cost": 68.8046,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-19T18:10:01Z"
+    "timestamp": "2026-02-19T18:20:00Z"
   }
 ]
