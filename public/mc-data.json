@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T12:00:02Z",
+  "lastUpdated": "2026-02-19T12:00:50Z",
   "activities": [
     {
       "id": "s-73688079",
@@ -241,7 +241,73 @@
       "updatedAt": 1771491360000
     }
   ],
-  "calendar": [],
+  "calendar": [
+    {
+      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
+      "title": "Penny Daily Check",
+      "schedule": "0 16 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "penny",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-19T14:00:00Z",
+      "consecutiveErrors": 0
+    },
+    {
+      "id": "53f845d7-0a52-422a-93c2-4e9c1cca1279",
+      "title": "Nightly Briefing",
+      "schedule": "0 2 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-19T11:52:45Z",
+      "nextRunAt": "2026-02-20T00:00:00Z",
+      "consecutiveErrors": 0
+    },
+    {
+      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
+      "title": "Morning Analytics Report",
+      "schedule": "0 8 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "dana",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-19T06:00:00Z",
+      "nextRunAt": "2026-02-20T06:00:00Z",
+      "consecutiveErrors": 0
+    },
+    {
+      "id": "0a4cf0db-5f2d-4c05-ab5e-6367d958ac58",
+      "title": "Penny Weekly Audit",
+      "schedule": "0 9 * * 5",
+      "timezone": "Africa/Windhoek",
+      "owner": "penny",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T07:00:00Z",
+      "consecutiveErrors": 0
+    },
+    {
+      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
+      "title": "Weekly GSC ISK Report (Miles)",
+      "schedule": "0 6 * * 1",
+      "timezone": "Africa/Windhoek",
+      "owner": "miles",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-23T04:00:00Z",
+      "consecutiveErrors": 0
+    }
+  ],
   "decisions": [
     {
       "id": "d1",
@@ -326,15 +392,15 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T11:52:45.805Z",
+      "lastActive": "2026-02-19T11:59:11.635Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-19T06:00:00.149Z",
+      "lastActive": "2026-02-19T06:00:25.094Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
-      "lastActive": null,
+      "lastActive": "2026-02-19T06:45:00Z",
       "statusText": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted."
     },
     "cara": {
@@ -342,19 +408,19 @@
       "statusText": "\ud83d\udd34 Never been used. No churn/billing analysis done for any product."
     },
     "mia": {
-      "lastActive": null,
+      "lastActive": "2026-02-18T12:00:00Z",
       "statusText": "Idle. Needs recurring weekly UGC performance tracking."
     },
     "penny": {
-      "lastActive": null,
+      "lastActive": "2026-02-19T08:16:00Z",
       "statusText": "Active as of today. Owns daily delegation audit (6 PM CAT)."
     },
     "frankie": {
-      "lastActive": null,
+      "lastActive": "2026-02-19T10:58:00Z",
       "statusText": ""
     },
     "sam": {
-      "lastActive": null,
+      "lastActive": "2026-02-19T11:59:00Z",
       "statusText": ""
     }
   }
