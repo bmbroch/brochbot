@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 19967444,
-    "cost": 24.7035,
+    "tokens": 20255681,
+    "cost": 25.0461,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -204,6 +204,18 @@
     "timestamp": "2026-02-19T13:58:08Z"
   },
   {
+    "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do a quick daily ops check:",
+    "model": "Opus",
+    "tokens": 63533,
+    "cost": 0.1473,
+    "durationSec": 19,
+    "status": "success",
+    "timestamp": "2026-02-19T14:00:00.055Z"
+  },
+  {
     "id": "sam-sync-2026-02-19T14:00:02Z",
     "label": "Conversation",
     "agent": "sam",
@@ -214,5 +226,29 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T14:00:02Z"
+  },
+  {
+    "id": "4fd7c391-5750-4e37-b3de-ba009e59370e",
+    "label": "devin-three-fixes",
+    "agent": "devin",
+    "task": "**Task: 3 targeted fixes \u2014 drawer activity feed, calendar bash crons, creator posts**",
+    "model": "Sonnet",
+    "tokens": 27952,
+    "cost": 0.0432,
+    "durationSec": 6,
+    "status": "success",
+    "timestamp": "2026-02-19T14:01:56.369Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T14:02:05Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 288237,
+    "cost": 0.3426,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T14:02:05Z"
   }
 ]
