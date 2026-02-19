@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 12261378,
-    "cost": 26.5293,
-    "durationSec": 5324,
+    "tokens": 13302553,
+    "cost": 27.9049,
+    "durationSec": 5898,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -34,18 +34,6 @@
     "durationSec": 5516,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
-  },
-  {
-    "id": "335eb8a6-5a25-4611-9958-d891eeffde43",
-    "label": "devin-automations-charts",
-    "agent": "devin",
-    "task": "**Task:** Redesign the Daily Schedule and Weekly Grid sections on the /automations page (`/home/ubuntu/.openclaw/workspace/mission-control/src/app/automations/page.tsx`).",
-    "model": "Sonnet",
-    "tokens": 644744,
-    "cost": 0.5186,
-    "durationSec": 237,
-    "status": "success",
-    "timestamp": "2026-02-19T19:30:38.352Z"
   },
   {
     "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
@@ -82,18 +70,6 @@
     "durationSec": 215,
     "status": "success",
     "timestamp": "2026-02-19T19:39:21.464Z"
-  },
-  {
-    "id": "ca2c9505-f9ca-413a-97f3-c60d64ebe8d3",
-    "label": "devin-weekly-grid-v2",
-    "agent": "devin",
-    "task": "**Task:** Improve the Weekly Grid section on the /automations page. The Daily Schedule section is GOOD \u2014 don't touch it. Only modify the Weekly Grid.",
-    "model": "Sonnet",
-    "tokens": 256823,
-    "cost": 0.2501,
-    "durationSec": 109,
-    "status": "success",
-    "timestamp": "2026-02-19T19:35:24.476Z"
   },
   {
     "id": "0493e98e-af32-4e21-b61e-dc7bf6e7502b",
