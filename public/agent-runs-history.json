@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 25636411,
-    "cost": 33.0154,
+    "tokens": 27815260,
+    "cost": 34.2469,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -406,5 +406,77 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T15:30:01Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T15:31:10Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 801712,
+    "cost": 0.279,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T15:31:10Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T15:31:16Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 134823,
+    "cost": 0.0434,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T15:31:16Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T15:31:56Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 409814,
+    "cost": 0.1617,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T15:31:56Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T15:32:15Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 275533,
+    "cost": 0.0968,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T15:32:15Z"
+  },
+  {
+    "id": "d50ff74d-16ba-4c2c-bafb-25f72d7df902",
+    "label": "devin-automations-update",
+    "agent": "devin",
+    "task": "**Task: Update /automations page to reflect new cron schedule**",
+    "model": "Sonnet",
+    "tokens": 12633,
+    "cost": 0.0295,
+    "durationSec": 2,
+    "status": "success",
+    "timestamp": "2026-02-19T15:33:14.765Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T15:33:18Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 556967,
+    "cost": 0.6505,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T15:33:18Z"
   }
 ]
