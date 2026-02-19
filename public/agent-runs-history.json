@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 14499208,
-    "cost": 12.966,
+    "tokens": 15501029,
+    "cost": 14.4401,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -142,5 +142,17 @@
     "durationSec": 5,
     "status": "success",
     "timestamp": "2026-02-19T13:28:30.563Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T13:40:01Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 1001821,
+    "cost": 1.4741,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T13:40:01Z"
   }
 ]
