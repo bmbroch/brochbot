@@ -4,7 +4,7 @@ import Shell from "@/components/Shell";
 import AgentDrawer from "@/components/AgentDrawer";
 import AgentSidePanel from "@/components/AgentSidePanel";
 import { useState, useEffect } from "react";
-import { agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
+import { agentColors, useTeam, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
 import Image from "next/image";
 
@@ -93,6 +93,7 @@ function MemberDetail({ member, activities }: { member: TeamMember; activities: 
 }
 
 export default function TeamPage() {
+  const teamMembers = useTeam();
   const [mcActivities, setMcActivities] = useState<Activity[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);

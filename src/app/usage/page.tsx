@@ -621,6 +621,11 @@ export default function UsagePage() {
 
   const weekStart = useMemo(() => lastThursdayNoonUTC(), []);
   const today = new Date().toISOString().slice(0, 10);
+  // Today in CAT timezone (Africa/Windhoek = UTC+2), format YYYY-MM-DD
+  const todayCat = useMemo(
+    () => new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Windhoek" }),
+    []
+  );
 
   const todayRuns = useMemo(
     () => allRuns.filter((r) => r.timestamp.startsWith(today)),
@@ -635,6 +640,17 @@ export default function UsagePage() {
   const totalCostWeek    = useMemo(() => weekRuns.reduce((s, r) => s + r.cost,    0), [weekRuns]);
   const totalTokensToday = useMemo(() => todayRuns.reduce((s, r) => s + r.tokens, 0), [todayRuns]);
   const totalTokensWeek  = useMemo(() => weekRuns.reduce((s, r) => s + r.tokens,  0), [weekRuns]);
+
+  // Sam Today: find the sam-daily-YYYY-MM-DD entry for today (CAT)
+  const samTodayCost = useMemo(() => {
+    const entry = historyEntries.find(
+      (e) =>
+        e.agent === "sam" &&
+        e.id.startsWith("sam-daily-") &&
+        e.id === `sam-daily-${todayCat}`
+    );
+    return entry?.cost ?? 0;
+  }, [historyEntries, todayCat]);
 
   const topSpender = useMemo((): [string, number] | null => {
     const byCost: Record<string, number> = {};
@@ -671,6 +687,18 @@ export default function UsagePage() {
             Real spend across all agents · week resets Thu noon CAT
           </p>
         </div>
+
+        {/* ── Sam Today Card ── */}
+        <section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
+            <StatCard
+              label="Sam Today"
+              value={`$${samTodayCost.toFixed(2)}`}
+              sub={`${todayCat} · CAT`}
+              accent="text-blue-400"
+            />
+          </div>
+        </section>
 
         {/* ── Summary Cards ── */}
         <section>

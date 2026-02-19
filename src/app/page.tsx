@@ -1,7 +1,7 @@
 "use client";
 
 import Shell from "@/components/Shell";
-import { activityTypeConfig, productConfig, statusConfig, agentEmojis, agentColors, mockActivities, Activity } from "@/lib/data-provider";
+import { activityTypeConfig, productConfig, statusConfig, agentEmojis, agentColors, Activity } from "@/lib/data-provider";
 import { formatRelativeDate, getDateGroup } from "@/lib/utils";
 import { useState, useEffect } from "react";
 
@@ -26,7 +26,8 @@ function fmtCostActivity(n: number): string {
 }
 
 export default function Home() {
-  const [activities, setActivities] = useState<EnrichedActivity[]>(mockActivities);
+  const [activities, setActivities] = useState<EnrichedActivity[]>([]);
+  const [fetchError, setFetchError] = useState(false);
   const [filterAgent, setFilterAgent] = useState<string>("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterProduct, setFilterProduct] = useState<string>("all");
@@ -70,7 +71,7 @@ export default function Home() {
         if (mapped.length > 0) setActivities(mapped);
       })
       .catch(() => {
-        // stay on mockActivities fallback
+        setFetchError(true);
       });
   }, []);
 
@@ -107,6 +108,14 @@ export default function Home() {
           <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={types.map(t => ({ value: t, label: t === "all" ? "All Types" : activityTypeConfig[t as keyof typeof activityTypeConfig]?.label || t }))} />
           <FilterSelect label="Product" value={filterProduct} onChange={setFilterProduct} options={products.map(p => ({ value: p, label: p === "all" ? "All Products" : p }))} />
         </div>
+
+        {/* Empty state */}
+        {(fetchError || activities.length === 0) && Object.keys(groups).length === 0 && (
+          <div className="flex flex-col items-center justify-center py-24 text-zinc-600">
+            <span className="text-4xl mb-4">📭</span>
+            <p className="text-sm">No activity yet</p>
+          </div>
+        )}
 
         {/* Timeline */}
         <div className="space-y-8">

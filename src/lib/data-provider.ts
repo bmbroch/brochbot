@@ -2,6 +2,8 @@
 // Set to false when Convex is connected
 export const useMockData = true;
 
+import { useState, useEffect } from "react";
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type TaskStatus = "todo" | "in_progress" | "in-progress" | "done" | "blocked";
@@ -56,6 +58,9 @@ export interface TeamMember {
   dataSources: string[];
   recurringTasks?: string[];
   isAgent: boolean;
+  color?: string;
+  gradient?: string;
+  sortOrder?: number;
 }
 
 // ─── Agent / Team Config ─────────────────────────────────────────────────────
@@ -332,8 +337,37 @@ export function useDecisions(): Decision[] {
   return mockDecisions;
 }
 
-export function useTeam(): TeamMember[] {
+// Sync fallback — used by pages that don't need live team data
+export function useTeamSync(): TeamMember[] {
   return teamMembers;
+}
+
+// Async hook — fetches /team.json, falls back to hardcoded teamMembers while loading
+export function useTeam(): TeamMember[] {
+  const [team, setTeam] = useState<TeamMember[]>(teamMembers);
+  useEffect(() => {
+    fetch("/team.json")
+      .then((r) => r.json())
+      .then((data: TeamMember[]) => {
+        if (Array.isArray(data) && data.length > 0) setTeam(data);
+      })
+      .catch(() => {});
+  }, []);
+  return team;
+}
+
+// Derives agentColors from fetched team data
+export function useAgentColors(): Record<string, string> {
+  const team = useTeam();
+  return Object.fromEntries(
+    team.filter((m) => m.color).map((m) => [m.id, m.color as string])
+  );
+}
+
+// Derives agentEmojis from fetched team data
+export function useAgentEmojis(): Record<string, string> {
+  const team = useTeam();
+  return Object.fromEntries(team.map((m) => [m.id, m.emoji]));
 }
 
 // ─── Search ──────────────────────────────────────────────────────────────────
@@ -347,7 +381,7 @@ export interface SearchResult {
   href: string;
 }
 
-export function searchAll(query: string): SearchResult[] {
+export function searchAll(query: string, activities?: Activity[]): SearchResult[] {
   if (!query.trim()) return [];
   const q = query.toLowerCase();
   const results: SearchResult[] = [];
@@ -357,7 +391,9 @@ export function searchAll(query: string): SearchResult[] {
       results.push({ type: "task", id: t._id, title: t.title, subtitle: `${t.status} · ${t.assignee}`, icon: "📋", href: "/tasks" });
     }
   }
-  for (const a of mockActivities) {
+  // Search live activities if provided; skip stale mock activities if not
+  const activitySource = activities ?? [];
+  for (const a of activitySource) {
     if (a.title.toLowerCase().includes(q) || a.description?.toLowerCase().includes(q)) {
       results.push({ type: "activity", id: a._id, title: a.title, subtitle: `${a.agent} · ${a.type}`, icon: "⚡", href: "/" });
     }

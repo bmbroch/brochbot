@@ -1,8 +1,8 @@
 "use client";
 
 import Shell from "@/components/Shell";
-import { useState } from "react";
-import { useTasks, priorityConfig, productConfig, agentEmojis, agentColors, type Task, type TaskStatus, type Priority, type Assignee } from "@/lib/data-provider";
+import { useState, useEffect } from "react";
+import { mockTasks, priorityConfig, productConfig, agentEmojis, agentColors, type Task, type TaskStatus, type Priority, type Assignee } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
 
 const columns: { id: TaskStatus; label: string; color: string }[] = [
@@ -14,8 +14,17 @@ const columns: { id: TaskStatus; label: string; color: string }[] = [
 const statusOrder: TaskStatus[] = ["todo", "in_progress", "done"];
 
 export default function TasksPage() {
-  const allTasks = useTasks();
-  const [tasks, setTasks] = useState<Task[]>(allTasks);
+  const [tasks, setTasks] = useState<Task[]>(mockTasks);
+
+  // Fetch tasks from /tasks.json on mount; fall back to mockTasks if unavailable
+  useEffect(() => {
+    fetch("/tasks.json")
+      .then((r) => r.json())
+      .then((data: Task[]) => {
+        if (Array.isArray(data) && data.length > 0) setTasks(data);
+      })
+      .catch(() => {});
+  }, []);
   const [filterAssignee, setFilterAssignee] = useState<string>("all");
   const [filterProduct, setFilterProduct] = useState<string>("all");
   const [filterPriority, setFilterPriority] = useState<string>("all");

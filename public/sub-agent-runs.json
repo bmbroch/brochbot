@@ -12,6 +12,18 @@
     "timestamp": "2026-02-19T14:01:56.369Z"
   },
   {
+    "id": "d0f9337f-d977-42ec-a5b3-57e237470458",
+    "label": "devin-arch-cleanup",
+    "agent": "devin",
+    "task": "**Task: Big architecture cleanup \u2014 dynamic team config + remove all hardcoded data**",
+    "model": "Sonnet",
+    "tokens": 2195780,
+    "cost": 1.1472,
+    "durationSec": 324,
+    "status": "success",
+    "timestamp": "2026-02-19T14:13:53.011Z"
+  },
+  {
     "id": "62e23725-45b4-41de-b7c8-faf6c9855780",
     "label": "devin-surveillance",
     "agent": "devin",
@@ -58,18 +70,6 @@
     "durationSec": 181,
     "status": "success",
     "timestamp": "2026-02-19T13:58:01.825Z"
-  },
-  {
-    "id": "ebea0ddb-cfae-41d3-8036-690033640639",
-    "label": "devin-creator-earnings",
-    "agent": "devin",
-    "task": "We now have `public/creator-payouts.json` \u2014 a daily-updated file from Mercury (our bank) with real payout totals per creator. Schema:",
-    "model": "Sonnet",
-    "tokens": 247738,
-    "cost": 0.1791,
-    "durationSec": 82,
-    "status": "success",
-    "timestamp": "2026-02-19T13:16:02.548Z"
   },
   {
     "id": "3efae561-0a1f-42ef-bf27-107d1cf9be94",
@@ -142,17 +142,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "d0f9337f-d977-42ec-a5b3-57e237470458",
-    "label": "devin-arch-cleanup",
-    "agent": "devin",
-    "task": "**Task: Big architecture cleanup \u2014 dynamic team config + remove all hardcoded data**",
-    "model": "Sonnet",
-    "tokens": 16148,
-    "cost": 0.0425,
-    "durationSec": 3,
-    "status": "success",
-    "timestamp": "2026-02-19T14:13:53.011Z"
   }
 ]

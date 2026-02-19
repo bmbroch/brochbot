@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T14:13:59Z",
+  "lastUpdated": "2026-02-19T14:20:01Z",
   "activities": [
     {
       "id": "s-d0f9337f",
@@ -8,10 +8,10 @@
       "description": "**Task: Big architecture cleanup \u2014 dynamic team config + remove all hardcoded data**",
       "status": "success",
       "date": "2026-02-19T14:13:53.011Z",
-      "tokens": 16148,
-      "cost": 0.0425,
+      "tokens": 2195780,
+      "cost": 1.1472,
       "model": "Sonnet",
-      "durationSec": 3
+      "durationSec": 324
     },
     {
       "id": "s-4fd7c391",
@@ -108,18 +108,6 @@
       "cost": 0.1456,
       "model": "Sonnet",
       "durationSec": 67
-    },
-    {
-      "id": "s-ebea0ddb",
-      "agent": "devin",
-      "title": "devin-creator-earnings",
-      "description": "We now have `public/creator-payouts.json` \u2014 a daily-updated file from Mercury (our bank) with real payout totals per creator. Schema:",
-      "status": "success",
-      "date": "2026-02-19T13:16:02.548Z",
-      "tokens": 247738,
-      "cost": 0.1791,
-      "model": "Sonnet",
-      "durationSec": 82
     },
     {
       "id": "s-73688079",
@@ -325,73 +313,7 @@
       "updatedAt": 1771491360000
     }
   ],
-  "calendar": [
-    {
-      "id": "53f845d7-0a52-422a-93c2-4e9c1cca1279",
-      "title": "Nightly Briefing",
-      "schedule": "0 2 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "sam",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-19T11:52:45Z",
-      "nextRunAt": "2026-02-20T00:00:00Z",
-      "consecutiveErrors": 0
-    },
-    {
-      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
-      "title": "Morning Analytics Report",
-      "schedule": "0 8 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "dana",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-19T06:00:00Z",
-      "nextRunAt": "2026-02-20T06:00:00Z",
-      "consecutiveErrors": 0
-    },
-    {
-      "id": "0a4cf0db-5f2d-4c05-ab5e-6367d958ac58",
-      "title": "Penny Weekly Audit",
-      "schedule": "0 9 * * 5",
-      "timezone": "Africa/Windhoek",
-      "owner": "penny",
-      "enabled": true,
-      "status": "idle",
-      "lastStatus": "idle",
-      "lastRunAt": null,
-      "nextRunAt": "2026-02-20T07:00:00Z",
-      "consecutiveErrors": 0
-    },
-    {
-      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
-      "title": "Penny Daily Check",
-      "schedule": "0 16 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "penny",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-19T14:00:00Z",
-      "nextRunAt": "2026-02-20T14:00:00Z",
-      "consecutiveErrors": 0
-    },
-    {
-      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
-      "title": "Weekly GSC ISK Report (Miles)",
-      "schedule": "0 6 * * 1",
-      "timezone": "Africa/Windhoek",
-      "owner": "miles",
-      "enabled": true,
-      "status": "idle",
-      "lastStatus": "idle",
-      "lastRunAt": null,
-      "nextRunAt": "2026-02-23T04:00:00Z",
-      "consecutiveErrors": 0
-    }
-  ],
+  "calendar": [],
   "decisions": [
     {
       "id": "d1",
@@ -504,7 +426,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T14:13:58Z",
+      "lastActive": "2026-02-19T14:19:21Z",
       "statusText": ""
     }
   }

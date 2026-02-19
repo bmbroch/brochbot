@@ -6,7 +6,7 @@ import Shell from "@/components/Shell";
 import AgentDrawer from "@/components/AgentDrawer";
 import AgentSidePanel from "@/components/AgentSidePanel";
 import {
-  teamMembers,
+  useTeam,
   agentColors,
   type TeamMember,
   type Activity,
@@ -149,6 +149,7 @@ function Desk({
 /* ── page ─────────────────────────────────────────────────────────────────── */
 
 export default function OfficePage() {
+  const teamMembers = useTeam();
   const [selected, setSelected] = useState<string | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
 
@@ -205,6 +206,7 @@ export default function OfficePage() {
 
         {/* Top-down office (responsive) — 1000×600 */}
         <OfficeCanvas
+          teamMembers={teamMembers}
           selected={selected}
           setSelected={setSelected}
           activities={activities}
@@ -217,12 +219,14 @@ export default function OfficePage() {
 }
 
 function OfficeCanvas({
+  teamMembers,
   selected,
   setSelected,
   activities,
   getAgentActivities,
   selectedMember,
 }: {
+  teamMembers: TeamMember[];
   selected: string | null;
   setSelected: (id: string | null) => void;
   activities: Activity[];

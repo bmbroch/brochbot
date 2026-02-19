@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Shell from "@/components/Shell";
-import { agentColors, teamMembers } from "@/lib/data-provider";
+import { agentColors, teamMembers, useTeam } from "@/lib/data-provider";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
