@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 13302553,
-    "cost": 27.9049,
-    "durationSec": 5898,
+    "tokens": 13755698,
+    "cost": 28.1525,
+    "durationSec": 5919,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -58,18 +58,6 @@
     "durationSec": 5899,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
-  },
-  {
-    "id": "efed9647-2d3a-413c-ad87-581ac78b73af",
-    "label": "devin-rolling-24h",
-    "agent": "devin",
-    "task": "**Task:** Redesign the Weekly Grid on the /automations page to be forward-looking with a rolling 24h window. ONLY touch the Weekly Grid section \u2014 Daily Schedule stays as-is.",
-    "model": "Sonnet",
-    "tokens": 280795,
-    "cost": 0.3854,
-    "durationSec": 215,
-    "status": "success",
-    "timestamp": "2026-02-19T19:39:21.464Z"
   },
   {
     "id": "0493e98e-af32-4e21-b61e-dc7bf6e7502b",
