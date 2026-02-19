@@ -59,9 +59,11 @@ export interface TeamMember {
   id: Assignee;
   name: string;
   emoji: string;
+  avatar?: string;
   role: string;
   description: string;
   dataSources: string[];
+  recurringTasks?: string[];
   isAgent: boolean;
 }
 
@@ -69,12 +71,12 @@ export interface TeamMember {
 
 export const teamMembers: TeamMember[] = [
   { id: "ben", name: "Ben", emoji: "👨‍💻", role: "Founder", description: "Founder & CEO. Sets the vision, reviews work, and keeps everything on track.", dataSources: ["All"], isAgent: false },
-  { id: "sam", name: "Sam", emoji: "🤝", role: "Chief of Staff", description: "Coordinates all agents, manages workflows, and handles complex multi-step operations.", dataSources: ["Stripe", "Supabase", "Datafast", "GSC"], isAgent: true },
-  { id: "cara", name: "Cara", emoji: "🎧", role: "Customer Support", description: "Handles customer inquiries, subscription issues, and refund requests via Stripe.", dataSources: ["Stripe"], isAgent: true },
-  { id: "dana", name: "Dana", emoji: "📊", role: "Data Analyst", description: "Runs analytics queries, generates reports, and monitors KPIs across all products.", dataSources: ["Supabase", "Datafast"], isAgent: true },
-  { id: "miles", name: "Miles", emoji: "🚀", role: "GTM Lead", description: "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.", dataSources: ["Datafast", "GSC", "SEO Tools"], isAgent: true },
-  { id: "penny", name: "Penny", emoji: "📌", role: "Secretary", description: "Captures ideas, links, inspiration. Maintains the mood board. Keeps receipts on everything.", dataSources: ["Mood Board", "Workspace Files"], isAgent: true },
-  { id: "mia", name: "Mia", emoji: "📱", role: "Social Media Manager", description: "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram. Owns creator relationships.", dataSources: ["Google Sheets", "Datafast (UTM campaigns)"], isAgent: true },
+  { id: "sam", name: "Sam", emoji: "🤝", avatar: "/avatars/sam.png", role: "Chief of Staff", description: "Coordinates all agents, manages workflows, and handles complex multi-step operations.", dataSources: ["Stripe", "Supabase", "Datafast", "GSC"], recurringTasks: ["Nightly MC Sync (2 AM CAT daily)"], isAgent: true },
+  { id: "cara", name: "Cara", emoji: "🎧", avatar: "/avatars/cara.png", role: "Customer Support", description: "Handles customer inquiries, subscription issues, and refund requests via Stripe.", dataSources: ["Stripe"], isAgent: true },
+  { id: "dana", name: "Dana", emoji: "📊", avatar: "/avatars/dana.png", role: "Data Analyst", description: "Runs analytics queries, generates reports, and monitors KPIs across all products.", dataSources: ["Supabase", "Datafast"], recurringTasks: ["Morning Analytics Report (8 AM CAT daily)"], isAgent: true },
+  { id: "miles", name: "Miles", emoji: "🚀", avatar: "/avatars/miles.png", role: "GTM Lead", description: "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.", dataSources: ["Datafast", "GSC", "SEO Tools"], recurringTasks: ["Weekly GSC Report (Monday 8 AM CAT)"], isAgent: true },
+  { id: "penny", name: "Penny", emoji: "📌", avatar: "/avatars/penny.png", role: "Secretary", description: "Captures ideas, links, inspiration. Maintains the mood board. Keeps receipts on everything.", dataSources: ["Mood Board", "Workspace Files"], isAgent: true },
+  { id: "mia", name: "Mia", emoji: "📱", avatar: "/avatars/mia.png", role: "Social Media Manager", description: "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram. Owns creator relationships.", dataSources: ["Google Sheets", "Datafast (UTM campaigns)"], isAgent: true },
 ];
 
 export const agentColors: Record<string, string> = {

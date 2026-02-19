@@ -4,6 +4,7 @@ import Shell from "@/components/Shell";
 import { useState, useEffect } from "react";
 import { useActivities, agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
+import Image from "next/image";
 
 const agentOrder = ["ben", "sam", "cara", "dana", "miles", "penny", "mia"];
 
@@ -27,6 +28,21 @@ function MemberDetail({ member, activities }: { member: TeamMember; activities: 
         <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">About</p>
         <p className="text-sm text-zinc-400 leading-relaxed">{member.description}</p>
       </div>
+
+      {/* Recurring Tasks */}
+      {member.recurringTasks && member.recurringTasks.length > 0 && (
+        <div>
+          <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Recurring Tasks</p>
+          <div className="space-y-1">
+            {member.recurringTasks.map(task => (
+              <div key={task} className="flex items-center gap-2 text-sm text-zinc-400">
+                <span className="text-zinc-600">⏰</span>
+                <span>{task}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Data Sources */}
       <div>
@@ -111,7 +127,11 @@ export default function TeamPage() {
                     border: isSelected ? `2px solid ${color}40` : "2px solid transparent",
                   }}
                 >
-                  <span className="text-[50px] sm:text-[80px] leading-none select-none">{member.emoji}</span>
+                  {member.avatar ? (
+                    <Image src={member.avatar} alt={member.name} width={150} height={150} className="w-full h-full rounded-full object-cover" />
+                  ) : (
+                    <span className="text-[50px] sm:text-[80px] leading-none select-none">{member.emoji}</span>
+                  )}
                 </div>
                 {/* Name */}
                 <span className="text-[14px] sm:text-[16px] font-semibold text-white leading-tight mt-1">{member.name}</span>
@@ -139,7 +159,11 @@ export default function TeamPage() {
               {selectedMember && (
                 <>
                   <div className="px-6 pt-4 pb-2 border-b border-[#1e1e1e] flex items-center gap-2">
-                    <span className="text-base">{selectedMember.emoji}</span>
+                    {selectedMember.avatar ? (
+                      <Image src={selectedMember.avatar} alt={selectedMember.name} width={24} height={24} className="w-6 h-6 rounded-full object-cover" />
+                    ) : (
+                      <span className="text-base">{selectedMember.emoji}</span>
+                    )}
                     <span className="text-sm font-semibold">{selectedMember.name}</span>
                     <span className="text-xs text-zinc-500">— {selectedMember.role}</span>
                   </div>
@@ -171,7 +195,11 @@ export default function TeamPage() {
                   className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br"
                   style={{ backgroundColor: `${agentColors[selectedMember.id]}15` }}
                 >
-                  <span className="text-2xl">{selectedMember.emoji}</span>
+                  {selectedMember.avatar ? (
+                    <Image src={selectedMember.avatar} alt={selectedMember.name} width={40} height={40} className="w-full h-full rounded-full object-cover" />
+                  ) : (
+                    <span className="text-2xl">{selectedMember.emoji}</span>
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold">{selectedMember.name}</p>
