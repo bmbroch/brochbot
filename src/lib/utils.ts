@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // ── Timezone ──────────────────────────────────────────────────────────────────
 
-const TZ = 'Africa/Windhoek';
+export const TZ = 'Africa/Windhoek';
 
 // ── CAT Formatting Utilities ──────────────────────────────────────────────────
 

@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 2952559,
-    "cost": 7.2348,
-    "durationSec": 1512,
+    "tokens": 4120796,
+    "cost": 8.7115,
+    "durationSec": 1643,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -24,6 +24,18 @@
     "timestamp": "2026-02-19T17:32:32.089Z"
   },
   {
+    "id": "3df99d0f-2d02-4f49-bfaa-5bde7e7b01c5",
+    "label": "devin-hardcode-cleanup",
+    "agent": "devin",
+    "task": "**Bug fix:**",
+    "model": "Sonnet",
+    "tokens": 823400,
+    "cost": 0.6004,
+    "durationSec": 184,
+    "status": "success",
+    "timestamp": "2026-02-19T19:25:05.594Z"
+  },
+  {
     "id": "fe0faccc-271c-40a0-91a0-befe33887a89",
     "label": "devin-hardcode-audit",
     "agent": "devin",
@@ -36,26 +48,14 @@
     "timestamp": "2026-02-19T19:20:11.977Z"
   },
   {
-    "id": "3df99d0f-2d02-4f49-bfaa-5bde7e7b01c5",
-    "label": "devin-hardcode-cleanup",
-    "agent": "devin",
-    "task": "**Bug fix:**",
-    "model": "Sonnet",
-    "tokens": 340186,
-    "cost": 0.3211,
-    "durationSec": 79,
-    "status": "success",
-    "timestamp": "2026-02-19T19:25:05.594Z"
-  },
-  {
     "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
     "label": "c1c67e23-34e",
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 255625,
-    "cost": 0.6995,
-    "durationSec": 3215,
+    "tokens": 311689,
+    "cost": 0.8489,
+    "durationSec": 3306,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
   },

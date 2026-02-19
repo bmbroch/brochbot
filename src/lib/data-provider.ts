@@ -266,7 +266,7 @@ const creatorsData: Creator[] = [
 function generateTimeSeries(creator: Creator): CreatorTimeSeriesPoint[] {
   const points: CreatorTimeSeriesPoint[] = [];
   const start = new Date(creator.startDate);
-  const end = new Date("2026-02-18");
+  const end = new Date();
   const totalDays = Math.floor((end.getTime() - start.getTime()) / 86400000);
   if (totalDays <= 0) return points;
 
