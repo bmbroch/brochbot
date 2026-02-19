@@ -463,5 +463,145 @@
       "log": "ops/creator-data-merge.log",
       "lastRunAt": "2026-02-19T15:43:29Z"
     }
+  ],
+  "changelog": [
+    {
+      "date": "2026-02-20",
+      "action": "Added",
+      "text": "Penny Telegram group (`-5280216031`) to allowlist + MEMORY.md",
+      "category": "config"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Updated",
+      "text": "Penny Daily + Weekly crons \u2192 deliver to Penny group (was Sam group)",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Updated",
+      "text": "Dana Morning Analytics cron \u2192 deliver to Dana group (`-5118324440`) \u2014 was DM",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Killed",
+      "text": "Sam 2 AM Nightly Briefing (replaced by morning brief)",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Killed",
+      "text": "Sam 3 AM Drift Check (absorbed into Penny daily)",
+      "category": "agent"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Killed",
+      "text": "Penny Weekly Audit (redundant with daily)",
+      "category": "agent"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Created",
+      "text": "Sam Morning Brief \u2014 7:30 AM CAT \u2192 Sam group",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Updated",
+      "text": "Penny Daily Check \u2014 now observe-only (no file edits), expanded scope to include file hygiene + drift",
+      "category": "agent"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "All crons now observe-only",
+      "text": "\u2014 agents report, Ben approves actions",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Created",
+      "text": "ops/changelog.md (this file) \u2014 tracks all infra/config changes going forward",
+      "category": "config"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Created",
+      "text": "scripts/cron-wrapper.sh \u2014 wraps bash crons, alerts Sam group on non-zero exit",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Updated",
+      "text": "crontab \u2014 all bash crons (except mc-sync) now use cron-wrapper.sh",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Moved",
+      "text": "Penny Daily Check from 4 PM \u2192 5 AM CAT (overnight, report ready for morning)",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Killed",
+      "text": "ghost cron \"Daily Code Audit\" (orphaned from Devin session, never ours)",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Fixed",
+      "text": "mc-sync.sh CRON_OWNER_MAP \u2014 added \"daily gsc\" \u2192 miles, \"morning brief\" \u2192 sam",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Fixed",
+      "text": "mc-sync.sh CRON_DESCRIPTIONS \u2014 updated all to match current cron names and scopes",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Fixed",
+      "text": "mc-sync.sh Vercel failure alert \u2014 was sending to Ben's DM, now sends to Sam group (-5137141366)",
+      "category": "infra"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Removed",
+      "text": "\"Consolidate blog subdomain 301 redirects\" from tasks.json",
+      "category": "config"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Scheduled",
+      "text": "overnight one-shots: Devin (3 tasks), Miles (competitive SEO), Sam (Echo proposal)",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Created",
+      "text": "Mia Weekly UGC Performance Report \u2014 Tuesdays 8 AM CAT \u2192 Sam group",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Updated",
+      "text": "Sam Morning Brief to include overnight results + per-job cost breakdown",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Fixed",
+      "text": "mc-sync.sh \u2014 no longer skips calendar refresh when sessions unchanged. Cron changes now auto-sync within 10 min. One-shot jobs appear on automations page.",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Added",
+      "text": "overnight one-shots: Devin content dashboard v1 (5:30 AM CAT)",
+      "category": "cron"
+    }
   ]
 }

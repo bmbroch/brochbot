@@ -15,6 +15,7 @@ const navItems = [
   { href: "/", label: "Activity Feed", icon: "⚡" },
   { href: "/tasks", label: "Tasks", icon: "📋" },
   { href: "/automations", label: "Automations", icon: "⚙️" },
+  { href: "/changelog", label: "Changelog", icon: "🔄" },
   { href: "/creators", label: "Creators", icon: "🎬" },
   { href: "/team", label: "Team", icon: "👥" },
   { href: "/office", label: "Office", icon: "🏢" },
