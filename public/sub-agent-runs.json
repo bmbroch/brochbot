@@ -24,18 +24,6 @@
     "timestamp": "2026-02-19T11:36:12.610Z"
   },
   {
-    "id": "446bac23-d42b-402b-8819-5855374e6d9f",
-    "label": "devin-usage-fix",
-    "agent": "devin",
-    "task": "[Thu 2026-02-19 11:08 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
-    "model": "Sonnet",
-    "tokens": 431572,
-    "cost": 0.321,
-    "durationSec": 152,
-    "status": "success",
-    "timestamp": "2026-02-19T11:08:49.788Z"
-  },
-  {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
     "label": "Morning Analytics Report",
     "agent": "dana",

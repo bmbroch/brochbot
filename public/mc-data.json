@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T12:00:50Z",
+  "lastUpdated": "2026-02-19T12:22:13Z",
   "activities": [
     {
       "id": "s-73688079",
@@ -36,18 +36,6 @@
       "cost": 0.5566,
       "model": "Sonnet",
       "durationSec": 270
-    },
-    {
-      "id": "s-446bac23",
-      "agent": "devin",
-      "title": "devin-usage-fix",
-      "description": "[Thu 2026-02-19 11:08 UTC] [Subagent Context] You are running as a subagent (depth 1/1). Results auto-announce to your requester; do not busy-poll for status.",
-      "status": "success",
-      "date": "2026-02-19T11:08:49.788Z",
-      "tokens": 431572,
-      "cost": 0.321,
-      "model": "Sonnet",
-      "durationSec": 152
     },
     {
       "id": "s-531ad18a",
@@ -420,7 +408,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-19T11:59:00Z",
+      "lastActive": "2026-02-19T12:22:11Z",
       "statusText": ""
     }
   }
