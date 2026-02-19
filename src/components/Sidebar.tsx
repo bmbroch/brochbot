@@ -13,7 +13,7 @@ interface SidebarProps {
 const navItems = [
   { href: "/", label: "Activity Feed", icon: "⚡" },
   { href: "/tasks", label: "Tasks", icon: "📋" },
-  { href: "/calendar", label: "Calendar", icon: "📅" },
+  { href: "/automations", label: "Automations", icon: "⚙️" },
   { href: "/creators", label: "Creators", icon: "🎬" },
   { href: "/team", label: "Team", icon: "👥" },
   { href: "/office", label: "Office", icon: "🏢" },

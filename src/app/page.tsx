@@ -5,7 +5,7 @@ import { activityTypeConfig, productConfig, statusConfig, agentEmojis, agentColo
 import { formatRelativeDate, getDateGroup } from "@/lib/utils";
 import { useState, useEffect } from "react";
 
-// Extended activity type with metadata fields from mc-data.json
+// Extended activity type with metadata fields from agent-runs-history.json
 interface EnrichedActivity extends Activity {
   tokens?: number;
   cost?: number;
@@ -25,49 +25,69 @@ function fmtCostActivity(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
+// CAT = Africa/Windhoek = UTC+2
+const CAT_OFFSET_MS = 2 * 60 * 60 * 1000;
+
+function getCATDateStr(tsMs: number): string {
+  const catMs = tsMs + CAT_OFFSET_MS;
+  return new Date(catMs).toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+function nowCATDateStr(): string {
+  return getCATDateStr(Date.now());
+}
+
+type DateTab = "today" | "week" | "all";
+
 export default function Home() {
   const [activities, setActivities] = useState<EnrichedActivity[]>([]);
   const [fetchError, setFetchError] = useState(false);
   const [filterAgent, setFilterAgent] = useState<string>("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterProduct, setFilterProduct] = useState<string>("all");
+  const [dateTab, setDateTab] = useState<DateTab>("today");
 
-  // Fetch enriched activities from mc-data.json (has cost/tokens/model/durationSec)
+  // Fetch enriched activities from agent-runs-history.json
   useEffect(() => {
-    fetch("/mc-data.json")
+    fetch("/agent-runs-history.json")
       .then((r) => r.json())
-      .then((data) => {
-        const rawActs: Array<{
-          id: string;
-          agent: string;
-          title: string;
-          description?: string;
-          status: string;
-          date?: string;
-          type?: string;
-          product?: string;
-          tokens?: number;
-          cost?: number;
-          model?: string;
-          durationSec?: number;
-        }> = data.activities || [];
-        // Map to EnrichedActivity, newest first
-        const mapped: EnrichedActivity[] = rawActs
-          .map((a) => ({
-            _id: a.id,
-            agent: a.agent,
-            type: (a.type as Activity["type"]) || "task",
-            title: a.title,
-            description: a.description,
-            product: a.product as Activity["product"] | undefined,
-            status: (a.status as Activity["status"]) || "success",
-            createdAt: a.date ? new Date(a.date).getTime() : Date.now(),
-            tokens: a.tokens,
-            cost: a.cost,
-            model: a.model,
-            durationSec: a.durationSec,
-          }))
-          .reverse();
+      .then((rawList: Array<{
+        id: string;
+        agent: string;
+        label: string;
+        task?: string;
+        status: string;
+        tokens?: number;
+        cost?: number;
+        model?: string;
+        durationSec?: number;
+        timestamp: string;
+      }>) => {
+        // Filter: for sam entries, only keep sam-daily-YYYY-MM-DD (skip sam-sync-* and uuid entries)
+        const filtered = rawList.filter((entry) => {
+          if (entry.agent === "sam" || entry.id.startsWith("sam-")) {
+            return /^sam-daily-\d{4}-\d{2}-\d{2}$/.test(entry.id);
+          }
+          return true;
+        });
+
+        const mapped: EnrichedActivity[] = filtered.map((a) => ({
+          _id: a.id,
+          agent: a.agent,
+          type: "task" as Activity["type"],
+          title: a.label,
+          description: a.task ? a.task.slice(0, 200) : undefined,
+          status: (a.status as Activity["status"]) || "success",
+          createdAt: new Date(a.timestamp).getTime(),
+          tokens: a.tokens,
+          cost: a.cost,
+          model: a.model,
+          durationSec: a.durationSec,
+        }));
+
+        // Newest first
+        mapped.sort((a, b) => b.createdAt - a.createdAt);
+
         if (mapped.length > 0) setActivities(mapped);
       })
       .catch(() => {
@@ -75,7 +95,17 @@ export default function Home() {
       });
   }, []);
 
-  const filtered = activities.filter((a) => {
+  // Date tab filtering
+  const todayCAT = nowCATDateStr();
+  const weekAgoMs = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+  const dateFiltered = activities.filter((a) => {
+    if (dateTab === "today") return getCATDateStr(a.createdAt) === todayCAT;
+    if (dateTab === "week") return a.createdAt >= weekAgoMs;
+    return true; // "all"
+  });
+
+  const filtered = dateFiltered.filter((a) => {
     if (filterAgent !== "all" && a.agent !== filterAgent) return false;
     if (filterType !== "all" && a.type !== filterType) return false;
     if (filterProduct !== "all" && a.product !== filterProduct) return false;
@@ -94,12 +124,35 @@ export default function Home() {
   const types = ["all", ...Object.keys(activityTypeConfig)];
   const products = ["all", "CLCP", "ISK", "SE"];
 
+  const dateTabs: { key: DateTab; label: string }[] = [
+    { key: "today", label: "Today" },
+    { key: "week", label: "This Week" },
+    { key: "all", label: "All Time" },
+  ];
+
   return (
     <Shell>
       <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight">Activity Feed</h1>
           <p className="text-sm text-zinc-500 mt-1">Everything that happened across all agents</p>
+        </div>
+
+        {/* Date tabs */}
+        <div className="flex gap-1 mb-4 p-1 bg-[#141414] border border-[#262626] rounded-xl w-fit">
+          {dateTabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setDateTab(tab.key)}
+              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                dateTab === tab.key
+                  ? "bg-white/10 text-white"
+                  : "text-zinc-500 hover:text-zinc-300"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Filters */}
@@ -110,7 +163,7 @@ export default function Home() {
         </div>
 
         {/* Empty state */}
-        {(fetchError || activities.length === 0) && Object.keys(groups).length === 0 && (
+        {(fetchError || filtered.length === 0) && Object.keys(groups).length === 0 && (
           <div className="flex flex-col items-center justify-center py-24 text-zinc-600">
             <span className="text-4xl mb-4">📭</span>
             <p className="text-sm">No activity yet</p>
@@ -175,7 +228,7 @@ export default function Home() {
                           </div>
                         </div>
                         {activity.description && (
-                          <p className="text-sm text-zinc-500 mt-1 leading-relaxed">{activity.description}</p>
+                          <p className="text-sm text-zinc-500 mt-1 leading-relaxed line-clamp-2">{activity.description}</p>
                         )}
                         {/* Metadata row: cost · tokens · model · duration */}
                         {metaParts.length > 0 ? (

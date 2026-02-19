@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { searchAll, type SearchResult } from "@/lib/data-provider";
+import { searchAll, type SearchResult, type Activity } from "@/lib/data-provider";
 
 interface SearchModalProps {
   open: boolean;
@@ -25,23 +25,54 @@ export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [liveActivities, setLiveActivities] = useState<Activity[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  // Fetch live activities from agent-runs-history.json when modal opens
   useEffect(() => {
     if (open) {
       setQuery("");
       setResults([]);
       setSelectedIndex(0);
       setTimeout(() => inputRef.current?.focus(), 50);
+
+      fetch("/agent-runs-history.json")
+        .then((r) => r.json())
+        .then((rawList: Array<{
+          id: string;
+          agent: string;
+          label: string;
+          task?: string;
+          status: string;
+          timestamp: string;
+        }>) => {
+          const filtered = rawList.filter((entry) => {
+            if (entry.agent === "sam" || entry.id.startsWith("sam-")) {
+              return /^sam-daily-\d{4}-\d{2}-\d{2}$/.test(entry.id);
+            }
+            return true;
+          });
+          const mapped: Activity[] = filtered.map((a) => ({
+            _id: a.id,
+            agent: a.agent,
+            type: "task" as Activity["type"],
+            title: a.label,
+            description: a.task ? a.task.slice(0, 200) : undefined,
+            status: (a.status as Activity["status"]) || "success",
+            createdAt: new Date(a.timestamp).getTime(),
+          }));
+          setLiveActivities(mapped);
+        })
+        .catch(() => {});
     }
   }, [open]);
 
   useEffect(() => {
-    const r = searchAll(query);
+    const r = searchAll(query, liveActivities);
     setResults(r);
     setSelectedIndex(0);
-  }, [query]);
+  }, [query, liveActivities]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
