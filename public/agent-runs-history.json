@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 18957354,
-    "cost": 23.2201,
+    "tokens": 19697715,
+    "cost": 24.3616,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -166,5 +166,41 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T13:50:01Z"
+  },
+  {
+    "id": "62e23725-45b4-41de-b7c8-faf6c9855780",
+    "label": "devin-surveillance",
+    "agent": "devin",
+    "task": "**Task: Redesign the Surveillance page**",
+    "model": "Sonnet",
+    "tokens": 25675,
+    "cost": 0.0368,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-02-19T13:58:01.750Z"
+  },
+  {
+    "id": "7097e4f4-c20e-4679-a707-3a83841264ba",
+    "label": "mia-creator-posts",
+    "agent": "mia",
+    "task": "**Task: Pull real creator post data from Google Sheets \u2192 write to public/creator-posts.json**",
+    "model": "Sonnet",
+    "tokens": 25714,
+    "cost": 0.0363,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-02-19T13:58:01.825Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T13:58:08Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 740361,
+    "cost": 1.1415,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T13:58:08Z"
   }
 ]
