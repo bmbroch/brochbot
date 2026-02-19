@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 13755698,
-    "cost": 28.1525,
-    "durationSec": 5919,
+    "tokens": 14211971,
+    "cost": 30.0593,
+    "durationSec": 6524,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
