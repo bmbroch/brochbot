@@ -1032,15 +1032,51 @@
     "timestamp": "2026-02-19T19:00:01Z"
   },
   {
+    "id": "38288c66-a39b-4401-b323-608bcb891ee7",
+    "label": "38288c66-a39",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 852679,
+    "cost": 2.3391,
+    "durationSec": 522,
+    "status": "success",
+    "timestamp": "2026-02-19T19:01:14.726Z"
+  },
+  {
+    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
+    "label": "95a02d1a-513",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 21273,
+    "cost": 0.0908,
+    "durationSec": 7,
+    "status": "success",
+    "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T19:10:01Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 1265435,
+    "cost": 1.3937,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T19:10:01Z"
+  },
+  {
     "id": "sam-daily-2026-02-19",
     "label": "Daily total",
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 67616938,
-    "cost": 80.2919,
+    "tokens": 68882373,
+    "cost": 81.6857,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-19T19:00:01Z"
+    "timestamp": "2026-02-19T19:10:01Z"
   }
 ]
