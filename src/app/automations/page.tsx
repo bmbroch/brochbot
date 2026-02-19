@@ -150,35 +150,70 @@ const OWNER_EMOJI: Record<string, string> = {
   system: "⚙️",
 };
 
-// ─── Daily schedule jobs ──────────────────────────────────────────────────────
+// ─── Dynamic schedule jobs (derived from live cron data) ─────────────────────
 
 interface ScheduleJob {
   agent: string;
   label: string;
   catHour: number;
   daily: boolean;
-  weekDay?: number; // 1=Mon...7=Sun, undefined means daily
+  weekDay?: number; // 1=Mon...7=Sun (matches cron DOW 1-6, 7=Sun), undefined means daily
 }
 
-// All times in CAT hours (0–23, fractional supported e.g. 1.5 = 1:30 AM)
-const DAILY_JOBS: ScheduleJob[] = [
-  { agent: "mia",     label: "Creator Posts",      catHour: 1,    daily: true },
-  { agent: "sam",     label: "Creator Merge",      catHour: 1.5,  daily: true },
-  { agent: "sam",     label: "Nightly Briefing",   catHour: 2,    daily: true },
-  { agent: "sam",     label: "Drift Check",         catHour: 3,    daily: true },
-  { agent: "dana",    label: "Morning Analytics",  catHour: 8,    daily: true },
-  { agent: "frankie", label: "Mercury Sync",       catHour: 10,   daily: true },
-  { agent: "sam",     label: "Creator Merge",      catHour: 12.5, daily: true },
-  { agent: "penny",   label: "Daily Check",        catHour: 16,   daily: true },
-  { agent: "miles",   label: "GSC Report",          catHour: 6,    daily: true },
-];
+// Fixed UTC offsets for known timezones (standard time; close enough for display)
+const TZ_OFFSET_HOURS: Record<string, number> = {
+  "Africa/Windhoek":    2,
+  "Africa/Johannesburg": 2,
+  "Europe/London":      0,
+  "America/New_York":   -5,
+  "America/Los_Angeles": -8,
+  "UTC":                0,
+  "":                   0,
+};
 
-// Weekly-only jobs
-const WEEKLY_JOBS: ScheduleJob[] = [
-  { agent: "penny", label: "Penny Audit", catHour: 3.5, daily: false, weekDay: 5 }, // Friday 3:30 AM
-];
+/**
+ * Parse a CronJob into a ScheduleJob for the timeline/grid.
+ * Returns null for complex/unparseable schedules.
+ * All output times are in CAT (UTC+2).
+ */
+function parseScheduleJob(job: CronJob): ScheduleJob | null {
+  const parts = job.schedule.trim().split(/\s+/);
+  if (parts.length !== 5) return null;
 
-const ALL_JOBS: ScheduleJob[] = [...DAILY_JOBS, ...WEEKLY_JOBS];
+  const [minStr, hourStr, dom, month, dow] = parts;
+
+  // Only handle simple fixed-time schedules
+  if (hourStr === "*" || /[\/,\-]/.test(hourStr)) return null;
+  if (minStr === "*" || /[\/,\-]/.test(minStr)) return null;
+  if (dom !== "*" || month !== "*") return null;
+
+  const cronHour = parseInt(hourStr, 10);
+  const cronMin  = parseInt(minStr, 10);
+  if (isNaN(cronHour) || isNaN(cronMin)) return null;
+
+  // Convert cron timezone → CAT (UTC+2)
+  const tzOffset = TZ_OFFSET_HOURS[job.timezone] ?? 0;
+  const catDecimalHour = ((cronHour - tzOffset + 2 + 24) % 24) + cronMin / 60;
+
+  const isDaily = dow === "*";
+  let weekDay: number | undefined;
+
+  if (!isDaily) {
+    if (/[\/,\-]/.test(dow)) return null; // skip complex DOW
+    const dowNum = parseInt(dow, 10);
+    if (isNaN(dowNum)) return null;
+    // Normalize: cron 0 or 7 = Sunday → weekDay 7; cron 1-6 = Mon-Sat → weekDay 1-6
+    weekDay = (dowNum === 0 || dowNum === 7) ? 7 : dowNum;
+  }
+
+  return {
+    agent: ownerToKey(job.owner),
+    label: job.title,
+    catHour: catDecimalHour,
+    daily: isDaily,
+    weekDay,
+  };
+}
 
 const DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -187,10 +222,6 @@ const CAT_OFFSET_MS = 2 * 60 * 60 * 1000;
 
 function getNowCAT(): Date {
   return new Date(Date.now() + CAT_OFFSET_MS);
-}
-
-function getCATHour(): number {
-  return getNowCAT().getUTCHours();
 }
 
 /** Returns current CAT time as a decimal (e.g. 1:30 AM → 1.5) */
@@ -271,9 +302,15 @@ export default function AutomationsPage() {
       });
   }, []);
 
-  const catHour = getCATHour();
   const catDecimalHour = getCATDecimalHour();
   const catDayOfWeek = getCATDayOfWeek();
+
+  // Derive schedule visualisation directly from live cron data
+  const allScheduleJobs: ScheduleJob[] = jobs
+    .map(parseScheduleJob)
+    .filter((j): j is ScheduleJob => j !== null)
+    .sort((a, b) => a.catHour - b.catHour);
+  const dailyScheduleJobs = allScheduleJobs.filter((j) => j.daily);
 
   const errorCount = jobs.filter((j) => j.status.toLowerCase().startsWith("error")).length;
   const okCount = jobs.filter((j) => j.status.toLowerCase() === "ok").length;
@@ -342,7 +379,7 @@ export default function AutomationsPage() {
                   title={`Now: ${formatCATHour(catDecimalHour)} CAT`}
                 />
                 {/* Job markers */}
-                {DAILY_JOBS.map((job) => {
+                {dailyScheduleJobs.map((job) => {
                   const pct = (job.catHour / 24) * 100;
                   const ran = catDecimalHour >= job.catHour;
                   const color = agentColors[job.agent] || "#6b7280";
@@ -369,7 +406,7 @@ export default function AutomationsPage() {
               </div>
               {/* Legend */}
               <div className="flex flex-wrap gap-3 mt-1">
-                {DAILY_JOBS.map((job) => {
+                {dailyScheduleJobs.map((job) => {
                   const ran = catDecimalHour >= job.catHour;
                   const color = agentColors[job.agent] || "#6b7280";
                   return (
@@ -405,12 +442,12 @@ export default function AutomationsPage() {
               ))}
             </div>
             {/* Job rows */}
-            {ALL_JOBS.map((job, rowIdx) => {
+            {allScheduleJobs.map((job, rowIdx) => {
               const color = agentColors[job.agent] || "#6b7280";
               return (
                 <div
                   key={`${job.agent}-${job.catHour}`}
-                  className={`grid grid-cols-[140px_repeat(7,1fr)] ${rowIdx < ALL_JOBS.length - 1 ? "border-b border-[#1a1a1a]" : ""}`}
+                  className={`grid grid-cols-[140px_repeat(7,1fr)] ${rowIdx < allScheduleJobs.length - 1 ? "border-b border-[#1a1a1a]" : ""}`}
                 >
                   <div className="px-3 py-2.5 flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
