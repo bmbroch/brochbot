@@ -1,7 +1,7 @@
 "use client";
 
 import Shell from "@/components/Shell";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useActivities, agentColors, teamMembers, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
 
@@ -22,7 +22,7 @@ function AccordionPanel({ member, activities }: { member: TeamMember; activities
   const recent = activities.filter(a => a.agent === member.id).slice(0, 5);
 
   return (
-    <div className="px-6 py-5 space-y-4">
+    <div className="px-4 sm:px-6 py-4 sm:py-5 space-y-4">
       {/* Description */}
       <div>
         <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">About</p>
@@ -63,16 +63,8 @@ function AccordionPanel({ member, activities }: { member: TeamMember; activities
 export default function TeamPage() {
   const activities = useActivities();
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const [panelHeight, setPanelHeight] = useState(0);
 
   const selectedMember = selectedId ? teamMembers.find(m => m.id === selectedId) : null;
-
-  useEffect(() => {
-    if (panelRef.current) {
-      setPanelHeight(panelRef.current.scrollHeight);
-    }
-  }, [selectedId]);
 
   const handleSelect = (id: string) => {
     setSelectedId(prev => (prev === id ? null : id));
@@ -88,7 +80,7 @@ export default function TeamPage() {
         </div>
 
         {/* Agent Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 sm:gap-8 lg:gap-10 max-w-6xl mx-auto">
           {agentOrder.map(id => {
             const member = teamMembers.find(m => m.id === id)!;
             const color = agentColors[id] || "#3b82f6";
@@ -100,11 +92,11 @@ export default function TeamPage() {
               <button
                 key={id}
                 onClick={() => handleSelect(id)}
-                className="flex flex-col items-center gap-2 group cursor-pointer"
+                className="flex flex-col items-center gap-2 group cursor-pointer p-2 sm:p-3 rounded-2xl"
               >
                 {/* Avatar Circle */}
                 <div
-                  className={`w-[150px] h-[150px] rounded-full flex items-center justify-center bg-gradient-to-br ${gradientMap[id] || "from-zinc-700/30 to-zinc-900/20"} transition-all duration-200 group-hover:scale-105`}
+                  className={`w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full flex items-center justify-center bg-gradient-to-br ${gradientMap[id] || "from-zinc-700/30 to-zinc-900/20"} transition-all duration-200 group-hover:scale-105`}
                   style={{
                     boxShadow: isSelected
                       ? `0 0 30px ${color}30, 0 4px 20px rgba(0,0,0,0.4)`
@@ -112,12 +104,12 @@ export default function TeamPage() {
                     border: isSelected ? `2px solid ${color}40` : "2px solid transparent",
                   }}
                 >
-                  <span className="text-[80px] leading-none select-none">{member.emoji}</span>
+                  <span className="text-[50px] sm:text-[80px] leading-none select-none">{member.emoji}</span>
                 </div>
                 {/* Name */}
-                <span className="text-[16px] font-semibold text-white leading-tight mt-1">{member.name}</span>
+                <span className="text-[14px] sm:text-[16px] font-semibold text-white leading-tight mt-1">{member.name}</span>
                 {/* Role */}
-                <span className="text-[13px] font-medium leading-tight" style={{ color }}>{member.role}</span>
+                <span className="text-[11px] sm:text-[13px] font-medium leading-tight text-center" style={{ color }}>{member.role}</span>
                 {/* Status */}
                 <div className="flex items-center gap-1.5">
                   <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-green-400" : "bg-zinc-700"}`} />
@@ -132,20 +124,24 @@ export default function TeamPage() {
 
         {/* Accordion Panel */}
         <div
-          className="overflow-hidden transition-all duration-300 ease-in-out max-w-5xl mx-auto"
-          style={{ maxHeight: selectedMember ? `${panelHeight}px` : "0px" }}
+          className="transition-[grid-template-rows] duration-300 ease-in-out grid max-w-6xl mx-auto"
+          style={{ gridTemplateRows: selectedMember ? "1fr" : "0fr" }}
         >
-          <div ref={panelRef} className="mt-6 rounded-xl border border-[#262626] bg-[#0e0e0e]">
-            {selectedMember && (
-              <>
-                <div className="px-6 pt-4 pb-2 border-b border-[#1e1e1e] flex items-center gap-2">
-                  <span className="text-base">{selectedMember.emoji}</span>
-                  <span className="text-sm font-semibold">{selectedMember.name}</span>
-                  <span className="text-xs text-zinc-500">— {selectedMember.role}</span>
-                </div>
-                <AccordionPanel member={selectedMember} activities={activities} />
-              </>
-            )}
+          <div className="overflow-hidden">
+            <div className="mt-6 rounded-xl border border-[#262626] bg-[#0e0e0e]">
+              {selectedMember && (
+                <>
+                  <div className="px-4 sm:px-6 pt-4 pb-2 border-b border-[#1e1e1e] flex items-center gap-2">
+                    <span className="text-base">{selectedMember.emoji}</span>
+                    <span className="text-sm font-semibold">{selectedMember.name}</span>
+                    <span className="text-xs text-zinc-500">— {selectedMember.role}</span>
+                  </div>
+                  <div className="max-h-[60vh] overflow-y-auto">
+                    <AccordionPanel member={selectedMember} activities={activities} />
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
