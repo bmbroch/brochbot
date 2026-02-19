@@ -3,8 +3,8 @@
   <circle cx="100" cy="100" r="100" fill="#f97316"/>
 
   <!-- Body / shirt -->
-  <rect x="40" y="156" width="120" height="50" fill="#e8472a" rx="8"/>
-  <ellipse cx="100" cy="158" rx="44" ry="14" fill="#e8472a"/>
+  <rect x="40" y="156" width="120" height="50" fill="#2563eb" rx="8"/>
+  <ellipse cx="100" cy="158" rx="44" ry="14" fill="#2563eb"/>
 
   <!-- Neck -->
   <rect x="87" y="142" width="26" height="20" fill="#dba878" rx="5"/>
