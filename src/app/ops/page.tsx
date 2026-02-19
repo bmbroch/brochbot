@@ -1,44 +1,45 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import Shell from "@/components/Shell";
+import { useTeam, agentColors } from "@/lib/data-provider";
 
-/* ── Data (hardcoded for now — easy to swap for API later) ────────────── */
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-const DELEGATION_SCORE = {
-  total: 18,
-  delegated: 15,
-  violations: 3,
-  get pct() {
-    return Math.round((this.delegated / this.total) * 100);
-  },
-};
+type AgentStatus = "Working" | "Idle" | "Never been used";
 
-const VIOLATIONS = [
-  { time: "00:00", desc: "Sam wrote team page accordion fix + mobile responsiveness. That's Dev's job." },
-  { time: "07:50", desc: "Sam fixed PostCSS breakage caused by sub-agent. Acceptable? Debatable." },
-  { time: "08:00", desc: "Sam hit 93% context after 3 compactions. Delegate earlier, Sam." },
-];
-
-interface Agent {
+interface LiveAgent {
+  id: string;
   name: string;
-  avatar: string;
+  avatar?: string;
   role: string;
-  status: "Working" | "Idle" | "Never been used";
+  status: AgentStatus;
   lastActivity: string;
-  lastTime: string;
-  badge?: string;
+  lastActive: number | null;
 }
 
-const AGENTS: Agent[] = [
-  { name: "Sam", avatar: "/avatars/sam.png", role: "Chief of Staff", status: "Working", lastActivity: "Orchestrating ops infrastructure overhaul", lastTime: "08:00", badge: "⚠️ Under Surveillance" },
-  { name: "Devin", avatar: "/avatars/dev.png", role: "Web Developer", status: "Working", lastActivity: "Office mobile responsive fix", lastTime: "08:15", badge: "🏆 Employee of the Day" },
-  { name: "Dana", avatar: "/avatars/dana.png", role: "Data Analyst", status: "Idle", lastActivity: "Morning analytics report", lastTime: "06:00" },
-  { name: "Miles", avatar: "/avatars/miles.png", role: "GTM Lead", status: "Idle", lastActivity: "ISK weekly report (new format)", lastTime: "06:45" },
-  { name: "Penny", avatar: "/avatars/penny.png", role: "Secretary / Ops", status: "Idle", lastActivity: "First audit report + ops infrastructure", lastTime: "08:16" },
-  { name: "Mia", avatar: "/avatars/mia.png", role: "Social Media", status: "Idle", lastActivity: "UGC creator audit (yesterday)", lastTime: "Feb 18" },
-  { name: "Ben", avatar: "/avatars/ben.jpg", role: "The Boss", status: "Working", lastActivity: "Issuing directives, as one does", lastTime: "08:08" },
-  { name: "Cara", avatar: "/avatars/cara.png", role: "Customer Support", status: "Never been used", lastActivity: "Literally nothing. Ever.", lastTime: "—" },
-];
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function deriveStatus(lastActive: number | null): AgentStatus {
+  if (lastActive === null) return "Never been used";
+  const diffMs = Date.now() - lastActive;
+  if (diffMs < 2 * 60 * 60 * 1000) return "Working";
+  if (diffMs < 24 * 60 * 60 * 1000) return "Idle";
+  return "Idle";
+}
+
+function formatCAT(ts: number | null): string {
+  if (ts === null) return "—";
+  const diffMs = Date.now() - ts;
+  if (diffMs < 60_000) return "just now";
+  if (diffMs < 3_600_000) return `${Math.floor(diffMs / 60_000)}m ago`;
+  if (diffMs < 86_400_000) return `${Math.floor(diffMs / 3_600_000)}h ago`;
+  const days = Math.floor(diffMs / 86_400_000);
+  return days === 1 ? "yesterday" : `${days}d ago`;
+}
+
+// ─── Static sections (historical) ────────────────────────────────────────────
 
 interface TaskRow {
   time: string;
@@ -64,7 +65,7 @@ const TASKS: TaskRow[] = [
   { time: "07:50", task: "Fix PostCSS breakage", assignedTo: "Sam", status: "✅", violation: true },
   { time: "07:55", task: "Office page v1", assignedTo: "Devin", status: "✅" },
   { time: "07:58", task: "Fix office meeting table overlap", assignedTo: "Sam → Dev", status: "✅" },
-  { time: "08:00", task: "Build ops infrastructure", assignedTo: "Sam", status: "🔄" },
+  { time: "08:00", task: "Build ops infrastructure", assignedTo: "Sam", status: "✅" },
   { time: "08:05", task: "Add Devin agent to team + office", assignedTo: "Devin", status: "✅" },
   { time: "08:08", task: "Ops infrastructure overhaul", assignedTo: "Penny", status: "✅" },
   { time: "08:15", task: "Office mobile responsive fix", assignedTo: "Devin", status: "✅" },
@@ -103,15 +104,9 @@ const DECISIONS: Decision[] = [
   { date: "Feb 19", title: "ISK Keyword Focus", description: "Track 'during interview' keywords, not prep keywords", madeBy: "Ben" },
 ];
 
-/* ── Components ───────────────────────────────────────────────────────── */
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
-function ScoreColor({ pct }: { pct: number }) {
-  if (pct >= 90) return <span className="text-green-400">{pct}%</span>;
-  if (pct >= 70) return <span className="text-yellow-400">{pct}%</span>;
-  return <span className="text-red-400">{pct}%</span>;
-}
-
-function StatusDot({ status }: { status: Agent["status"] }) {
+function StatusDot({ status }: { status: AgentStatus }) {
   const color =
     status === "Working"
       ? "bg-green-400 animate-pulse"
@@ -126,89 +121,143 @@ function CronDot({ status }: { status: CronJob["status"] }) {
   return <div className={`w-2 h-2 rounded-full ${color} shrink-0`} />;
 }
 
-/* ── Page ──────────────────────────────────────────────────────────────── */
+const agentOrder = ["ben", "sam", "devin", "cara", "dana", "miles", "penny", "mia", "frankie"];
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function OpsPage() {
-  const pct = DELEGATION_SCORE.pct;
-  const scoreBg =
-    pct >= 90
-      ? "from-green-500/10 to-green-500/5 border-green-500/20"
-      : pct >= 70
-      ? "from-yellow-500/10 to-yellow-500/5 border-yellow-500/20"
-      : "from-red-500/10 to-red-500/5 border-red-500/20";
+  const teamMembers = useTeam();
+  const [liveAgents, setLiveAgents] = useState<LiveAgent[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/mc-data")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        const agentStatus: Record<string, { lastActive?: string | null; statusText?: string }> =
+          data?.agentStatus ?? {};
+
+        // Sort by agentOrder, with any extras at the end
+        const ordered = [...agentOrder, ...teamMembers.filter(m => !agentOrder.includes(m.id)).map(m => m.id)];
+
+        const agents: LiveAgent[] = ordered
+          .map(id => teamMembers.find(m => m.id === id))
+          .filter((m): m is NonNullable<typeof m> => m !== undefined)
+          .map(member => {
+            const entry = agentStatus[member.id];
+            const rawTs = entry?.lastActive ? new Date(entry.lastActive).getTime() : null;
+            const lastActive = rawTs && !isNaN(rawTs) ? rawTs : null;
+            const statusText = entry?.statusText?.trim() || "";
+            return {
+              id: member.id,
+              name: member.name,
+              avatar: member.avatar,
+              role: member.role,
+              status: deriveStatus(lastActive),
+              lastActivity: statusText || (lastActive ? "Last seen recently" : "No activity recorded"),
+              lastActive,
+            };
+          });
+
+        setLiveAgents(agents);
+      })
+      .catch(() => {
+        // Fallback: build from teamMembers with no status data
+        const agents: LiveAgent[] = agentOrder
+          .map(id => teamMembers.find(m => m.id === id))
+          .filter((m): m is NonNullable<typeof m> => m !== undefined)
+          .map(member => ({
+            id: member.id,
+            name: member.name,
+            avatar: member.avatar,
+            role: member.role,
+            status: "Never been used" as AgentStatus,
+            lastActivity: "Status unavailable",
+            lastActive: null,
+          }));
+        setLiveAgents(agents);
+      })
+      .finally(() => setLoading(false));
+  }, [teamMembers]);
 
   return (
     <Shell>
       <div className="p-6 lg:p-10 max-w-7xl mx-auto space-y-8">
-        {/* Violations Ticker */}
-        {VIOLATIONS.length > 0 && (
-          <div className="overflow-hidden rounded-xl border border-red-500/20 bg-red-500/5 relative">
-            <div className="flex animate-scroll whitespace-nowrap py-2.5 px-4">
-              {[...VIOLATIONS, ...VIOLATIONS].map((v, i) => (
-                <span key={i} className="text-red-400 text-sm mx-8 shrink-0">
-                  ⚠️ {v.time} — {v.desc}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold tracking-tight">🕵️ Surveillance</h1>
           <p className="text-zinc-500 text-sm mt-1">We see everything. Even the one-line fixes.</p>
         </div>
 
-        {/* Delegation Compliance */}
-        <div className={`rounded-2xl border bg-gradient-to-br ${scoreBg} p-6`}>
-          <p className="text-xs uppercase tracking-wider text-zinc-400 font-medium mb-2">Delegation Compliance — Feb 19, 2026</p>
-          <div className="flex items-baseline gap-3">
-            <span className="text-5xl font-black tabular-nums"><ScoreColor pct={pct} /></span>
-            <span className="text-zinc-500 text-lg">Sam&apos;s Delegation Score</span>
-          </div>
-          <p className="text-zinc-500 text-sm mt-2">
-            {DELEGATION_SCORE.delegated}/{DELEGATION_SCORE.total} tasks properly delegated · <span className="text-red-400">{DELEGATION_SCORE.violations} violations today</span>
-          </p>
-          <p className="text-zinc-600 text-xs mt-1 italic">&quot;We&apos;re watching you, Sam.&quot;</p>
-        </div>
-
         {/* Agent Status Board */}
         <section>
           <h2 className="text-lg font-semibold mb-4">👁️ Agent Status Board</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {AGENTS.map((a) => (
-              <div
-                key={a.name}
-                className="rounded-xl border border-[#222] bg-[#111] p-4 hover:border-[#333] transition-colors relative group"
-              >
-                {a.badge && (
-                  <span className="absolute -top-2.5 right-3 text-[10px] bg-[#1a1a1a] border border-[#333] px-2 py-0.5 rounded-full">
-                    {a.badge}
-                  </span>
-                )}
-                <div className="flex items-center gap-3 mb-3">
-                  <img src={a.avatar} alt={a.name} className="w-10 h-10 rounded-full object-cover" />
-                  <div>
-                    <p className="text-sm font-semibold">{a.name}</p>
-                    <p className="text-[11px] text-zinc-500">{a.role}</p>
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {agentOrder.map(id => (
+                <div key={id} className="rounded-xl border border-[#222] bg-[#111] p-4 animate-pulse h-28" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {liveAgents.map(a => {
+                const color = agentColors[a.id] || "#6b7280";
+                return (
+                  <div
+                    key={a.id}
+                    className="rounded-xl border border-[#222] bg-[#111] p-4 hover:border-[#333] transition-colors"
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      {a.avatar ? (
+                        <Image
+                          src={a.avatar}
+                          alt={a.name}
+                          width={40}
+                          height={40}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
+                          style={{ backgroundColor: `${color}20`, color }}
+                        >
+                          {a.name[0]}
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-sm font-semibold">{a.name}</p>
+                        <p className="text-[11px] text-zinc-500">{a.role}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <StatusDot status={a.status} />
+                      <span
+                        className={`text-xs ${
+                          a.status === "Working"
+                            ? "text-green-400"
+                            : a.status === "Idle"
+                            ? "text-yellow-400"
+                            : "text-zinc-600"
+                        }`}
+                      >
+                        {a.status}
+                      </span>
+                      <span className="text-[10px] text-zinc-600 ml-auto">
+                        {formatCAT(a.lastActive)}
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-500 line-clamp-2">{a.lastActivity}</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <StatusDot status={a.status} />
-                  <span className={`text-xs ${a.status === "Working" ? "text-green-400" : a.status === "Idle" ? "text-yellow-400" : "text-zinc-600"}`}>
-                    {a.status}
-                  </span>
-                  <span className="text-[10px] text-zinc-600 ml-auto">{a.lastTime}</span>
-                </div>
-                <p className="text-xs text-zinc-500 line-clamp-2">{a.lastActivity}</p>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </section>
 
-        {/* Task Log */}
+        {/* Task Log (Feb 19 — historical) */}
         <section>
-          <h2 className="text-lg font-semibold mb-4">📋 Today&apos;s Task Log</h2>
+          <h2 className="text-lg font-semibold mb-1">📋 Feb 19 Task Log</h2>
+          <p className="text-[11px] text-zinc-600 mb-4">Historical — from first full operational day</p>
           <div className="rounded-xl border border-[#222] overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -242,7 +291,7 @@ export default function OpsPage() {
         <section>
           <h2 className="text-lg font-semibold mb-4">⏰ Cron Job Monitor</h2>
           <div className="grid gap-2">
-            {CRON_JOBS.map((j) => (
+            {CRON_JOBS.map(j => (
               <div key={j.name} className="rounded-xl border border-[#222] bg-[#111] px-4 py-3 flex items-center gap-4">
                 <CronDot status={j.status} />
                 <div className="flex-1 min-w-0">
@@ -275,17 +324,6 @@ export default function OpsPage() {
 
         <p className="text-center text-zinc-700 text-xs pb-8">🕵️ This page is always watching. Behave accordingly.</p>
       </div>
-
-      {/* Ticker animation */}
-      <style jsx>{`
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-scroll {
-          animation: scroll 30s linear infinite;
-        }
-      `}</style>
     </Shell>
   );
 }

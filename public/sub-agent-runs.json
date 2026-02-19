@@ -72,6 +72,18 @@
     "timestamp": "2026-02-19T13:24:13.668Z"
   },
   {
+    "id": "38d720be-f25e-4c79-be0d-39b0b18e2da3",
+    "label": "devin-ops-live",
+    "agent": "devin",
+    "task": "`src/app/ops/page.tsx` is completely hardcoded and stale. It has a static AGENTS array with wrong statuses, missing Frankie, and times frozen from Feb 19 morning.",
+    "model": "Sonnet",
+    "tokens": 196399,
+    "cost": 0.2535,
+    "durationSec": 88,
+    "status": "success",
+    "timestamp": "2026-02-19T13:28:30.563Z"
+  },
+  {
     "id": "f6455e7c-7e80-4084-a4a1-4fffac8070c9",
     "label": "devin-cpm",
     "agent": "devin",
@@ -118,17 +130,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "38d720be-f25e-4c79-be0d-39b0b18e2da3",
-    "label": "devin-ops-live",
-    "agent": "devin",
-    "task": "`src/app/ops/page.tsx` is completely hardcoded and stale. It has a static AGENTS array with wrong statuses, missing Frankie, and times frozen from Feb 19 morning.",
-    "model": "Sonnet",
-    "tokens": 25972,
-    "cost": 0.0385,
-    "durationSec": 5,
-    "status": "success",
-    "timestamp": "2026-02-19T13:28:30.563Z"
   }
 ]
