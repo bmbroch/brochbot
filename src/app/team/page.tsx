@@ -35,7 +35,7 @@ const gradientMap: Record<string, string> = {
   frankie: "from-emerald-600/30 to-emerald-900/20",
 };
 
-function MemberDetail({ member, activities }: { member: TeamMember; activities: Activity[] }) {
+function MemberDetail({ member, activities, lastActiveTs }: { member: TeamMember; activities: Activity[]; lastActiveTs?: number }) {
   const recent = activities.filter(a => a.agent === member.id).slice(0, 5);
 
   return (
@@ -75,7 +75,11 @@ function MemberDetail({ member, activities }: { member: TeamMember; activities: 
       <div>
         <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-1.5">Recent Activity</p>
         {recent.length === 0 ? (
-          <p className="text-xs text-zinc-600">No recent activity</p>
+          lastActiveTs ? (
+            <p className="text-xs text-zinc-500">Active {relativeAgo(lastActiveTs)} — no task detail captured</p>
+          ) : (
+            <p className="text-xs text-zinc-600">No recent activity</p>
+          )
         ) : (
           <div className="space-y-1.5">
             {recent.map(a => (
@@ -94,7 +98,7 @@ function MemberDetail({ member, activities }: { member: TeamMember; activities: 
 
 export default function TeamPage() {
   const teamMembers = useTeam();
-  const [mcActivities, setMcActivities] = useState<Activity[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [agentStatusTs, setAgentStatusTs] = useState<Record<string, number>>({});
@@ -106,42 +110,46 @@ export default function TeamPage() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Fetch agentStatus fallback timestamps + activities from mc-data
+  // Fetch mc-data for agentStatus fallback timestamps + history for activity feed
   useEffect(() => {
-    fetch("/api/mc-data")
-      .then(r => r.ok ? r.json() : null)
-      .then(d => {
-        if (!d) return;
-        if (d.agentStatus) {
-          const ts: Record<string, number> = {};
-          for (const [key, val] of Object.entries(d.agentStatus as Record<string, { lastActive?: string }>)) {
-            if (val.lastActive) ts[key] = new Date(val.lastActive).getTime();
-          }
-          setAgentStatusTs(ts);
+    Promise.all([
+      fetch("/api/mc-data").then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch("/agent-runs-history.json").then(r => r.ok ? r.json() : []).catch(() => []),
+    ]).then(([mcData, historyData]) => {
+      // Extract agentStatus fallback timestamps
+      if (mcData?.agentStatus) {
+        const ts: Record<string, number> = {};
+        for (const [key, val] of Object.entries(mcData.agentStatus as Record<string, { lastActive?: string }>)) {
+          if (val.lastActive) ts[key] = new Date(val.lastActive).getTime();
         }
-        if (Array.isArray(d.activities)) {
-          const mapped: Activity[] = (d.activities as Array<{
-            id: string; agent: string; title: string; date?: string;
-            type?: string; description?: string; status?: string; product?: string;
-          }>).map(a => ({
-            _id: a.id,
-            agent: a.agent,
-            type: (a.type as Activity["type"]) || "task",
-            title: a.title,
-            description: a.description,
-            product: a.product as Activity["product"] | undefined,
-            status: (a.status as Activity["status"]) || "success",
-            createdAt: a.date ? new Date(a.date).getTime() : Date.now(),
-          }));
-          setMcActivities(mapped);
-        }
-      })
-      .catch(() => {});
+        setAgentStatusTs(ts);
+      }
+
+      // Map agent-runs-history entries → Activity[]
+      const historyArr: Array<{
+        id: string; agent: string; label?: string; task: string;
+        status: string; timestamp: string;
+      }> = Array.isArray(historyData) ? historyData : [];
+
+      const historyActivities: Activity[] = historyArr.map(h => ({
+        _id: h.id,
+        agent: h.agent,
+        type: "task" as Activity["type"],
+        title: h.label || h.task.slice(0, 80),
+        description: h.task,
+        status: (h.status as Activity["status"]) || "success",
+        createdAt: new Date(h.timestamp).getTime(),
+      }));
+
+      // Sort most-recent first
+      historyActivities.sort((a, b) => b.createdAt - a.createdAt);
+      setActivities(historyActivities);
+    });
   }, []);
 
-  // Build a map of agentId → latest activity timestamp
+  // Build a map of agentId → latest activity timestamp (for "last active" card label)
   const latestActivityTs: Record<string, number> = {};
-  for (const a of mcActivities) {
+  for (const a of activities) {
     if (!latestActivityTs[a.agent] || a.createdAt > latestActivityTs[a.agent]) {
       latestActivityTs[a.agent] = a.createdAt;
     }
@@ -217,9 +225,10 @@ export default function TeamPage() {
         {!isMobile && selectedMember && (
           <AgentSidePanel
             member={selectedMember}
-            activities={mcActivities}
+            activities={activities}
             isOpen={true}
             onClose={() => setSelectedId(null)}
+            lastActiveTs={getLastActive(selectedMember.id) ?? undefined}
           />
         )}
 
@@ -227,13 +236,14 @@ export default function TeamPage() {
         {isMobile && selectedMember && (
           <AgentDrawer
             member={selectedMember}
-            activities={mcActivities}
+            activities={activities}
             isOpen={true}
             onClose={() => setSelectedId(null)}
+            lastActiveTs={getLastActive(selectedMember.id) ?? undefined}
           />
         )}
       </div>
     </Shell>
   );
 }
-// 2026-02-19T12:04Z
+// 2026-02-19T15:05Z

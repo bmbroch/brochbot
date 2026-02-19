@@ -5,16 +5,27 @@ import Image from "next/image";
 import { agentColors, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
 
+function timeAgo(ts: number): string {
+  const diff = Date.now() - ts;
+  if (diff < 60_000) return "just now";
+  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`;
+  if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}h ago`;
+  const days = Math.floor(diff / 86_400_000);
+  return days === 1 ? "yesterday" : `${days}d ago`;
+}
+
 export default function AgentSidePanel({
   member,
   activities,
   isOpen,
   onClose,
+  lastActiveTs,
 }: {
   member: TeamMember;
   activities: Activity[];
   isOpen: boolean;
   onClose: () => void;
+  lastActiveTs?: number;
 }) {
   const color = agentColors[member.id] || "#666";
   const [visible, setVisible] = useState(false);
@@ -115,7 +126,11 @@ export default function AgentSidePanel({
           <div>
             <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold mb-2">Recent Activity</p>
             {recent.length === 0 ? (
-              <p className="text-xs text-zinc-600">No recent activity</p>
+              lastActiveTs ? (
+                <p className="text-xs text-zinc-500">Active {timeAgo(lastActiveTs)} — no task detail captured</p>
+              ) : (
+                <p className="text-xs text-zinc-600">No recent activity</p>
+              )
             ) : (
               <div className="space-y-2">
                 {recent.map(a => (

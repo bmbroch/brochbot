@@ -12,6 +12,18 @@
     "timestamp": "2026-02-19T14:13:53.011Z"
   },
   {
+    "id": "e8a68d5a-48f7-4ecf-b06c-49f77378c835",
+    "label": "devin-drawer-office-agentmap",
+    "agent": "devin",
+    "task": "**Task: 3 fixes \u2014 drawer activity source, office alignment, reusable agent map**",
+    "model": "Sonnet",
+    "tokens": 419904,
+    "cost": 0.5329,
+    "durationSec": 235,
+    "status": "success",
+    "timestamp": "2026-02-19T15:05:25.056Z"
+  },
+  {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
     "label": "Penny Daily Check",
     "agent": "penny",
@@ -58,17 +70,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "e8a68d5a-48f7-4ecf-b06c-49f77378c835",
-    "label": "devin-drawer-office-agentmap",
-    "agent": "devin",
-    "task": "**Task: 3 fixes \u2014 drawer activity source, office alignment, reusable agent map**",
-    "model": "Sonnet",
-    "tokens": 13162,
-    "cost": 0.0306,
-    "durationSec": 2,
-    "status": "success",
-    "timestamp": "2026-02-19T15:05:25.056Z"
   }
 ]

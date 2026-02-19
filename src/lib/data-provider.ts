@@ -2,7 +2,7 @@
 // Set to false when Convex is connected
 export const useMockData = true;
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -368,6 +368,27 @@ export function useAgentColors(): Record<string, string> {
 export function useAgentEmojis(): Record<string, string> {
   const team = useTeam();
   return Object.fromEntries(team.map((m) => [m.id, m.emoji]));
+}
+
+// Returns a full agent info map — single source of truth for name, color, emoji, avatar, role
+export function useAgentMap(): Record<string, { name: string; color: string; emoji: string; avatar?: string; role: string }> {
+  const team = useTeam();
+  return useMemo(
+    () =>
+      Object.fromEntries(
+        team.map((m) => [
+          m.id,
+          {
+            name: m.name,
+            color: m.color || agentColors[m.id] || "#6b7280",
+            emoji: m.emoji,
+            avatar: m.avatar,
+            role: m.role,
+          },
+        ])
+      ),
+    [team]
+  );
 }
 
 // ─── Search ──────────────────────────────────────────────────────────────────
