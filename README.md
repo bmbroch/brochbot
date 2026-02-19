@@ -1,6 +1,6 @@
 # Mission Control — BrochBot
 
-Operations dashboard for monitoring and managing BrochBot's automated tasks across Cover Letter Co-pilot, Interview Sidekick, and Sales Echo.
+Operations dashboard for monitoring and managing BrochBot's automated tasks across Cover Letter Copilot, Interview Sidekick, and SalesEcho.
 
 ## Features
 

@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 8754662,
-    "cost": 17.487,
-    "durationSec": 3669,
+    "tokens": 9661358,
+    "cost": 18.5899,
+    "durationSec": 3921,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -60,6 +60,18 @@
     "timestamp": "2026-02-19T19:20:11.977Z"
   },
   {
+    "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
+    "label": "7612c9b5-24c",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 357837,
+    "cost": 1.0138,
+    "durationSec": 5893,
+    "status": "success",
+    "timestamp": "2026-02-19T18:28:22.953Z"
+  },
+  {
     "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
     "label": "c1c67e23-34e",
     "agent": "sam",
@@ -96,18 +108,6 @@
     "timestamp": "2026-02-19T19:35:24.476Z"
   },
   {
-    "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
-    "label": "7612c9b5-24c",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 224313,
-    "cost": 0.7132,
-    "durationSec": 5753,
-    "status": "success",
-    "timestamp": "2026-02-19T18:28:22.953Z"
-  },
-  {
     "id": "2921efcb-e29e-4d03-96d0-fad2ffc4e001",
     "label": "dana-weekly-traffic",
     "agent": "dana",
@@ -118,6 +118,18 @@
     "durationSec": 73,
     "status": "success",
     "timestamp": "2026-02-19T19:19:56.558Z"
+  },
+  {
+    "id": "0493e98e-af32-4e21-b61e-dc7bf6e7502b",
+    "label": "dana-weekly-traffic-v2",
+    "agent": "dana",
+    "task": "Pull TWO periods for each product:",
+    "model": "Sonnet",
+    "tokens": 118000,
+    "cost": 0.2199,
+    "durationSec": 83,
+    "status": "success",
+    "timestamp": "2026-02-19T20:04:14.540Z"
   },
   {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
@@ -190,17 +202,5 @@
     "durationSec": 7,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "0493e98e-af32-4e21-b61e-dc7bf6e7502b",
-    "label": "dana-weekly-traffic-v2",
-    "agent": "dana",
-    "task": "Pull TWO periods for each product:",
-    "model": "Sonnet",
-    "tokens": 12183,
-    "cost": 0.0271,
-    "durationSec": 1,
-    "status": "success",
-    "timestamp": "2026-02-19T20:04:14.540Z"
   }
 ]
