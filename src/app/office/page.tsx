@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Shell from "@/components/Shell";
 import {
@@ -230,24 +230,73 @@ export default function OfficePage() {
           </p>
         </div>
 
-        {/* Desktop: top-down office */}
-        <div className="hidden md:flex flex-1 items-center justify-center overflow-auto p-6">
-          <div
-            className="relative"
-            style={{
-              width: 950,
-              height: 600,
-              backgroundImage: `
-                repeating-conic-gradient(#1a1a1a 0% 25%, #151515 0% 50%)
-              `,
-              backgroundSize: "40px 40px",
-              borderRadius: 12,
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) setSelected(null);
-            }}
-          >
+        {/* Top-down office (responsive) */}
+        <OfficeCanvas
+          selected={selected}
+          setSelected={setSelected}
+          activities={activities}
+          getAgentActivities={getAgentActivities}
+          selectedMember={selectedMember}
+        />
+      </div>
+    </Shell>
+  );
+}
+
+function OfficeCanvas({
+  selected,
+  setSelected,
+  activities,
+  getAgentActivities,
+  selectedMember,
+}: {
+  selected: string | null;
+  setSelected: (id: string | null) => void;
+  activities: Activity[];
+  getAgentActivities: (id: string) => Activity[];
+  selectedMember: TeamMember | null | undefined;
+}) {
+  const OFFICE_W = 950;
+  const OFFICE_H = 600;
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  const recalc = useCallback(() => {
+    if (!wrapperRef.current) return;
+    const w = wrapperRef.current.clientWidth;
+    setScale(Math.min(w / OFFICE_W, 1));
+  }, []);
+
+  useEffect(() => {
+    recalc();
+    window.addEventListener("resize", recalc);
+    return () => window.removeEventListener("resize", recalc);
+  }, [recalc]);
+
+  return (
+    <div ref={wrapperRef} className="flex flex-1 items-start justify-center overflow-auto p-4 md:p-6 md:items-center">
+      <div
+        style={{
+          width: OFFICE_W * scale,
+          height: OFFICE_H * scale,
+        }}
+      >
+        <div
+          className="relative"
+          style={{
+            width: OFFICE_W,
+            height: OFFICE_H,
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+            backgroundImage: `repeating-conic-gradient(#1a1a1a 0% 25%, #151515 0% 50%)`,
+            backgroundSize: "40px 40px",
+            borderRadius: 12,
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelected(null);
+          }}
+        >
             {/* ── Furniture ──────────────────────────────── */}
 
             {/* Meeting table (center ellipse) */}
@@ -356,114 +405,8 @@ export default function OfficePage() {
                 onClose={() => setSelected(null)}
               />
             )}
-          </div>
-        </div>
-
-        {/* Mobile: simplified list */}
-        <div className="md:hidden flex-1 overflow-auto p-4 space-y-2">
-          {teamMembers.map((member) => {
-            const color = agentColors[member.id] || "#666";
-            const agentActs = getAgentActivities(member.id);
-            const latest = agentActs[0];
-            const isActive =
-              !!latest && Date.now() - latest.createdAt < 24 * 3600000;
-
-            return (
-              <div
-                key={member.id}
-                className={`rounded-lg border p-3 transition-all cursor-pointer ${
-                  selected === member.id
-                    ? "border-white/20 bg-white/[0.06]"
-                    : "border-white/[0.06] bg-white/[0.02]"
-                }`}
-                onClick={() =>
-                  setSelected(selected === member.id ? null : member.id)
-                }
-              >
-                <div className="flex items-center gap-3">
-                  {/* Mini desk icon */}
-                  <div className="relative shrink-0">
-                    <div
-                      className="w-5 h-3 rounded-sm"
-                      style={{ backgroundColor: "#3a3a3a" }}
-                    />
-                    <div
-                      className="absolute w-2 h-1.5 rounded-sm"
-                      style={{
-                        backgroundColor: "#2563eb",
-                        top: 1,
-                        left: 6,
-                      }}
-                    />
-                  </div>
-                  <div className="relative">
-                    <div
-                      className="w-10 h-10 rounded-full overflow-hidden border-2"
-                      style={{ borderColor: color }}
-                    >
-                      <Image
-                        src={member.avatar || ""}
-                        alt={member.name}
-                        width={40}
-                        height={40}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div
-                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#0a0a0a] ${
-                        isActive ? "animate-pulse" : ""
-                      }`}
-                      style={{
-                        backgroundColor: isActive ? "#22c55e" : "#52525b",
-                      }}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white/90">
-                      {member.name}
-                    </p>
-                    <p className="text-[10px] text-white/30">{member.role}</p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-[10px] text-white/40 line-clamp-1 max-w-[110px]">
-                      {latest ? latest.title : "Idle"}
-                    </p>
-                    {latest && (
-                      <p className="text-[9px]" style={{ color: `${color}80` }}>
-                        {timeAgo(latest.createdAt)}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {selected === member.id && agentActs.length > 0 && (
-                  <div className="mt-2 pt-2 border-t border-white/[0.06] space-y-1.5">
-                    {agentActs.slice(0, 4).map((a) => (
-                      <div key={a._id} className="flex items-start gap-2">
-                        <span
-                          className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${
-                            a.status === "success"
-                              ? "bg-green-400"
-                              : "bg-blue-400"
-                          }`}
-                        />
-                        <div>
-                          <p className="text-[11px] text-white/50 leading-snug">
-                            {a.title}
-                          </p>
-                          <p className="text-[9px] text-white/25">
-                            {timeAgo(a.createdAt)}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
         </div>
       </div>
-    </Shell>
+    </div>
   );
 }
