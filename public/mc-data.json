@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-19T19:30:02Z",
+  "lastUpdated": "2026-02-19T19:30:41Z",
   "activities": [
+    {
+      "id": "s-335eb8a6",
+      "agent": "devin",
+      "title": "devin-automations-charts",
+      "description": "**Task:** Redesign the Daily Schedule and Weekly Grid sections on the /automations page (`/home/ubuntu/.openclaw/workspace/mission-control/src/app/automations/page.tsx`).",
+      "status": "success",
+      "date": "2026-02-19T19:30:38.352Z",
+      "tokens": 12584,
+      "cost": 0.0293,
+      "model": "Sonnet",
+      "durationSec": 2
+    },
     {
       "id": "s-3df99d0f",
       "agent": "devin",
@@ -8,10 +20,10 @@
       "description": "**Bug fix:**",
       "status": "success",
       "date": "2026-02-19T19:25:05.594Z",
-      "tokens": 1310358,
-      "cost": 0.8711,
+      "tokens": 1894755,
+      "cost": 1.0934,
       "model": "Sonnet",
-      "durationSec": 294
+      "durationSec": 334
     },
     {
       "id": "s-fe0faccc",
@@ -56,10 +68,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 4456143,
-      "cost": 9.3775,
+      "tokens": 4629396,
+      "cost": 9.9325,
       "model": "Opus",
-      "durationSec": 1703
+      "durationSec": 1766
     },
     {
       "id": "s-b88a363c",
@@ -325,7 +337,64 @@
       "updatedAt": 1771491360000
     }
   ],
-  "calendar": [],
+  "calendar": [
+    {
+      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
+      "title": "Penny Daily Check",
+      "schedule": "0 5 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "penny",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-19T14:00:00Z",
+      "nextRunAt": "2026-02-20T03:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Penny's overnight quality sweep \u2014 delegation audit, cron/MC drift check, file hygiene scan (stale files, bloat, outdated briefs). Observe-only: reports findings, doesn't edit."
+    },
+    {
+      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "schedule": "0 6 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "miles",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T04:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Miles pulls Google Search Console data for all 3 products (ISK, CLCP, SE) \u2014 tracked keywords, clicks, impressions, position trends, and top queries. Daily at 6 AM CAT."
+    },
+    {
+      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
+      "title": "Sam Morning Brief",
+      "schedule": "30 7 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T05:30:00Z",
+      "consecutiveErrors": 0,
+      "description": "Sam's morning coffee read \u2014 yesterday's wins, overnight costs, anything broken, and today's priorities. Lands at 7:30 AM CAT."
+    },
+    {
+      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
+      "title": "Morning Analytics Report",
+      "schedule": "0 8 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "dana",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-19T06:00:00Z",
+      "nextRunAt": "2026-02-20T06:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Dana pulls live metrics across all 3 products (CLCP, ISK, SE) from Datafast \u2014 visitors, revenue, week-over-week trends \u2014 and sends a structured report to Telegram."
+    }
+  ],
   "decisions": [
     {
       "id": "d1",
@@ -410,7 +479,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-19T19:25:05.594Z",
+      "lastActive": "2026-02-19T19:30:38.352Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -452,7 +521,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-19T19:30:02Z"
+      "lastRunAt": "2026-02-19T19:30:41Z"
     },
     {
       "id": "bash-frankie-sync",

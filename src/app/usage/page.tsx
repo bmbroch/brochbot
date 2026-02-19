@@ -2,6 +2,11 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Shell from "@/components/Shell";
+import { TZ } from "@/lib/utils";
+
+// ─── String Constants ──────────────────────────────────────────────────────────
+const SAM_SYNC_PREFIX = "sam-sync-";
+const SAM_DAILY_PREFIX = "sam-daily-";
 
 /* ─── Types ──────────────────────────────────────────────────────────── */
 
@@ -69,7 +74,7 @@ function fmtTime(iso: string): string {
   return new Date(iso).toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
-    timeZone: "Africa/Windhoek",
+    timeZone: TZ,
     hour12: false,
   });
 }
@@ -78,7 +83,7 @@ function fmtDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
-    timeZone: "Africa/Windhoek",
+    timeZone: TZ,
   });
 }
 
@@ -610,7 +615,7 @@ export default function UsagePage() {
           const hist: AgentRunEntry[] = await histRes.value.json();
           // Filter out sam-sync-* delta entries — they overlap with sam-daily-* totals
           const cleaned = Array.isArray(hist)
-            ? hist.filter((e: AgentRunEntry) => !e.id.startsWith("sam-sync-"))
+            ? hist.filter((e: AgentRunEntry) => !e.id.startsWith(SAM_SYNC_PREFIX))
             : [];
           setHistoryEntries(cleaned);
         }
@@ -624,16 +629,16 @@ export default function UsagePage() {
   }, []);
 
   const weekStart = useMemo(() => lastThursdayNoonUTC(), []);
-  // Today in CAT timezone (Africa/Windhoek = UTC+2), format YYYY-MM-DD
+  // Today in CAT timezone, format YYYY-MM-DD
   const todayCat = useMemo(
-    () => new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Windhoek" }),
+    () => new Date().toLocaleDateString("en-CA", { timeZone: TZ }),
     []
   );
 
   // Stat card memos use historyEntries (full filtered log) — more complete than allRuns
   const histTodayEntries = useMemo(
     () => historyEntries.filter((e) =>
-      new Date(e.timestamp).toLocaleDateString("en-CA", { timeZone: "Africa/Windhoek" }) === todayCat
+      new Date(e.timestamp).toLocaleDateString("en-CA", { timeZone: TZ }) === todayCat
     ),
     [historyEntries, todayCat]
   );
@@ -652,8 +657,8 @@ export default function UsagePage() {
     const entry = historyEntries.find(
       (e) =>
         e.agent === "sam" &&
-        e.id.startsWith("sam-daily-") &&
-        e.id === `sam-daily-${todayCat}`
+        e.id.startsWith(SAM_DAILY_PREFIX) &&
+        e.id === `${SAM_DAILY_PREFIX}${todayCat}`
     );
     return entry?.cost ?? 0;
   }, [historyEntries, todayCat]);

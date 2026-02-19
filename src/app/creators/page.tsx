@@ -68,6 +68,7 @@ export default function CreatorsPage() {
   const [creatorsMap, setCreatorsMap] = useState<Record<string, CreatorData> | null>(null);
   const [enabledCreators, setEnabledCreators] = useState<Record<string, boolean>>({});
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const creatorsTimeSeries = useAllCreatorsTimeSeries();
 
   useEffect(() => {
     fetch("/creator-data.json")
