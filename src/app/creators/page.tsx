@@ -2,7 +2,7 @@
 
 import Shell from "@/components/Shell";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCreators, creatorsData, creatorsTimeSeries, creatorColors } from "@/lib/data-provider";
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
@@ -31,6 +31,32 @@ const darkTooltipStyle = {
   itemStyle: { color: "#e4e4e7" },
 };
 
+interface MercuryPayout {
+  creator: string;
+  totalPaid: number;
+  payments: number;
+  lastPayment: string;
+}
+
+interface MercuryData {
+  lastUpdated: string;
+  payouts: MercuryPayout[];
+}
+
+/** Map data-provider names → Mercury creator names */
+const MERCURY_NAME_MAP: Record<string, string> = {
+  Flo: "Sophie (Flo)",
+};
+
+function timeAgo(isoString: string): string {
+  const diffMs = Date.now() - new Date(isoString).getTime();
+  const diffH = Math.floor(diffMs / 3_600_000);
+  if (diffH < 1) return "just now";
+  if (diffH < 24) return `${diffH}h ago`;
+  const diffD = Math.floor(diffH / 24);
+  return `${diffD}d ago`;
+}
+
 export default function CreatorsPage() {
   const creators = useCreators();
   const [enabledCreators, setEnabledCreators] = useState<Record<string, boolean>>(() => {
@@ -38,6 +64,21 @@ export default function CreatorsPage() {
     creatorsData.forEach(c => { m[c.name] = true; });
     return m;
   });
+  const [mercury, setMercury] = useState<MercuryData | null>(null);
+
+  useEffect(() => {
+    fetch("/creator-payouts.json")
+      .then(r => r.json())
+      .then((data: MercuryData) => setMercury(data))
+      .catch(err => console.error("Failed to load creator-payouts.json", err));
+  }, []);
+
+  /** Look up Mercury payout for a creator (handles name mapping) */
+  function getMercuryPayout(name: string): MercuryPayout | undefined {
+    if (!mercury) return undefined;
+    const mercuryName = MERCURY_NAME_MAP[name] ?? name;
+    return mercury.payouts.find(p => p.creator === mercuryName);
+  }
 
   const totalPosts = creators.reduce((s, c) => s + c.posts, 0);
   const totalViews = creators.reduce((s, c) => s + c.ttViews + c.igViews, 0);
@@ -110,7 +151,14 @@ export default function CreatorsPage() {
                   <th className="text-right px-5 py-3 font-medium"><span className="text-pink-400">Instagram</span></th>
                   <th className="text-right px-5 py-3 font-medium">Total Views</th>
                   <th className="text-right px-5 py-3 font-medium">Avg/Post</th>
-                  <th className="text-right px-5 py-3 font-medium">Earnings</th>
+                  <th className="text-right px-5 py-3 font-medium">
+                    <span>Earnings</span>
+                    {mercury && (
+                      <span className="block text-[9px] text-zinc-600 font-normal normal-case tracking-normal">
+                        via Mercury · {timeAgo(mercury.lastUpdated)}
+                      </span>
+                    )}
+                  </th>
                   <th className="text-center px-5 py-3 font-medium">Status</th>
                 </tr>
               </thead>
@@ -134,7 +182,20 @@ export default function CreatorsPage() {
                       <td className="px-5 py-3 text-right"><span className="text-pink-400">{fmt(c.igViews)}</span></td>
                       <td className="px-5 py-3 text-right font-semibold">{fmt(total)}</td>
                       <td className="px-5 py-3 text-right text-zinc-400">{fmt(c.avgPerPost)}</td>
-                      <td className="px-5 py-3 text-right text-green-400">${c.earnings}</td>
+                      <td className="px-5 py-3 text-right">
+                        {(() => {
+                          const mp = getMercuryPayout(c.name);
+                          if (mp) {
+                            return (
+                              <>
+                                <span className="text-green-400 font-semibold">${mp.totalPaid.toLocaleString()}</span>
+                                <span className="block text-[10px] text-zinc-500">{mp.payments} payments</span>
+                              </>
+                            );
+                          }
+                          return <span className="text-green-400">${c.earnings}</span>;
+                        })()}
+                      </td>
                       <td className="px-5 py-3 text-center">
                         <span className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full font-medium ${dominant === "ig" ? "bg-pink-500/10 text-pink-400" : "bg-cyan-500/10 text-cyan-400"}`}>
                           {dominant === "ig" ? "IG dominant" : "TT dominant"}
