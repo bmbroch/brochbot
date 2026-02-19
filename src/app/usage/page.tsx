@@ -624,7 +624,6 @@ export default function UsagePage() {
   }, []);
 
   const weekStart = useMemo(() => lastThursdayNoonUTC(), []);
-  const today = new Date().toISOString().slice(0, 10);
   // Today in CAT timezone (Africa/Windhoek = UTC+2), format YYYY-MM-DD
   const todayCat = useMemo(
     () => new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Windhoek" }),
@@ -713,19 +712,19 @@ export default function UsagePage() {
             <StatCard
               label="Cost today"
               value={fmtCost(totalCostToday)}
-              sub={`${fmtTokens(totalTokensToday)} tokens · ${today}`}
+              sub={`${fmtTokens(totalTokensToday)} tokens · all agents · from run history`}
               accent="text-emerald-400"
             />
             <StatCard
               label="Cost this week"
               value={fmtCost(totalCostWeek)}
-              sub={`since ${weekStart.toISOString().slice(0, 10)} Thu noon`}
+              sub={`since ${weekStart.toISOString().slice(0, 10)} Thu noon · all agents · from run history`}
               accent="text-yellow-400"
             />
             <StatCard
               label="Tokens this week"
               value={fmtTokens(totalTokensWeek)}
-              sub={`${fmtTokens(totalTokensToday)} today`}
+              sub={`${fmtTokens(totalTokensToday)} today · all agents · from run history`}
             />
             <StatCard
               label="Top spender"
@@ -745,7 +744,7 @@ export default function UsagePage() {
             <div>
               <h2 className="text-xl font-bold">🤖 Sub-Agent Runs</h2>
               <p className="text-xs text-zinc-500 mt-0.5">
-                All runs · click a row to expand task details
+                Current sessions · click a row to expand task details
               </p>
             </div>
 
