@@ -1,5 +1,17 @@
 [
   {
+    "id": "aae63345-e753-451e-8902-32e9d6391345",
+    "label": "aae63345-e75",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 1312769,
+    "cost": 2.0669,
+    "durationSec": 370,
+    "status": "success",
+    "timestamp": "2026-02-19T17:32:32.089Z"
+  },
+  {
     "id": "6d5d4471-523a-4563-b95e-e15ff901840e",
     "label": "Devin: dynamic automations timeline",
     "agent": "devin",
