@@ -218,6 +218,103 @@ function parseScheduleJob(job: CronJob): ScheduleJob | null {
 
 const DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+/** Format hours-until into a human countdown string */
+function formatCountdown(hoursUntil: number): string {
+  if (hoursUntil < 1 / 60) return "now";
+  if (hoursUntil < 1) {
+    const m = Math.round(hoursUntil * 60);
+    return `in ${m}m`;
+  }
+  const h = Math.floor(hoursUntil);
+  const m = Math.round((hoursUntil - h) * 60);
+  if (m === 0) return `in ${h}h`;
+  return `in ${h}h ${m}m`;
+}
+
+interface RollingJob {
+  job: ScheduleJob;
+  hoursUntil: number;
+  catRunHour: number;
+  isToday: boolean;
+  isImminent: boolean; // < 3h
+}
+
+/**
+ * Build rolling 24h data from schedule jobs.
+ * Returns upcoming runs within 24h (sorted asc) and jobs that already ran today.
+ */
+function buildRolling24h(
+  jobs: ScheduleJob[],
+  nowHour: number,
+  nowDayOfWeek: number // Mon=0...Sun=6
+): { upcoming: RollingJob[]; alreadyRanToday: { job: ScheduleJob; catRunHour: number }[]; weekDayCounts: number[] } {
+  const upcoming: RollingJob[] = [];
+  const alreadyRanToday: { job: ScheduleJob; catRunHour: number }[] = [];
+  const weekDayCounts = Array(7).fill(0);
+
+  for (const job of jobs) {
+    // Tally for 7-day strip
+    if (job.daily) {
+      for (let d = 0; d < 7; d++) weekDayCounts[d]++;
+    } else if (job.weekDay !== undefined) {
+      weekDayCounts[(job.weekDay - 1) % 7]++;
+    }
+
+    // Did it run today?
+    const isScheduledToday =
+      job.daily ||
+      (job.weekDay !== undefined && (job.weekDay - 1) % 7 === nowDayOfWeek);
+    if (isScheduledToday && job.catHour <= nowHour) {
+      alreadyRanToday.push({ job, catRunHour: job.catHour });
+    }
+
+    // Compute hours until NEXT run
+    let hoursUntil: number;
+    let isToday: boolean;
+
+    if (job.daily) {
+      if (job.catHour > nowHour) {
+        hoursUntil = job.catHour - nowHour;
+        isToday = true;
+      } else {
+        // Next run is tomorrow
+        hoursUntil = 24 - nowHour + job.catHour;
+        isToday = false;
+      }
+    } else {
+      const dayIdx = (job.weekDay! - 1) % 7; // 0=Mon...6=Sun
+      const daysDiff = (dayIdx - nowDayOfWeek + 7) % 7;
+      if (daysDiff === 0) {
+        if (job.catHour > nowHour) {
+          hoursUntil = job.catHour - nowHour;
+          isToday = true;
+        } else {
+          // Already ran today — next run is in 7 days, out of window
+          continue;
+        }
+      } else {
+        hoursUntil = daysDiff * 24 - nowHour + job.catHour;
+        isToday = false;
+      }
+    }
+
+    if (hoursUntil <= 24) {
+      upcoming.push({
+        job,
+        hoursUntil,
+        catRunHour: job.catHour,
+        isToday,
+        isImminent: hoursUntil < 3,
+      });
+    }
+  }
+
+  upcoming.sort((a, b) => a.hoursUntil - b.hoursUntil);
+  alreadyRanToday.sort((a, b) => b.catRunHour - a.catRunHour); // most recent first
+
+  return { upcoming, alreadyRanToday, weekDayCounts };
+}
+
 // CAT = UTC+2
 const CAT_OFFSET_MS = 2 * 60 * 60 * 1000;
 
@@ -506,144 +603,142 @@ export default function AutomationsPage() {
           )}
         </div>
 
-        {/* ── Section C: Weekly Grid (status cells) ── */}
-        <div className="mb-8">
-          <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Weekly Grid</h2>
-          <div className="rounded-xl border border-[#262626] bg-[#141414] overflow-hidden">
-            {/* Header row */}
-            <div className="grid grid-cols-[2fr_repeat(7,minmax(0,1fr))] border-b border-[#262626]">
-              <div className="px-3 py-2 text-[10px] text-zinc-600 font-medium uppercase tracking-wider">Job</div>
-              {DAY_LABELS.map((day, i) => (
-                <div
-                  key={day}
-                  className={`py-2 text-center text-[10px] font-semibold uppercase tracking-wider ${
-                    i === catDayOfWeek
-                      ? "text-blue-400"
-                      : i < catDayOfWeek
-                      ? "text-zinc-500"
-                      : "text-zinc-700"
-                  }`}
-                >
-                  {day}
-                  {i === catDayOfWeek && (
-                    <div className="mt-0.5 mx-auto w-1 h-1 rounded-full bg-blue-400" />
-                  )}
-                </div>
-              ))}
-            </div>
+        {/* ── Section C: Rolling 24h Window ── */}
+        {(() => {
+          const { upcoming, alreadyRanToday, weekDayCounts } = buildRolling24h(
+            allScheduleJobs,
+            catDecimalHour,
+            catDayOfWeek
+          );
+          const maxCount = Math.max(...weekDayCounts, 1);
 
-            {/* Job rows */}
-            {allScheduleJobs.map((job, rowIdx) => {
-              const color = agentColors[job.agent] || "#6b7280";
-              return (
-                <div
-                  key={`${job.agent}-${job.catHour}-${rowIdx}`}
-                  className={`grid grid-cols-[2fr_repeat(7,minmax(0,1fr))] ${
-                    rowIdx < allScheduleJobs.length - 1 ? "border-b border-[#1a1a1a]" : ""
-                  }`}
-                >
-                  {/* Job label — wider, colored, no truncation on wider screens */}
-                  <div className="px-3 py-2.5 flex items-center gap-2 min-w-0">
-                    <span
-                      className="w-1.5 h-1.5 rounded-full flex-shrink-0 opacity-80"
-                      style={{ backgroundColor: color }}
-                    />
-                    <span className="text-[11px] text-zinc-300 leading-tight break-words line-clamp-2 sm:whitespace-normal sm:overflow-visible sm:text-clip">
-                      {job.label}
-                    </span>
-                  </div>
+          return (
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Next 24 Hours</h2>
+                <span className="text-[10px] text-zinc-600">
+                  {DAY_LABELS[catDayOfWeek]} · {formatCATHour(catDecimalHour)} CAT
+                </span>
+              </div>
 
-                  {/* Day cells */}
-                  {DAY_LABELS.map((_, dayIdx) => {
-                    const weekDayMatch = job.weekDay !== undefined ? job.weekDay - 1 : -1;
-                    const scheduled = job.daily ? true : dayIdx === weekDayMatch;
-                    const isToday = dayIdx === catDayOfWeek;
-                    const isPast = dayIdx < catDayOfWeek;
-                    const ranToday = isToday && catDecimalHour >= job.catHour;
+              <div className="rounded-xl border border-[#262626] bg-[#141414] overflow-hidden">
 
-                    let cellContent: React.ReactNode = null;
-                    if (scheduled) {
-                      if (isPast) {
-                        // Past day — small quiet dot, assumed ran
-                        cellContent = (
-                          <div
-                            className="w-1.5 h-1.5 rounded-full bg-zinc-600 opacity-60"
-                            title={`${job.label} — ${DAY_LABELS[dayIdx]}`}
-                          />
-                        );
-                      } else if (isToday && ranToday) {
-                        // Ran today — clean checkmark
-                        cellContent = (
-                          <div
-                            className="w-5 h-5 rounded-full flex items-center justify-center"
-                            style={{ backgroundColor: `${color}20`, border: `1px solid ${color}50` }}
-                            title={`${job.label} — ran at ${formatCATHour(job.catHour)} CAT`}
-                          >
-                            <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
-                              <path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                          </div>
-                        );
-                      } else if (isToday && !ranToday) {
-                        // Today, pending — empty ring with color tint
-                        cellContent = (
-                          <div
-                            className="w-5 h-5 rounded-full"
-                            style={{ border: `1.5px solid ${color}45` }}
-                            title={`${job.label} — ${formatCATHour(job.catHour)} CAT (pending)`}
-                          />
-                        );
-                      } else {
-                        // Future — nearly invisible tiny dot
-                        cellContent = (
-                          <div
-                            className="w-1 h-1 rounded-full bg-zinc-700 opacity-40"
-                            title={`${job.label} — ${DAY_LABELS[dayIdx]} (scheduled)`}
-                          />
-                        );
-                      }
-                    }
-
+                {/* 7-day activity strip */}
+                <div className="flex items-end gap-1 px-4 pt-3 pb-2.5 border-b border-[#1e1e1e]">
+                  {DAY_LABELS.map((day, i) => {
+                    const isToday = i === catDayOfWeek;
+                    const isPast = i < catDayOfWeek;
+                    const barH = Math.max(2, Math.round((weekDayCounts[i] / maxCount) * 20));
                     return (
-                      <div
-                        key={dayIdx}
-                        className={`flex items-center justify-center py-2.5 ${
-                          isToday ? "bg-blue-500/[0.04]" : ""
-                        }`}
-                      >
-                        {cellContent}
+                      <div key={day} className="flex-1 flex flex-col items-center gap-1">
+                        <div
+                          className={`w-full rounded-sm transition-all ${
+                            isToday
+                              ? "bg-blue-500/50"
+                              : isPast
+                              ? "bg-zinc-800/40"
+                              : "bg-zinc-700/30"
+                          }`}
+                          style={{ height: `${barH}px` }}
+                        />
+                        <span
+                          className={`text-[9px] font-semibold uppercase tracking-wider ${
+                            isToday ? "text-blue-400" : isPast ? "text-zinc-700" : "text-zinc-600"
+                          }`}
+                        >
+                          {day}
+                        </span>
+                        {isToday && (
+                          <div className="w-1 h-1 rounded-full bg-blue-400" />
+                        )}
                       </div>
                     );
                   })}
                 </div>
-              );
-            })}
 
-            {/* Legend footer */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 px-3 py-2 border-t border-[#1a1a1a] bg-[#0f0f0f]">
-              <div className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-                <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 opacity-60" />
-                ran
-              </div>
-              <div className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-                <div className="w-3.5 h-3.5 rounded-full border border-blue-500/40" />
-                pending today
-              </div>
-              <div className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-                <div className="w-3.5 h-3.5 rounded-full border border-zinc-500/30 flex items-center justify-center">
-                  <svg width="7" height="7" viewBox="0 0 9 9" fill="none">
-                    <path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                done today
-              </div>
-              <div className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-                <div className="w-1 h-1 rounded-full bg-zinc-700 opacity-40" />
-                upcoming
+                {/* Coming Up list */}
+                {upcoming.length > 0 ? (
+                  <div>
+                    {upcoming.map((item, i) => {
+                      const { job, hoursUntil, catRunHour, isToday, isImminent } = item;
+                      const color = agentColors[job.agent] || "#6b7280";
+                      const emoji = OWNER_EMOJI[job.agent] || "⚙️";
+                      const timeLabel = isToday
+                        ? formatCATHour(catRunHour)
+                        : `tmrw ${formatCATHour(catRunHour)}`;
+                      return (
+                        <div
+                          key={`${job.agent}-${job.catHour}-${i}`}
+                          className={`flex items-center gap-3 px-4 py-3 ${
+                            i < upcoming.length - 1 ? "border-b border-[#1a1a1a]" : ""
+                          } ${isImminent ? "bg-amber-500/[0.03]" : ""}`}
+                        >
+                          {/* Time + countdown stacked */}
+                          <div className="flex flex-col items-end w-20 flex-shrink-0">
+                            <span className="text-xs font-mono text-zinc-200 tabular-nums">{timeLabel}</span>
+                            <span
+                              className={`text-[10px] font-semibold tabular-nums ${
+                                isImminent ? "text-amber-400" : "text-zinc-600"
+                              }`}
+                            >
+                              {formatCountdown(hoursUntil)}
+                            </span>
+                          </div>
+                          {/* Agent color accent */}
+                          <div
+                            className="w-0.5 h-7 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: color }}
+                          />
+                          {/* Emoji */}
+                          <span className="text-base leading-none flex-shrink-0">{emoji}</span>
+                          {/* Job name */}
+                          <span
+                            className={`text-sm flex-1 min-w-0 truncate ${
+                              isImminent ? "text-zinc-100" : "text-zinc-300"
+                            }`}
+                          >
+                            {job.label}
+                          </span>
+                          {/* Imminent badge */}
+                          {isImminent && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-400 flex-shrink-0 border border-amber-500/20">
+                              soon
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="py-8 text-center text-zinc-600 text-xs">
+                    Nothing scheduled in the next 24 hours
+                  </div>
+                )}
+
+                {/* Already ran today — compact footer */}
+                {alreadyRanToday.length > 0 && (
+                  <div className="border-t border-[#1a1a1a] bg-[#0f0f0f] px-4 py-2.5">
+                    <div className="text-[10px] text-zinc-700 font-semibold uppercase tracking-wider mb-1.5">
+                      ✓ Ran earlier today
+                    </div>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1">
+                      {alreadyRanToday.map(({ job, catRunHour }, i) => (
+                        <span
+                          key={`ran-${job.agent}-${catRunHour}-${i}`}
+                          className="text-[10px] text-zinc-700 font-mono"
+                        >
+                          {OWNER_EMOJI[job.agent] || "⚙️"}{" "}
+                          <span className="tabular-nums">{formatCATHour(catRunHour)}</span>{" "}
+                          <span className="text-zinc-600 font-sans">{job.label}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        </div>
+          );
+        })()}
 
         {/* Summary bar */}
         {!loading && !error && (
