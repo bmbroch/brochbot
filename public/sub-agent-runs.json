@@ -17,11 +17,23 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1837272,
-    "cost": 4.8075,
-    "durationSec": 1070,
+    "tokens": 2038507,
+    "cost": 5.6142,
+    "durationSec": 1227,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
+  },
+  {
+    "id": "fe0faccc-271c-40a0-91a0-befe33887a89",
+    "label": "devin-hardcode-audit",
+    "agent": "devin",
+    "task": "1. API keys, tokens, secrets hardcoded in source files (not in .env)",
+    "model": "Sonnet",
+    "tokens": 475157,
+    "cost": 0.9505,
+    "durationSec": 83,
+    "status": "success",
+    "timestamp": "2026-02-19T19:20:11.977Z"
   },
   {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
@@ -29,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 128883,
-    "cost": 0.3818,
-    "durationSec": 3101,
+    "tokens": 151918,
+    "cost": 0.4804,
+    "durationSec": 3171,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
@@ -41,11 +53,23 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 128158,
-    "cost": 0.4556,
-    "durationSec": 2906,
+    "tokens": 150659,
+    "cost": 0.4705,
+    "durationSec": 2912,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
+  },
+  {
+    "id": "2921efcb-e29e-4d03-96d0-fad2ffc4e001",
+    "label": "dana-weekly-traffic",
+    "agent": "dana",
+    "task": "",
+    "model": "Sonnet",
+    "tokens": 131255,
+    "cost": 0.1615,
+    "durationSec": 73,
+    "status": "success",
+    "timestamp": "2026-02-19T19:19:56.558Z"
   },
   {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
@@ -70,18 +94,6 @@
     "durationSec": 19,
     "status": "success",
     "timestamp": "2026-02-19T14:00:00.055Z"
-  },
-  {
-    "id": "2921efcb-e29e-4d03-96d0-fad2ffc4e001",
-    "label": "dana-weekly-traffic",
-    "agent": "dana",
-    "task": "",
-    "model": "Sonnet",
-    "tokens": 40979,
-    "cost": 0.0789,
-    "durationSec": 17,
-    "status": "success",
-    "timestamp": "2026-02-19T19:19:56.558Z"
   },
   {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
@@ -130,17 +142,5 @@
     "durationSec": 7,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "fe0faccc-271c-40a0-91a0-befe33887a89",
-    "label": "devin-hardcode-audit",
-    "agent": "devin",
-    "task": "1. API keys, tokens, secrets hardcoded in source files (not in .env)",
-    "model": "Sonnet",
-    "tokens": 12016,
-    "cost": 0.0264,
-    "durationSec": 2,
-    "status": "success",
-    "timestamp": "2026-02-19T19:20:11.977Z"
   }
 ]
