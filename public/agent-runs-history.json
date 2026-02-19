@@ -12,18 +12,6 @@
     "timestamp": "2026-02-19T00:00:00.059Z"
   },
   {
-    "id": "sam-daily-2026-02-19",
-    "label": "Daily total",
-    "agent": "sam",
-    "task": "Sam \u2194 Ben total conversation cost today",
-    "model": "Opus",
-    "tokens": 39232297,
-    "cost": 46.0356,
-    "durationSec": 0,
-    "status": "success",
-    "timestamp": "2026-02-19T00:00:00Z"
-  },
-  {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
     "label": "Morning Analytics Report",
     "agent": "dana",
@@ -706,5 +694,29 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T16:10:01Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T16:15:57Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 1591459,
+    "cost": 1.124,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T16:15:57Z"
+  },
+  {
+    "id": "sam-daily-2026-02-19",
+    "label": "Daily total",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben total conversation cost today",
+    "model": "Opus",
+    "tokens": 40823756,
+    "cost": 47.1596,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T16:15:57Z"
   }
 ]

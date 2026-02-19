@@ -1,17 +1,5 @@
 [
   {
-    "id": "5ef128e4-6a54-47b6-8475-bbc9b7d39425",
-    "label": "devin-automations-feed",
-    "agent": "devin",
-    "task": "**Task: 3 things \u2014 fix activity feed data source, rename Calendar \u2192 Automations + redesign, add Mia to bash crons**",
-    "model": "Sonnet",
-    "tokens": 1109569,
-    "cost": 0.7987,
-    "durationSec": 322,
-    "status": "success",
-    "timestamp": "2026-02-19T15:13:39.078Z"
-  },
-  {
     "id": "d50ff74d-16ba-4c2c-bafb-25f72d7df902",
     "label": "devin-automations-update",
     "agent": "devin",
