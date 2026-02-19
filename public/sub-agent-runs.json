@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 6451662,
-    "cost": 13.8562,
-    "durationSec": 2509,
+    "tokens": 8201785,
+    "cost": 15.996,
+    "durationSec": 3449,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -67,7 +67,7 @@
     "model": "Opus",
     "tokens": 340650,
     "cost": 0.9893,
-    "durationSec": 3700,
+    "durationSec": 5114,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
@@ -127,7 +127,7 @@
     "model": "Opus",
     "tokens": 67059,
     "cost": 0.2108,
-    "durationSec": 21,
+    "durationSec": 3721,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
