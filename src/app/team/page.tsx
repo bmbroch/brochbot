@@ -130,7 +130,10 @@ export default function TeamPage() {
 
   // Resolve final lastActive for an agent: activities first, agentStatus fallback
   function getLastActive(id: string): number | null {
-    return latestActivityTs[id] ?? agentStatusTs[id] ?? null;
+    const fromActivities = latestActivityTs[id] ?? 0;
+    const fromStatus = agentStatusTs[id] ?? 0;
+    const best = Math.max(fromActivities, fromStatus);
+    return best > 0 ? best : null;
   }
 
   const selectedMember = selectedId ? teamMembers.find(m => m.id === selectedId) : null;
