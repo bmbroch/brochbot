@@ -7,7 +7,6 @@ import AgentDrawer from "@/components/AgentDrawer";
 import AgentSidePanel from "@/components/AgentSidePanel";
 import {
   teamMembers,
-  useActivities,
   agentColors,
   type TeamMember,
   type Activity,
@@ -151,7 +150,40 @@ function Desk({
 
 export default function OfficePage() {
   const [selected, setSelected] = useState<string | null>(null);
-  const activities = useActivities();
+  const [activities, setActivities] = useState<Activity[]>([]);
+
+  useEffect(() => {
+    fetch("/mc-data.json")
+      .then((r) => r.json())
+      .then((data) => {
+        const rawActs: Array<{
+          id: string;
+          agent: string;
+          title: string;
+          description?: string;
+          status: string;
+          date?: string;
+          type?: string;
+          product?: string;
+        }> = data.activities || [];
+        const mapped: Activity[] = rawActs
+          .map((a) => ({
+            _id: a.id,
+            agent: a.agent,
+            type: (a.type as Activity["type"]) || "task",
+            title: a.title,
+            description: a.description,
+            product: a.product as Activity["product"] | undefined,
+            status: (a.status as Activity["status"]) || "success",
+            createdAt: a.date ? new Date(a.date).getTime() : Date.now(),
+          }))
+          .reverse();
+        if (mapped.length > 0) setActivities(mapped);
+      })
+      .catch(() => {
+        // stay on empty fallback
+      });
+  }, []);
 
   const getAgentActivities = (id: string) =>
     activities.filter((a) => a.agent === id).slice(0, 8);

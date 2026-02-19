@@ -134,7 +134,7 @@ export default function CreatorDetailPage() {
         {/* Posts Table */}
         <div className="rounded-xl bg-[#141414] border border-[#262626] overflow-hidden">
           <div className="px-5 py-4 border-b border-[#262626]">
-            <h2 className="text-sm font-semibold">Posts ({posts.length})</h2>
+            <h2 className="text-sm font-semibold">Recent Posts ({posts.length})</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -149,7 +149,7 @@ export default function CreatorDetailPage() {
                 </tr>
               </thead>
               <tbody>
-                {posts.map((p, i) => (
+                {[...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((p, i) => (
                   <tr key={i} className="border-b border-[#1a1a1a] hover:bg-white/[0.02] transition-colors">
                     <td className="px-5 py-3 text-zinc-400">{p.date}</td>
                     <td className="px-5 py-3 text-right text-cyan-400">{fmt(p.ttViews)}</td>

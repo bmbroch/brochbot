@@ -356,7 +356,7 @@ export function useTasks(): Task[] {
 }
 
 export function useActivities(): Activity[] {
-  return mockActivities;
+  return [];
 }
 
 export function useScheduledTasks(): ScheduledTask[] {
