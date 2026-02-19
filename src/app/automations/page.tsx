@@ -150,71 +150,6 @@ const OWNER_EMOJI: Record<string, string> = {
   system: "⚙️",
 };
 
-// ─── Static bash cron entries ─────────────────────────────────────────────────
-
-const bashCrons: CronJob[] = [
-  {
-    id: "bash-mc-sync",
-    title: "MC Data Sync",
-    schedule: "*/10 * * * *",
-    timezone: "",
-    owner: "sam",
-    enabled: true,
-    status: "ok",
-    lastStatus: "ok",
-    lastRunAt: null,
-    nextRunAt: null,
-    consecutiveErrors: 0,
-    description: "Every 10 min — session JSONLs → mc-data.json → Supabase + GitHub push",
-    isBash: true,
-  },
-  {
-    id: "bash-frankie-sync",
-    title: "Mercury Creator Sync",
-    schedule: "0 10 * * *",
-    timezone: "Africa/Windhoek",
-    owner: "frankie",
-    enabled: true,
-    status: "ok",
-    lastStatus: "ok",
-    lastRunAt: null,
-    nextRunAt: null,
-    consecutiveErrors: 0,
-    description: "Daily noon CAT — Mercury API → creator-payouts.json",
-    isBash: true,
-  },
-  {
-    id: "bash-mia-sync",
-    title: "Creator Posts Sync",
-    schedule: "0 23 * * *",
-    timezone: "Africa/Windhoek",
-    owner: "mia",
-    enabled: true,
-    status: "ok",
-    lastStatus: "ok",
-    lastRunAt: null,
-    nextRunAt: null,
-    consecutiveErrors: 0,
-    description: "Daily 1 AM CAT — Google Sheets → creator-posts.json → feeds creator-data.json",
-    isBash: true,
-  },
-  {
-    id: "bash-creator-merge",
-    title: "Creator Data Merge",
-    schedule: "30 23,10 * * *",
-    timezone: "Africa/Windhoek",
-    owner: "sam",
-    enabled: true,
-    status: "ok",
-    lastStatus: "ok",
-    lastRunAt: null,
-    nextRunAt: null,
-    consecutiveErrors: 0,
-    description: "1:30 AM + 12:30 PM CAT — merges Mia's posts + Frankie's Mercury data → creator-data.json",
-    isBash: true,
-  },
-];
-
 // ─── Daily schedule jobs ──────────────────────────────────────────────────────
 
 interface ScheduleJob {
@@ -298,6 +233,23 @@ export default function AutomationsPage() {
       })
       .then((d) => {
         const cal: CronJob[] = d.calendar ?? [];
+        const bashCrons: CronJob[] = (d.bashCrons ?? []).map(
+          (b: { id: string; title: string; schedule: string; timezone: string; owner: string; description?: string }) => ({
+            id: b.id,
+            title: b.title,
+            schedule: b.schedule,
+            timezone: b.timezone ?? "",
+            owner: b.owner,
+            enabled: true,
+            status: "ok",
+            lastStatus: "ok",
+            lastRunAt: null,
+            nextRunAt: null,
+            consecutiveErrors: 0,
+            description: b.description,
+            isBash: true,
+          })
+        );
         const merged = [...cal, ...bashCrons];
         merged.sort((a, b) => {
           const rank = (s: string) => {
@@ -618,7 +570,7 @@ export default function AutomationsPage() {
 
         {!loading && !error && jobs.length > 0 && (
           <p className="mt-5 text-[11px] text-zinc-700 text-right">
-            AI crons live from mc-data.json · bash crons static · refreshes on reload
+            AI crons + bash crons from mc-data.json · refreshes on reload
           </p>
         )}
       </div>
