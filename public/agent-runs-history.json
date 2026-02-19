@@ -17,8 +17,8 @@
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 38575108,
-    "cost": 44.9268,
+    "tokens": 38834821,
+    "cost": 45.3501,
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00Z"
@@ -670,5 +670,29 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-19T16:00:01Z"
+  },
+  {
+    "id": "00c01b59-a793-4c3c-b494-e386470fc395",
+    "label": "Cara: Mohamed Aazick ISK lookup",
+    "agent": "cara",
+    "task": "Look up this user for ISK (Interview Sidekick):",
+    "model": "Sonnet",
+    "tokens": 11791,
+    "cost": 0.0255,
+    "durationSec": 2,
+    "status": "success",
+    "timestamp": "2026-02-19T16:05:19.750Z"
+  },
+  {
+    "id": "sam-sync-2026-02-19T16:05:24Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 259713,
+    "cost": 0.4233,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-19T16:05:24Z"
   }
 ]
