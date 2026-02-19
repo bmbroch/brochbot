@@ -492,12 +492,105 @@ function RunsTable({
   );
 }
 
+/* ─── Usage by Agent (from agent-runs-history.json) ──────────────────────── */
+
+interface AgentRunEntry {
+  id: string;
+  label: string;
+  agent: string;
+  task: string;
+  model: Model;
+  tokens: number;
+  cost: number;
+  durationSec: number;
+  status: RunStatus;
+  timestamp: string;
+}
+
+interface AgentSummary {
+  agent: string;
+  runs: number;
+  tokens: number;
+  cost: number;
+  topModel: string;
+}
+
+function UsageByAgent({ entries }: { entries: AgentRunEntry[] }) {
+  const summaries = useMemo((): AgentSummary[] => {
+    const map: Record<string, { runs: number; tokens: number; cost: number; models: Record<string, number> }> = {};
+    for (const e of entries) {
+      const key = e.agent;
+      if (!map[key]) map[key] = { runs: 0, tokens: 0, cost: 0, models: {} };
+      map[key].runs += 1;
+      map[key].tokens += e.tokens ?? 0;
+      map[key].cost += e.cost ?? 0;
+      const m = e.model ?? "unknown";
+      map[key].models[m] = (map[key].models[m] ?? 0) + 1;
+    }
+    return Object.entries(map)
+      .map(([agent, d]) => ({
+        agent,
+        runs: d.runs,
+        tokens: d.tokens,
+        cost: d.cost,
+        topModel: Object.entries(d.models).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "—",
+      }))
+      .sort((a, b) => b.cost - a.cost);
+  }, [entries]);
+
+  if (summaries.length === 0) return null;
+
+  return (
+    <section>
+      <div className="mb-4">
+        <h2 className="text-xl font-bold">👤 Usage by Agent</h2>
+        <p className="text-xs text-zinc-500 mt-0.5">Aggregated from agent-runs-history.json · all time</p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        {summaries.map(({ agent, runs, tokens, cost, topModel }) => {
+          const s = agentStyle(agent);
+          return (
+            <div
+              key={agent}
+              className="rounded-2xl border border-[#222] bg-[#111] p-4 hover:border-[#333] transition-colors space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <Badge className={`${s.bg} ${s.text} ${s.border} capitalize`}>{agent}</Badge>
+                <span className="text-[10px] text-zinc-600 font-medium uppercase tracking-wider">
+                  {runs} run{runs !== 1 ? "s" : ""}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <p className="text-zinc-600 uppercase tracking-wider text-[10px] font-medium mb-0.5">Cost</p>
+                  <p className="text-emerald-400 font-bold tabular-nums">{fmtCost(cost)}</p>
+                </div>
+                <div>
+                  <p className="text-zinc-600 uppercase tracking-wider text-[10px] font-medium mb-0.5">Tokens</p>
+                  <p className="text-zinc-200 font-semibold tabular-nums">{fmtTokens(tokens)}</p>
+                </div>
+              </div>
+              <div className="pt-1 border-t border-[#1a1a1a] flex items-center justify-between">
+                <span className="text-[10px] text-zinc-600">Top model</span>
+                <Badge className={modelBadgeClass(topModel as Model)}>
+                  {topModel === "unknown" ? "—" : topModel}
+                </Badge>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 /* ─── Page ─────────────────────────────────────────────────────────────── */
 
 const MODEL_OPTIONS = ["All", "Opus", "Sonnet"];
 
 export default function UsagePage() {
   const [allRuns, setAllRuns] = useState<SubAgentRun[]>([]);
+  const [historyEntries, setHistoryEntries] = useState<AgentRunEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [modelFilter, setModelFilter] = useState("All");
   const [agentFilter, setAgentFilter] = useState("All");
@@ -505,9 +598,18 @@ export default function UsagePage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch("/api/sub-agent-runs");
-        const runs: SubAgentRun[] = await res.json();
-        setAllRuns(runs);
+        const [runsRes, histRes] = await Promise.allSettled([
+          fetch("/api/sub-agent-runs"),
+          fetch("/agent-runs-history.json"),
+        ]);
+        if (runsRes.status === "fulfilled") {
+          const runs: SubAgentRun[] = await runsRes.value.json();
+          setAllRuns(runs);
+        }
+        if (histRes.status === "fulfilled") {
+          const hist: AgentRunEntry[] = await histRes.value.json();
+          setHistoryEntries(Array.isArray(hist) ? hist : []);
+        }
       } catch (err) {
         console.error("Failed to load usage data", err);
       } finally {
@@ -598,6 +700,9 @@ export default function UsagePage() {
             />
           </div>
         </section>
+
+        {/* ── Usage by Agent ── */}
+        <UsageByAgent entries={historyEntries} />
 
         {/* ── Sub-Agent Runs Table — star of the show ── */}
         <section>
