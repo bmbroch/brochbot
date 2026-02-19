@@ -1,54 +1,66 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
   <!-- Background -->
-  <rect width="200" height="200" fill="#f97316" rx="100"/>
+  <circle cx="100" cy="100" r="100" fill="#f97316"/>
 
-  <!-- Body / shirt (coral/red) -->
-  <ellipse cx="100" cy="185" rx="52" ry="38" fill="#e8472a"/>
-  <rect x="48" y="155" width="104" height="50" fill="#e8472a" rx="8"/>
+  <!-- Body / shirt -->
+  <rect x="40" y="156" width="120" height="50" fill="#e8472a" rx="8"/>
+  <ellipse cx="100" cy="158" rx="44" ry="14" fill="#e8472a"/>
 
   <!-- Neck -->
-  <rect x="87" y="140" width="26" height="22" fill="#d4956a" rx="4"/>
+  <rect x="87" y="142" width="26" height="20" fill="#dba878" rx="5"/>
 
-  <!-- Back hair (long, behind head) — sandy brown -->
-  <ellipse cx="100" cy="112" rx="52" ry="72" fill="#c8956a"/>
-  <!-- Hair sides falling down -->
-  <rect x="46" y="98" width="18" height="60" fill="#c8956a" rx="9"/>
-  <rect x="136" y="98" width="18" height="60" fill="#c8956a" rx="9"/>
+  <!-- HAIR — wide bell silhouette behind head, extends well past ears to shoulders -->
+  <path d="
+    M 64 72
+    C 62 46, 76 28, 100 27
+    C 124 28, 138 46, 136 72
+    C 152 80, 162 108, 160 132
+    C 158 152, 148 166, 134 170
+    C 122 174, 108 164, 100 156
+    C 92 164, 78 174, 66 170
+    C 52 166, 42 152, 40 132
+    C 38 108, 48 80, 64 72 Z
+  " fill="#c8916a"/>
+
+  <!-- Hair top (slightly darker at the top of the crown) -->
+  <path d="
+    M 64 72
+    C 62 46, 76 28, 100 27
+    C 124 28, 138 46, 136 72
+    C 125 55, 112 48, 100 47
+    C 88 48, 75 55, 64 72 Z
+  " fill="#b8814a"/>
+
+  <!-- Center part line -->
+  <path d="M 100 27 L 100 58" stroke="#a07038" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
 
   <!-- Head -->
-  <ellipse cx="100" cy="98" rx="46" ry="48" fill="#e8b48a"/>
+  <circle cx="100" cy="96" r="44" fill="#e8b48a"/>
 
-  <!-- Ears -->
-  <ellipse cx="54" cy="100" rx="10" ry="12" fill="#e8b48a"/>
-  <ellipse cx="146" cy="100" rx="10" ry="12" fill="#e8b48a"/>
-  <ellipse cx="54" cy="100" rx="6" ry="8" fill="#d4956a"/>
-  <ellipse cx="146" cy="100" rx="6" ry="8" fill="#d4956a"/>
-
-  <!-- Top hair (sandy brown, front) -->
-  <ellipse cx="100" cy="62" rx="46" ry="26" fill="#c8956a"/>
-  <!-- Hair parting detail -->
-  <ellipse cx="80" cy="58" rx="22" ry="14" fill="#b8855a"/>
-  <ellipse cx="120" cy="58" rx="22" ry="14" fill="#b8855a"/>
-  <!-- Front face-framing hair pieces -->
-  <ellipse cx="60" cy="85" rx="11" ry="20" fill="#c8956a"/>
-  <ellipse cx="140" cy="85" rx="11" ry="20" fill="#c8956a"/>
+  <!-- Ears (partially behind hair sides) -->
+  <ellipse cx="56" cy="98" rx="10" ry="12" fill="#e8b48a"/>
+  <ellipse cx="144" cy="98" rx="10" ry="12" fill="#e8b48a"/>
+  <ellipse cx="56" cy="98" rx="6" ry="8" fill="#d49870"/>
+  <ellipse cx="144" cy="98" rx="6" ry="8" fill="#d49870"/>
 
   <!-- Eyes -->
-  <circle cx="82" cy="98" r="5.5" fill="#2a2a3a"/>
-  <circle cx="118" cy="98" r="5.5" fill="#2a2a3a"/>
-  <!-- Eye shine -->
-  <circle cx="84" cy="96" r="1.5" fill="white"/>
-  <circle cx="120" cy="96" r="1.5" fill="white"/>
+  <circle cx="84" cy="96" r="6" fill="#2a2430"/>
+  <circle cx="116" cy="96" r="6" fill="#2a2430"/>
+  <circle cx="86" cy="94" r="2" fill="white"/>
+  <circle cx="118" cy="94" r="2" fill="white"/>
+
+  <!-- Eyebrows -->
+  <path d="M 75 85 Q 84 81 93 84" stroke="#8a5a30" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 107 84 Q 116 81 125 85" stroke="#8a5a30" stroke-width="2.5" fill="none" stroke-linecap="round"/>
 
   <!-- Nose -->
-  <ellipse cx="100" cy="110" rx="4" ry="3" fill="#d4956a"/>
+  <ellipse cx="100" cy="108" rx="4" ry="3" fill="#d49870"/>
 
-  <!-- Smile / mouth -->
-  <path d="M 82 122 Q 100 136 118 122" stroke="#2a2a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Teeth -->
-  <path d="M 84 123 Q 100 134 116 123 Q 100 130 84 123" fill="white"/>
+  <!-- Open smile with teeth -->
+  <path d="M 83 120 Q 100 135 117 120" stroke="#2a2430" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 83 120 Q 100 135 117 120 Q 100 130 83 120 Z" fill="white"/>
 
   <!-- Cheek blush -->
-  <ellipse cx="68" cy="114" rx="9" ry="6" fill="#e89070" opacity="0.5"/>
-  <ellipse cx="132" cy="114" rx="9" ry="6" fill="#e89070" opacity="0.5"/>
+  <ellipse cx="68" cy="112" rx="10" ry="7" fill="#e89068" opacity="0.4"/>
+  <ellipse cx="132" cy="112" rx="10" ry="7" fill="#e89068" opacity="0.4"/>
 </svg>
