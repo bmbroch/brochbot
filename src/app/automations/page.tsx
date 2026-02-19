@@ -3,139 +3,71 @@
 import Shell from "@/components/Shell";
 import React, { useEffect, useState } from "react";
 import { agentColors } from "@/lib/data-provider";
-import { TZ } from "@/lib/utils";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-interface CronJob {
+/** A one-shot job (schedule.kind === 'at' or deleteAfterRun === true) */
+interface OneShotJob {
+  id: string;
+  title: string;
+  schedule: { kind: "at"; at: string } | string;
+  owner: string;
+  status: string;
+  lastStatus?: string;
+  lastRunAt?: string | null;
+  nextRunAt?: string | null;
+  deleteAfterRun?: boolean;
+  description?: string;
+}
+
+/** A recurring job from calendar (schedule.kind === 'cron') or bashCrons */
+interface RecurringJob {
+  id: string;
+  title: string;
+  schedule: { kind: "cron"; expr: string } | string;
+  timezone: string;
+  owner: string;
+  status: string;
+  lastStatus: string;
+  lastRunAt: string | null;
+  nextRunAt?: string | null;
+  consecutiveErrors?: number;
+  description?: string;
+  isBash?: boolean;
+}
+
+/** Raw item from mc-data.json calendar array */
+interface RawCalendarItem {
+  id: string;
+  title: string;
+  schedule: { kind: string; at?: string; expr?: string } | string;
+  timezone?: string;
+  owner: string;
+  enabled?: boolean;
+  status: string;
+  lastStatus?: string;
+  lastRunAt?: string | null;
+  nextRunAt?: string | null;
+  consecutiveErrors?: number;
+  deleteAfterRun?: boolean;
+  description?: string;
+}
+
+/** Raw bash cron from mc-data.json */
+interface RawBashCron {
   id: string;
   title: string;
   schedule: string;
   timezone: string;
   owner: string;
-  enabled: boolean;
-  status: string;
-  lastStatus: string;
-  lastRunAt: string | null;
-  nextRunAt: string | null;
-  consecutiveErrors: number;
   description?: string;
-  isBash?: boolean;
+  lastRunAt?: string | null;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-const TZ_ABBR: Record<string, string> = {
-  [TZ]: "CAT",
-  "Africa/Johannesburg": "SAST",
-  "Europe/London": "UTC",
-  "America/New_York": "ET",
-  "America/Los_Angeles": "PT",
-  "UTC": "UTC",
-};
-
-function tzAbbr(tz: string): string {
-  return TZ_ABBR[tz] || tz;
-}
-
-const DAY_NAMES: Record<number, string> = {
-  0: "Sundays",
-  1: "Mondays",
-  2: "Tuesdays",
-  3: "Wednesdays",
-  4: "Thursdays",
-  5: "Fridays",
-  6: "Saturdays",
-};
-
-function formatHour(h: number): string {
-  if (h === 0) return "12 AM";
-  if (h < 12) return `${h} AM`;
-  if (h === 12) return "12 PM";
-  return `${h - 12} PM`;
-}
-
-function cronToHuman(cron: string, tz: string): string {
-  const parts = cron.trim().split(/\s+/);
-  if (parts.length !== 5) return cron;
-  const [min, hour, dom, month, dow] = parts;
-  const suffix = tzAbbr(tz);
-
-  if (min === "*" && hour === "*") return "Every minute";
-
-  if (min.startsWith("*/") && hour === "*" && dom === "*" && month === "*" && dow === "*") {
-    return `Every ${min.slice(2)} min`;
-  }
-
-  if (hour === "*" && dom === "*" && month === "*" && dow === "*") {
-    return `Every hour at :${min.padStart(2, "0")}`;
-  }
-
-  const h = parseInt(hour);
-  const m = parseInt(min);
-  const timeStr = m === 0 ? formatHour(h) : `${formatHour(h).replace(" ", "")} :${m.toString().padStart(2, "0")}`;
-
-  if (dom === "*" && month === "*" && dow === "*") {
-    return `Daily at ${timeStr} ${suffix}`;
-  }
-
-  if (dom === "*" && month === "*" && dow !== "*" && !dow.includes(",") && !dow.includes("-")) {
-    const dayNum = parseInt(dow);
-    return `${DAY_NAMES[dayNum] ?? `Day ${dow}`} at ${timeStr} ${suffix}`;
-  }
-
-  if (dom === "*" && month === "*" && dow === "1-5") {
-    return `Weekdays at ${timeStr} ${suffix}`;
-  }
-
-  return cron;
-}
-
-function relativeTime(isoStr: string | null, future = false): string {
-  if (!isoStr) return "Never";
-  const now = Date.now();
-  const then = new Date(isoStr).getTime();
-  const diffMs = future ? then - now : now - then;
-  const abs = Math.abs(diffMs);
-
-  if (abs < 60_000) return future ? "in <1 min" : "just now";
-  if (abs < 3_600_000) {
-    const m = Math.round(abs / 60_000);
-    return future ? `in ${m}m` : `${m}m ago`;
-  }
-  if (abs < 86_400_000) {
-    const h = Math.round(abs / 3_600_000);
-    return future ? `in ${h}h` : `${h}h ago`;
-  }
-  const days = Math.round(abs / 86_400_000);
-  return future ? `in ${days}d` : `${days}d ago`;
-}
-
-function statusBadge(status: string): {
-  label: string;
-  textClass: string;
-  bgClass: string;
-  dotClass: string;
-  isError: boolean;
-} {
-  const s = status.toLowerCase();
-  if (s === "ok") {
-    return { label: "OK", textClass: "text-green-400", bgClass: "bg-green-500/10", dotClass: "bg-green-400", isError: false };
-  }
-  if (s.startsWith("error")) {
-    const match = status.match(/(\d+)/);
-    const n = match ? ` ×${match[1]}` : "";
-    return { label: `Error${n}`, textClass: "text-red-400", bgClass: "bg-red-500/15", dotClass: "bg-red-400", isError: true };
-  }
-  if (s === "disabled") {
-    return { label: "Disabled", textClass: "text-zinc-500", bgClass: "bg-zinc-500/10", dotClass: "bg-zinc-600", isError: false };
-  }
-  return { label: "Idle", textClass: "text-zinc-400", bgClass: "bg-zinc-500/10", dotClass: "bg-zinc-500", isError: false };
-}
-
-function ownerToKey(owner: string): string {
-  return owner.toLowerCase().replace(/\s+/g, "");
-}
+// CAT = UTC+2
+const CAT_OFFSET_MS = 2 * 60 * 60 * 1000;
 
 const OWNER_EMOJI: Record<string, string> = {
   sam: "🤝",
@@ -151,74 +83,53 @@ const OWNER_EMOJI: Record<string, string> = {
   system: "⚙️",
 };
 
-// ─── Dynamic schedule jobs (derived from live cron data) ─────────────────────
-
-interface ScheduleJob {
-  agent: string;
-  label: string;
-  catHour: number;
-  daily: boolean;
-  weekDay?: number; // 1=Mon...7=Sun (matches cron DOW 1-6, 7=Sun), undefined means daily
-}
-
-// Fixed UTC offsets for known timezones (standard time; close enough for display)
 const TZ_OFFSET_HOURS: Record<string, number> = {
-  [TZ]:                  2,
+  "Africa/Windhoek": 2,
   "Africa/Johannesburg": 2,
-  "Europe/London":       0,
-  "America/New_York":    -5,
+  "Europe/London": 0,
+  "America/New_York": -5,
   "America/Los_Angeles": -8,
-  "UTC":                 0,
-  "":                    0,
+  "UTC": 0,
+  "": 0,
 };
 
-/**
- * Parse a CronJob into a ScheduleJob for the timeline/grid.
- * Returns null for complex/unparseable schedules.
- * All output times are in CAT (UTC+2).
- */
-function parseScheduleJob(job: CronJob): ScheduleJob | null {
-  const parts = job.schedule.trim().split(/\s+/);
-  if (parts.length !== 5) return null;
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-  const [minStr, hourStr, dom, month, dow] = parts;
-
-  // Only handle simple fixed-time schedules
-  if (hourStr === "*" || /[\/,\-]/.test(hourStr)) return null;
-  if (minStr === "*" || /[\/,\-]/.test(minStr)) return null;
-  if (dom !== "*" || month !== "*") return null;
-
-  const cronHour = parseInt(hourStr, 10);
-  const cronMin  = parseInt(minStr, 10);
-  if (isNaN(cronHour) || isNaN(cronMin)) return null;
-
-  // Convert cron timezone → CAT (UTC+2)
-  const tzOffset = TZ_OFFSET_HOURS[job.timezone] ?? 0;
-  const catDecimalHour = ((cronHour - tzOffset + 2 + 24) % 24) + cronMin / 60;
-
-  const isDaily = dow === "*";
-  let weekDay: number | undefined;
-
-  if (!isDaily) {
-    if (/[\/,\-]/.test(dow)) return null; // skip complex DOW
-    const dowNum = parseInt(dow, 10);
-    if (isNaN(dowNum)) return null;
-    // Normalize: cron 0 or 7 = Sunday → weekDay 7; cron 1-6 = Mon-Sat → weekDay 1-6
-    weekDay = (dowNum === 0 || dowNum === 7) ? 7 : dowNum;
-  }
-
-  return {
-    agent: ownerToKey(job.owner),
-    label: job.title,
-    catHour: catDecimalHour,
-    daily: isDaily,
-    weekDay,
-  };
+function ownerToKey(owner: string): string {
+  return owner.toLowerCase().replace(/\s+/g, "");
 }
 
-const DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+function getNowCAT(): Date {
+  return new Date(Date.now() + CAT_OFFSET_MS);
+}
 
-/** Format hours-until into a human countdown string */
+function getCATDecimalHour(): number {
+  const now = getNowCAT();
+  return now.getUTCHours() + now.getUTCMinutes() / 60;
+}
+
+// Mon=0 … Sun=6
+function getCATDayOfWeek(): number {
+  const d = getNowCAT().getUTCDay();
+  return d === 0 ? 6 : d - 1;
+}
+
+function formatCATTime(h: number): string {
+  const hr = Math.floor(h) % 24;
+  const mn = Math.round((h - Math.floor(h)) * 60);
+  const ampm = hr < 12 ? "AM" : "PM";
+  const displayHr = hr % 12 === 0 ? 12 : hr % 12;
+  return mn === 0
+    ? `${displayHr} ${ampm}`
+    : `${displayHr}:${mn.toString().padStart(2, "0")} ${ampm}`;
+}
+
+function formatCATHour24(h: number): string {
+  const hr = Math.floor(h) % 24;
+  const mn = Math.round((h - Math.floor(h)) * 60);
+  return `${hr}:${mn.toString().padStart(2, "0")}`;
+}
+
 function formatCountdown(hoursUntil: number): string {
   if (hoursUntil < 1 / 60) return "now";
   if (hoursUntil < 1) {
@@ -231,125 +142,143 @@ function formatCountdown(hoursUntil: number): string {
   return `in ${h}h ${m}m`;
 }
 
-interface RollingJob {
-  job: ScheduleJob;
-  hoursUntil: number;
-  catRunHour: number;
-  isToday: boolean;
-  isImminent: boolean; // < 3h
+function relativeTime(isoStr: string | null | undefined): string {
+  if (!isoStr) return "Never";
+  const now = Date.now();
+  const then = new Date(isoStr).getTime();
+  const diffMs = now - then;
+  const abs = Math.abs(diffMs);
+  if (abs < 60_000) return "just now";
+  if (abs < 3_600_000) return `${Math.round(abs / 60_000)}m ago`;
+  if (abs < 86_400_000) return `${Math.round(abs / 3_600_000)}h ago`;
+  return `${Math.round(abs / 86_400_000)}d ago`;
 }
 
-/**
- * Build rolling 24h data from schedule jobs.
- * Returns upcoming runs within 24h (sorted asc) and jobs that already ran today.
- */
-function buildRolling24h(
-  jobs: ScheduleJob[],
-  nowHour: number,
-  nowDayOfWeek: number // Mon=0...Sun=6
-): { upcoming: RollingJob[]; alreadyRanToday: { job: ScheduleJob; catRunHour: number }[]; weekDayCounts: number[] } {
-  const upcoming: RollingJob[] = [];
-  const alreadyRanToday: { job: ScheduleJob; catRunHour: number }[] = [];
-  const weekDayCounts = Array(7).fill(0);
+/** Convert ISO timestamp → CAT decimal hour (e.g. "2026-02-20T03:00:00Z" → 5.0 for UTC+2) */
+function isoToCAT(iso: string): number {
+  const d = new Date(iso);
+  const catH = d.getUTCHours() + 2; // UTC+2
+  const catM = d.getUTCMinutes();
+  return (catH % 24) + catM / 60;
+}
 
-  for (const job of jobs) {
-    // Tally for 7-day strip
-    if (job.daily) {
-      for (let d = 0; d < 7; d++) weekDayCounts[d]++;
-    } else if (job.weekDay !== undefined) {
-      weekDayCounts[(job.weekDay - 1) % 7]++;
-    }
+/** Convert ISO timestamp → CAT Date object */
+function isoToCATDate(iso: string): Date {
+  return new Date(new Date(iso).getTime() + CAT_OFFSET_MS);
+}
 
-    // Did it run today?
-    const isScheduledToday =
-      job.daily ||
-      (job.weekDay !== undefined && (job.weekDay - 1) % 7 === nowDayOfWeek);
-    if (isScheduledToday && job.catHour <= nowHour) {
-      alreadyRanToday.push({ job, catRunHour: job.catHour });
-    }
+/** Format a CAT Date as "Feb 20, 11 PM" */
+function formatCATDateTime(iso: string): string {
+  const d = isoToCATDate(iso);
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const h = d.getUTCHours();
+  const m = d.getUTCMinutes();
+  const ampm = h < 12 ? "AM" : "PM";
+  const displayH = h % 12 === 0 ? 12 : h % 12;
+  const timeStr = m === 0 ? `${displayH} ${ampm}` : `${displayH}:${m.toString().padStart(2, "0")} ${ampm}`;
+  return `${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${timeStr}`;
+}
 
-    // Compute hours until NEXT run
-    let hoursUntil: number;
-    let isToday: boolean;
+/** Hours until a future ISO timestamp from now */
+function hoursUntil(iso: string): number {
+  const ms = new Date(iso).getTime() - Date.now();
+  return ms / 3_600_000;
+}
 
-    if (job.daily) {
-      if (job.catHour > nowHour) {
-        hoursUntil = job.catHour - nowHour;
-        isToday = true;
-      } else {
-        // Next run is tomorrow
-        hoursUntil = 24 - nowHour + job.catHour;
-        isToday = false;
-      }
-    } else {
-      const dayIdx = (job.weekDay! - 1) % 7; // 0=Mon...6=Sun
-      const daysDiff = (dayIdx - nowDayOfWeek + 7) % 7;
-      if (daysDiff === 0) {
-        if (job.catHour > nowHour) {
-          hoursUntil = job.catHour - nowHour;
-          isToday = true;
-        } else {
-          // Already ran today — next run is in 7 days, out of window
-          continue;
-        }
-      } else {
-        hoursUntil = daysDiff * 24 - nowHour + job.catHour;
-        isToday = false;
-      }
-    }
+// ─── Cron parsing ─────────────────────────────────────────────────────────────
 
-    if (hoursUntil <= 24) {
-      upcoming.push({
-        job,
-        hoursUntil,
-        catRunHour: job.catHour,
-        isToday,
-        isImminent: hoursUntil < 3,
-      });
-    }
+const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+interface ParsedCron {
+  catHour: number;       // fractional hour in CAT
+  isDaily: boolean;
+  weekDay?: number;      // 0=Mon … 6=Sun; undefined = daily
+}
+
+function parseCronExpr(expr: string, tz: string): ParsedCron | null {
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return null;
+  const [minStr, hourStr, dom, month, dow] = parts;
+  if (hourStr === "*" || /[\/,\-]/.test(hourStr)) return null;
+  if (minStr === "*" || /[\/]/.test(minStr)) return null;
+  if (dom !== "*" || month !== "*") return null;
+
+  const cronHour = parseInt(hourStr, 10);
+  const cronMin = parseInt(minStr, 10);
+  if (isNaN(cronHour) || isNaN(cronMin)) return null;
+
+  const tzOff = TZ_OFFSET_HOURS[tz] ?? 0;
+  const catDecimal = ((cronHour - tzOff + 2 + 24) % 24) + cronMin / 60;
+
+  if (dow === "*") return { catHour: catDecimal, isDaily: true };
+
+  // Handle comma-separated (e.g. "23,10") — skip complex
+  if (/[,\-]/.test(dow)) return null;
+  const dowNum = parseInt(dow, 10);
+  if (isNaN(dowNum)) return null;
+  // cron 0/7=Sun → 6; cron 1=Mon → 0
+  const weekDay = dowNum === 0 || dowNum === 7 ? 6 : dowNum - 1;
+  return { catHour: catDecimal, isDaily: false, weekDay };
+}
+
+/** Hours until next run for a parsed cron relative to current CAT time */
+function hoursUntilNextCron(parsed: ParsedCron, catHourNow: number, catDowNow: number): number {
+  if (parsed.isDaily) {
+    if (parsed.catHour > catHourNow) return parsed.catHour - catHourNow;
+    return 24 - catHourNow + parsed.catHour;
   }
-
-  upcoming.sort((a, b) => a.hoursUntil - b.hoursUntil);
-  alreadyRanToday.sort((a, b) => b.catRunHour - a.catRunHour); // most recent first
-
-  return { upcoming, alreadyRanToday, weekDayCounts };
+  const dayIdx = parsed.weekDay!;
+  const daysDiff = (dayIdx - catDowNow + 7) % 7;
+  if (daysDiff === 0) {
+    if (parsed.catHour > catHourNow) return parsed.catHour - catHourNow;
+    return 7 * 24 - catHourNow + parsed.catHour;
+  }
+  return daysDiff * 24 - catHourNow + parsed.catHour;
 }
 
-// CAT = UTC+2
-const CAT_OFFSET_MS = 2 * 60 * 60 * 1000;
-
-function getNowCAT(): Date {
-  return new Date(Date.now() + CAT_OFFSET_MS);
+/** Human-readable schedule string */
+function cronToLabel(expr: string, tz: string): string {
+  const p = parseCronExpr(expr, tz);
+  if (!p) return expr;
+  const timeStr = formatCATTime(p.catHour);
+  if (p.isDaily) return `Daily at ${timeStr} CAT`;
+  return `${DAY_NAMES[p.weekDay!]}s at ${timeStr} CAT`;
 }
 
-/** Returns current CAT time as a decimal (e.g. 1:30 AM → 1.5) */
-function getCATDecimalHour(): number {
-  const now = getNowCAT();
-  return now.getUTCHours() + now.getUTCMinutes() / 60;
+// ─── Status badge ─────────────────────────────────────────────────────────────
+
+interface Badge {
+  label: string;
+  textClass: string;
+  bgClass: string;
+  dotClass: string;
+  pulse: boolean;
 }
 
-/** Formats a fractional CAT hour (e.g. 1.5 → "1:30", 12.5 → "12:30", 2 → "2:00") */
-function formatCATHour(h: number): string {
-  const hr = Math.floor(h);
-  const mn = Math.round((h - hr) * 60);
-  return mn === 0 ? `${hr}:00` : `${hr}:${mn.toString().padStart(2, "0")}`;
+function statusBadge(status: string): Badge {
+  const s = status.toLowerCase();
+  if (s === "ok") return { label: "OK", textClass: "text-green-400", bgClass: "bg-green-500/10", dotClass: "bg-green-400", pulse: false };
+  if (s === "running") return { label: "Running", textClass: "text-blue-400", bgClass: "bg-blue-500/10", dotClass: "bg-blue-400", pulse: true };
+  if (s === "pending") return { label: "Pending", textClass: "text-zinc-400", bgClass: "bg-zinc-500/10", dotClass: "bg-zinc-500", pulse: false };
+  if (s === "done") return { label: "Done", textClass: "text-green-400", bgClass: "bg-green-500/10", dotClass: "bg-green-400", pulse: false };
+  if (s.startsWith("error")) {
+    const m = status.match(/(\d+)/);
+    const n = m ? ` ×${m[1]}` : "";
+    return { label: `Error${n}`, textClass: "text-red-400", bgClass: "bg-red-500/15", dotClass: "bg-red-400", pulse: true };
+  }
+  return { label: "Idle", textClass: "text-zinc-400", bgClass: "bg-zinc-500/10", dotClass: "bg-zinc-500", pulse: false };
 }
 
-function getCATDayOfWeek(): number {
-  // 0=Sun, 1=Mon... we want Mon=0 for our grid
-  const d = getNowCAT().getUTCDay();
-  return d === 0 ? 6 : d - 1; // Mon=0 … Sun=6
-}
-
-// ─── Component ───────────────────────────────────────────────────────────────
+// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AutomationsPage() {
-  const [jobs, setJobs] = useState<CronJob[]>([]);
+  const [oneShots, setOneShots] = useState<OneShotJob[]>([]);
+  const [recurring, setRecurring] = useState<RecurringJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [now, setNow] = useState(() => Date.now());
-  const [mcLastRun, setMcLastRun] = useState<string | null>(null);
+  const [, setNow] = useState(() => Date.now());
 
+  // Tick every 30s so countdowns stay fresh
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 30_000);
     return () => clearInterval(id);
@@ -362,15 +291,53 @@ export default function AutomationsPage() {
         return r.json();
       })
       .then((d) => {
-        const cal: CronJob[] = d.calendar ?? [];
-        const bashCrons: CronJob[] = (d.bashCrons ?? []).map(
-          (b: { id: string; title: string; schedule: string; timezone: string; owner: string; description?: string; lastRunAt?: string | null }) => ({
+        const cal: RawCalendarItem[] = d.calendar ?? [];
+        const bashRaw: RawBashCron[] = d.bashCrons ?? [];
+
+        // ── Classify calendar items ──────────────────────────────────────────
+        const shots: OneShotJob[] = [];
+        const recur: RecurringJob[] = [];
+
+        for (const item of cal) {
+          const schedKind =
+            typeof item.schedule === "object" ? item.schedule.kind : null;
+          const isOneShot =
+            schedKind === "at" || item.deleteAfterRun === true;
+
+          if (isOneShot) {
+            shots.push(item as OneShotJob);
+          } else {
+            // Treat as recurring
+            const expr =
+              typeof item.schedule === "object"
+                ? item.schedule.expr ?? ""
+                : item.schedule;
+            recur.push({
+              id: item.id,
+              title: item.title,
+              schedule: item.schedule as RecurringJob["schedule"],
+              timezone: item.timezone ?? "Africa/Windhoek",
+              owner: item.owner,
+              status: item.status,
+              lastStatus: item.lastStatus ?? item.status,
+              lastRunAt: item.lastRunAt ?? null,
+              nextRunAt: item.nextRunAt ?? null,
+              consecutiveErrors: item.consecutiveErrors ?? 0,
+              description: item.description,
+              isBash: false,
+            });
+            void expr; // suppress unused
+          }
+        }
+
+        // ── Bash crons are always recurring ─────────────────────────────────
+        for (const b of bashRaw) {
+          recur.push({
             id: b.id,
             title: b.title,
             schedule: b.schedule,
             timezone: b.timezone ?? "",
             owner: b.owner,
-            enabled: true,
             status: "ok",
             lastStatus: "ok",
             lastRunAt: b.lastRunAt ?? null,
@@ -378,510 +345,428 @@ export default function AutomationsPage() {
             consecutiveErrors: 0,
             description: b.description,
             isBash: true,
-          })
-        );
-        const merged = [...cal, ...bashCrons];
-        merged.sort((a, b) => {
-          const rank = (s: string) => {
-            if (s.toLowerCase().startsWith("error")) return 0;
-            if (s.toLowerCase() === "idle") return 1;
-            return 2;
-          };
-          return rank(a.status) - rank(b.status);
+          });
+        }
+
+        // Sort one-shots chronologically
+        shots.sort((a, b) => {
+          const aAt =
+            typeof a.schedule === "object" && a.schedule.kind === "at"
+              ? a.schedule.at
+              : a.nextRunAt ?? "";
+          const bAt =
+            typeof b.schedule === "object" && b.schedule.kind === "at"
+              ? b.schedule.at
+              : b.nextRunAt ?? "";
+          return new Date(aAt).getTime() - new Date(bAt).getTime();
         });
-        setJobs(merged);
-        // Pull lastRunAt for MC sync (bash-mc-sync or from mc-data lastUpdated)
-        setMcLastRun(d.lastUpdated ?? null);
+
+        setOneShots(shots);
+        setRecurring(recur);
         setLoading(false);
       })
-      .catch((e) => {
+      .catch((e: Error) => {
         setError(e.message);
         setLoading(false);
       });
   }, []);
 
-  const catDecimalHour = getCATDecimalHour();
-  const catDayOfWeek = getCATDayOfWeek();
+  const catHourNow = getCATDecimalHour();
+  const catDowNow = getCATDayOfWeek();
+  const catDate = getNowCAT();
 
-  // Derive schedule visualisation directly from live cron data
-  const allScheduleJobs: ScheduleJob[] = jobs
-    .map(parseScheduleJob)
-    .filter((j): j is ScheduleJob => j !== null)
-    .sort((a, b) => a.catHour - b.catHour);
-  const dailyScheduleJobs = allScheduleJobs.filter((j) => j.daily);
+  // ── Build recurring display data ──────────────────────────────────────────
+  interface RecurringDisplay {
+    job: RecurringJob;
+    parsed: ParsedCron | null;
+    hoursUntilNext: number;
+    ranAlreadyToday: boolean;
+    label: string;
+    isWeekly: boolean;
+  }
 
-  const errorCount = jobs.filter((j) => j.status.toLowerCase().startsWith("error")).length;
-  const okCount = jobs.filter((j) => j.status.toLowerCase() === "ok").length;
+  const recurringDisplay: RecurringDisplay[] = recurring.map((job) => {
+    const expr =
+      typeof job.schedule === "object" && job.schedule.kind === "cron"
+        ? job.schedule.expr
+        : typeof job.schedule === "string"
+        ? job.schedule
+        : "";
+    const tz =
+      typeof job.timezone === "string" ? job.timezone : "Africa/Windhoek";
+    const parsed = parseCronExpr(expr, tz);
+    const hours = parsed
+      ? hoursUntilNextCron(parsed, catHourNow, catDowNow)
+      : Infinity;
+    const ranToday =
+      parsed !== null &&
+      parsed.isDaily &&
+      parsed.catHour < catHourNow;
+    const lbl = cronToLabel(expr, tz);
+    return {
+      job,
+      parsed,
+      hoursUntilNext: hours,
+      ranAlreadyToday: ranToday,
+      label: lbl,
+      isWeekly: parsed !== null && !parsed.isDaily,
+    };
+  });
+
+  // Sort by next run ascending
+  recurringDisplay.sort((a, b) => a.hoursUntilNext - b.hoursUntilNext);
+
+  const dailyJobs = recurringDisplay.filter((r) => !r.isWeekly);
+  const weeklyJobs = recurringDisplay.filter((r) => r.isWeekly);
+
+  // Day label for tonight section
+  const todayName = DAY_NAMES[catDowNow] ?? "Today";
 
   return (
     <Shell>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
 
-        {/* Header */}
-        <div className="mb-6">
+        {/* ── Header ── */}
+        <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight">Automations</h1>
-          <p className="text-sm text-zinc-500 mt-1">Infrastructure, scheduled jobs, and their current status</p>
-          {!loading && !error && (
-            <p className="text-xs text-zinc-600 mt-1">
-              {jobs.length} automations · {jobs.filter((j) => !j.isBash).length} AI · {jobs.filter((j) => j.isBash).length} bash
-            </p>
-          )}
+          <p className="text-sm text-zinc-500 mt-1">
+            Scheduled jobs and recurring tasks
+          </p>
         </div>
 
-        {/* ── Section A: Infrastructure ── */}
-        <div className="mb-8">
-          <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Infrastructure</h2>
-          <div className="grid grid-cols-1 gap-3">
-            {/* MC Data Sync card */}
-            <div className="rounded-xl border border-mc-medium bg-mc-card p-4 flex gap-3 items-start">
-              <div className="text-xl mt-0.5">⚡</div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-semibold text-mc-primary">MC Data Sync</span>
-                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-green-500/10 text-green-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400" />OK
+        {/* ── Loading ── */}
+        {loading && (
+          <div className="flex items-center gap-3 text-zinc-500 py-16 justify-center">
+            <div className="w-4 h-4 rounded-full border-2 border-zinc-700 border-t-zinc-400 animate-spin" />
+            <span className="text-sm">Loading...</span>
+          </div>
+        )}
+
+        {/* ── Error ── */}
+        {error && (
+          <div className="rounded-xl border border-red-500/25 bg-red-500/10 px-5 py-4 text-sm text-red-400">
+            Failed to load: {error}
+          </div>
+        )}
+
+        {!loading && !error && (
+          <>
+            {/* ══════════════════════════════════════════════════════════════
+                Section 1: Tonight's Tasks (one-shots only; hidden if empty)
+            ══════════════════════════════════════════════════════════════ */}
+            {oneShots.length > 0 && (
+              <div className="mb-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <h2 className="text-sm font-semibold text-mc-primary">Tonight&apos;s Tasks</h2>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    {oneShots.length} queued
                   </span>
-                </div>
-                <p className="text-xs text-zinc-500 mb-2">Every 10 min — session JSONLs → mc-data.json → push</p>
-                <p className="text-[11px] text-zinc-600">
-                  {mcLastRun ? `Last synced ${relativeTime(mcLastRun)}` : "Always on"}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Section B: Daily Schedule (grouped vertical cards) ── */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Daily Schedule (CAT)</h2>
-            <span className="text-[10px] text-zinc-600">Now: {formatCATHour(catDecimalHour)} CAT</span>
-          </div>
-
-          {/* Daily jobs — grouped by time window */}
-          {[
-            { key: "overnight", label: "🌙 Overnight", range: "12 AM – 6 AM", start: 0, end: 6 },
-            { key: "morning",   label: "☀️ Morning",   range: "6 AM – 12 PM", start: 6, end: 12 },
-            { key: "afternoon", label: "🌤 Afternoon",  range: "12 PM – 6 PM", start: 12, end: 18 },
-            { key: "evening",   label: "🌆 Evening",   range: "6 PM – 12 AM", start: 18, end: 24 },
-          ].map(({ key, label, range, start, end }) => {
-            const windowJobs = dailyScheduleJobs.filter(
-              (j) => j.catHour >= start && j.catHour < end
-            );
-            if (windowJobs.length === 0) return null;
-            return (
-              <div key={key} className="mb-4">
-                {/* Window header */}
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-xs font-semibold text-mc-secondary">{label}</span>
-                  <span className="text-[10px] text-zinc-600">{range}</span>
                   <div className="flex-1 h-px bg-[var(--border-medium)]" />
+                  <span className="text-[10px] text-zinc-600">{todayName} · CAT (UTC+2)</span>
                 </div>
-                {/* Job rows */}
-                <div className="space-y-1.5">
-                  {windowJobs.map((job) => {
-                    const ran = catDecimalHour >= job.catHour;
-                    const color = agentColors[job.agent] || "#6b7280";
-                    const emoji = OWNER_EMOJI[job.agent] || "⚙️";
+
+                <div className="space-y-2">
+                  {oneShots.map((job) => {
+                    const ownerKey = ownerToKey(job.owner);
+                    const color = agentColors[ownerKey] || "#6b7280";
+                    const emoji = OWNER_EMOJI[ownerKey] || "⚙️";
+                    const badge = statusBadge(job.status ?? "pending");
+
+                    // Figure out the run time
+                    const runAt =
+                      typeof job.schedule === "object" &&
+                      job.schedule.kind === "at"
+                        ? job.schedule.at
+                        : job.nextRunAt;
+
+                    const catTimeLabel = runAt ? formatCATDateTime(runAt) : "—";
+                    const hrs = runAt ? hoursUntil(runAt) : null;
+                    const isImminent = hrs !== null && hrs > 0 && hrs < 2;
+                    const isPast = hrs !== null && hrs <= 0;
+
                     return (
                       <div
-                        key={`${job.agent}-${job.catHour}`}
-                        className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
-                          ran
+                        key={job.id}
+                        className={`rounded-xl border px-4 py-3.5 flex items-center gap-4 transition-all ${
+                          isImminent
+                            ? "border-amber-500/25 bg-amber-500/5"
+                            : isPast
                             ? "border-mc-medium bg-mc-card"
                             : "border-mc-subtle bg-mc-base"
                         }`}
                       >
-                        {/* Left accent bar */}
+                        {/* Color accent */}
                         <div
-                          className="w-0.5 h-6 rounded-full flex-shrink-0 opacity-70"
+                          className="w-0.5 h-8 rounded-full flex-shrink-0"
                           style={{ backgroundColor: color }}
                         />
+
                         {/* Time */}
-                        <span className="text-xs font-mono text-zinc-500 w-10 flex-shrink-0 tabular-nums">
-                          {formatCATHour(job.catHour)}
-                        </span>
-                        {/* Agent emoji */}
-                        <span className="text-base leading-none flex-shrink-0">{emoji}</span>
-                        {/* Job label */}
-                        <span
-                          className={`text-sm flex-1 min-w-0 truncate ${
-                            ran ? "text-mc-secondary" : "text-zinc-500"
-                          }`}
-                        >
-                          {job.label}
-                        </span>
-                        {/* Status pill */}
-                        {ran ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-500/10 text-green-400 flex-shrink-0">
-                            <span className="w-1 h-1 rounded-full bg-green-400" />
-                            done
+                        <div className="flex flex-col items-end w-24 flex-shrink-0">
+                          <span className="text-xs font-mono text-mc-secondary tabular-nums">
+                            {catTimeLabel}
                           </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-200/60 dark:bg-zinc-800/60 text-zinc-500 flex-shrink-0">
-                            <span className="w-1 h-1 rounded-full bg-zinc-600" />
-                            pending
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Weekly-only jobs (not daily) */}
-          {allScheduleJobs.filter((j) => !j.daily).length > 0 && (
-            <div className="mb-4">
-              <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-xs font-semibold text-mc-secondary">📅 Weekly</span>
-                <span className="text-[10px] text-zinc-600">runs on a specific day</span>
-                <div className="flex-1 h-px bg-[var(--border-medium)]" />
-              </div>
-              <div className="space-y-1.5">
-                {allScheduleJobs
-                  .filter((j) => !j.daily)
-                  .map((job) => {
-                    const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-                    const dayName =
-                      job.weekDay !== undefined ? dayNames[(job.weekDay - 1) % 7] : "?";
-                    // weekDay: 1=Mon…7=Sun; catDayOfWeek: Mon=0…Sun=6
-                    const isToday =
-                      job.weekDay !== undefined && job.weekDay - 1 === catDayOfWeek;
-                    const ran = isToday && catDecimalHour >= job.catHour;
-                    const color = agentColors[job.agent] || "#6b7280";
-                    const emoji = OWNER_EMOJI[job.agent] || "⚙️";
-                    return (
-                      <div
-                        key={`${job.agent}-${job.catHour}`}
-                        className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
-                          isToday
-                            ? "border-blue-500/25 bg-blue-500/5"
-                            : "border-mc-subtle bg-mc-base"
-                        }`}
-                      >
-                        <div
-                          className="w-0.5 h-6 rounded-full flex-shrink-0 opacity-70"
-                          style={{ backgroundColor: color }}
-                        />
-                        {/* Day tag */}
-                        <span
-                          className={`text-[10px] font-bold uppercase tracking-wide w-7 flex-shrink-0 ${
-                            isToday ? "text-blue-400" : "text-zinc-600"
-                          }`}
-                        >
-                          {dayName}
-                        </span>
-                        <span className="text-xs font-mono text-zinc-500 w-10 flex-shrink-0 tabular-nums">
-                          {formatCATHour(job.catHour)}
-                        </span>
-                        <span className="text-base leading-none flex-shrink-0">{emoji}</span>
-                        <span
-                          className={`text-sm flex-1 min-w-0 truncate ${
-                            isToday ? "text-mc-secondary" : "text-zinc-500"
-                          }`}
-                        >
-                          {job.label}
-                        </span>
-                        {isToday && ran ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-500/10 text-green-400 flex-shrink-0">
-                            <span className="w-1 h-1 rounded-full bg-green-400" />
-                            done
-                          </span>
-                        ) : isToday ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/10 text-blue-400 flex-shrink-0">
-                            <span className="w-1 h-1 rounded-full bg-blue-400" />
-                            today
-                          </span>
-                        ) : null}
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* ── Section C: Rolling 24h Window ── */}
-        {(() => {
-          const { upcoming, alreadyRanToday, weekDayCounts } = buildRolling24h(
-            allScheduleJobs,
-            catDecimalHour,
-            catDayOfWeek
-          );
-          const maxCount = Math.max(...weekDayCounts, 1);
-
-          return (
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Next 24 Hours</h2>
-                <span className="text-[10px] text-zinc-600">
-                  {DAY_LABELS[catDayOfWeek]} · {formatCATHour(catDecimalHour)} CAT
-                </span>
-              </div>
-
-              <div className="rounded-xl border border-mc-medium bg-mc-card overflow-hidden">
-
-                {/* 7-day activity strip */}
-                <div className="flex items-end gap-1 px-4 pt-3 pb-2.5 border-b border-mc-subtle">
-                  {DAY_LABELS.map((day, i) => {
-                    const isToday = i === catDayOfWeek;
-                    const isPast = i < catDayOfWeek;
-                    const barH = Math.max(2, Math.round((weekDayCounts[i] / maxCount) * 20));
-                    return (
-                      <div key={day} className="flex-1 flex flex-col items-center gap-1">
-                        <div
-                          className={`w-full rounded-sm transition-all ${
-                            isToday
-                              ? "bg-blue-400/50 dark:bg-blue-500/50"
-                              : isPast
-                              ? "bg-zinc-200/40 dark:bg-zinc-800/40"
-                              : "bg-zinc-300/30 dark:bg-zinc-700/30"
-                          }`}
-                          style={{ height: `${barH}px` }}
-                        />
-                        <span
-                          className={`text-[9px] font-semibold uppercase tracking-wider ${
-                            isToday ? "text-blue-400" : isPast ? "text-mc-faint" : "text-zinc-600"
-                          }`}
-                        >
-                          {day}
-                        </span>
-                        {isToday && (
-                          <div className="w-1 h-1 rounded-full bg-blue-400" />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Coming Up list */}
-                {upcoming.length > 0 ? (
-                  <div>
-                    {upcoming.map((item, i) => {
-                      const { job, hoursUntil, catRunHour, isToday, isImminent } = item;
-                      const color = agentColors[job.agent] || "#6b7280";
-                      const emoji = OWNER_EMOJI[job.agent] || "⚙️";
-                      const timeLabel = isToday
-                        ? formatCATHour(catRunHour)
-                        : `tmrw ${formatCATHour(catRunHour)}`;
-                      return (
-                        <div
-                          key={`${job.agent}-${job.catHour}-${i}`}
-                          className={`flex items-center gap-3 px-4 py-3 ${
-                            i < upcoming.length - 1 ? "border-b border-mc-subtle" : ""
-                          } ${isImminent ? "bg-amber-500/[0.03]" : ""}`}
-                        >
-                          {/* Time + countdown stacked */}
-                          <div className="flex flex-col items-end w-20 flex-shrink-0">
-                            <span className="text-xs font-mono text-mc-secondary tabular-nums">{timeLabel}</span>
+                          {hrs !== null && hrs > 0 && (
                             <span
                               className={`text-[10px] font-semibold tabular-nums ${
                                 isImminent ? "text-amber-400" : "text-zinc-600"
                               }`}
                             >
-                              {formatCountdown(hoursUntil)}
-                            </span>
-                          </div>
-                          {/* Agent color accent */}
-                          <div
-                            className="w-0.5 h-7 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: color }}
-                          />
-                          {/* Emoji */}
-                          <span className="text-base leading-none flex-shrink-0">{emoji}</span>
-                          {/* Job name */}
-                          <span
-                            className={`text-sm flex-1 min-w-0 truncate ${
-                              isImminent ? "text-mc-primary" : "text-mc-secondary"
-                            }`}
-                          >
-                            {job.label}
-                          </span>
-                          {/* Imminent badge */}
-                          {isImminent && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-400 flex-shrink-0 border border-amber-500/20">
-                              soon
+                              {formatCountdown(hrs)}
                             </span>
                           )}
+                          {isPast && (
+                            <span className="text-[10px] text-zinc-600">ran</span>
+                          )}
                         </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="py-8 text-center text-zinc-600 text-xs">
-                    Nothing scheduled in the next 24 hours
-                  </div>
-                )}
 
-                {/* Already ran today — compact footer */}
-                {alreadyRanToday.length > 0 && (
-                  <div className="border-t border-mc-subtle bg-mc-elevated px-4 py-2.5">
-                    <div className="text-[10px] text-mc-faint font-semibold uppercase tracking-wider mb-1.5">
-                      ✓ Ran earlier today
-                    </div>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1">
-                      {alreadyRanToday.map(({ job, catRunHour }, i) => (
-                        <span
-                          key={`ran-${job.agent}-${catRunHour}-${i}`}
-                          className="text-[10px] text-mc-faint font-mono"
-                        >
-                          {OWNER_EMOJI[job.agent] || "⚙️"}{" "}
-                          <span className="tabular-nums">{formatCATHour(catRunHour)}</span>{" "}
-                          <span className="text-zinc-600 font-sans">{job.label}</span>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })()}
+                        {/* Agent */}
+                        <span className="text-lg flex-shrink-0">{emoji}</span>
 
-        {/* Summary bar */}
-        {!loading && !error && (
-          <div className="flex flex-wrap gap-3 mb-6">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-mc-card border border-mc-medium text-sm">
-              <div className="w-2 h-2 rounded-full bg-zinc-500" />
-              <span className="text-zinc-400 font-medium">{jobs.length} jobs</span>
-            </div>
-            {okCount > 0 && (
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20 text-sm">
-                <div className="w-2 h-2 rounded-full bg-green-400" />
-                <span className="text-green-400 font-medium">{okCount} healthy</span>
-              </div>
-            )}
-            {errorCount > 0 && (
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/15 border border-red-500/25 text-sm">
-                <span className="text-base leading-none">⚠️</span>
-                <span className="text-red-400 font-medium">{errorCount} failing</span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Loading */}
-        {loading && (
-          <div className="flex items-center gap-3 text-zinc-500 py-12 justify-center">
-            <div className="w-4 h-4 rounded-full border-2 border-zinc-700 border-t-zinc-400 animate-spin" />
-            <span className="text-sm">Loading schedule...</span>
-          </div>
-        )}
-
-        {/* Error */}
-        {error && (
-          <div className="rounded-xl border border-red-500/25 bg-red-500/10 px-5 py-4 text-sm text-red-400">
-            Failed to load schedule data: {error}
-          </div>
-        )}
-
-        {/* ── Job detail cards ── */}
-        {!loading && !error && (
-          <>
-            <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">All Jobs</h2>
-            <div className="space-y-3">
-              {jobs.map((job) => {
-                const ownerKey = ownerToKey(job.owner);
-                const color = agentColors[ownerKey] || "#6b7280";
-                const emoji = OWNER_EMOJI[ownerKey] || "👤";
-                const badge = statusBadge(job.status);
-                const humanSchedule = cronToHuman(job.schedule, job.timezone);
-
-                return (
-                  <div
-                    key={job.id}
-                    className={`rounded-xl border transition-all duration-150 ${
-                      badge.isError
-                        ? "bg-red-950/20 border-red-500/30 shadow-sm shadow-red-500/10"
-                        : "bg-mc-card border-mc-medium hover:border-mc-strong"
-                    }`}
-                  >
-                    {badge.isError && (
-                      <div className="flex items-center gap-2 px-4 py-2 border-b border-red-500/20 bg-red-500/10 rounded-t-xl">
-                        <span className="text-base leading-none">⚠️</span>
-                        <span className="text-xs font-semibold text-red-400 uppercase tracking-wide">
-                          Job failing — {job.consecutiveErrors} consecutive {job.consecutiveErrors === 1 ? "error" : "errors"}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
-                      <div
-                        className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0 shadow-sm"
-                        style={{ backgroundColor: `${color}20`, border: `1px solid ${color}30` }}
-                        title={job.owner}
-                      >
-                        {emoji}
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <h3 className={`text-sm font-semibold ${badge.isError ? "text-red-300" : "text-mc-primary"}`}>
+                        {/* Title */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-mc-primary font-medium truncate">
                             {job.title}
-                          </h3>
-                          <span
-                            className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold ${badge.bgClass} ${badge.textClass}`}
-                          >
-                            <span className={`w-1.5 h-1.5 rounded-full ${badge.dotClass} ${badge.isError ? "animate-pulse" : ""}`} />
-                            {badge.label}
-                          </span>
-                          {job.isBash && (
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-zinc-800 text-zinc-500 border border-zinc-700">
-                              bash
-                            </span>
+                          </p>
+                          {job.description && (
+                            <p className="text-xs text-zinc-500 truncate mt-0.5">
+                              {job.description}
+                            </p>
                           )}
                         </div>
 
-                        {job.description && (
-                          <p
-                            className="text-xs text-zinc-500 mb-1 truncate"
-                            title={job.description}
-                          >
-                            {job.description}
-                          </p>
-                        )}
+                        {/* Status badge */}
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold flex-shrink-0 ${badge.bgClass} ${badge.textClass}`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${badge.dotClass} ${badge.pulse ? "animate-pulse" : ""}`}
+                          />
+                          {badge.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
-                          <span style={{ color: `${color}cc` }} className="font-medium">{job.owner}</span>
-                          <span className="font-mono text-zinc-400">{humanSchedule}</span>
-                          {!job.isBash && <span className="font-mono text-mc-faint">{job.schedule}</span>}
-                        </div>
+            {/* ══════════════════════════════════════════════════════════════
+                Section 2: Recurring Schedule
+            ══════════════════════════════════════════════════════════════ */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <h2 className="text-sm font-semibold text-mc-primary">Recurring Schedule</h2>
+                <div className="flex-1 h-px bg-[var(--border-medium)]" />
+                <span className="text-[10px] text-zinc-600">
+                  {DAY_NAMES[catDowNow]} · {formatCATHour24(catHourNow)} CAT
+                </span>
+              </div>
+
+              {recurringDisplay.length === 0 ? (
+                <div className="py-12 text-center text-zinc-600 text-sm">
+                  No recurring jobs found
+                </div>
+              ) : (
+                <div className="space-y-8">
+
+                  {/* ── Daily Jobs ─────────────────────────────────────────── */}
+                  {dailyJobs.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Daily</span>
+                        <div className="flex-1 h-px bg-[var(--border-subtle)]" />
                       </div>
 
-                      <div className="flex gap-5 sm:gap-6 text-xs shrink-0">
-                        <div>
-                          <div className="text-zinc-600 mb-0.5 uppercase tracking-wide text-[10px] font-medium">Last run</div>
-                          <div className={`font-medium ${job.lastRunAt ? (badge.isError ? "text-red-400" : "text-mc-secondary") : "text-zinc-600"}`}>
-                            {relativeTime(job.lastRunAt, false)}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-zinc-600 mb-0.5 uppercase tracking-wide text-[10px] font-medium">Next run</div>
-                          <div className={`font-medium ${job.nextRunAt ? "text-mc-secondary" : "text-zinc-600"}`}>
-                            {job.nextRunAt ? relativeTime(job.nextRunAt, true) : "—"}
-                          </div>
-                        </div>
+                      <div className="rounded-xl border border-mc-medium bg-mc-card overflow-hidden divide-y divide-[var(--border-subtle)]">
+                        {dailyJobs.map((item) => {
+                          const { job, parsed, hoursUntilNext, ranAlreadyToday } = item;
+                          const ownerKey = ownerToKey(job.owner);
+                          const color = agentColors[ownerKey] || "#6b7280";
+                          const emoji = OWNER_EMOJI[ownerKey] || "⚙️";
+                          const lastBadge = statusBadge(job.lastStatus ?? job.status);
+                          const isImminent = hoursUntilNext < 1;
+                          const timeLabel = parsed
+                            ? formatCATTime(parsed.catHour)
+                            : "—";
+
+                          return (
+                            <div
+                              key={job.id}
+                              className={`flex items-center gap-4 px-4 py-3.5 ${
+                                isImminent ? "bg-amber-500/[0.03]" : ""
+                              }`}
+                            >
+                              {/* Next run countdown */}
+                              <div className="flex flex-col items-end w-20 flex-shrink-0">
+                                <span className="text-xs font-mono text-mc-secondary tabular-nums">
+                                  {timeLabel}
+                                </span>
+                                <span
+                                  className={`text-[10px] tabular-nums font-semibold ${
+                                    isImminent ? "text-amber-400" : "text-zinc-600"
+                                  }`}
+                                >
+                                  {formatCountdown(hoursUntilNext)}
+                                </span>
+                              </div>
+
+                              {/* Color bar */}
+                              <div
+                                className="w-0.5 h-7 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: color }}
+                              />
+
+                              {/* Agent */}
+                              <span className="text-base flex-shrink-0">{emoji}</span>
+
+                              {/* Info */}
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm text-mc-primary font-medium truncate">
+                                  {job.title}
+                                </p>
+                                <p className="text-[11px] text-zinc-500 truncate mt-0.5">
+                                  {item.label}
+                                  {job.isBash && (
+                                    <span className="ml-2 px-1.5 py-px rounded text-[10px] bg-zinc-800 text-zinc-500 border border-zinc-700">
+                                      bash
+                                    </span>
+                                  )}
+                                </p>
+                              </div>
+
+                              {/* Last run status */}
+                              <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                                <span
+                                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${lastBadge.bgClass} ${lastBadge.textClass}`}
+                                >
+                                  <span className={`w-1 h-1 rounded-full ${lastBadge.dotClass}`} />
+                                  {lastBadge.label}
+                                </span>
+                                <span className="text-[10px] text-zinc-600">
+                                  {ranAlreadyToday
+                                    ? `ran ${relativeTime(job.lastRunAt)}`
+                                    : job.lastRunAt
+                                    ? relativeTime(job.lastRunAt)
+                                    : "never"}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  )}
+
+                  {/* ── Weekly Jobs ─────────────────────────────────────────── */}
+                  {weeklyJobs.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Weekly</span>
+                        <div className="flex-1 h-px bg-[var(--border-subtle)]" />
+                      </div>
+
+                      <div className="rounded-xl border border-mc-medium bg-mc-card overflow-hidden divide-y divide-[var(--border-subtle)]">
+                        {weeklyJobs.map((item) => {
+                          const { job, parsed, hoursUntilNext } = item;
+                          const ownerKey = ownerToKey(job.owner);
+                          const color = agentColors[ownerKey] || "#6b7280";
+                          const emoji = OWNER_EMOJI[ownerKey] || "⚙️";
+                          const lastBadge = statusBadge(job.lastStatus ?? job.status);
+                          const isImminent = hoursUntilNext < 2;
+                          const dayLabel =
+                            parsed?.weekDay !== undefined
+                              ? DAY_NAMES[parsed.weekDay]
+                              : "?";
+                          const timeLabel = parsed
+                            ? formatCATTime(parsed.catHour)
+                            : "—";
+                          const isToday =
+                            parsed?.weekDay !== undefined &&
+                            parsed.weekDay === catDowNow;
+
+                          return (
+                            <div
+                              key={job.id}
+                              className={`flex items-center gap-4 px-4 py-3.5 ${
+                                isImminent ? "bg-amber-500/[0.03]" : ""
+                              }`}
+                            >
+                              {/* Day + time */}
+                              <div className="flex flex-col items-end w-20 flex-shrink-0">
+                                <span
+                                  className={`text-[10px] font-bold uppercase tracking-wide ${
+                                    isToday ? "text-blue-400" : "text-zinc-500"
+                                  }`}
+                                >
+                                  {dayLabel}
+                                </span>
+                                <span className="text-xs font-mono text-mc-secondary tabular-nums">
+                                  {timeLabel}
+                                </span>
+                                <span
+                                  className={`text-[10px] tabular-nums font-semibold ${
+                                    isImminent ? "text-amber-400" : "text-zinc-600"
+                                  }`}
+                                >
+                                  {formatCountdown(hoursUntilNext)}
+                                </span>
+                              </div>
+
+                              {/* Color bar */}
+                              <div
+                                className="w-0.5 h-7 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: color }}
+                              />
+
+                              {/* Agent */}
+                              <span className="text-base flex-shrink-0">{emoji}</span>
+
+                              {/* Info */}
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm text-mc-primary font-medium truncate">
+                                  {job.title}
+                                </p>
+                                <p className="text-[11px] text-zinc-500 truncate mt-0.5">
+                                  {item.label}
+                                  {job.isBash && (
+                                    <span className="ml-2 px-1.5 py-px rounded text-[10px] bg-zinc-800 text-zinc-500 border border-zinc-700">
+                                      bash
+                                    </span>
+                                  )}
+                                </p>
+                              </div>
+
+                              {/* Last run status */}
+                              <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                                <span
+                                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${lastBadge.bgClass} ${lastBadge.textClass}`}
+                                >
+                                  <span className={`w-1 h-1 rounded-full ${lastBadge.dotClass}`} />
+                                  {lastBadge.label}
+                                </span>
+                                <span className="text-[10px] text-zinc-600">
+                                  {job.lastRunAt ? relativeTime(job.lastRunAt) : "never"}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+              )}
             </div>
+
+            {/* ── Footer ── */}
+            {recurring.length > 0 && (
+              <p className="mt-8 text-[11px] text-mc-faint text-right">
+                {recurring.length} recurring · {oneShots.length} one-shot · refreshes on reload
+              </p>
+            )}
           </>
-        )}
-
-        {!loading && !error && jobs.length === 0 && (
-          <div className="py-16 text-center text-zinc-600 text-sm">
-            No scheduled jobs found
-          </div>
-        )}
-
-        {!loading && !error && jobs.length > 0 && (
-          <p className="mt-5 text-[11px] text-mc-faint text-right">
-            AI crons + bash crons from mc-data.json · refreshes on reload
-          </p>
         )}
       </div>
     </Shell>
