@@ -64,6 +64,11 @@ function cronToHuman(cron: string, tz: string): string {
   // Every minute
   if (min === "*" && hour === "*") return "Every minute";
 
+  // Every N minutes (*/N * * * *)
+  if (min.startsWith("*/") && hour === "*" && dom === "*" && month === "*" && dow === "*") {
+    return `Every ${min.slice(2)} min`;
+  }
+
   // Every hour at :MM
   if (hour === "*" && dom === "*" && month === "*" && dow === "*") {
     return `Every hour at :${min.padStart(2, "0")}`;
@@ -156,6 +161,42 @@ const OWNER_EMOJI: Record<string, string> = {
   system: "⚙️",
 };
 
+// ─── Static bash cron entries ─────────────────────────────────────────────────
+// These run on the server and never appear in the OpenClaw cron list.
+
+const bashCrons: CronJob[] = [
+  {
+    id: "bash-mc-sync",
+    title: "MC Data Sync",
+    schedule: "*/10 * * * *",
+    timezone: "",
+    owner: "sam",
+    enabled: true,
+    status: "ok",
+    lastStatus: "ok",
+    lastRunAt: null,
+    nextRunAt: null,
+    consecutiveErrors: 0,
+    description: "Every 10 min — session JSONLs → mc-data.json → Supabase + GitHub push",
+    isBash: true,
+  },
+  {
+    id: "bash-frankie-sync",
+    title: "Mercury Creator Sync",
+    schedule: "0 10 * * *",
+    timezone: "Africa/Windhoek",
+    owner: "frankie",
+    enabled: true,
+    status: "ok",
+    lastStatus: "ok",
+    lastRunAt: null,
+    nextRunAt: null,
+    consecutiveErrors: 0,
+    description: "Daily noon CAT — Mercury API → creator-payouts.json",
+    isBash: true,
+  },
+];
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function CalendarPage() {
@@ -178,8 +219,10 @@ export default function CalendarPage() {
       })
       .then((d) => {
         const cal: CronJob[] = d.calendar ?? [];
-        // Sort: errors first, then idle, then ok
-        cal.sort((a, b) => {
+        // Merge live AI crons + static bash crons
+        const merged = [...cal, ...bashCrons];
+        // Sort: errors first, then idle, then ok (bash crons are always ok → go last)
+        merged.sort((a, b) => {
           const rank = (s: string) => {
             if (s.toLowerCase().startsWith("error")) return 0;
             if (s.toLowerCase() === "idle") return 1;
@@ -187,7 +230,7 @@ export default function CalendarPage() {
           };
           return rank(a.status) - rank(b.status);
         });
-        setJobs(cal);
+        setJobs(merged);
         setLoading(false);
       })
       .catch((e) => {
@@ -305,6 +348,12 @@ export default function CalendarPage() {
                           <span className={`w-1.5 h-1.5 rounded-full ${badge.dotClass} ${badge.isError ? "animate-pulse" : ""}`} />
                           {badge.label}
                         </span>
+                        {/* Bash label */}
+                        {job.isBash && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-zinc-800 text-zinc-500 border border-zinc-700">
+                            bash
+                          </span>
+                        )}
                       </div>
 
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
@@ -314,8 +363,11 @@ export default function CalendarPage() {
                         </span>
                         {/* Schedule */}
                         <span className="font-mono text-zinc-400">{humanSchedule}</span>
-                        {/* Raw cron — subtle */}
-                        <span className="font-mono text-zinc-700">{job.schedule}</span>
+                        {/* Raw cron or description */}
+                        {job.isBash && job.description
+                          ? <span className="text-zinc-600">{job.description}</span>
+                          : <span className="font-mono text-zinc-700">{job.schedule}</span>
+                        }
                       </div>
                     </div>
 
@@ -350,7 +402,7 @@ export default function CalendarPage() {
         {/* Footer note */}
         {!loading && !error && jobs.length > 0 && (
           <p className="mt-5 text-[11px] text-zinc-700 text-right">
-            Live from Supabase · refreshes on reload
+            AI crons live from Supabase · bash crons static · refreshes on reload
           </p>
         )}
       </div>
