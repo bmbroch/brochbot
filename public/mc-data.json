@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T17:40:01Z",
+  "lastUpdated": "2026-02-20T17:50:01Z",
   "activities": [
     {
       "id": "s-b60fa6af",
@@ -12,18 +12,6 @@
       "cost": 0.5797,
       "model": "Opus",
       "durationSec": 270
-    },
-    {
-      "id": "s-c300547d",
-      "agent": "devin",
-      "title": "devin-fix-api-auth",
-      "description": "**URGENT BUG:** The automations page (and likely other pages) are stuck on \"Loading...\" after the bypass token middleware change.",
-      "status": "success",
-      "date": "2026-02-20T16:42:02.102Z",
-      "tokens": 160350,
-      "cost": 0.147,
-      "model": "Sonnet",
-      "durationSec": 61
     },
     {
       "id": "s-4f751fcb",
@@ -859,7 +847,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-20T17:25:43.608Z",
+      "lastActive": "2026-02-20T17:42:20Z",
       "statusText": ""
     }
   },
@@ -873,7 +861,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T17:40:01Z"
+      "lastRunAt": "2026-02-20T17:50:01Z"
     },
     {
       "id": "bash-frankie-sync",
