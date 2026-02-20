@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T21:30:01Z",
+  "lastUpdated": "2026-02-20T21:40:01Z",
   "activities": [
     {
       "id": "s-055cdada",
@@ -24,18 +24,6 @@
       "cost": 0.2261,
       "model": "Sonnet",
       "durationSec": 94
-    },
-    {
-      "id": "s-94380b36",
-      "agent": "devin",
-      "title": "devin-automations-modal",
-      "description": "On mobile, the automation job names/descriptions get truncated and are hard to read. Add a click handler on each automation row that opens a modal/popup showing the full details for that job:",
-      "status": "success",
-      "date": "2026-02-20T20:31:34.595Z",
-      "tokens": 280042,
-      "cost": 0.301,
-      "model": "Sonnet",
-      "durationSec": 123
     },
     {
       "id": "s-b60fa6af",
@@ -897,7 +885,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T21:30:01Z"
+      "lastRunAt": "2026-02-20T21:40:01Z"
     },
     {
       "id": "bash-frankie-sync",
