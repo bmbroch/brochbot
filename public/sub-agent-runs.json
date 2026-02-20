@@ -53,9 +53,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 414335,
-    "cost": 1.0484,
-    "durationSec": 5899,
+    "tokens": 641966,
+    "cost": 1.4165,
+    "durationSec": 41842,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
@@ -132,9 +132,21 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
-    "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
+    "id": "7f0c5c11-9811-4d14-8c6e-1af394f08f89",
     "label": "Morning Analytics Report",
     "agent": "dana",
+    "task": "1. Get YESTERDAY's data (visitors, sessions, revenue) for all 3 products (CLCP, ISK, SE) using Datafast timeseries endpoint with interval=day",
+    "model": "Opus",
+    "tokens": 38596,
+    "cost": 0.1106,
+    "durationSec": 32,
+    "status": "success",
+    "timestamp": "2026-02-20T06:00:00.025Z"
+  },
+  {
+    "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
+    "label": "531ad18a-933",
+    "agent": "sam",
     "task": "1. Get YESTERDAY's data (visitors, sessions, revenue) for all 3 products (CLCP, ISK, SE) using Datafast timeseries endpoint with interval=day",
     "model": "Opus",
     "tokens": 37595,

@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-20T06:00:01Z",
+  "lastUpdated": "2026-02-20T06:10:02Z",
   "activities": [
+    {
+      "id": "s-7f0c5c11",
+      "agent": "dana",
+      "title": "Morning Analytics Report",
+      "description": "1. Get YESTERDAY's data (visitors, sessions, revenue) for all 3 products (CLCP, ISK, SE) using Datafast timeseries endpoint with interval=day",
+      "status": "success",
+      "date": "2026-02-20T06:00:00.025Z",
+      "tokens": 38596,
+      "cost": 0.1106,
+      "model": "Opus",
+      "durationSec": 32
+    },
     {
       "id": "s-3429b4f2",
       "agent": "sam",
@@ -92,10 +104,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 414335,
-      "cost": 1.0484,
+      "tokens": 641966,
+      "cost": 1.4165,
       "model": "Opus",
-      "durationSec": 5899
+      "durationSec": 41842
     },
     {
       "id": "s-aae63345",
@@ -147,8 +159,8 @@
     },
     {
       "id": "s-531ad18a",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "531ad18a-933",
       "description": "1. Get YESTERDAY's data (visitors, sessions, revenue) for all 3 products (CLCP, ISK, SE) using Datafast timeseries endpoint with interval=day",
       "status": "success",
       "date": "2026-02-19T06:00:00.149Z",
@@ -566,7 +578,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-19T20:04:14.540Z",
+      "lastActive": "2026-02-20T06:00:00.025Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -590,7 +602,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-20T05:30:00.081Z",
+      "lastActive": "2026-02-20T06:00:47Z",
       "statusText": ""
     }
   },
@@ -604,7 +616,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T06:00:01Z"
+      "lastRunAt": "2026-02-20T06:10:02Z"
     },
     {
       "id": "bash-frankie-sync",
