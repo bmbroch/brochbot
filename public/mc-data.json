@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T12:10:01Z",
+  "lastUpdated": "2026-02-20T12:15:04Z",
   "activities": [
     {
       "id": "s-cd4c6425",
@@ -8,10 +8,10 @@
       "description": "**Task:** Fix the MC data architecture so NOTHING can silently go out of sync. Two parts.",
       "status": "success",
       "date": "2026-02-20T12:08:53.111Z",
-      "tokens": 118694,
-      "cost": 0.1912,
+      "tokens": 1303318,
+      "cost": 0.9832,
       "model": "Sonnet",
-      "durationSec": 29
+      "durationSec": 370
     },
     {
       "id": "s-4f751fcb",
@@ -92,10 +92,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 50825232,
-      "cost": 145.6735,
+      "tokens": 51572190,
+      "cost": 148.1188,
       "model": "Opus",
-      "durationSec": 61675
+      "durationSec": 61898
     },
     {
       "id": "s-b88a363c",
@@ -373,7 +373,138 @@
       "updatedAt": 1771491360000
     }
   ],
-  "calendar": [],
+  "calendar": [
+    {
+      "id": "05ff9b58-07bf-4e3a-b36e-58522a0042c3",
+      "title": "Miles: ISK Competitive Intel",
+      "schedule": "{'kind': 'at', 'at': '2026-02-20T22:00:00.000Z'}",
+      "timezone": "",
+      "owner": "miles",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T22:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "",
+      "oneShot": true
+    },
+    {
+      "id": "5db3eea0-5089-4a68-a64a-c5e6e8852351",
+      "title": "Sam: Ads agent proposal",
+      "schedule": "{'kind': 'at', 'at': '2026-02-20T23:00:00.000Z'}",
+      "timezone": "",
+      "owner": "sam",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T23:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "",
+      "oneShot": true
+    },
+    {
+      "id": "1cfba8d4-e0a9-4a53-bc4c-e2867de20bdd",
+      "title": "Devin: Build health page + monitoring script",
+      "schedule": "{'kind': 'at', 'at': '2026-02-21T00:00:00.000Z'}",
+      "timezone": "",
+      "owner": "devin",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-21T00:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "",
+      "oneShot": true
+    },
+    {
+      "id": "e9fc86c1-ce45-42b3-93e7-0bbf44f5b6d9",
+      "title": "Devin: Creators page last updated",
+      "schedule": "{'kind': 'at', 'at': '2026-02-21T00:30:00.000Z'}",
+      "timezone": "",
+      "owner": "devin",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-21T00:30:00Z",
+      "consecutiveErrors": 0,
+      "description": "",
+      "oneShot": true
+    },
+    {
+      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
+      "title": "Penny Daily Check",
+      "schedule": "0 5 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "penny",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-20T03:00:00Z",
+      "nextRunAt": "2026-02-21T03:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Penny's overnight quality sweep \u2014 delegation audit, cron/MC drift check, file hygiene scan. Observe-only."
+    },
+    {
+      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "schedule": "0 6 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "miles",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-20T04:00:00Z",
+      "nextRunAt": "2026-02-21T04:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Miles pulls GSC data for ISK, CLCP, SE \u2014 tracked keywords, clicks, impressions, position trends. Daily 6 AM CAT."
+    },
+    {
+      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
+      "title": "Sam Morning Brief",
+      "schedule": "30 7 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-20T05:30:00Z",
+      "nextRunAt": "2026-02-21T05:30:00Z",
+      "consecutiveErrors": 0,
+      "description": "Sam's morning coffee read \u2014 overnight results, costs, priorities. 7:30 AM CAT."
+    },
+    {
+      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
+      "title": "Morning Analytics Report",
+      "schedule": "0 8 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "dana",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-20T06:00:00Z",
+      "nextRunAt": "2026-02-21T06:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Dana pulls Datafast metrics for all 3 products \u2014 visitors, revenue, week-over-week trends. 8 AM CAT."
+    },
+    {
+      "id": "6e98d078-5f1f-4ce8-8b61-b5bafde02879",
+      "title": "Mia: Weekly UGC Performance Report",
+      "schedule": "0 8 * * 2",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-24T06:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Mia analyzes creator performance \u2014 views, posts, CPM, trends. Tuesdays 8 AM CAT."
+    }
+  ],
   "decisions": [
     {
       "id": "d1",
@@ -718,7 +849,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T12:10:01Z"
+      "lastRunAt": "2026-02-20T12:15:04Z"
     },
     {
       "id": "bash-frankie-sync",

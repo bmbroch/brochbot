@@ -7,34 +7,13 @@ import AgentDrawer from "@/components/AgentDrawer";
 import AgentSidePanel from "@/components/AgentSidePanel";
 import {
   useTeam,
-  agentColors,
   type TeamMember,
   type Activity,
 } from "@/lib/data-provider";
 
 /* ── desk layout config ──────────────────────────────────────────────────── */
-
-// Positions are pixel offsets inside a 1000×600 container
-// x = centre of desk, y = top of desk
-// Top row (5): Ben, Sam, Devin, Cara, Frankie
-// Bottom row (4): Dana, Miles, Penny, Mia
+// Desk positions are stored in team.json (deskPosition field) — no hardcoded map.
 const DESK_W = 120; // must match the desk surface width in Desk component
-
-const deskLayout: Record<
-  string,
-  { x: number; y: number; facing: "down" | "left" | "right" | "up" }
-> = {
-  ben:    { x: 100,  y: 50,  facing: "down" },
-  sam:    { x: 300,  y: 50,  facing: "down" },
-  devin:  { x: 500,  y: 50,  facing: "down" },
-  cara:   { x: 700,  y: 50,  facing: "down" },
-  frankie:{ x: 900,  y: 50,  facing: "down" },
-  dana:   { x: 100,  y: 380, facing: "down" },
-  miles:  { x: 316,  y: 380, facing: "down" },
-  penny:  { x: 533,  y: 380, facing: "down" },
-  mia:    { x: 750,  y: 380, facing: "down" },
-  jude:   { x: 966,  y: 380, facing: "down" },
-};
 
 /* ── components ──────────────────────────────────────────────────────────── */
 
@@ -51,8 +30,10 @@ function Desk({
   isSelected: boolean;
   onClick: () => void;
 }) {
-  const pos = deskLayout[member.id];
-  const color = agentColors[member.id] || "#666";
+  const pos = member.deskPosition;
+  const color = member.color || "#666";
+
+  if (!pos) return null;
 
   // Use explicit left offset instead of CSS translate to avoid scaling artefacts.
   // left = pos.x - DESK_W/2 so the desk is centred on pos.x in the unscaled canvas.
@@ -373,7 +354,7 @@ function OfficeCanvas({
               </div>
 
               {/* ── Agents ─────────────────────────────────── */}
-              {teamMembers.filter(m => deskLayout[m.id]).map((member) => {
+              {teamMembers.filter(m => m.deskPosition).map((member) => {
                 const agentActs = getAgentActivities(member.id);
                 const latest = agentActs[0];
                 const isActive =

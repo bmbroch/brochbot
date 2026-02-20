@@ -4,7 +4,7 @@ import Shell from "@/components/Shell";
 import AgentDrawer from "@/components/AgentDrawer";
 import AgentSidePanel from "@/components/AgentSidePanel";
 import { useState, useEffect } from "react";
-import { agentColors, useTeam, type TeamMember, type Activity } from "@/lib/data-provider";
+import { useTeam, type TeamMember, type Activity } from "@/lib/data-provider";
 import { formatRelativeDate } from "@/lib/utils";
 import Image from "next/image";
 
@@ -22,32 +22,8 @@ function lastActiveLabel(ts: number | null): string {
   return `Last active ${relativeAgo(ts)}`;
 }
 
-const agentOrder = ["ben", "sam", "devin", "cara", "dana", "miles", "penny", "mia", "frankie", "jude"];
-
-// Light-friendly gradient map — subtle colored tints
-const gradientMapDark: Record<string, string> = {
-  ben: "from-zinc-700/30 to-slate-800/20",
-  sam: "from-blue-700/30 to-blue-900/20",
-  cara: "from-purple-700/30 to-purple-900/20",
-  dana: "from-green-700/30 to-green-900/20",
-  miles: "from-orange-600/30 to-orange-900/20",
-  penny: "from-rose-600/30 to-pink-900/20",
-  mia: "from-fuchsia-600/30 to-fuchsia-900/20",
-  frankie: "from-emerald-600/30 to-emerald-900/20",
-  jude: "from-pink-600/30 to-pink-900/20",
-};
-
-const gradientMapLight: Record<string, string> = {
-  ben: "from-zinc-100 to-zinc-50",
-  sam: "from-blue-50 to-sky-100",
-  cara: "from-purple-50 to-violet-100",
-  dana: "from-green-50 to-emerald-100",
-  miles: "from-orange-50 to-amber-100",
-  penny: "from-rose-50 to-pink-100",
-  mia: "from-fuchsia-50 to-pink-100",
-  frankie: "from-emerald-50 to-teal-100",
-  jude: "from-pink-50 to-pink-100",
-};
+// agentOrder, gradientMapDark, gradientMapLight are derived from team.json at runtime
+// via useTeam(). No hardcoded arrays — adding an agent to team.json is sufficient.
 
 export default function TeamPage() {
   const teamMembers = useTeam();
@@ -128,7 +104,8 @@ export default function TeamPage() {
     setSelectedId(prev => (prev === id ? null : id));
   };
 
-  const gradientMap = isDark ? gradientMapDark : gradientMapLight;
+  // Sort by sortOrder (from team.json) — no hardcoded agentOrder
+  const sortedMembers = [...teamMembers].sort((a, b) => (a.sortOrder ?? 99) - (b.sortOrder ?? 99));
 
   return (
     <Shell>
@@ -139,23 +116,25 @@ export default function TeamPage() {
           <p className="text-sm text-[var(--text-muted)]">Meet the crew behind the operation</p>
         </div>
 
-        {/* Agent Grid */}
+        {/* Agent Grid — order/gradients driven by team.json */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 sm:gap-8 lg:gap-10 max-w-6xl mx-auto">
-          {agentOrder.map(id => {
-            const member = teamMembers.find(m => m.id === id)!;
-            const color = agentColors[id] || "#3b82f6";
-            const lastActive = getLastActive(id);
-            const isSelected = selectedId === id;
+          {sortedMembers.map(member => {
+            const color = member.color || "#3b82f6";
+            const lastActive = getLastActive(member.id);
+            const isSelected = selectedId === member.id;
+            const gradient = isDark
+              ? (member.gradientDark || "from-zinc-700/30 to-zinc-900/20")
+              : (member.gradientLight || "from-zinc-100 to-zinc-50");
 
             return (
               <button
-                key={id}
-                onClick={() => handleSelect(id)}
+                key={member.id}
+                onClick={() => handleSelect(member.id)}
                 className="flex flex-col items-center gap-2 group cursor-pointer p-2 sm:p-3 rounded-2xl"
               >
                 {/* Avatar Circle */}
                 <div
-                  className={`w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full flex items-center justify-center bg-gradient-to-br ${gradientMap[id] || (isDark ? "from-zinc-700/30 to-zinc-900/20" : "from-zinc-100 to-zinc-50")} transition-all duration-200 group-hover:scale-105`}
+                  className={`w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full flex items-center justify-center bg-gradient-to-br ${gradient} transition-all duration-200 group-hover:scale-105`}
                   style={{
                     boxShadow: isSelected
                       ? `0 0 30px ${color}30, 0 4px 20px rgba(0,0,0,0.2)`

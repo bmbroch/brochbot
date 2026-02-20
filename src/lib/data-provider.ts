@@ -9,7 +9,7 @@ import { useState, useEffect, useMemo } from "react";
 export type TaskStatus = "todo" | "in_progress" | "in-progress" | "done" | "blocked";
 export type Priority = "low" | "medium" | "high";
 export type Product = "CLCP" | "ISK" | "SE" | "internal" | "all";
-export type Assignee = "ben" | "sam" | "devin" | "cara" | "dana" | "miles" | "penny" | "mia" | "frankie" | "jude";
+export type Assignee = string;
 export type ActivityType = "data_query" | "customer_lookup" | "report" | "cron_job" | "config_change" | "memory_update" | "task_completed" | "system_config" | "cron" | "task";
 export type ActivityStatus = "success" | "error" | "running" | "in-progress";
 
@@ -49,7 +49,7 @@ export interface ScheduledTask {
 }
 
 export interface TeamMember {
-  id: Assignee;
+  id: string;
   name: string;
   emoji: string;
   avatar?: string;
@@ -59,50 +59,123 @@ export interface TeamMember {
   recurringTasks?: string[];
   isAgent: boolean;
   color?: string;
+  /** Original gradient (dark mode) — kept for backward compat */
   gradient?: string;
+  /** Dark-mode card gradient (derived from team.json) */
+  gradientDark?: string;
+  /** Light-mode card gradient (derived from team.json) */
+  gradientLight?: string;
+  /** Telegram group ID for this agent (null if no dedicated group) */
+  groupId?: string | null;
+  /** Desk position in the virtual office (1000×600 canvas) */
+  deskPosition?: { x: number; y: number; facing?: "down" | "left" | "right" | "up" };
   sortOrder?: number;
 }
 
 // ─── Agent / Team Config ─────────────────────────────────────────────────────
+// This is the FALLBACK only — all runtime data comes from /team.json via useTeam().
+// To add an agent: update public/team.json (source of truth), then add a minimal
+// fallback entry here so the UI has data before the fetch resolves.
 
 export const teamMembers: TeamMember[] = [
-  { id: "ben", name: "Ben", emoji: "👨‍💻", avatar: "/avatars/ben.jpg", role: "Founder", description: "Founder & CEO. Sets the vision, reviews work, and keeps everything on track.", dataSources: ["All"], isAgent: false },
-  { id: "sam", name: "Sam", emoji: "🤝", avatar: "/avatars/sam.png", role: "Chief of Staff", description: "Coordinates all agents, manages workflows, and handles complex multi-step operations.", dataSources: ["Stripe", "Supabase", "Datafast", "GSC"], recurringTasks: ["Nightly MC Sync (2 AM CAT daily)"], isAgent: true },
-  { id: "devin", name: "Devin", emoji: "🛠️", avatar: "/avatars/dev.png", role: "Web Developer", description: "Owns the Mission Control codebase. Handles all frontend changes, bug fixes, and deployments.", dataSources: ["GitHub", "Vercel"], isAgent: true, recurringTasks: [] },
-  { id: "cara", name: "Cara", emoji: "🎧", avatar: "/avatars/cara.png", role: "Customer Support", description: "Handles customer inquiries, subscription issues, and refund requests via Stripe.", dataSources: ["Stripe"], isAgent: true },
-  { id: "dana", name: "Dana", emoji: "📊", avatar: "/avatars/dana.png", role: "Data Analyst", description: "Runs analytics queries, generates reports, and monitors KPIs across all products.", dataSources: ["Supabase", "Datafast"], recurringTasks: ["Morning Analytics Report (8 AM CAT daily)"], isAgent: true },
-  { id: "miles", name: "Miles", emoji: "🚀", avatar: "/avatars/miles.png", role: "GTM Lead", description: "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.", dataSources: ["Datafast", "GSC", "SEO Tools"], recurringTasks: ["Weekly GSC Report (Monday 8 AM CAT)"], isAgent: true },
-  { id: "penny", name: "Penny", emoji: "📌", avatar: "/avatars/penny.png", role: "Secretary", description: "Captures ideas, links, inspiration. Maintains the mood board. Keeps receipts on everything.", dataSources: ["Mood Board", "Workspace Files"], isAgent: true },
-  { id: "mia", name: "Mia", emoji: "📱", avatar: "/avatars/mia.png", role: "Social Media Manager", description: "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram. Owns creator relationships.", dataSources: ["Google Sheets", "Datafast (UTM campaigns)"], isAgent: true },
-  { id: "frankie", name: "Frankie", emoji: "💰", avatar: "/avatars/frankie.png", role: "Finance", description: "The money guy. Tracks banking, payouts, expenses, and revenue across all three businesses. Read-only access to Mercury.", dataSources: ["Mercury"], isAgent: true, recurringTasks: [] },
-  { id: "jude", name: "Jude", emoji: "✍️", avatar: "/avatars/jude.png", role: "Content Engine", color: "#f472b6", description: "The content machine. Drafts posts, edits video, manages the publishing pipeline for indietomilly. Turns overnight agent work into building-in-public content.", dataSources: ["Twitter API", "LinkedIn API", "TikTok API", "YouTube API"], isAgent: true, recurringTasks: [] },
+  {
+    id: "ben", name: "Ben", emoji: "👨‍💻", avatar: "/avatars/ben.jpg",
+    role: "Founder", color: "#f59e0b",
+    gradientDark: "from-zinc-700/30 to-slate-800/20", gradientLight: "from-zinc-100 to-zinc-50",
+    groupId: null, deskPosition: { x: 100, y: 50, facing: "down" },
+    description: "Founder & CEO. Sets the vision, reviews work, and keeps everything on track.",
+    dataSources: ["All"], recurringTasks: [], isAgent: false, sortOrder: 0,
+  },
+  {
+    id: "sam", name: "Sam", emoji: "🤝", avatar: "/avatars/sam.png",
+    role: "Chief of Staff", color: "#3b82f6",
+    gradientDark: "from-blue-700/30 to-blue-900/20", gradientLight: "from-blue-50 to-sky-100",
+    groupId: "-5137141366", deskPosition: { x: 300, y: 50, facing: "down" },
+    description: "Coordinates all agents, manages workflows, and handles complex multi-step operations.",
+    dataSources: ["Stripe", "Supabase", "Datafast", "GSC"], recurringTasks: ["Nightly Briefing (2 AM CAT daily)"],
+    isAgent: true, sortOrder: 1,
+  },
+  {
+    id: "devin", name: "Devin", emoji: "🛠️", avatar: "/avatars/dev.png",
+    role: "Web Developer", color: "#f59e0b",
+    gradientDark: "from-yellow-700/30 to-yellow-900/20", gradientLight: "from-yellow-50 to-amber-100",
+    groupId: "-5191880198", deskPosition: { x: 500, y: 50, facing: "down" },
+    description: "Owns the Mission Control codebase. Handles all frontend changes, bug fixes, and deployments.",
+    dataSources: ["GitHub", "Vercel"], recurringTasks: [], isAgent: true, sortOrder: 2,
+  },
+  {
+    id: "cara", name: "Cara", emoji: "🎧", avatar: "/avatars/cara.png",
+    role: "Customer Support", color: "#a855f7",
+    gradientDark: "from-purple-700/30 to-purple-900/20", gradientLight: "from-purple-50 to-violet-100",
+    groupId: "-5116620759", deskPosition: { x: 700, y: 50, facing: "down" },
+    description: "Handles customer inquiries, subscription issues, and refund requests via Stripe.",
+    dataSources: ["Stripe"], recurringTasks: [], isAgent: true, sortOrder: 3,
+  },
+  {
+    id: "dana", name: "Dana", emoji: "📊", avatar: "/avatars/dana.png",
+    role: "Data Analyst", color: "#22c55e",
+    gradientDark: "from-green-700/30 to-green-900/20", gradientLight: "from-green-50 to-emerald-100",
+    groupId: "-5118324440", deskPosition: { x: 100, y: 380, facing: "down" },
+    description: "Runs analytics queries, generates reports, and monitors KPIs across all products.",
+    dataSources: ["Supabase", "Datafast"], recurringTasks: ["Morning Analytics Report (8 AM CAT daily)"],
+    isAgent: true, sortOrder: 4,
+  },
+  {
+    id: "miles", name: "Miles", emoji: "🚀", avatar: "/avatars/miles.png",
+    role: "GTM Lead", color: "#f97316",
+    gradientDark: "from-orange-600/30 to-orange-900/20", gradientLight: "from-orange-50 to-amber-100",
+    groupId: "-5101253807", deskPosition: { x: 316, y: 380, facing: "down" },
+    description: "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.",
+    dataSources: ["Datafast", "GSC", "SEO Tools"], recurringTasks: ["Daily GSC Report — All Products (6 AM CAT)"],
+    isAgent: true, sortOrder: 5,
+  },
+  {
+    id: "penny", name: "Penny", emoji: "📌", avatar: "/avatars/penny.png",
+    role: "Secretary", color: "#f43f5e",
+    gradientDark: "from-rose-600/30 to-pink-900/20", gradientLight: "from-rose-50 to-pink-100",
+    groupId: "-5280216031", deskPosition: { x: 533, y: 380, facing: "down" },
+    description: "Captures ideas, maintains ops logs, runs delegation audits, and keeps the team accountable.",
+    dataSources: ["Workspace Files"], recurringTasks: ["Daily Ops Check (4 PM CAT)", "Weekly Audit (Friday 9 AM CAT)"],
+    isAgent: true, sortOrder: 6,
+  },
+  {
+    id: "mia", name: "Mia", emoji: "📱", avatar: "/avatars/mia.png",
+    role: "Social Media Manager", color: "#d946ef",
+    gradientDark: "from-fuchsia-600/30 to-fuchsia-900/20", gradientLight: "from-fuchsia-50 to-pink-100",
+    groupId: null, deskPosition: { x: 750, y: 380, facing: "down" },
+    description: "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram.",
+    dataSources: ["Google Sheets", "Datafast"], recurringTasks: ["Creator Posts Sync (nightly 1 AM CAT)"],
+    isAgent: true, sortOrder: 7,
+  },
+  {
+    id: "frankie", name: "Frankie", emoji: "💰", avatar: "/avatars/frankie.png",
+    role: "Finance", color: "#10b981",
+    gradientDark: "from-emerald-600/30 to-emerald-900/20", gradientLight: "from-emerald-50 to-teal-100",
+    groupId: null, deskPosition: { x: 900, y: 50, facing: "down" },
+    description: "The money guy. Tracks banking, payouts, expenses, and revenue across all three businesses.",
+    dataSources: ["Mercury"], recurringTasks: ["Mercury Creator Sync (daily noon CAT)"],
+    isAgent: true, sortOrder: 8,
+  },
+  {
+    id: "jude", name: "Jude", emoji: "✍️", avatar: "/avatars/jude.png",
+    role: "Content Engine", color: "#f472b6",
+    gradientDark: "from-pink-600/30 to-pink-900/20", gradientLight: "from-pink-50 to-pink-100",
+    groupId: "-5210308407", deskPosition: { x: 966, y: 380, facing: "down" },
+    description: "The content machine. Drafts posts, edits video, manages the publishing pipeline for indietomilly.",
+    dataSources: ["Twitter API", "LinkedIn API", "TikTok API", "YouTube API"], recurringTasks: [],
+    isAgent: true, sortOrder: 9,
+  },
 ];
 
+// Derived from fallback teamMembers — stays in sync automatically when teamMembers is updated.
+// Runtime pages use member.color / member.emoji directly from useTeam() for live data.
 export const agentColors: Record<string, string> = {
-  ben: "#f59e0b",
-  sam: "#3b82f6",
-  cara: "#a855f7",
-  dana: "#22c55e",
-  miles: "#f97316",
-  penny: "#f43f5e",
-  mia: "#d946ef",
-  devin: "#f59e0b",
-  frankie: "#10b981",
-  jude: "#f472b6",
+  ...Object.fromEntries(teamMembers.filter((m) => m.color).map((m) => [m.id, m.color as string])),
   system: "#6b7280",
 };
 
 export const agentEmojis: Record<string, string> = {
-  ben: "👨‍💻",
-  sam: "🤝",
-  cara: "🎧",
-  dana: "📊",
-  miles: "🚀",
-  penny: "📌",
-  mia: "📱",
-  devin: "🛠️",
-  frankie: "💰",
-  jude: "✍️",
+  ...Object.fromEntries(teamMembers.map((m) => [m.id, m.emoji])),
   system: "⚙️",
 };
 
