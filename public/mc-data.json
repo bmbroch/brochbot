@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T07:30:40Z",
+  "lastUpdated": "2026-02-20T07:31:41Z",
   "activities": [
     {
       "id": "s-200d1a22",
@@ -8,10 +8,10 @@
       "description": "**Task:** Fix the mc-sync.sh calendar/automations drift. Penny's daily check found:",
       "status": "success",
       "date": "2026-02-20T07:29:50.072Z",
-      "tokens": 141606,
-      "cost": 0.1841,
+      "tokens": 258572,
+      "cost": 0.2867,
       "model": "Sonnet",
-      "durationSec": 50
+      "durationSec": 111
     },
     {
       "id": "s-354a6fd1",
@@ -116,10 +116,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:55:11.223Z",
-      "tokens": 298544,
-      "cost": 0.9946,
+      "tokens": 363491,
+      "cost": 1.1814,
       "model": "Opus",
-      "durationSec": 43037
+      "durationSec": 45361
     },
     {
       "id": "s-c1c67e23",
@@ -398,7 +398,7 @@
       "lastRunAt": null,
       "nextRunAt": "2026-02-21T00:00:00Z",
       "consecutiveErrors": 0,
-      "description": ""
+      "description": "Sam's nightly end-of-day summary \u2014 what got done, agent activity, today's costs, anything broken, and tomorrow's top priority. 2 AM CAT \u2192 Sam group."
     },
     {
       "id": "533c9915-c8f3-4a28-8777-0bd8d83b1d74",
@@ -412,7 +412,7 @@
       "lastRunAt": null,
       "nextRunAt": "2026-02-21T01:00:00Z",
       "consecutiveErrors": 0,
-      "description": ""
+      "description": "Sam's daily self-audit \u2014 checks that every cron, task, and agent brief in Mission Control matches reality. Fixes any drift found. 3 AM CAT \u2192 Sam group."
     },
     {
       "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
@@ -475,14 +475,14 @@
       "title": "Mia: Weekly UGC Performance Report",
       "schedule": "0 8 * * 2",
       "timezone": "Africa/Windhoek",
-      "owner": "sam",
+      "owner": "mia",
       "enabled": true,
       "status": "idle",
       "lastStatus": "idle",
       "lastRunAt": null,
       "nextRunAt": "2026-02-24T06:00:00Z",
       "consecutiveErrors": 0,
-      "description": ""
+      "description": "Mia pulls the latest UGC creator metrics from Google Sheets \u2014 view counts, post activity, milestone tracking across all 7 creators. Tuesdays 8 AM CAT \u2192 Sam group."
     },
     {
       "id": "734eff8e-9381-4bc1-9c70-55fcfae51284",
@@ -496,7 +496,7 @@
       "lastRunAt": null,
       "nextRunAt": "2026-02-27T01:30:00Z",
       "consecutiveErrors": 0,
-      "description": ""
+      "description": "Penny's weekly deep-dive \u2014 broader ops review, pattern-level drift, recurring issues. Complements the daily check with a longer time horizon."
     }
   ],
   "decisions": [
@@ -771,7 +771,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T07:30:40Z"
+      "lastRunAt": "2026-02-20T07:31:41Z"
     },
     {
       "id": "bash-frankie-sync",
