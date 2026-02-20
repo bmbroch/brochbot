@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-20T20:20:50Z",
+  "lastUpdated": "2026-02-20T20:28:40Z",
   "activities": [
+    {
+      "id": "s-9415fe45",
+      "agent": "devin",
+      "title": "devin-mc-bugs-round2",
+      "description": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
+      "status": "success",
+      "date": "2026-02-20T20:28:34.132Z",
+      "tokens": 25728,
+      "cost": 0.0377,
+      "model": "Sonnet",
+      "durationSec": 5
+    },
     {
       "id": "s-dd1fb9bf",
       "agent": "devin",
@@ -20,10 +32,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 3372555,
-      "cost": 4.889,
+      "tokens": 3570022,
+      "cost": 5.3342,
       "model": "Opus",
-      "durationSec": 10506
+      "durationSec": 10976
     },
     {
       "id": "s-4f751fcb",
@@ -831,7 +843,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-20T20:13:06.794Z",
+      "lastActive": "2026-02-20T20:28:34.132Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -873,7 +885,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T20:20:49Z"
+      "lastRunAt": "2026-02-20T20:28:40Z"
     },
     {
       "id": "bash-frankie-sync",

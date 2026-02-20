@@ -1426,5 +1426,17 @@
     "durationSec": 7,
     "status": "success",
     "timestamp": "2026-02-20T20:13:06.794Z"
+  },
+  {
+    "id": "9415fe45-9ae4-4745-a81b-746cbca73bb2",
+    "label": "devin-mc-bugs-round2",
+    "agent": "devin",
+    "task": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
+    "model": "Sonnet",
+    "tokens": 25728,
+    "cost": 0.0377,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-02-20T20:28:34.132Z"
   }
 ]
