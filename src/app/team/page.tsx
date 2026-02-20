@@ -22,7 +22,7 @@ function lastActiveLabel(ts: number | null): string {
   return `Last active ${relativeAgo(ts)}`;
 }
 
-const agentOrder = ["ben", "sam", "devin", "cara", "dana", "miles", "penny", "mia", "frankie"];
+const agentOrder = ["ben", "sam", "devin", "cara", "dana", "miles", "penny", "mia", "frankie", "jude"];
 
 // Light-friendly gradient map — subtle colored tints
 const gradientMapDark: Record<string, string> = {
@@ -34,6 +34,7 @@ const gradientMapDark: Record<string, string> = {
   penny: "from-rose-600/30 to-pink-900/20",
   mia: "from-fuchsia-600/30 to-fuchsia-900/20",
   frankie: "from-emerald-600/30 to-emerald-900/20",
+  jude: "from-pink-600/30 to-pink-900/20",
 };
 
 const gradientMapLight: Record<string, string> = {
@@ -45,6 +46,7 @@ const gradientMapLight: Record<string, string> = {
   penny: "from-rose-50 to-pink-100",
   mia: "from-fuchsia-50 to-pink-100",
   frankie: "from-emerald-50 to-teal-100",
+  jude: "from-pink-50 to-pink-100",
 };
 
 export default function TeamPage() {

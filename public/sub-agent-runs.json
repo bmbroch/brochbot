@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1428992,
-    "cost": 4.6823,
-    "durationSec": 45478,
+    "tokens": 1489099,
+    "cost": 4.7163,
+    "durationSec": 45485,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
@@ -96,6 +96,18 @@
     "timestamp": "2026-02-19T14:00:00.055Z"
   },
   {
+    "id": "43376cae-400f-4b19-87cf-11bdcd5645c8",
+    "label": "devin-jude-onboarding-verify",
+    "agent": "devin",
+    "task": "Quick task: Jude \u270d\ufe0f was just onboarded to team.json. Verify:",
+    "model": "Sonnet",
+    "tokens": 153976,
+    "cost": 0.1927,
+    "durationSec": 63,
+    "status": "success",
+    "timestamp": "2026-02-20T07:08:58.011Z"
+  },
+  {
     "id": "5439b4e1-3990-4cb1-8e02-306cbfb1b366",
     "label": "Daily GSC Report \u2014 All Products (Miles)",
     "agent": "miles",
@@ -106,18 +118,6 @@
     "durationSec": 93,
     "status": "success",
     "timestamp": "2026-02-20T04:00:00.087Z"
-  },
-  {
-    "id": "43376cae-400f-4b19-87cf-11bdcd5645c8",
-    "label": "devin-jude-onboarding-verify",
-    "agent": "devin",
-    "task": "Quick task: Jude \u270d\ufe0f was just onboarded to team.json. Verify:",
-    "model": "Sonnet",
-    "tokens": 102757,
-    "cost": 0.1474,
-    "durationSec": 45,
-    "status": "success",
-    "timestamp": "2026-02-20T07:08:58.011Z"
   },
   {
     "id": "3429b4f2-efb6-4295-b659-5b4e3f446db1",
@@ -197,9 +197,9 @@
     "agent": "devin",
     "task": "**Task: Fix automations page display bugs for bash crons.**",
     "model": "Sonnet",
-    "tokens": 12369,
-    "cost": 0.0284,
-    "durationSec": 3,
+    "tokens": 25110,
+    "cost": 0.0363,
+    "durationSec": 6,
     "status": "success",
     "timestamp": "2026-02-20T07:09:43.392Z"
   }

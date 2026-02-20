@@ -29,10 +29,11 @@ const deskLayout: Record<
   devin:  { x: 500,  y: 50,  facing: "down" },
   cara:   { x: 700,  y: 50,  facing: "down" },
   frankie:{ x: 900,  y: 50,  facing: "down" },
-  dana:   { x: 150,  y: 380, facing: "down" },
-  miles:  { x: 383,  y: 380, facing: "down" },
-  penny:  { x: 617,  y: 380, facing: "down" },
-  mia:    { x: 850,  y: 380, facing: "down" },
+  dana:   { x: 100,  y: 380, facing: "down" },
+  miles:  { x: 316,  y: 380, facing: "down" },
+  penny:  { x: 533,  y: 380, facing: "down" },
+  mia:    { x: 750,  y: 380, facing: "down" },
+  jude:   { x: 966,  y: 380, facing: "down" },
 };
 
 /* ── components ──────────────────────────────────────────────────────────── */
