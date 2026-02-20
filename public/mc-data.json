@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T07:00:45Z",
+  "lastUpdated": "2026-02-20T07:03:08Z",
   "activities": [
     {
       "id": "s-7f0c5c11",
@@ -68,10 +68,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 18140283,
-      "cost": 41.5838,
+      "tokens": 19081186,
+      "cost": 45.3866,
       "model": "Opus",
-      "durationSec": 43170
+      "durationSec": 43313
     },
     {
       "id": "s-b88a363c",
@@ -735,7 +735,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T07:00:45Z"
+      "lastRunAt": "2026-02-20T07:03:08Z"
     },
     {
       "id": "bash-frankie-sync",
