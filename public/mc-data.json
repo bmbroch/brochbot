@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T20:13:16Z",
+  "lastUpdated": "2026-02-20T20:20:01Z",
   "activities": [
     {
       "id": "s-dd1fb9bf",
@@ -8,10 +8,10 @@
       "description": "- One-shot jobs (\"at\" schedule kind) show \"in Infinityh NaNm\" countdown and raw JSON `{'kind': 'at', 'at': '...'}` instead of human-readable text",
       "status": "success",
       "date": "2026-02-20T20:13:06.794Z",
-      "tokens": 40767,
-      "cost": 0.068,
+      "tokens": 2200881,
+      "cost": 1.2341,
       "model": "Sonnet",
-      "durationSec": 7
+      "durationSec": 340
     },
     {
       "id": "s-b60fa6af",
@@ -20,10 +20,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 2805298,
-      "cost": 4.2184,
+      "tokens": 3178183,
+      "cost": 4.7654,
       "model": "Opus",
-      "durationSec": 10052
+      "durationSec": 10456
     },
     {
       "id": "s-4f751fcb",
@@ -873,7 +873,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T20:13:16Z"
+      "lastRunAt": "2026-02-20T20:20:01Z"
     },
     {
       "id": "bash-frankie-sync",
