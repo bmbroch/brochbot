@@ -1498,5 +1498,17 @@
     "durationSec": 14,
     "status": "success",
     "timestamp": "2026-02-20T22:29:46.803Z"
+  },
+  {
+    "id": "5ed5b1de-9593-4796-8fd1-049499bdecf9",
+    "label": "dana-isk-deeper-match",
+    "agent": "dana",
+    "task": "The previous analysis only matched 200/412 subscribers (35%). Ben believes there should be much higher overlap. Your job is to find the missing matches.",
+    "model": "Sonnet",
+    "tokens": 834869,
+    "cost": 0.6959,
+    "durationSec": 346,
+    "status": "success",
+    "timestamp": "2026-02-20T22:44:12.313Z"
   }
 ]

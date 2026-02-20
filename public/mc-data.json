@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-20T22:40:01Z",
+  "lastUpdated": "2026-02-20T22:50:02Z",
   "activities": [
+    {
+      "id": "s-5ed5b1de",
+      "agent": "dana",
+      "title": "dana-isk-deeper-match",
+      "description": "The previous analysis only matched 200/412 subscribers (35%). Ben believes there should be much higher overlap. Your job is to find the missing matches.",
+      "status": "success",
+      "date": "2026-02-20T22:44:12.313Z",
+      "tokens": 834869,
+      "cost": 0.6959,
+      "model": "Sonnet",
+      "durationSec": 346
+    },
     {
       "id": "s-280b1595",
       "agent": "dana",
@@ -8,10 +20,10 @@
       "description": "Ben wants to know what professions his paying ISK (Interview Sidekick) subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
       "status": "success",
       "date": "2026-02-20T22:29:46.803Z",
-      "tokens": 423060,
-      "cost": 0.6457,
+      "tokens": 560972,
+      "cost": 0.7681,
       "model": "Sonnet",
-      "durationSec": 589
+      "durationSec": 671
     },
     {
       "id": "s-d6b308e7",
@@ -164,10 +176,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 1102818,
-      "cost": 2.5976,
+      "tokens": 1242661,
+      "cost": 2.9217,
       "model": "Opus",
-      "durationSec": 101213
+      "durationSec": 101752
     },
     {
       "id": "s-aae63345",
@@ -832,7 +844,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-20T22:29:46.803Z",
+      "lastActive": "2026-02-20T22:44:12.313Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -856,7 +868,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-20T21:40:26Z",
+      "lastActive": "2026-02-20T22:46:52Z",
       "statusText": ""
     }
   },
@@ -870,7 +882,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T22:40:01Z"
+      "lastRunAt": "2026-02-20T22:50:01Z"
     },
     {
       "id": "bash-frankie-sync",
