@@ -1342,5 +1342,17 @@
     "durationSec": 2,
     "status": "success",
     "timestamp": "2026-02-20T07:56:34.462Z"
+  },
+  {
+    "id": "4f751fcb-efc9-4014-ac52-3ccc00f3bf50",
+    "label": "4f751fcb-efc",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 231791,
+    "cost": 0.529,
+    "durationSec": 142,
+    "status": "success",
+    "timestamp": "2026-02-20T08:15:42.760Z"
   }
 ]
