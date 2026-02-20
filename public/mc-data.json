@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T23:20:01Z",
+  "lastUpdated": "2026-02-20T23:30:02Z",
   "activities": [
     {
       "id": "s-5ed5b1de",
@@ -24,18 +24,6 @@
       "cost": 0.7681,
       "model": "Sonnet",
       "durationSec": 671
-    },
-    {
-      "id": "s-d6b308e7",
-      "agent": "dana",
-      "title": "dana-profession-analysis",
-      "description": "Ben wants to know what professions his paying CLCP subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
-      "status": "success",
-      "date": "2026-02-20T22:25:24.669Z",
-      "tokens": 256405,
-      "cost": 0.4189,
-      "model": "Sonnet",
-      "durationSec": 238
     },
     {
       "id": "s-b60fa6af",
@@ -882,7 +870,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T23:20:01Z"
+      "lastRunAt": "2026-02-20T23:30:02Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -915,7 +903,7 @@
       "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log",
-      "lastRunAt": "2026-02-20T10:30:01Z"
+      "lastRunAt": "2026-02-20T23:30:02Z"
     }
   ]
 }

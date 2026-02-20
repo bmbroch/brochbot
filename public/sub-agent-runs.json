@@ -120,18 +120,6 @@
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
-    "id": "d6b308e7-c742-49d1-8a51-7cb8de56b4a4",
-    "label": "dana-profession-analysis",
-    "agent": "dana",
-    "task": "Ben wants to know what professions his paying CLCP subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
-    "model": "Sonnet",
-    "tokens": 256405,
-    "cost": 0.4189,
-    "durationSec": 238,
-    "status": "success",
-    "timestamp": "2026-02-20T22:25:24.669Z"
-  },
-  {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
     "label": "95a02d1a-513",
     "agent": "sam",
