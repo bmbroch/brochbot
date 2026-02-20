@@ -24,6 +24,18 @@
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
   {
+    "id": "b60fa6af-d612-4a92-b751-12b7852aac24",
+    "label": "b60fa6af-d61",
+    "agent": "sam",
+    "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
+    "model": "Opus",
+    "tokens": 7391344,
+    "cost": 14.4599,
+    "durationSec": 14075,
+    "status": "success",
+    "timestamp": "2026-02-20T17:25:43.608Z"
+  },
+  {
     "id": "4f751fcb-efc9-4014-ac52-3ccc00f3bf50",
     "label": "4f751fcb-efc",
     "agent": "sam",
@@ -34,18 +46,6 @@
     "durationSec": 8303,
     "status": "success",
     "timestamp": "2026-02-20T08:15:42.760Z"
-  },
-  {
-    "id": "b60fa6af-d612-4a92-b751-12b7852aac24",
-    "label": "b60fa6af-d61",
-    "agent": "sam",
-    "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
-    "model": "Opus",
-    "tokens": 7125163,
-    "cost": 14.3082,
-    "durationSec": 14053,
-    "status": "success",
-    "timestamp": "2026-02-20T17:25:43.608Z"
   },
   {
     "id": "aae63345-e753-451e-8902-32e9d6391345",
@@ -70,18 +70,6 @@
     "durationSec": 63395,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
-  },
-  {
-    "id": "9415fe45-9ae4-4745-a81b-746cbca73bb2",
-    "label": "devin-mc-bugs-round2",
-    "agent": "devin",
-    "task": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
-    "model": "Sonnet",
-    "tokens": 1378267,
-    "cost": 0.9866,
-    "durationSec": 611,
-    "status": "success",
-    "timestamp": "2026-02-20T20:28:34.132Z"
   },
   {
     "id": "055cdada-ef44-40d2-9571-1ea81e3be52b",

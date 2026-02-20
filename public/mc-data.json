@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T21:20:01Z",
+  "lastUpdated": "2026-02-20T21:30:01Z",
   "activities": [
     {
       "id": "s-055cdada",
@@ -38,28 +38,16 @@
       "durationSec": 123
     },
     {
-      "id": "s-9415fe45",
-      "agent": "devin",
-      "title": "devin-mc-bugs-round2",
-      "description": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
-      "status": "success",
-      "date": "2026-02-20T20:28:34.132Z",
-      "tokens": 1378267,
-      "cost": 0.9866,
-      "model": "Sonnet",
-      "durationSec": 611
-    },
-    {
       "id": "s-b60fa6af",
       "agent": "sam",
       "title": "b60fa6af-d61",
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 7125163,
-      "cost": 14.3082,
+      "tokens": 7391344,
+      "cost": 14.4599,
       "model": "Opus",
-      "durationSec": 14053
+      "durationSec": 14075
     },
     {
       "id": "s-4f751fcb",
@@ -909,7 +897,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T21:20:01Z"
+      "lastRunAt": "2026-02-20T21:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
