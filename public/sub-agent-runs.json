@@ -77,9 +77,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 434660,
-    "cost": 0.552,
-    "durationSec": 234,
+    "tokens": 463737,
+    "cost": 0.5797,
+    "durationSec": 270,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
