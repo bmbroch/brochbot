@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 54246009,
-    "cost": 152.7131,
-    "durationSec": 62324,
+    "tokens": 57386383,
+    "cost": 165.8827,
+    "durationSec": 62673,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -142,6 +142,18 @@
     "durationSec": 93,
     "status": "success",
     "timestamp": "2026-02-20T04:00:00.087Z"
+  },
+  {
+    "id": "c828fb0a-eca4-4322-91a4-f62ff1ed4836",
+    "label": "devin-bypass-token",
+    "agent": "devin",
+    "task": "**Quick task:** Add a server-side bypass token to the MC middleware so our server can access the site without logging in.",
+    "model": "Sonnet",
+    "tokens": 120423,
+    "cost": 0.0969,
+    "durationSec": 46,
+    "status": "success",
+    "timestamp": "2026-02-20T12:23:25.188Z"
   },
   {
     "id": "3429b4f2-efb6-4295-b659-5b4e3f446db1",

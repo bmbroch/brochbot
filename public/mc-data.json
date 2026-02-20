@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-20T12:20:02Z",
+  "lastUpdated": "2026-02-20T12:30:01Z",
   "activities": [
+    {
+      "id": "s-c828fb0a",
+      "agent": "devin",
+      "title": "devin-bypass-token",
+      "description": "**Quick task:** Add a server-side bypass token to the MC middleware so our server can access the site without logging in.",
+      "status": "success",
+      "date": "2026-02-20T12:23:25.188Z",
+      "tokens": 120423,
+      "cost": 0.0969,
+      "model": "Sonnet",
+      "durationSec": 46
+    },
     {
       "id": "s-cd4c6425",
       "agent": "devin",
@@ -92,10 +104,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 54246009,
-      "cost": 152.7131,
+      "tokens": 57386383,
+      "cost": 165.8827,
       "model": "Opus",
-      "durationSec": 62324
+      "durationSec": 62673
     },
     {
       "id": "s-b88a363c",
@@ -807,7 +819,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-20T12:08:53.111Z",
+      "lastActive": "2026-02-20T12:23:25.188Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -835,7 +847,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-20T11:06:47Z",
+      "lastActive": "2026-02-20T12:24:11Z",
       "statusText": ""
     }
   },
@@ -849,7 +861,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T12:20:02Z"
+      "lastRunAt": "2026-02-20T12:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
