@@ -3,8 +3,7 @@ import { jwtVerify } from "jose";
 
 const PUBLIC_PATHS = [
   "/login",
-  "/api/auth",
-  "/api/logout",
+  "/api/",
   "/_next/static",
   "/_next/image",
   "/favicon",
