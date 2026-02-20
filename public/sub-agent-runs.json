@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 50639324,
-    "cost": 145.5758,
-    "durationSec": 61667,
+    "tokens": 50825232,
+    "cost": 145.6735,
+    "durationSec": 61675,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -132,6 +132,18 @@
     "timestamp": "2026-02-20T04:00:00.087Z"
   },
   {
+    "id": "cd4c6425-b2eb-4dd7-bb44-73219028d2ea",
+    "label": "devin-architecture-fix",
+    "agent": "devin",
+    "task": "**Task:** Fix the MC data architecture so NOTHING can silently go out of sync. Two parts.",
+    "model": "Sonnet",
+    "tokens": 118694,
+    "cost": 0.1912,
+    "durationSec": 29,
+    "status": "success",
+    "timestamp": "2026-02-20T12:08:53.111Z"
+  },
+  {
     "id": "3429b4f2-efb6-4295-b659-5b4e3f446db1",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -178,18 +190,6 @@
     "durationSec": 17,
     "status": "success",
     "timestamp": "2026-02-19T11:52:45.805Z"
-  },
-  {
-    "id": "cd4c6425-b2eb-4dd7-bb44-73219028d2ea",
-    "label": "devin-architecture-fix",
-    "agent": "devin",
-    "task": "**Task:** Fix the MC data architecture so NOTHING can silently go out of sync. Two parts.",
-    "model": "Sonnet",
-    "tokens": 29236,
-    "cost": 0.0656,
-    "durationSec": 5,
-    "status": "success",
-    "timestamp": "2026-02-20T12:08:53.111Z"
   },
   {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",
