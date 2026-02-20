@@ -48,6 +48,18 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
+    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
+    "label": "b88a363c-216",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 206485,
+    "cost": 0.7426,
+    "durationSec": 27588,
+    "status": "success",
+    "timestamp": "2026-02-19T18:55:11.223Z"
+  },
+  {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",
     "label": "Sam: Jude agent proposal",
     "agent": "sam",
@@ -58,18 +70,6 @@
     "durationSec": 300,
     "status": "success",
     "timestamp": "2026-02-20T01:00:00.067Z"
-  },
-  {
-    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
-    "label": "b88a363c-216",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 148036,
-    "cost": 0.5293,
-    "durationSec": 18573,
-    "status": "success",
-    "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
