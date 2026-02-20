@@ -377,6 +377,174 @@ function statusBadge(status: string): Badge {
   return { label: "Idle", textClass: "text-zinc-400", bgClass: "bg-zinc-500/10", dotClass: "bg-zinc-500", pulse: false };
 }
 
+// ─── Modal types ──────────────────────────────────────────────────────────────
+
+type ModalJobKind = "oneshot" | "recurring";
+
+interface ModalJob {
+  kind: ModalJobKind;
+  id: string;
+  title: string;
+  owner: string;
+  status: string;
+  lastStatus?: string;
+  lastRunAt?: string | null;
+  nextRunAt?: string | null;
+  description?: string;
+  scheduleLabel?: string;
+  countdown?: string;
+  isBash?: boolean;
+  isRecurring?: boolean;
+}
+
+// ─── Job Detail Modal ─────────────────────────────────────────────────────────
+
+function JobDetailModal({
+  job,
+  onClose,
+}: {
+  job: ModalJob;
+  onClose: () => void;
+}) {
+  const ownerKey = ownerToKey(job.owner);
+  const color = agentColors[ownerKey] || "#6b7280";
+  const emoji = OWNER_EMOJI[ownerKey] || "⚙️";
+  const badge = statusBadge(job.status);
+  const lastBadge = job.lastStatus ? statusBadge(job.lastStatus) : badge;
+
+  // Close on Escape key
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+      {/* Sheet / modal */}
+      <div
+        className="relative w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl border border-[#222] bg-[#0f0f0f] shadow-2xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header bar with color accent */}
+        <div className="h-1 w-full" style={{ background: color }} />
+
+        {/* Top row */}
+        <div className="flex items-start justify-between gap-3 px-5 pt-4 pb-3">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="text-2xl flex-shrink-0">{emoji}</span>
+            <div className="min-w-0">
+              <p className="text-base font-semibold text-white leading-tight break-words">
+                {job.title}
+              </p>
+              <p className="text-xs text-zinc-500 mt-0.5">{job.owner}</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/10 transition-colors mt-0.5"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Divider */}
+        <div className="h-px bg-[#222] mx-5" />
+
+        {/* Details grid */}
+        <div className="px-5 py-4 space-y-3">
+
+          {/* Description */}
+          {job.description && (
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-1">Description</p>
+              <p className="text-sm text-zinc-300 leading-relaxed">{job.description}</p>
+            </div>
+          )}
+
+          {/* Schedule */}
+          {job.scheduleLabel && (
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-1">Schedule</p>
+              <p className="text-sm text-zinc-300">{job.scheduleLabel}</p>
+            </div>
+          )}
+
+          {/* Type badges row */}
+          <div className="flex flex-wrap gap-2">
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${badge.bgClass} ${badge.textClass}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${badge.dotClass} ${badge.pulse ? "animate-pulse" : ""}`} />
+              {badge.label}
+            </span>
+            {job.kind === "oneshot" ? (
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                One-shot
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                Recurring
+              </span>
+            )}
+            {job.isBash && (
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-zinc-800 text-zinc-400 border border-zinc-700">
+                bash
+              </span>
+            )}
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-[#1a1a1a]" />
+
+          {/* Two-column metadata */}
+          <div className="grid grid-cols-2 gap-3">
+            {/* Next run */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-1">Next Run</p>
+              <p className="text-sm text-zinc-300">
+                {job.nextRunAt ? formatCATDateTime(job.nextRunAt) : "—"}
+              </p>
+              {job.countdown && (
+                <p className="text-[11px] text-amber-400 font-semibold mt-0.5">{job.countdown}</p>
+              )}
+            </div>
+
+            {/* Last run */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-1">Last Run</p>
+              <div className="flex flex-col gap-1">
+                {job.lastStatus && (
+                  <span className={`inline-flex items-center gap-1 w-fit px-2 py-0.5 rounded-full text-[10px] font-semibold ${lastBadge.bgClass} ${lastBadge.textClass}`}>
+                    <span className={`w-1 h-1 rounded-full ${lastBadge.dotClass}`} />
+                    {lastBadge.label}
+                  </span>
+                )}
+                <p className="text-sm text-zinc-300">
+                  {job.lastRunAt ? relativeTime(job.lastRunAt) : "Never"}
+                </p>
+                {job.lastRunAt && (
+                  <p className="text-[11px] text-zinc-600">{formatCATDateTime(job.lastRunAt)}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Safe-area spacer for mobile */}
+        <div className="h-safe-bottom pb-4" />
+      </div>
+    </div>
+  );
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AutomationsPage() {
@@ -385,6 +553,7 @@ export default function AutomationsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [, setNow] = useState(() => Date.now());
+  const [selectedJob, setSelectedJob] = useState<ModalJob | null>(null);
 
   // Tick every 30s so countdowns stay fresh
   useEffect(() => {
@@ -530,6 +699,9 @@ export default function AutomationsPage() {
 
   return (
     <Shell>
+      {selectedJob && (
+        <JobDetailModal job={selectedJob} onClose={() => setSelectedJob(null)} />
+      )}
       <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
 
         {/* ── Header ── */}
@@ -593,7 +765,22 @@ export default function AutomationsPage() {
                     return (
                       <div
                         key={job.id}
-                        className={`rounded-xl border px-4 py-3.5 flex items-center gap-4 transition-all ${
+                        onClick={() =>
+                          setSelectedJob({
+                            kind: "oneshot",
+                            id: job.id,
+                            title: job.title,
+                            owner: job.owner,
+                            status: job.status ?? "pending",
+                            lastStatus: job.lastStatus,
+                            lastRunAt: job.lastRunAt,
+                            nextRunAt: runAt,
+                            description: job.description,
+                            scheduleLabel: catTimeLabel,
+                            countdown: hrs !== null && hrs > 0 ? formatCountdown(hrs) : undefined,
+                          })
+                        }
+                        className={`rounded-xl border px-4 py-3.5 flex items-center gap-4 transition-all cursor-pointer hover:bg-white/[0.02] active:scale-[0.99] ${
                           isImminent
                             ? "border-amber-500/25 bg-amber-500/5"
                             : isPast
@@ -699,7 +886,24 @@ export default function AutomationsPage() {
                           return (
                             <div
                               key={job.id}
-                              className={`flex items-center gap-4 px-4 py-3.5 ${
+                              onClick={() =>
+                                setSelectedJob({
+                                  kind: "recurring",
+                                  id: job.id,
+                                  title: job.title,
+                                  owner: job.owner,
+                                  status: job.status,
+                                  lastStatus: job.lastStatus ?? job.status,
+                                  lastRunAt: job.lastRunAt,
+                                  nextRunAt: job.nextRunAt,
+                                  description: job.description,
+                                  scheduleLabel: item.label,
+                                  countdown: formatCountdown(hoursUntilNext),
+                                  isBash: job.isBash,
+                                  isRecurring: true,
+                                })
+                              }
+                              className={`flex items-center gap-4 px-4 py-3.5 cursor-pointer transition-colors hover:bg-white/[0.02] active:bg-white/[0.04] ${
                                 isImminent ? "bg-amber-500/[0.03]" : ""
                               }`}
                             >
@@ -794,7 +998,24 @@ export default function AutomationsPage() {
                           return (
                             <div
                               key={job.id}
-                              className={`flex items-center gap-4 px-4 py-3.5 ${
+                              onClick={() =>
+                                setSelectedJob({
+                                  kind: "recurring",
+                                  id: job.id,
+                                  title: job.title,
+                                  owner: job.owner,
+                                  status: job.status,
+                                  lastStatus: job.lastStatus ?? job.status,
+                                  lastRunAt: job.lastRunAt,
+                                  nextRunAt: job.nextRunAt,
+                                  description: job.description,
+                                  scheduleLabel: item.label,
+                                  countdown: formatCountdown(hoursUntilNext),
+                                  isBash: job.isBash,
+                                  isRecurring: true,
+                                })
+                              }
+                              className={`flex items-center gap-4 px-4 py-3.5 cursor-pointer transition-colors hover:bg-white/[0.02] active:bg-white/[0.04] ${
                                 isImminent ? "bg-amber-500/[0.03]" : ""
                               }`}
                             >
