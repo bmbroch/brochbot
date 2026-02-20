@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T08:00:01Z",
+  "lastUpdated": "2026-02-20T08:10:01Z",
   "activities": [
     {
       "id": "s-f58825f5",
@@ -8,10 +8,10 @@
       "description": "**Task:** Make the creator sync scripts dynamic \u2014 no more hardcoded creator lists.",
       "status": "success",
       "date": "2026-02-20T07:56:34.462Z",
-      "tokens": 264936,
-      "cost": 0.3285,
+      "tokens": 1072187,
+      "cost": 0.7561,
       "model": "Sonnet",
-      "durationSec": 202
+      "durationSec": 404
     },
     {
       "id": "s-2da6e86c",
@@ -36,30 +36,6 @@
       "cost": 0.4294,
       "model": "Sonnet",
       "durationSec": 158
-    },
-    {
-      "id": "s-354a6fd1",
-      "agent": "devin",
-      "title": "devin-automations-fix",
-      "description": "**Task: Fix automations page display bugs for bash crons.**",
-      "status": "success",
-      "date": "2026-02-20T07:09:43.392Z",
-      "tokens": 204433,
-      "cost": 0.2665,
-      "model": "Sonnet",
-      "durationSec": 131
-    },
-    {
-      "id": "s-43376cae",
-      "agent": "devin",
-      "title": "devin-jude-onboarding-verify",
-      "description": "Quick task: Jude \u270d\ufe0f was just onboarded to team.json. Verify:",
-      "status": "success",
-      "date": "2026-02-20T07:08:58.011Z",
-      "tokens": 1985257,
-      "cost": 0.9823,
-      "model": "Sonnet",
-      "durationSec": 280
     },
     {
       "id": "s-7f0c5c11",
@@ -128,10 +104,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 22580427,
-      "cost": 53.3116,
+      "tokens": 22744591,
+      "cost": 54.2947,
       "model": "Opus",
-      "durationSec": 46637
+      "durationSec": 46933
     },
     {
       "id": "s-b88a363c",
@@ -700,7 +676,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T08:00:01Z"
+      "lastRunAt": "2026-02-20T08:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -722,7 +698,7 @@
       "description": "Mia pulls the latest post data for all 7 creators from Google Sheets \u2014 TikTok and Instagram URLs, view counts, and post dates. Writes creator-posts.json with 267+ posts sorted newest-first per creator.",
       "script": "scripts/mia-creator-sync.sh",
       "log": "ops/mia-creator-sync.log",
-      "lastRunAt": "2026-02-19T23:00:04Z"
+      "lastRunAt": "2026-02-20T08:02:22Z"
     },
     {
       "id": "bash-creator-merge",
@@ -733,7 +709,7 @@
       "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log",
-      "lastRunAt": "2026-02-19T23:30:01Z"
+      "lastRunAt": "2026-02-20T08:02:22Z"
     }
   ]
 }

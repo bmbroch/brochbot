@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 22580427,
-    "cost": 53.3116,
-    "durationSec": 46637,
+    "tokens": 22744591,
+    "cost": 54.2947,
+    "durationSec": 46933,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -36,18 +36,6 @@
     "timestamp": "2026-02-19T17:32:32.089Z"
   },
   {
-    "id": "43376cae-400f-4b19-87cf-11bdcd5645c8",
-    "label": "devin-jude-onboarding-verify",
-    "agent": "devin",
-    "task": "Quick task: Jude \u270d\ufe0f was just onboarded to team.json. Verify:",
-    "model": "Sonnet",
-    "tokens": 1985257,
-    "cost": 0.9823,
-    "durationSec": 280,
-    "status": "success",
-    "timestamp": "2026-02-20T07:08:58.011Z"
-  },
-  {
     "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
     "label": "c1c67e23-34e",
     "agent": "sam",
@@ -58,6 +46,18 @@
     "durationSec": 45611,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
+  },
+  {
+    "id": "f58825f5-4715-43e3-9dc4-d519245695c8",
+    "label": "devin-dynamic-creators",
+    "agent": "devin",
+    "task": "**Task:** Make the creator sync scripts dynamic \u2014 no more hardcoded creator lists.",
+    "model": "Sonnet",
+    "tokens": 1072187,
+    "cost": 0.7561,
+    "durationSec": 404,
+    "status": "success",
+    "timestamp": "2026-02-20T07:56:34.462Z"
   },
   {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
@@ -108,18 +108,6 @@
     "timestamp": "2026-02-20T07:48:09.608Z"
   },
   {
-    "id": "f58825f5-4715-43e3-9dc4-d519245695c8",
-    "label": "devin-dynamic-creators",
-    "agent": "devin",
-    "task": "**Task:** Make the creator sync scripts dynamic \u2014 no more hardcoded creator lists.",
-    "model": "Sonnet",
-    "tokens": 264936,
-    "cost": 0.3285,
-    "durationSec": 202,
-    "status": "success",
-    "timestamp": "2026-02-20T07:56:34.462Z"
-  },
-  {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
     "label": "95a02d1a-513",
     "agent": "sam",
@@ -130,18 +118,6 @@
     "durationSec": 44640,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "354a6fd1-460b-4273-ba5c-fd259579e732",
-    "label": "devin-automations-fix",
-    "agent": "devin",
-    "task": "**Task: Fix automations page display bugs for bash crons.**",
-    "model": "Sonnet",
-    "tokens": 204433,
-    "cost": 0.2665,
-    "durationSec": 131,
-    "status": "success",
-    "timestamp": "2026-02-20T07:09:43.392Z"
   },
   {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",
