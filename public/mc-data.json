@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T11:00:02Z",
+  "lastUpdated": "2026-02-20T11:06:21Z",
   "activities": [
     {
       "id": "s-4f751fcb",
@@ -80,10 +80,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 31346747,
-      "cost": 79.2034,
+      "tokens": 32971285,
+      "cost": 80.9389,
       "model": "Opus",
-      "durationSec": 49661
+      "durationSec": 57906
     },
     {
       "id": "s-b88a363c",
@@ -128,10 +128,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T17:32:32.089Z",
-      "tokens": 2948399,
-      "cost": 9.2637,
+      "tokens": 3792353,
+      "cost": 12.224,
       "model": "Opus",
-      "durationSec": 5516
+      "durationSec": 63172
     },
     {
       "id": "s-42b5ff85",
@@ -361,7 +361,106 @@
       "updatedAt": 1771491360000
     }
   ],
-  "calendar": [],
+  "calendar": [
+    {
+      "id": "05ff9b58-07bf-4e3a-b36e-58522a0042c3",
+      "title": "Miles: ISK Competitive Intel",
+      "schedule": "{'kind': 'at', 'at': '2026-02-20T22:00:00.000Z'}",
+      "timezone": "",
+      "owner": "sam",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T22:00:00Z",
+      "consecutiveErrors": 0,
+      "description": ""
+    },
+    {
+      "id": "5db3eea0-5089-4a68-a64a-c5e6e8852351",
+      "title": "Sam: Ads agent proposal",
+      "schedule": "{'kind': 'at', 'at': '2026-02-20T23:00:00.000Z'}",
+      "timezone": "",
+      "owner": "sam",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-20T23:00:00Z",
+      "consecutiveErrors": 0,
+      "description": ""
+    },
+    {
+      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
+      "title": "Penny Daily Check",
+      "schedule": "0 5 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "penny",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-20T03:00:00Z",
+      "nextRunAt": "2026-02-21T03:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Penny's overnight quality sweep \u2014 delegation audit, cron/MC drift check, file hygiene scan (stale files, bloat, outdated briefs). Observe-only: reports findings, doesn't edit."
+    },
+    {
+      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "schedule": "0 6 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "miles",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-20T04:00:00Z",
+      "nextRunAt": "2026-02-21T04:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Miles pulls Google Search Console data for all 3 products (ISK, CLCP, SE) \u2014 tracked keywords, clicks, impressions, position trends, and top queries. Daily at 6 AM CAT."
+    },
+    {
+      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
+      "title": "Sam Morning Brief",
+      "schedule": "30 7 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-20T05:30:00Z",
+      "nextRunAt": "2026-02-21T05:30:00Z",
+      "consecutiveErrors": 0,
+      "description": "Sam's morning coffee read \u2014 yesterday's wins, overnight costs, anything broken, and today's priorities. Lands at 7:30 AM CAT."
+    },
+    {
+      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
+      "title": "Morning Analytics Report",
+      "schedule": "0 8 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "dana",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-20T06:00:00Z",
+      "nextRunAt": "2026-02-21T06:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Dana pulls live metrics across all 3 products (CLCP, ISK, SE) from Datafast \u2014 visitors, revenue, week-over-week trends \u2014 and sends a structured report to Telegram."
+    },
+    {
+      "id": "6e98d078-5f1f-4ce8-8b61-b5bafde02879",
+      "title": "Mia: Weekly UGC Performance Report",
+      "schedule": "0 8 * * 2",
+      "timezone": "Africa/Windhoek",
+      "owner": "mia",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-24T06:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Mia pulls the latest UGC creator metrics from Google Sheets \u2014 view counts, post activity, milestone tracking across all 7 creators. Tuesdays 8 AM CAT \u2192 Sam group."
+    }
+  ],
   "decisions": [
     {
       "id": "d1",
@@ -606,6 +705,42 @@
       "action": "Onboarded",
       "text": "Jude \u270d\ufe0f \u2014 Content Engine. Brief at agents/jude.md, added to team.json, MEMORY.md, SOUL.md",
       "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Killed",
+      "text": "3 ghost crons that came back after gateway restart (old Nightly Briefing, Drift Check, Penny Weekly Audit)",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Updated",
+      "text": "tasks.json: UGC tracking \u2192 done, competitor keyword tracking \u2192 in-progress",
+      "category": "config"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Fixed",
+      "text": "Sam Morning Brief cron \u2014 no longer references hardcoded date file",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Refreshed",
+      "text": "HANDOFF.md \u2014 fully current",
+      "category": "config"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Added",
+      "text": "Rishabh (1222723605) to groupAllowFrom, locked his group to allowlist",
+      "category": "config"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Added",
+      "text": "Jude Telegram group (-5210308407) to allowlist + MEMORY.md",
+      "category": "config"
     }
   ],
   "agentStatus": {
@@ -652,7 +787,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T11:00:02Z"
+      "lastRunAt": "2026-02-20T11:06:21Z"
     },
     {
       "id": "bash-frankie-sync",
