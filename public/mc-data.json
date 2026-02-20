@@ -1,18 +1,6 @@
 {
-  "lastUpdated": "2026-02-20T13:20:01Z",
+  "lastUpdated": "2026-02-20T13:30:01Z",
   "activities": [
-    {
-      "id": "s-c828fb0a",
-      "agent": "devin",
-      "title": "devin-bypass-token",
-      "description": "**Quick task:** Add a server-side bypass token to the MC middleware so our server can access the site without logging in.",
-      "status": "success",
-      "date": "2026-02-20T12:23:25.188Z",
-      "tokens": 120423,
-      "cost": 0.0969,
-      "model": "Sonnet",
-      "durationSec": 46
-    },
     {
       "id": "s-4f751fcb",
       "agent": "sam",
@@ -835,7 +823,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-20T12:24:11Z",
+      "lastActive": "2026-02-20T13:26:27Z",
       "statusText": ""
     }
   },
@@ -849,7 +837,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T13:20:01Z"
+      "lastRunAt": "2026-02-20T13:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
