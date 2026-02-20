@@ -50,6 +50,8 @@ interface RawCalendarItem {
   nextRunAt?: string | null;
   consecutiveErrors?: number;
   deleteAfterRun?: boolean;
+  /** Legacy one-shot flag used by some mc-data.json entries */
+  oneShot?: boolean;
   description?: string;
 }
 
@@ -131,6 +133,7 @@ function formatCATHour24(h: number): string {
 }
 
 function formatCountdown(hoursUntil: number): string {
+  if (!isFinite(hoursUntil) || isNaN(hoursUntil)) return "—";
   if (hoursUntil < 1 / 60) return "now";
   if (hoursUntil < 1) {
     const m = Math.round(hoursUntil * 60);
@@ -183,6 +186,27 @@ function formatCATDateTime(iso: string): string {
 function hoursUntil(iso: string): number {
   const ms = new Date(iso).getTime() - Date.now();
   return ms / 3_600_000;
+}
+
+/** Parse a schedule field that may be a JS object, valid JSON string, or Python-style dict string.
+ *  e.g. "{'kind': 'at', 'at': '2026-02-20T22:00:00.000Z'}" → { kind: "at", at: "..." }
+ */
+function parseScheduleObj(raw: unknown): Record<string, string> | null {
+  if (typeof raw === "object" && raw !== null) return raw as Record<string, string>;
+  if (typeof raw === "string") {
+    // Try valid JSON first
+    try { return JSON.parse(raw); } catch { /* ignore */ }
+    // Try Python-style dict (single quotes → double quotes, None/True/False)
+    try {
+      const converted = raw
+        .replace(/'/g, '"')
+        .replace(/\bNone\b/g, "null")
+        .replace(/\bTrue\b/g, "true")
+        .replace(/\bFalse\b/g, "false");
+      return JSON.parse(converted);
+    } catch { /* ignore */ }
+  }
+  return null;
 }
 
 // ─── Cron parsing ─────────────────────────────────────────────────────────────
@@ -383,10 +407,10 @@ export default function AutomationsPage() {
         const recur: RecurringJob[] = [];
 
         for (const item of cal) {
-          const schedKind =
-            typeof item.schedule === "object" ? item.schedule.kind : null;
+          const schedObj = parseScheduleObj(item.schedule);
+          const schedKind = schedObj?.kind ?? null;
           const isOneShot =
-            schedKind === "at" || item.deleteAfterRun === true;
+            schedKind === "at" || item.deleteAfterRun === true || item.oneShot === true;
 
           if (isOneShot) {
             shots.push(item as OneShotJob);
@@ -554,12 +578,12 @@ export default function AutomationsPage() {
                     const emoji = OWNER_EMOJI[ownerKey] || "⚙️";
                     const badge = statusBadge(job.status ?? "pending");
 
-                    // Figure out the run time
+                    // Figure out the run time — handle plain objects, JSON strings, and Python-dict strings
+                    const parsedJobSched = parseScheduleObj(job.schedule);
                     const runAt =
-                      typeof job.schedule === "object" &&
-                      job.schedule.kind === "at"
-                        ? job.schedule.at
-                        : job.nextRunAt;
+                      (parsedJobSched?.kind === "at" ? parsedJobSched.at : null) ??
+                      job.nextRunAt ??
+                      null;
 
                     const catTimeLabel = runAt ? formatCATDateTime(runAt) : "—";
                     const hrs = runAt ? hoursUntil(runAt) : null;
@@ -598,7 +622,7 @@ export default function AutomationsPage() {
                             </span>
                           )}
                           {isPast && (
-                            <span className="text-[10px] text-zinc-600">ran</span>
+                            <span className="text-[10px] text-zinc-500 font-medium">Completed</span>
                           )}
                         </div>
 

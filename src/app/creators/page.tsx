@@ -247,7 +247,7 @@ export default function CreatorsPage() {
                           <td className="px-5 py-3 text-right">
                             <span className="text-green-500 dark:text-green-400 font-semibold">${c.earnings.toLocaleString()}</span>
                             {c.paymentCount > 0 && (
-                              <span className="block text-[10px] text-[var(--text-muted)]">{c.paymentCount} payments</span>
+                              <span className="block text-[10px] text-[var(--text-muted)]">{c.paymentCount} payment{c.paymentCount !== 1 ? "s" : ""}</span>
                             )}
                           </td>
                           <td className="px-5 py-3 text-right font-mono">

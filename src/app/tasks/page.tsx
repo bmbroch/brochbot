@@ -244,13 +244,24 @@ function NewTaskModal({ onClose, onAdd }: { onClose: () => void; onAdd: (task: O
 
 function FilterPill({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="text-xs rounded-lg px-3 py-1.5 outline-none focus:border-blue-500 transition-colors cursor-pointer border border-[var(--border-medium)]"
-      style={{ background: "var(--bg-card)", color: "var(--text-secondary)" }}
+    <div
+      className="flex items-center text-xs rounded-lg border border-[var(--border-medium)] overflow-hidden"
+      style={{ background: "var(--bg-card)" }}
     >
-      {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-    </select>
+      <span
+        className="px-2.5 py-1.5 border-r border-[var(--border-medium)] text-[var(--text-faint)] font-medium select-none whitespace-nowrap"
+        style={{ background: "var(--bg-elevated)" }}
+      >
+        {label}
+      </span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="text-xs px-2 py-1.5 outline-none cursor-pointer border-0 bg-transparent"
+        style={{ color: "var(--text-secondary)" }}
+      >
+        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+    </div>
   );
 }

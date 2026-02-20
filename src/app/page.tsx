@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Shell from "@/components/Shell";
 import { activityTypeConfig, productConfig, statusConfig, agentEmojis, agentColors, Activity, useAgentMap } from "@/lib/data-provider";
 import { formatRelativeDate, getDateGroup } from "@/lib/utils";
@@ -14,6 +15,27 @@ interface EnrichedActivity extends Activity {
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Render minimal markdown (bold + italic) as React nodes */
+function renderMarkdown(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  // Match **bold** or *italic*
+  const regex = /(\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
+    if (match[2] !== undefined) {
+      parts.push(<strong key={key++} className="font-semibold text-[var(--text-secondary)]">{match[2]}</strong>);
+    } else if (match[3] !== undefined) {
+      parts.push(<em key={key++}>{match[3]}</em>);
+    }
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  return parts;
+}
 
 function fmtTokensCompact(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -234,7 +256,7 @@ export default function Home() {
                           </div>
                         </div>
                         {activity.description && (
-                          <p className="text-sm text-[var(--text-muted)] mt-1 leading-relaxed line-clamp-2">{activity.description}</p>
+                          <p className="text-sm text-[var(--text-muted)] mt-1 leading-relaxed line-clamp-2">{renderMarkdown(activity.description)}</p>
                         )}
                         {/* Metadata row: cost · tokens · model · duration */}
                         {metaParts.length > 0 ? (

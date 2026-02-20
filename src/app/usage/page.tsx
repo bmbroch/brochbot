@@ -57,9 +57,7 @@ function fmtTokens(n: number): string {
 }
 
 function fmtCost(n: number): string {
-  if (n >= 10) return `$${n.toFixed(2)}`;
-  if (n >= 1) return `$${n.toFixed(2)}`;
-  return `$${n.toFixed(3)}`;
+  return `$${n.toFixed(2)}`;
 }
 
 function fmtDuration(sec: number): string {
@@ -681,9 +679,12 @@ export default function UsagePage() {
   }, [histWeekEntries]);
 
   const agentOptions = useMemo(() => {
-    const agents = new Set(allRuns.map((r) => r.agent));
+    const agents = new Set([
+      ...allRuns.map((r) => r.agent),
+      ...historyEntries.map((e) => e.agent),
+    ]);
     return ["All", ...Array.from(agents).sort()];
-  }, [allRuns]);
+  }, [allRuns, historyEntries]);
 
   if (loading) {
     return (
@@ -741,9 +742,9 @@ export default function UsagePage() {
             />
             <StatCard
               label="Top spender"
-              value={topSpender ? topSpender[0] : "—"}
+              value={topSpender ? topSpender[0].charAt(0).toUpperCase() + topSpender[0].slice(1) : "—"}
               sub={topSpender ? `${fmtCost(topSpender[1])} this week` : "No data yet"}
-              accent={topSpender ? agentStyle(topSpender[0]).text : "text-[var(--text-primary)]"}
+              accent={topSpender ? agentStyle(topSpender[0].charAt(0).toUpperCase() + topSpender[0].slice(1)).text : "text-[var(--text-primary)]"}
             />
           </div>
         </section>

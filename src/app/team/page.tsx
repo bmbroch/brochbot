@@ -54,14 +54,20 @@ export default function TeamPage() {
     Promise.all([
       fetch("/api/mc-data").then(r => r.ok ? r.json() : null).catch(() => null),
       fetch("/agent-runs-history.json").then(r => r.ok ? r.json() : []).catch(() => []),
-    ]).then(([mcData, historyData]) => {
+      fetch("/content-data.json").then(r => r.ok ? r.json() : null).catch(() => null),
+    ]).then(([mcData, historyData, contentData]) => {
+      const ts: Record<string, number> = {};
       if (mcData?.agentStatus) {
-        const ts: Record<string, number> = {};
         for (const [key, val] of Object.entries(mcData.agentStatus as Record<string, { lastActive?: string }>)) {
           if (val.lastActive) ts[key] = new Date(val.lastActive).getTime();
         }
-        setAgentStatusTs(ts);
       }
+      // Use content-data.json lastUpdated as Jude's last active (content is Jude's domain)
+      if (contentData?.lastUpdated) {
+        const contentTs = new Date(contentData.lastUpdated as string).getTime();
+        if (!ts["jude"] || contentTs > ts["jude"]) ts["jude"] = contentTs;
+      }
+      setAgentStatusTs(ts);
 
       const historyArr: Array<{
         id: string; agent: string; label?: string; task: string;
