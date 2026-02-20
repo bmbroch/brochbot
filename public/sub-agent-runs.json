@@ -120,6 +120,18 @@
     "timestamp": "2026-02-19T14:00:00.055Z"
   },
   {
+    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
+    "label": "95a02d1a-513",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 164425,
+    "cost": 0.3073,
+    "durationSec": 44484,
+    "status": "success",
+    "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
     "id": "5439b4e1-3990-4cb1-8e02-306cbfb1b366",
     "label": "Daily GSC Report \u2014 All Products (Miles)",
     "agent": "miles",
@@ -144,16 +156,16 @@
     "timestamp": "2026-02-20T05:30:00.081Z"
   },
   {
-    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
-    "label": "95a02d1a-513",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 43805,
-    "cost": 0.1222,
-    "durationSec": 28334,
+    "id": "200d1a22-d255-472b-9793-a8d919048749",
+    "label": "devin-calendar-fix",
+    "agent": "devin",
+    "task": "**Task:** Fix the mc-sync.sh calendar/automations drift. Penny's daily check found:",
+    "model": "Sonnet",
+    "tokens": 38920,
+    "cost": 0.0439,
+    "durationSec": 6,
     "status": "success",
-    "timestamp": "2026-02-19T19:08:33.763Z"
+    "timestamp": "2026-02-20T07:29:50.072Z"
   },
   {
     "id": "7f0c5c11-9811-4d14-8c6e-1af394f08f89",
