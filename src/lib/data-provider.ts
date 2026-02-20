@@ -205,8 +205,9 @@ const creatorsData: Creator[] = [
   { name: "Luke", posts: 24, ttViews: 61046, igViews: 306120, startDate: "2026-01-19", earnings: 1035, avgPerPost: 15298 },
   { name: "Jake", posts: 24, ttViews: 17427, igViews: 63777, startDate: "2026-01-23", earnings: 600, avgPerPost: 3383 },
   { name: "Bobby", posts: 16, ttViews: 11212, igViews: 24448, startDate: "2026-01-30", earnings: 400, avgPerPost: 2228 },
-  { name: "Flo", posts: 3, ttViews: 979, igViews: 31233, startDate: "2026-02-12", earnings: 75, avgPerPost: 10737 },
-  { name: "Sheryl", posts: 5, ttViews: 2541, igViews: 4477, startDate: "2026-02-11", earnings: 125, avgPerPost: 1403 },
+  { name: "Sophie", posts: 6, ttViews: 979, igViews: 133, startDate: "2026-02-12", earnings: 75, avgPerPost: 185 },
+  { name: "Sheryl", posts: 10, ttViews: 2541, igViews: 4477, startDate: "2026-02-11", earnings: 125, avgPerPost: 1403 },
+  { name: "Griffin", posts: 6, ttViews: 1164, igViews: 8378, startDate: "2026-02-17", earnings: 0, avgPerPost: 1590 },
 ];
 
 // Generate time-series data for each creator (used by charts)
@@ -261,7 +262,8 @@ export const creatorColors: Record<string, string> = {
   Jake: "#eab308",
   Bobby: "#f97316",
   Sheryl: "#ec4899",
-  Flo: "#06b6d4",
+  Sophie: "#06b6d4",
+  Griffin: "#10b981",
 };
 
 export function useCreatorTimeSeries(name: string) { return creatorsTimeSeries[name] || []; }

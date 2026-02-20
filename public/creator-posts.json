@@ -1,4 +1,38 @@
 {
+  "_meta": {
+    "nick": {
+      "displayName": "Nick",
+      "tabName": "Nick"
+    },
+    "abby": {
+      "displayName": "Abby",
+      "tabName": "Abby"
+    },
+    "luke": {
+      "displayName": "Luke",
+      "tabName": "Luke"
+    },
+    "jake": {
+      "displayName": "Jake",
+      "tabName": "Jake"
+    },
+    "bobby": {
+      "displayName": "Bobby",
+      "tabName": "Bobby"
+    },
+    "sheryl": {
+      "displayName": "Sheryl",
+      "tabName": "Sheryl"
+    },
+    "sophie": {
+      "displayName": "Sophie",
+      "tabName": "Sophie"
+    },
+    "griffin": {
+      "displayName": "Griffin",
+      "tabName": "Griffin"
+    }
+  },
   "nick": [
     {
       "date": "2026-02-14",
@@ -1838,7 +1872,7 @@
       "title": null
     }
   ],
-  "flo": [
+  "sophie": [
     {
       "date": "2026-02-15",
       "platform": "tiktok",
@@ -1879,6 +1913,50 @@
       "platform": "instagram",
       "views": 133,
       "url": "https://www.instagram.com/reel/DUqyKR_E9mB/",
+      "title": null
+    }
+  ],
+  "griffin": [
+    {
+      "date": "2026-02-19",
+      "platform": "tiktok",
+      "views": 64,
+      "url": "https://www.tiktok.com/@griffn.sells/video/7608363527404817677",
+      "title": null
+    },
+    {
+      "date": "2026-02-19",
+      "platform": "instagram",
+      "views": 3145,
+      "url": "https://www.instagram.com/reel/DU60jbLgZ9S/",
+      "title": null
+    },
+    {
+      "date": "2026-02-18",
+      "platform": "tiktok",
+      "views": 169,
+      "url": "https://www.tiktok.com/@griffn.sells/video/7607968847605288205",
+      "title": null
+    },
+    {
+      "date": "2026-02-18",
+      "platform": "instagram",
+      "views": 4143,
+      "url": "https://www.instagram.com/reel/DU4FQPqEqAT/",
+      "title": null
+    },
+    {
+      "date": "2026-02-17",
+      "platform": "tiktok",
+      "views": 931,
+      "url": "https://www.tiktok.com/@griffn.sells/video/7607513414390369549",
+      "title": null
+    },
+    {
+      "date": "2026-02-17",
+      "platform": "instagram",
+      "views": 1090,
+      "url": "https://www.instagram.com/reel/DU07TtKEcAz/",
       "title": null
     }
   ]
