@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 29987021,
-    "cost": 76.9648,
-    "durationSec": 49095,
+    "tokens": 31346747,
+    "cost": 79.2034,
+    "durationSec": 49661,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -48,6 +48,18 @@
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
   {
+    "id": "4f751fcb-efc9-4014-ac52-3ccc00f3bf50",
+    "label": "4f751fcb-efc",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 1192603,
+    "cost": 3.3307,
+    "durationSec": 2052,
+    "status": "success",
+    "timestamp": "2026-02-20T08:15:42.760Z"
+  },
+  {
     "id": "f58825f5-4715-43e3-9dc4-d519245695c8",
     "label": "devin-dynamic-creators",
     "agent": "devin",
@@ -72,18 +84,6 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
-    "id": "4f751fcb-efc9-4014-ac52-3ccc00f3bf50",
-    "label": "4f751fcb-efc",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 533579,
-    "cost": 1.3853,
-    "durationSec": 1398,
-    "status": "success",
-    "timestamp": "2026-02-20T08:15:42.760Z"
-  },
-  {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
     "label": "b88a363c-216",
     "agent": "sam",
@@ -94,18 +94,6 @@
     "durationSec": 45538,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
-  },
-  {
-    "id": "2da6e86c-d294-40b6-9882-6e73d3d7a855",
-    "label": "devin-jude-avatar",
-    "agent": "devin",
-    "task": "Quick task: Generate a proper avatar for Jude \u270d\ufe0f (Content Engine agent).",
-    "model": "Sonnet",
-    "tokens": 338434,
-    "cost": 0.2402,
-    "durationSec": 191,
-    "status": "success",
-    "timestamp": "2026-02-20T07:48:09.608Z"
   },
   {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
