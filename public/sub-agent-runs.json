@@ -48,18 +48,6 @@
     "timestamp": "2026-02-19T17:32:32.089Z"
   },
   {
-    "id": "cd4c6425-b2eb-4dd7-bb44-73219028d2ea",
-    "label": "devin-architecture-fix",
-    "agent": "devin",
-    "task": "**Task:** Fix the MC data architecture so NOTHING can silently go out of sync. Two parts.",
-    "model": "Sonnet",
-    "tokens": 1730557,
-    "cost": 1.1554,
-    "durationSec": 435,
-    "status": "success",
-    "timestamp": "2026-02-20T12:08:53.111Z"
-  },
-  {
     "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
     "label": "c1c67e23-34e",
     "agent": "sam",

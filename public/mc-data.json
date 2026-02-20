@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T13:00:01Z",
+  "lastUpdated": "2026-02-20T13:10:01Z",
   "activities": [
     {
       "id": "s-c828fb0a",
@@ -12,18 +12,6 @@
       "cost": 0.0969,
       "model": "Sonnet",
       "durationSec": 46
-    },
-    {
-      "id": "s-cd4c6425",
-      "agent": "devin",
-      "title": "devin-architecture-fix",
-      "description": "**Task:** Fix the MC data architecture so NOTHING can silently go out of sync. Two parts.",
-      "status": "success",
-      "date": "2026-02-20T12:08:53.111Z",
-      "tokens": 1730557,
-      "cost": 1.1554,
-      "model": "Sonnet",
-      "durationSec": 435
     },
     {
       "id": "s-4f751fcb",
@@ -861,7 +849,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T13:00:01Z"
+      "lastRunAt": "2026-02-20T13:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
