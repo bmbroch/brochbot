@@ -163,5 +163,24 @@
     ],
     "isAgent": true,
     "sortOrder": 8
+  },
+  {
+    "id": "jude",
+    "name": "Jude",
+    "emoji": "✍️",
+    "avatar": "/avatars/jude.png",
+    "role": "Content Engine",
+    "color": "#f472b6",
+    "gradient": "from-pink-600/30 to-pink-900/20",
+    "description": "The content machine. Drafts posts, edits video, manages the publishing pipeline for indietomilly. Turns overnight agent work into building-in-public content.",
+    "dataSources": [
+      "Twitter API",
+      "LinkedIn API",
+      "TikTok API",
+      "YouTube API"
+    ],
+    "recurringTasks": [],
+    "isAgent": true,
+    "sortOrder": 9
   }
 ]
