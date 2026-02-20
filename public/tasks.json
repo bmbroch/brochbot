@@ -88,28 +88,6 @@
     "updatedAt": 1771520031522
   },
   {
-    "_id": "t12",
-    "title": "Create persistent weekly metrics file (Dana)",
-    "description": "Dana's morning reports vanish into Telegram. Need memory/weekly-metrics-YYYY-MM-DD.md every Monday covering all 3 products \u2014 traffic, revenue, MoM trends. Without this, spotting problems before they become crises is impossible.",
-    "status": "todo",
-    "assignee": "dana",
-    "priority": "high",
-    "product": "all",
-    "createdAt": 1771491360000,
-    "updatedAt": 1771491360000
-  },
-  {
-    "_id": "t13",
-    "title": "Run Cara's first churn/billing health report",
-    "description": "Cara is now fully set up with Stripe access for all 3 products. Ready to run first churn/billing health report \u2014 churn rate, refund rate, cancellations within 7 days. Should own memory/billing-health-YYYY-MM.md monthly.",
-    "status": "todo",
-    "assignee": "cara",
-    "priority": "medium",
-    "product": "all",
-    "createdAt": 1771491360000,
-    "updatedAt": 1771519100893
-  },
-  {
     "_id": "t14",
     "title": "Create HEARTBEAT.md",
     "description": "HEARTBEAT.md exists and is active.",
