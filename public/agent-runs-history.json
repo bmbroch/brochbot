@@ -1414,5 +1414,17 @@
     "durationSec": 234,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
+  },
+  {
+    "id": "dd1fb9bf-d1e4-4b98-8ee2-60ac00ec57ca",
+    "label": "devin-mc-visual-bugs",
+    "agent": "devin",
+    "task": "- One-shot jobs (\"at\" schedule kind) show \"in Infinityh NaNm\" countdown and raw JSON `{'kind': 'at', 'at': '...'}` instead of human-readable text",
+    "model": "Sonnet",
+    "tokens": 40767,
+    "cost": 0.068,
+    "durationSec": 7,
+    "status": "success",
+    "timestamp": "2026-02-20T20:13:06.794Z"
   }
 ]
