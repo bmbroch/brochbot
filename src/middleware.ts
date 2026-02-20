@@ -28,6 +28,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow bypass token for server-side access (e.g., OpenClaw health checks)
+  const bypassToken = request.nextUrl.searchParams.get('_token');
+  if (bypassToken && bypassToken === process.env.MC_BYPASS_TOKEN) {
+    return NextResponse.next();
+  }
+
   const token = request.cookies.get("mc-session")?.value;
 
   if (!token) {
