@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T22:30:01Z",
+  "lastUpdated": "2026-02-20T22:40:01Z",
   "activities": [
     {
       "id": "s-280b1595",
@@ -8,10 +8,10 @@
       "description": "Ben wants to know what professions his paying ISK (Interview Sidekick) subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
       "status": "success",
       "date": "2026-02-20T22:29:46.803Z",
-      "tokens": 28936,
-      "cost": 0.0525,
+      "tokens": 423060,
+      "cost": 0.6457,
       "model": "Sonnet",
-      "durationSec": 14
+      "durationSec": 589
     },
     {
       "id": "s-d6b308e7",
@@ -32,10 +32,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 9910987,
-      "cost": 22.7135,
+      "tokens": 10608756,
+      "cost": 24.4669,
       "model": "Opus",
-      "durationSec": 18248
+      "durationSec": 18350
     },
     {
       "id": "s-4f751fcb",
@@ -164,10 +164,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 971515,
-      "cost": 2.2119,
+      "tokens": 1102818,
+      "cost": 2.5976,
       "model": "Opus",
-      "durationSec": 100889
+      "durationSec": 101213
     },
     {
       "id": "s-aae63345",
@@ -870,7 +870,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T22:30:01Z"
+      "lastRunAt": "2026-02-20T22:40:01Z"
     },
     {
       "id": "bash-frankie-sync",

@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 9910987,
-    "cost": 22.7135,
-    "durationSec": 18248,
+    "tokens": 10608756,
+    "cost": 24.4669,
+    "durationSec": 18350,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -77,11 +77,23 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 971515,
-    "cost": 2.2119,
-    "durationSec": 100889,
+    "tokens": 1102818,
+    "cost": 2.5976,
+    "durationSec": 101213,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
+  },
+  {
+    "id": "280b1595-850b-45ce-980c-80bf9bf32b54",
+    "label": "dana-isk-profession-analysis",
+    "agent": "dana",
+    "task": "Ben wants to know what professions his paying ISK (Interview Sidekick) subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
+    "model": "Sonnet",
+    "tokens": 423060,
+    "cost": 0.6457,
+    "durationSec": 589,
+    "status": "success",
+    "timestamp": "2026-02-20T22:29:46.803Z"
   },
   {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
@@ -202,18 +214,6 @@
     "durationSec": 17,
     "status": "success",
     "timestamp": "2026-02-19T11:52:45.805Z"
-  },
-  {
-    "id": "280b1595-850b-45ce-980c-80bf9bf32b54",
-    "label": "dana-isk-profession-analysis",
-    "agent": "dana",
-    "task": "Ben wants to know what professions his paying ISK (Interview Sidekick) subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
-    "model": "Sonnet",
-    "tokens": 28936,
-    "cost": 0.0525,
-    "durationSec": 14,
-    "status": "success",
-    "timestamp": "2026-02-20T22:29:46.803Z"
   },
   {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",
