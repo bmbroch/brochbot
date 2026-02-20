@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 15769479,
-    "cost": 36.0546,
-    "durationSec": 25507,
+    "tokens": 15928718,
+    "cost": 37.0091,
+    "durationSec": 37767,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -106,6 +106,18 @@
     "durationSec": 93,
     "status": "success",
     "timestamp": "2026-02-20T04:00:00.087Z"
+  },
+  {
+    "id": "3429b4f2-efb6-4295-b659-5b4e3f446db1",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "Read these files:",
+    "model": "Opus",
+    "tokens": 49740,
+    "cost": 0.1666,
+    "durationSec": 30,
+    "status": "success",
+    "timestamp": "2026-02-20T05:30:00.081Z"
   },
   {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
