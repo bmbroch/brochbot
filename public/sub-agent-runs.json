@@ -72,6 +72,18 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
+    "id": "200d1a22-d255-472b-9793-a8d919048749",
+    "label": "devin-calendar-fix",
+    "agent": "devin",
+    "task": "**Task:** Fix the mc-sync.sh calendar/automations drift. Penny's daily check found:",
+    "model": "Sonnet",
+    "tokens": 551547,
+    "cost": 0.4047,
+    "durationSec": 143,
+    "status": "success",
+    "timestamp": "2026-02-20T07:29:50.072Z"
+  },
+  {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
     "label": "b88a363c-216",
     "agent": "sam",
@@ -82,18 +94,6 @@
     "durationSec": 45361,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
-  },
-  {
-    "id": "200d1a22-d255-472b-9793-a8d919048749",
-    "label": "devin-calendar-fix",
-    "agent": "devin",
-    "task": "**Task:** Fix the mc-sync.sh calendar/automations drift. Penny's daily check found:",
-    "model": "Sonnet",
-    "tokens": 258572,
-    "cost": 0.2867,
-    "durationSec": 111,
-    "status": "success",
-    "timestamp": "2026-02-20T07:29:50.072Z"
   },
   {
     "id": "354a6fd1-460b-4273-ba5c-fd259579e732",

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T07:31:41Z",
+  "lastUpdated": "2026-02-20T07:32:13Z",
   "activities": [
     {
       "id": "s-200d1a22",
@@ -8,10 +8,10 @@
       "description": "**Task:** Fix the mc-sync.sh calendar/automations drift. Penny's daily check found:",
       "status": "success",
       "date": "2026-02-20T07:29:50.072Z",
-      "tokens": 258572,
-      "cost": 0.2867,
+      "tokens": 551547,
+      "cost": 0.4047,
       "model": "Sonnet",
-      "durationSec": 111
+      "durationSec": 143
     },
     {
       "id": "s-354a6fd1",
@@ -584,6 +584,24 @@
   "changelog": [
     {
       "date": "2026-02-20",
+      "action": "Fixed",
+      "text": "mc-sync.sh CRON_OWNER_MAP \u2014 added \"mia: weekly\" \u2192 mia, \"self-review\" \u2192 sam, \"devin\" \u2192 devin",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Fixed",
+      "text": "mc-sync.sh CRON_DESCRIPTIONS \u2014 added entries for Nightly Briefing, Daily Self-Review, Mia Weekly UGC, Penny Weekly Audit",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
+      "action": "Fixed",
+      "text": "mc-data.json calendar array was empty \u2014 debugged and manually re-ran mc-sync.sh; 8 AI crons now populating Automations page correctly",
+      "category": "cron"
+    },
+    {
+      "date": "2026-02-20",
       "action": "Added",
       "text": "Penny Telegram group (`-5280216031`) to allowlist + MEMORY.md",
       "category": "config"
@@ -771,7 +789,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T07:31:41Z"
+      "lastRunAt": "2026-02-20T07:32:13Z"
     },
     {
       "id": "bash-frankie-sync",
