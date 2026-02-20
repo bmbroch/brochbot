@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 57386383,
-    "cost": 165.8827,
-    "durationSec": 62673,
+    "tokens": 59953164,
+    "cost": 176.493,
+    "durationSec": 77925,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -190,5 +190,17 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
+  },
+  {
+    "id": "a4b6f095-849f-482b-ae31-a80e1764a200",
+    "label": "a4b6f095-849",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "unknown",
+    "tokens": 21232,
+    "cost": 0.087,
+    "durationSec": 34476,
+    "status": "success",
+    "timestamp": "2026-02-20T07:03:05.484Z"
   }
 ]

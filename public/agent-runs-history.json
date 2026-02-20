@@ -1284,6 +1284,18 @@
     "timestamp": "2026-02-20T06:00:00.025Z"
   },
   {
+    "id": "a4b6f095-849f-482b-ae31-a80e1764a200",
+    "label": "a4b6f095-849",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "unknown",
+    "tokens": 21232,
+    "cost": 0.087,
+    "durationSec": 34476,
+    "status": "success",
+    "timestamp": "2026-02-20T07:03:05.484Z"
+  },
+  {
     "id": "43376cae-400f-4b19-87cf-11bdcd5645c8",
     "label": "devin-jude-onboarding-verify",
     "agent": "devin",
