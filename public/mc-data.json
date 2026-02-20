@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T08:20:02Z",
+  "lastUpdated": "2026-02-20T08:30:01Z",
   "activities": [
     {
       "id": "s-4f751fcb",
@@ -8,10 +8,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-20T08:15:42.760Z",
-      "tokens": 231791,
-      "cost": 0.529,
+      "tokens": 352876,
+      "cost": 0.9902,
       "model": "Opus",
-      "durationSec": 142
+      "durationSec": 718
     },
     {
       "id": "s-f58825f5",
@@ -36,18 +36,6 @@
       "cost": 0.2402,
       "model": "Sonnet",
       "durationSec": 191
-    },
-    {
-      "id": "s-200d1a22",
-      "agent": "devin",
-      "title": "devin-calendar-fix",
-      "description": "**Task:** Fix the mc-sync.sh calendar/automations drift. Penny's daily check found:",
-      "status": "success",
-      "date": "2026-02-20T07:29:50.072Z",
-      "tokens": 595129,
-      "cost": 0.4294,
-      "model": "Sonnet",
-      "durationSec": 158
     },
     {
       "id": "s-7f0c5c11",
@@ -116,10 +104,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 23404010,
-      "cost": 58.167,
+      "tokens": 25708904,
+      "cost": 66.201,
       "model": "Opus",
-      "durationSec": 47745
+      "durationSec": 48509
     },
     {
       "id": "s-b88a363c",
@@ -688,7 +676,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T08:20:02Z"
+      "lastRunAt": "2026-02-20T08:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
