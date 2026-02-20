@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 5845705,
-    "cost": 12.3553,
-    "durationSec": 13093,
+    "tokens": 6094570,
+    "cost": 12.9274,
+    "durationSec": 13118,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -192,6 +192,18 @@
     "timestamp": "2026-02-20T05:30:00.081Z"
   },
   {
+    "id": "09b7ef4e-428b-49cc-80b6-bb8338649bb8",
+    "label": "devin-automations-tidy",
+    "agent": "devin",
+    "task": "Some items show \"4m ago\", others show \"ran 18h ago\". Standardize all of them to the same format \u2014 drop the \"ran\" prefix, just show the relative time consistently (e.g. \"4m ago\", \"18h ago\", \"10h ago\").",
+    "model": "Sonnet",
+    "tokens": 39243,
+    "cost": 0.0436,
+    "durationSec": 7,
+    "status": "success",
+    "timestamp": "2026-02-20T21:03:52.619Z"
+  },
+  {
     "id": "7f0c5c11-9811-4d14-8c6e-1af394f08f89",
     "label": "Morning Analytics Report",
     "agent": "dana",
@@ -252,15 +264,15 @@
     "timestamp": "2026-02-20T07:03:05.484Z"
   },
   {
-    "id": "09b7ef4e-428b-49cc-80b6-bb8338649bb8",
-    "label": "devin-automations-tidy",
+    "id": "055cdada-ef44-40d2-9571-1ea81e3be52b",
+    "label": "devin-misc-tidy",
     "agent": "devin",
-    "task": "Some items show \"4m ago\", others show \"ran 18h ago\". Standardize all of them to the same format \u2014 drop the \"ran\" prefix, just show the relative time consistently (e.g. \"4m ago\", \"18h ago\", \"10h ago\").",
+    "task": "The Sub-Agent Runs filter buttons show lowercase names (\"dana\", \"devin\", \"cara\", etc.) while the agent cards above use capitalized names (\"Dana\", \"Devin\", \"Cara\"). Capitalize the filter pill labels to",
     "model": "Sonnet",
-    "tokens": 12302,
-    "cost": 0.0281,
+    "tokens": 12474,
+    "cost": 0.0288,
     "durationSec": 2,
     "status": "success",
-    "timestamp": "2026-02-20T21:03:52.619Z"
+    "timestamp": "2026-02-20T21:04:18.303Z"
   }
 ]

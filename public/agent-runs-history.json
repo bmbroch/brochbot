@@ -1462,5 +1462,17 @@
     "durationSec": 2,
     "status": "success",
     "timestamp": "2026-02-20T21:03:52.619Z"
+  },
+  {
+    "id": "055cdada-ef44-40d2-9571-1ea81e3be52b",
+    "label": "devin-misc-tidy",
+    "agent": "devin",
+    "task": "The Sub-Agent Runs filter buttons show lowercase names (\"dana\", \"devin\", \"cara\", etc.) while the agent cards above use capitalized names (\"Dana\", \"Devin\", \"Cara\"). Capitalize the filter pill labels to",
+    "model": "Sonnet",
+    "tokens": 12474,
+    "cost": 0.0288,
+    "durationSec": 2,
+    "status": "success",
+    "timestamp": "2026-02-20T21:04:18.303Z"
   }
 ]
