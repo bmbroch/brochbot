@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-20T07:09:01Z",
+  "lastUpdated": "2026-02-20T07:09:47Z",
   "activities": [
+    {
+      "id": "s-354a6fd1",
+      "agent": "devin",
+      "title": "devin-automations-fix",
+      "description": "**Task: Fix automations page display bugs for bash crons.**",
+      "status": "success",
+      "date": "2026-02-20T07:09:43.392Z",
+      "tokens": 12369,
+      "cost": 0.0284,
+      "model": "Sonnet",
+      "durationSec": 3
+    },
     {
       "id": "s-43376cae",
       "agent": "devin",
@@ -8,10 +20,10 @@
       "description": "Quick task: Jude \u270d\ufe0f was just onboarded to team.json. Verify:",
       "status": "success",
       "date": "2026-02-20T07:08:58.011Z",
-      "tokens": 12111,
-      "cost": 0.0471,
+      "tokens": 102757,
+      "cost": 0.1474,
       "model": "Sonnet",
-      "durationSec": 2
+      "durationSec": 45
     },
     {
       "id": "s-7f0c5c11",
@@ -80,10 +92,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 19699950,
-      "cost": 46.5592,
+      "tokens": 20011750,
+      "cost": 46.7289,
       "model": "Opus",
-      "durationSec": 43666
+      "durationSec": 43680
     },
     {
       "id": "s-b88a363c",
@@ -104,10 +116,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 1309967,
-      "cost": 4.3152,
+      "tokens": 1428992,
+      "cost": 4.6823,
       "model": "Opus",
-      "durationSec": 44576
+      "durationSec": 45478
     },
     {
       "id": "s-7612c9b5",
@@ -705,7 +717,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-20T07:08:58.011Z",
+      "lastActive": "2026-02-20T07:09:43.392Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -747,7 +759,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T07:09:01Z"
+      "lastRunAt": "2026-02-20T07:09:46Z"
     },
     {
       "id": "bash-frankie-sync",
