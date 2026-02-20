@@ -1,0 +1,224 @@
+{
+  "lastUpdated": "2026-02-20T03:00:00Z",
+  "queue": [
+    {
+      "id": "content-001",
+      "type": "text",
+      "platforms": ["linkedin"],
+      "title": "I hired 8 people this year. Zero salaries.",
+      "preview": "I have 8 employees. Zero salaries. Zero HR. Here's who they are.\n\nSam's my Chief of Staff. She runs cron jobs at 3am while I sleep. Devin ships features without me writing a line of code. Dana pulls analytics every morning before I open Slack...",
+      "status": "draft",
+      "draftedAt": "2026-02-20T01:30:00Z",
+      "suggestedPostTime": "2026-02-23T07:00:00Z",
+      "hookScore": "Strong",
+      "agent": "jude"
+    },
+    {
+      "id": "content-002",
+      "type": "text",
+      "platforms": ["twitter"],
+      "title": "Week 7 in Namibia — quick numbers check",
+      "preview": "Week 7 in Namibia. Here's what the three products actually made:\n\n→ CLCP: $2.1K\n→ ISK: $1.6K\n→ SE: $700 (and climbing)\n\nTotal: $4.4K from a laptop in Windhoek. Still kind of blows my mind.",
+      "status": "draft",
+      "draftedAt": "2026-02-20T02:00:00Z",
+      "suggestedPostTime": "2026-02-20T07:00:00Z",
+      "hookScore": "Strong",
+      "agent": "jude"
+    },
+    {
+      "id": "content-003",
+      "type": "text",
+      "platforms": ["linkedin", "twitter"],
+      "title": "The honest batting average of a SaaS founder",
+      "preview": "I'm so glad business isn't baseball. ⚾️\n\nI've swung at 7 ideas. 5 are in the Graveyard. 2 became real products.\n\nThat's a .285 average. Hall of Fame territory in baseball. In SaaS? It's just the job.",
+      "status": "approved",
+      "draftedAt": "2026-02-19T22:00:00Z",
+      "suggestedPostTime": "2026-02-24T08:00:00Z",
+      "hookScore": "Very Strong",
+      "agent": "jude"
+    },
+    {
+      "id": "content-004",
+      "type": "text",
+      "platforms": ["linkedin"],
+      "title": "Nick hit 3M views — the UGC origin story",
+      "preview": "A year ago I had zero creators promoting SalesEcho. Today Nick just hit 3 million total views.\n\nHere's how we built a creator network that runs itself...",
+      "status": "draft",
+      "draftedAt": "2026-02-20T00:30:00Z",
+      "suggestedPostTime": "2026-02-25T08:00:00Z",
+      "hookScore": "Medium",
+      "agent": "jude"
+    }
+  ],
+  "videos": [
+    {
+      "id": "video-001",
+      "title": "My AI agents ran 8 jobs while I slept",
+      "platforms": ["tiktok", "youtube"],
+      "stage": "approved",
+      "duration": "58s",
+      "thumbnail": null,
+      "draftedAt": "2026-02-19T06:00:00Z",
+      "suggestedPostTime": "2026-02-23T07:00:00Z",
+      "caption": "It's 7am in Namibia. My agents have been running for 6 hours. Let me show you what they actually did overnight.",
+      "agent": "jude"
+    },
+    {
+      "id": "video-002",
+      "title": "Namibia slowmad revenue check — Week 7",
+      "platforms": ["tiktok", "linkedin"],
+      "stage": "editing",
+      "duration": "62s",
+      "thumbnail": null,
+      "draftedAt": "2026-02-20T01:00:00Z",
+      "suggestedPostTime": "2026-02-21T07:00:00Z",
+      "caption": null,
+      "agent": "jude"
+    },
+    {
+      "id": "video-003",
+      "title": "What vibe coding actually feels like",
+      "platforms": ["tiktok", "youtube"],
+      "stage": "processing",
+      "duration": "45s",
+      "thumbnail": null,
+      "draftedAt": "2026-02-20T02:30:00Z",
+      "suggestedPostTime": null,
+      "caption": null,
+      "agent": "jude"
+    },
+    {
+      "id": "video-004",
+      "title": "Day in the life — solopreneur from Africa",
+      "platforms": ["youtube", "tiktok"],
+      "stage": "raw",
+      "duration": null,
+      "thumbnail": null,
+      "draftedAt": null,
+      "suggestedPostTime": null,
+      "caption": null,
+      "agent": "jude"
+    },
+    {
+      "id": "video-005",
+      "title": "UGC creator network running 24/7",
+      "platforms": ["tiktok", "linkedin"],
+      "stage": "posted",
+      "duration": "51s",
+      "thumbnail": null,
+      "draftedAt": "2026-02-17T10:00:00Z",
+      "suggestedPostTime": "2026-02-18T07:00:00Z",
+      "caption": "I have 7 creators posting about SalesEcho every day. I set it up once. Now it's autonomous.",
+      "postedAt": "2026-02-18T07:05:00Z",
+      "agent": "jude"
+    }
+  ],
+  "calendar": [
+    {
+      "id": "cal-001",
+      "contentId": "content-003",
+      "title": "The honest batting average",
+      "platform": "linkedin",
+      "scheduledAt": "2026-02-23T07:00:00Z",
+      "status": "scheduled"
+    },
+    {
+      "id": "cal-002",
+      "contentId": "video-001",
+      "title": "AI agents overnight (video)",
+      "platform": "tiktok",
+      "scheduledAt": "2026-02-23T09:00:00Z",
+      "status": "scheduled"
+    },
+    {
+      "id": "cal-003",
+      "contentId": "video-001",
+      "title": "AI agents overnight (video)",
+      "platform": "youtube",
+      "scheduledAt": "2026-02-23T07:00:00Z",
+      "status": "scheduled"
+    },
+    {
+      "id": "cal-004",
+      "contentId": "content-001",
+      "title": "I hired 8 people — zero salaries",
+      "platform": "linkedin",
+      "scheduledAt": "2026-02-25T07:00:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "cal-005",
+      "contentId": "content-002",
+      "title": "Week 7 numbers check",
+      "platform": "twitter",
+      "scheduledAt": "2026-02-20T07:00:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "cal-006",
+      "contentId": "content-004",
+      "title": "Nick hit 3M views",
+      "platform": "linkedin",
+      "scheduledAt": "2026-02-25T08:00:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "cal-007",
+      "contentId": "video-002",
+      "title": "Namibia revenue check (video)",
+      "platform": "tiktok",
+      "scheduledAt": "2026-02-21T07:00:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "cal-008",
+      "contentId": "video-002",
+      "title": "Namibia revenue check (video)",
+      "platform": "linkedin",
+      "scheduledAt": "2026-02-24T07:00:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "cal-009",
+      "contentId": "content-003",
+      "title": "The honest batting average",
+      "platform": "twitter",
+      "scheduledAt": "2026-02-24T08:30:00Z",
+      "status": "scheduled"
+    }
+  ],
+  "ideas": [
+    {
+      "id": "idea-001",
+      "idea": "Nick hit 3M total TikTok views — perfect hook for UGC origin story",
+      "source": "Mia weekly report",
+      "format": "LinkedIn text + TikTok video",
+      "priority": "high",
+      "status": "in-queue"
+    },
+    {
+      "id": "idea-002",
+      "idea": "Jude just came online — document the new agent hire story",
+      "source": "Sam morning brief",
+      "format": "LinkedIn text",
+      "priority": "high",
+      "status": "needs-recording"
+    },
+    {
+      "id": "idea-003",
+      "idea": "ISK weekly visitors hit 9K — GTM milestone worth sharing",
+      "source": "Dana analytics report",
+      "format": "Twitter thread",
+      "priority": "medium",
+      "status": "idea"
+    },
+    {
+      "id": "idea-004",
+      "idea": "Agent overnight cron job run — show Mission Control activity feed",
+      "source": "Sam Telegram group",
+      "format": "TikTok (screen recording)",
+      "priority": "high",
+      "status": "needs-recording"
+    }
+  ]
+}

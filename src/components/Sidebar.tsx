@@ -17,6 +17,7 @@ const navItems = [
   { href: "/automations", label: "Automations", icon: "⚙️" },
   { href: "/changelog", label: "Changelog", icon: "🔄" },
   { href: "/creators", label: "Creators", icon: "🎬" },
+  { href: "/content", label: "Content Studio", icon: "✍️" },
   { href: "/team", label: "Team", icon: "👥" },
   { href: "/office", label: "Office", icon: "🏢" },
   { href: "/ops", label: "Surveillance", icon: "📡" },
