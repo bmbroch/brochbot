@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T23:30:02Z",
+  "lastUpdated": "2026-02-20T23:40:01Z",
   "activities": [
     {
       "id": "s-5ed5b1de",
@@ -12,18 +12,6 @@
       "cost": 1.4813,
       "model": "Sonnet",
       "durationSec": 761
-    },
-    {
-      "id": "s-280b1595",
-      "agent": "dana",
-      "title": "dana-isk-profession-analysis",
-      "description": "Ben wants to know what professions his paying ISK (Interview Sidekick) subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
-      "status": "success",
-      "date": "2026-02-20T22:29:46.803Z",
-      "tokens": 560972,
-      "cost": 0.7681,
-      "model": "Sonnet",
-      "durationSec": 671
     },
     {
       "id": "s-b60fa6af",
@@ -870,7 +858,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T23:30:02Z"
+      "lastRunAt": "2026-02-20T23:40:01Z"
     },
     {
       "id": "bash-frankie-sync",

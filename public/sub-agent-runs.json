@@ -96,18 +96,6 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
-    "id": "280b1595-850b-45ce-980c-80bf9bf32b54",
-    "label": "dana-isk-profession-analysis",
-    "agent": "dana",
-    "task": "Ben wants to know what professions his paying ISK (Interview Sidekick) subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
-    "model": "Sonnet",
-    "tokens": 560972,
-    "cost": 0.7681,
-    "durationSec": 671,
-    "status": "success",
-    "timestamp": "2026-02-20T22:29:46.803Z"
-  },
-  {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
     "label": "b88a363c-216",
     "agent": "sam",
