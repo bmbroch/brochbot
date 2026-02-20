@@ -236,13 +236,97 @@ function hoursUntilNextCron(parsed: ParsedCron, catHourNow: number, catDowNow: n
   return daysDiff * 24 - catHourNow + parsed.catHour;
 }
 
-/** Human-readable schedule string */
+/** Human-readable schedule string — handles simple and complex patterns */
 function cronToLabel(expr: string, tz: string): string {
+  // First try the simple parser
   const p = parseCronExpr(expr, tz);
-  if (!p) return expr;
-  const timeStr = formatCATTime(p.catHour);
-  if (p.isDaily) return `Daily at ${timeStr} CAT`;
-  return `${DAY_NAMES[p.weekDay!]}s at ${timeStr} CAT`;
+  if (p) {
+    const timeStr = formatCATTime(p.catHour);
+    if (p.isDaily) return `Daily at ${timeStr} CAT`;
+    return `${DAY_NAMES[p.weekDay!]}s at ${timeStr} CAT`;
+  }
+
+  // Extended patterns
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return expr;
+  const [minStr, hourStr, dom, month] = parts;
+  if (dom !== "*" || month !== "*") return expr;
+
+  // Every N minutes: */N * * * *
+  const everyMatch = /^\*\/(\d+)$/.exec(minStr);
+  if (everyMatch && hourStr === "*") {
+    const n = parseInt(everyMatch[1], 10);
+    return n === 1 ? "Every minute" : `Every ${n} minutes`;
+  }
+
+  // Fixed minute, comma-separated hours: M H1,H2,... * * *
+  if (/^\d+$/.test(minStr) && /^[\d,]+$/.test(hourStr)) {
+    const cronMin = parseInt(minStr, 10);
+    const hourParts = hourStr.split(",").map((h) => parseInt(h.trim(), 10));
+    if (hourParts.every((h) => !isNaN(h))) {
+      const tzOff = TZ_OFFSET_HOURS[tz] ?? 0;
+      const catRuns = hourParts.map(
+        (h) => ((h - tzOff + 2 + 24) % 24) + cronMin / 60
+      );
+      if (catRuns.length === 1) {
+        return `Daily at ${formatCATTime(catRuns[0])} CAT`;
+      }
+      if (catRuns.length === 2) {
+        return `Twice daily at ${formatCATTime(catRuns[0])} & ${formatCATTime(catRuns[1])} CAT`;
+      }
+      return `${catRuns.length}× daily at ${catRuns.map(formatCATTime).join(", ")} CAT`;
+    }
+  }
+
+  return expr;
+}
+
+/** Hours until next run, handling all supported cron patterns */
+function computeNextRunHours(
+  expr: string,
+  tz: string,
+  catHourNow: number,
+  catDowNow: number
+): number {
+  // Try simple parser first
+  const p = parseCronExpr(expr, tz);
+  if (p) return hoursUntilNextCron(p, catHourNow, catDowNow);
+
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return Infinity;
+  const [minStr, hourStr, dom, month] = parts;
+  if (dom !== "*" || month !== "*") return Infinity;
+
+  // Every N minutes: */N * * * *
+  const everyMatch = /^\*\/(\d+)$/.exec(minStr);
+  if (everyMatch && hourStr === "*") {
+    const n = parseInt(everyMatch[1], 10);
+    if (isNaN(n) || n <= 0) return Infinity;
+    const nowSec = (Date.now() / 1000) % (n * 60);
+    const secUntilNext = n * 60 - nowSec;
+    return secUntilNext / 3600;
+  }
+
+  // Fixed minute, comma-separated hours: M H1,H2,... * * *
+  if (/^\d+$/.test(minStr) && /^[\d,]+$/.test(hourStr)) {
+    const cronMin = parseInt(minStr, 10);
+    const hourParts = hourStr.split(",").map((h) => parseInt(h.trim(), 10));
+    if (hourParts.every((h) => !isNaN(h))) {
+      const tzOff = TZ_OFFSET_HOURS[tz] ?? 0;
+      const catRuns = hourParts.map(
+        (h) => ((h - tzOff + 2 + 24) % 24) + cronMin / 60
+      );
+      let minHours = Infinity;
+      for (const runHour of catRuns) {
+        let h = runHour - catHourNow;
+        if (h <= 0) h += 24;
+        if (h < minHours) minHours = h;
+      }
+      return minHours;
+    }
+  }
+
+  return Infinity;
 }
 
 // ─── Status badge ─────────────────────────────────────────────────────────────
@@ -395,9 +479,7 @@ export default function AutomationsPage() {
     const tz =
       typeof job.timezone === "string" ? job.timezone : "Africa/Windhoek";
     const parsed = parseCronExpr(expr, tz);
-    const hours = parsed
-      ? hoursUntilNextCron(parsed, catHourNow, catDowNow)
-      : Infinity;
+    const hours = computeNextRunHours(expr, tz, catHourNow, catDowNow);
     const ranToday =
       parsed !== null &&
       parsed.isDaily &&

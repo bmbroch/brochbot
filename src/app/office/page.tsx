@@ -373,7 +373,7 @@ function OfficeCanvas({
               </div>
 
               {/* ── Agents ─────────────────────────────────── */}
-              {teamMembers.map((member) => {
+              {teamMembers.filter(m => deskLayout[m.id]).map((member) => {
                 const agentActs = getAgentActivities(member.id);
                 const latest = agentActs[0];
                 const isActive =

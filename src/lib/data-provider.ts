@@ -9,7 +9,7 @@ import { useState, useEffect, useMemo } from "react";
 export type TaskStatus = "todo" | "in_progress" | "in-progress" | "done" | "blocked";
 export type Priority = "low" | "medium" | "high";
 export type Product = "CLCP" | "ISK" | "SE" | "internal" | "all";
-export type Assignee = "ben" | "sam" | "devin" | "cara" | "dana" | "miles" | "penny" | "mia" | "frankie";
+export type Assignee = "ben" | "sam" | "devin" | "cara" | "dana" | "miles" | "penny" | "mia" | "frankie" | "jude";
 export type ActivityType = "data_query" | "customer_lookup" | "report" | "cron_job" | "config_change" | "memory_update" | "task_completed" | "system_config" | "cron" | "task";
 export type ActivityStatus = "success" | "error" | "running" | "in-progress";
 
@@ -75,6 +75,7 @@ export const teamMembers: TeamMember[] = [
   { id: "penny", name: "Penny", emoji: "📌", avatar: "/avatars/penny.png", role: "Secretary", description: "Captures ideas, links, inspiration. Maintains the mood board. Keeps receipts on everything.", dataSources: ["Mood Board", "Workspace Files"], isAgent: true },
   { id: "mia", name: "Mia", emoji: "📱", avatar: "/avatars/mia.png", role: "Social Media Manager", description: "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram. Owns creator relationships.", dataSources: ["Google Sheets", "Datafast (UTM campaigns)"], isAgent: true },
   { id: "frankie", name: "Frankie", emoji: "💰", avatar: "/avatars/frankie.png", role: "Finance", description: "The money guy. Tracks banking, payouts, expenses, and revenue across all three businesses. Read-only access to Mercury.", dataSources: ["Mercury"], isAgent: true, recurringTasks: [] },
+  { id: "jude", name: "Jude", emoji: "✍️", avatar: "/avatars/jude.png", role: "Content Engine", color: "#f472b6", description: "The content machine. Drafts posts, edits video, manages the publishing pipeline for indietomilly. Turns overnight agent work into building-in-public content.", dataSources: ["Twitter API", "LinkedIn API", "TikTok API", "YouTube API"], isAgent: true, recurringTasks: [] },
 ];
 
 export const agentColors: Record<string, string> = {
@@ -87,6 +88,7 @@ export const agentColors: Record<string, string> = {
   mia: "#d946ef",
   devin: "#f59e0b",
   frankie: "#10b981",
+  jude: "#f472b6",
   system: "#6b7280",
 };
 
@@ -100,6 +102,7 @@ export const agentEmojis: Record<string, string> = {
   mia: "📱",
   devin: "🛠️",
   frankie: "💰",
+  jude: "✍️",
   system: "⚙️",
 };
 
