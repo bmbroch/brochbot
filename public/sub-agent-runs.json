@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 4041774,
-    "cost": 6.6456,
-    "durationSec": 11283,
+    "tokens": 4533443,
+    "cost": 8.0073,
+    "durationSec": 11654,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -84,6 +84,18 @@
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
   {
+    "id": "9415fe45-9ae4-4745-a81b-746cbca73bb2",
+    "label": "devin-mc-bugs-round2",
+    "agent": "devin",
+    "task": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
+    "model": "Sonnet",
+    "tokens": 1378267,
+    "cost": 0.9866,
+    "durationSec": 611,
+    "status": "success",
+    "timestamp": "2026-02-20T20:28:34.132Z"
+  },
+  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
@@ -94,18 +106,6 @@
     "durationSec": 41842,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
-  },
-  {
-    "id": "9415fe45-9ae4-4745-a81b-746cbca73bb2",
-    "label": "devin-mc-bugs-round2",
-    "agent": "devin",
-    "task": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
-    "model": "Sonnet",
-    "tokens": 503850,
-    "cost": 0.483,
-    "durationSec": 312,
-    "status": "success",
-    "timestamp": "2026-02-20T20:28:34.132Z"
   },
   {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
