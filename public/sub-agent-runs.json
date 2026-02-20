@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 20168265,
-    "cost": 47.5945,
-    "durationSec": 43953,
+    "tokens": 20644010,
+    "cost": 48.7272,
+    "durationSec": 45179,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -77,9 +77,9 @@
     "agent": "devin",
     "task": "**Task:** Fix the mc-sync.sh calendar/automations drift. Penny's daily check found:",
     "model": "Sonnet",
-    "tokens": 551547,
-    "cost": 0.4047,
-    "durationSec": 143,
+    "tokens": 595129,
+    "cost": 0.4294,
+    "durationSec": 158,
     "status": "success",
     "timestamp": "2026-02-20T07:29:50.072Z"
   },
@@ -91,9 +91,21 @@
     "model": "Opus",
     "tokens": 363491,
     "cost": 1.1814,
-    "durationSec": 45361,
+    "durationSec": 45538,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
+  },
+  {
+    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
+    "label": "95a02d1a-513",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 215530,
+    "cost": 0.3752,
+    "durationSec": 44640,
+    "status": "success",
+    "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
     "id": "354a6fd1-460b-4273-ba5c-fd259579e732",
@@ -118,18 +130,6 @@
     "durationSec": 300,
     "status": "success",
     "timestamp": "2026-02-20T01:00:00.067Z"
-  },
-  {
-    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
-    "label": "95a02d1a-513",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 189802,
-    "cost": 0.3294,
-    "durationSec": 44494,
-    "status": "success",
-    "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",

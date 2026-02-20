@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T07:32:13Z",
+  "lastUpdated": "2026-02-20T07:40:01Z",
   "activities": [
     {
       "id": "s-200d1a22",
@@ -8,10 +8,10 @@
       "description": "**Task:** Fix the mc-sync.sh calendar/automations drift. Penny's daily check found:",
       "status": "success",
       "date": "2026-02-20T07:29:50.072Z",
-      "tokens": 551547,
-      "cost": 0.4047,
+      "tokens": 595129,
+      "cost": 0.4294,
       "model": "Sonnet",
-      "durationSec": 143
+      "durationSec": 158
     },
     {
       "id": "s-354a6fd1",
@@ -92,10 +92,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:08:33.763Z",
-      "tokens": 189802,
-      "cost": 0.3294,
+      "tokens": 215530,
+      "cost": 0.3752,
       "model": "Opus",
-      "durationSec": 44494
+      "durationSec": 44640
     },
     {
       "id": "s-38288c66",
@@ -104,10 +104,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 20168265,
-      "cost": 47.5945,
+      "tokens": 20644010,
+      "cost": 48.7272,
       "model": "Opus",
-      "durationSec": 43953
+      "durationSec": 45179
     },
     {
       "id": "s-b88a363c",
@@ -119,7 +119,7 @@
       "tokens": 363491,
       "cost": 1.1814,
       "model": "Opus",
-      "durationSec": 45361
+      "durationSec": 45538
     },
     {
       "id": "s-c1c67e23",
@@ -385,120 +385,7 @@
       "updatedAt": 1771491360000
     }
   ],
-  "calendar": [
-    {
-      "id": "f6782d10-0f3d-41e8-991b-6b9dd06b34eb",
-      "title": "Nightly Briefing",
-      "schedule": "0 2 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "sam",
-      "enabled": true,
-      "status": "idle",
-      "lastStatus": "idle",
-      "lastRunAt": null,
-      "nextRunAt": "2026-02-21T00:00:00Z",
-      "consecutiveErrors": 0,
-      "description": "Sam's nightly end-of-day summary \u2014 what got done, agent activity, today's costs, anything broken, and tomorrow's top priority. 2 AM CAT \u2192 Sam group."
-    },
-    {
-      "id": "533c9915-c8f3-4a28-8777-0bd8d83b1d74",
-      "title": "Daily Self-Review & Drift Check (Sam)",
-      "schedule": "0 3 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "sam",
-      "enabled": true,
-      "status": "idle",
-      "lastStatus": "idle",
-      "lastRunAt": null,
-      "nextRunAt": "2026-02-21T01:00:00Z",
-      "consecutiveErrors": 0,
-      "description": "Sam's daily self-audit \u2014 checks that every cron, task, and agent brief in Mission Control matches reality. Fixes any drift found. 3 AM CAT \u2192 Sam group."
-    },
-    {
-      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
-      "title": "Penny Daily Check",
-      "schedule": "0 5 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "penny",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-20T03:00:00Z",
-      "nextRunAt": "2026-02-21T03:00:00Z",
-      "consecutiveErrors": 0,
-      "description": "Penny's overnight quality sweep \u2014 delegation audit, cron/MC drift check, file hygiene scan (stale files, bloat, outdated briefs). Observe-only: reports findings, doesn't edit."
-    },
-    {
-      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
-      "title": "Daily GSC Report \u2014 All Products (Miles)",
-      "schedule": "0 6 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "miles",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-20T04:00:00Z",
-      "nextRunAt": "2026-02-21T04:00:00Z",
-      "consecutiveErrors": 0,
-      "description": "Miles pulls Google Search Console data for all 3 products (ISK, CLCP, SE) \u2014 tracked keywords, clicks, impressions, position trends, and top queries. Daily at 6 AM CAT."
-    },
-    {
-      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
-      "title": "Sam Morning Brief",
-      "schedule": "30 7 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "sam",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-20T05:30:00Z",
-      "nextRunAt": "2026-02-21T05:30:00Z",
-      "consecutiveErrors": 0,
-      "description": "Sam's morning coffee read \u2014 yesterday's wins, overnight costs, anything broken, and today's priorities. Lands at 7:30 AM CAT."
-    },
-    {
-      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
-      "title": "Morning Analytics Report",
-      "schedule": "0 8 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "dana",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-20T06:00:00Z",
-      "nextRunAt": "2026-02-21T06:00:00Z",
-      "consecutiveErrors": 0,
-      "description": "Dana pulls live metrics across all 3 products (CLCP, ISK, SE) from Datafast \u2014 visitors, revenue, week-over-week trends \u2014 and sends a structured report to Telegram."
-    },
-    {
-      "id": "6e98d078-5f1f-4ce8-8b61-b5bafde02879",
-      "title": "Mia: Weekly UGC Performance Report",
-      "schedule": "0 8 * * 2",
-      "timezone": "Africa/Windhoek",
-      "owner": "mia",
-      "enabled": true,
-      "status": "idle",
-      "lastStatus": "idle",
-      "lastRunAt": null,
-      "nextRunAt": "2026-02-24T06:00:00Z",
-      "consecutiveErrors": 0,
-      "description": "Mia pulls the latest UGC creator metrics from Google Sheets \u2014 view counts, post activity, milestone tracking across all 7 creators. Tuesdays 8 AM CAT \u2192 Sam group."
-    },
-    {
-      "id": "734eff8e-9381-4bc1-9c70-55fcfae51284",
-      "title": "Penny Weekly Audit",
-      "schedule": "30 3 * * 5",
-      "timezone": "Africa/Windhoek",
-      "owner": "penny",
-      "enabled": true,
-      "status": "idle",
-      "lastStatus": "idle",
-      "lastRunAt": null,
-      "nextRunAt": "2026-02-27T01:30:00Z",
-      "consecutiveErrors": 0,
-      "description": "Penny's weekly deep-dive \u2014 broader ops review, pattern-level drift, recurring issues. Complements the daily check with a longer time horizon."
-    }
-  ],
+  "calendar": [],
   "decisions": [
     {
       "id": "d1",
@@ -789,7 +676,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T07:32:13Z"
+      "lastRunAt": "2026-02-20T07:40:01Z"
     },
     {
       "id": "bash-frankie-sync",
