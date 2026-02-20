@@ -1438,5 +1438,17 @@
     "durationSec": 5,
     "status": "success",
     "timestamp": "2026-02-20T20:28:34.132Z"
+  },
+  {
+    "id": "94380b36-bc43-4884-9b8b-ad07709e9ab1",
+    "label": "devin-automations-modal",
+    "agent": "devin",
+    "task": "On mobile, the automation job names/descriptions get truncated and are hard to read. Add a click handler on each automation row that opens a modal/popup showing the full details for that job:",
+    "model": "Sonnet",
+    "tokens": 25616,
+    "cost": 0.0374,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-02-20T20:31:34.595Z"
   }
 ]

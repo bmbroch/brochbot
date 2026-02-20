@@ -36,6 +36,18 @@
     "timestamp": "2026-02-20T08:15:42.760Z"
   },
   {
+    "id": "b60fa6af-d612-4a92-b751-12b7852aac24",
+    "label": "b60fa6af-d61",
+    "agent": "sam",
+    "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
+    "model": "Opus",
+    "tokens": 3837596,
+    "cost": 6.1631,
+    "durationSec": 11157,
+    "status": "success",
+    "timestamp": "2026-02-20T17:25:43.608Z"
+  },
+  {
     "id": "aae63345-e753-451e-8902-32e9d6391345",
     "label": "aae63345-e75",
     "agent": "sam",
@@ -46,18 +58,6 @@
     "durationSec": 63172,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
-  },
-  {
-    "id": "b60fa6af-d612-4a92-b751-12b7852aac24",
-    "label": "b60fa6af-d61",
-    "agent": "sam",
-    "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
-    "model": "Opus",
-    "tokens": 3703021,
-    "cost": 5.7441,
-    "durationSec": 11020,
-    "status": "success",
-    "timestamp": "2026-02-20T17:25:43.608Z"
   },
   {
     "id": "dd1fb9bf-d1e4-4b98-8ee2-60ac00ec57ca",
@@ -108,6 +108,18 @@
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
+    "id": "9415fe45-9ae4-4745-a81b-746cbca73bb2",
+    "label": "devin-mc-bugs-round2",
+    "agent": "devin",
+    "task": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
+    "model": "Sonnet",
+    "tokens": 263068,
+    "cost": 0.287,
+    "durationSec": 160,
+    "status": "success",
+    "timestamp": "2026-02-20T20:28:34.132Z"
+  },
+  {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
     "label": "95a02d1a-513",
     "agent": "sam",
@@ -130,18 +142,6 @@
     "durationSec": 300,
     "status": "success",
     "timestamp": "2026-02-20T01:00:00.067Z"
-  },
-  {
-    "id": "9415fe45-9ae4-4745-a81b-746cbca73bb2",
-    "label": "devin-mc-bugs-round2",
-    "agent": "devin",
-    "task": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
-    "model": "Sonnet",
-    "tokens": 170471,
-    "cost": 0.1897,
-    "durationSec": 82,
-    "status": "success",
-    "timestamp": "2026-02-20T20:28:34.132Z"
   },
   {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
@@ -226,6 +226,18 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
+  },
+  {
+    "id": "94380b36-bc43-4884-9b8b-ad07709e9ab1",
+    "label": "devin-automations-modal",
+    "agent": "devin",
+    "task": "On mobile, the automation job names/descriptions get truncated and are hard to read. Add a click handler on each automation row that opens a modal/popup showing the full details for that job:",
+    "model": "Sonnet",
+    "tokens": 25616,
+    "cost": 0.0374,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-02-20T20:31:34.595Z"
   },
   {
     "id": "a4b6f095-849f-482b-ae31-a80e1764a200",

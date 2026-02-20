@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-20T20:30:01Z",
+  "lastUpdated": "2026-02-20T20:31:41Z",
   "activities": [
+    {
+      "id": "s-94380b36",
+      "agent": "devin",
+      "title": "devin-automations-modal",
+      "description": "On mobile, the automation job names/descriptions get truncated and are hard to read. Add a click handler on each automation row that opens a modal/popup showing the full details for that job:",
+      "status": "success",
+      "date": "2026-02-20T20:31:34.595Z",
+      "tokens": 25616,
+      "cost": 0.0374,
+      "model": "Sonnet",
+      "durationSec": 5
+    },
     {
       "id": "s-9415fe45",
       "agent": "devin",
@@ -8,10 +20,10 @@
       "description": "Event descriptions show literal `**text**` instead of bold. Your previous fix (renderMarkdown helper) isn't taking effect. Check:",
       "status": "success",
       "date": "2026-02-20T20:28:34.132Z",
-      "tokens": 170471,
-      "cost": 0.1897,
+      "tokens": 263068,
+      "cost": 0.287,
       "model": "Sonnet",
-      "durationSec": 82
+      "durationSec": 160
     },
     {
       "id": "s-dd1fb9bf",
@@ -32,10 +44,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 3703021,
-      "cost": 5.7441,
+      "tokens": 3837596,
+      "cost": 6.1631,
       "model": "Opus",
-      "durationSec": 11020
+      "durationSec": 11157
     },
     {
       "id": "s-4f751fcb",
@@ -843,7 +855,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-20T20:28:34.132Z",
+      "lastActive": "2026-02-20T20:31:34.595Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -885,7 +897,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T20:30:01Z"
+      "lastRunAt": "2026-02-20T20:31:41Z"
     },
     {
       "id": "bash-frankie-sync",
