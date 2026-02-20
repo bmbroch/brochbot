@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 6516478,
-    "cost": 13.5311,
-    "durationSec": 13337,
+    "tokens": 7125163,
+    "cost": 14.3082,
+    "durationSec": 14053,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -58,18 +58,6 @@
     "durationSec": 63172,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
-  },
-  {
-    "id": "dd1fb9bf-d1e4-4b98-8ee2-60ac00ec57ca",
-    "label": "devin-mc-visual-bugs",
-    "agent": "devin",
-    "task": "- One-shot jobs (\"at\" schedule kind) show \"in Infinityh NaNm\" countdown and raw JSON `{'kind': 'at', 'at': '...'}` instead of human-readable text",
-    "model": "Sonnet",
-    "tokens": 2200881,
-    "cost": 1.2341,
-    "durationSec": 340,
-    "status": "success",
-    "timestamp": "2026-02-20T20:13:06.794Z"
   },
   {
     "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
