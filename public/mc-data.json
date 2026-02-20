@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T22:20:04Z",
+  "lastUpdated": "2026-02-20T22:25:27Z",
   "activities": [
     {
       "id": "s-b60fa6af",
@@ -8,10 +8,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 7844151,
-      "cost": 16.124,
+      "tokens": 8395826,
+      "cost": 16.9079,
       "model": "Opus",
-      "durationSec": 15847
+      "durationSec": 17982
     },
     {
       "id": "s-4f751fcb",
@@ -140,10 +140,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 641966,
-      "cost": 1.4165,
+      "tokens": 760863,
+      "cost": 1.6801,
       "model": "Opus",
-      "durationSec": 41842
+      "durationSec": 100624
     },
     {
       "id": "s-aae63345",
@@ -386,21 +386,6 @@
     }
   ],
   "calendar": [
-    {
-      "id": "05ff9b58-07bf-4e3a-b36e-58522a0042c3",
-      "title": "Miles: ISK Competitive Intel",
-      "schedule": "{'kind': 'at', 'at': '2026-02-20T22:00:00.000Z'}",
-      "timezone": "",
-      "owner": "miles",
-      "enabled": true,
-      "status": "idle",
-      "lastStatus": "idle",
-      "lastRunAt": null,
-      "nextRunAt": "2026-02-20T22:00:00Z",
-      "consecutiveErrors": 0,
-      "description": "",
-      "oneShot": true
-    },
     {
       "id": "5db3eea0-5089-4a68-a64a-c5e6e8852351",
       "title": "Sam: Ads agent proposal",
@@ -861,7 +846,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T22:20:04Z"
+      "lastRunAt": "2026-02-20T22:25:27Z"
     },
     {
       "id": "bash-frankie-sync",
