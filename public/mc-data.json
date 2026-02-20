@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-02-20T22:25:27Z",
+  "lastUpdated": "2026-02-20T22:30:01Z",
   "activities": [
+    {
+      "id": "s-280b1595",
+      "agent": "dana",
+      "title": "dana-isk-profession-analysis",
+      "description": "Ben wants to know what professions his paying ISK (Interview Sidekick) subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
+      "status": "success",
+      "date": "2026-02-20T22:29:46.803Z",
+      "tokens": 28936,
+      "cost": 0.0525,
+      "model": "Sonnet",
+      "durationSec": 14
+    },
+    {
+      "id": "s-d6b308e7",
+      "agent": "dana",
+      "title": "dana-profession-analysis",
+      "description": "Ben wants to know what professions his paying CLCP subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
+      "status": "success",
+      "date": "2026-02-20T22:25:24.669Z",
+      "tokens": 256405,
+      "cost": 0.4189,
+      "model": "Sonnet",
+      "durationSec": 238
+    },
     {
       "id": "s-b60fa6af",
       "agent": "sam",
@@ -8,10 +32,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 8395826,
-      "cost": 16.9079,
+      "tokens": 9910987,
+      "cost": 22.7135,
       "model": "Opus",
-      "durationSec": 17982
+      "durationSec": 18248
     },
     {
       "id": "s-4f751fcb",
@@ -140,10 +164,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 760863,
-      "cost": 1.6801,
+      "tokens": 971515,
+      "cost": 2.2119,
       "model": "Opus",
-      "durationSec": 100624
+      "durationSec": 100889
     },
     {
       "id": "s-aae63345",
@@ -808,7 +832,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-20T06:00:00.025Z",
+      "lastActive": "2026-02-20T22:29:46.803Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -846,7 +870,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T22:25:27Z"
+      "lastRunAt": "2026-02-20T22:30:01Z"
     },
     {
       "id": "bash-frankie-sync",

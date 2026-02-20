@@ -1474,5 +1474,29 @@
     "durationSec": 2,
     "status": "success",
     "timestamp": "2026-02-20T21:04:18.303Z"
+  },
+  {
+    "id": "d6b308e7-c742-49d1-8a51-7cb8de56b4a4",
+    "label": "dana-profession-analysis",
+    "agent": "dana",
+    "task": "Ben wants to know what professions his paying CLCP subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
+    "model": "Sonnet",
+    "tokens": 256405,
+    "cost": 0.4189,
+    "durationSec": 238,
+    "status": "success",
+    "timestamp": "2026-02-20T22:25:24.669Z"
+  },
+  {
+    "id": "280b1595-850b-45ce-980c-80bf9bf32b54",
+    "label": "dana-isk-profession-analysis",
+    "agent": "dana",
+    "task": "Ben wants to know what professions his paying ISK (Interview Sidekick) subscribers are in. Goal: \"25% are software devs, 15% are nurses\" etc.",
+    "model": "Sonnet",
+    "tokens": 28936,
+    "cost": 0.0525,
+    "durationSec": 14,
+    "status": "success",
+    "timestamp": "2026-02-20T22:29:46.803Z"
   }
 ]
