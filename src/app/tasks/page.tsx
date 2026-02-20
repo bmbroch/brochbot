@@ -249,7 +249,7 @@ function FilterPill({ label, value, onChange, options }: { label: string; value:
       style={{ background: "var(--bg-card)" }}
     >
       <span
-        className="px-2.5 py-1.5 border-r border-[var(--border-medium)] text-[var(--text-faint)] font-medium select-none whitespace-nowrap"
+        className="px-2.5 py-1.5 border-r border-[var(--border-medium)] text-[var(--text-muted)] font-medium select-none whitespace-nowrap"
         style={{ background: "var(--bg-elevated)" }}
       >
         {label}
