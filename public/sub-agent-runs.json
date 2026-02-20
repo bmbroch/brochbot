@@ -77,11 +77,23 @@
     "agent": "penny",
     "task": "Do a quick daily ops check:",
     "model": "Opus",
-    "tokens": 63533,
-    "cost": 0.1473,
-    "durationSec": 19,
+    "tokens": 166222,
+    "cost": 0.3608,
+    "durationSec": 46839,
     "status": "success",
     "timestamp": "2026-02-19T14:00:00.055Z"
+  },
+  {
+    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
+    "label": "95a02d1a-513",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 43805,
+    "cost": 0.1222,
+    "durationSec": 28334,
+    "status": "success",
+    "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
     "id": "531ad18a-933e-4573-b1fc-eb0fb2505836",
@@ -118,17 +130,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
-    "label": "95a02d1a-513",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 21273,
-    "cost": 0.0908,
-    "durationSec": 7,
-    "status": "success",
-    "timestamp": "2026-02-19T19:08:33.763Z"
   }
 ]
