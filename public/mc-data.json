@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T07:10:01Z",
+  "lastUpdated": "2026-02-20T07:20:01Z",
   "activities": [
     {
       "id": "s-354a6fd1",
@@ -8,10 +8,10 @@
       "description": "**Task: Fix automations page display bugs for bash crons.**",
       "status": "success",
       "date": "2026-02-20T07:09:43.392Z",
-      "tokens": 25110,
-      "cost": 0.0363,
+      "tokens": 204433,
+      "cost": 0.2665,
       "model": "Sonnet",
-      "durationSec": 6
+      "durationSec": 131
     },
     {
       "id": "s-43376cae",
@@ -20,10 +20,10 @@
       "description": "Quick task: Jude \u270d\ufe0f was just onboarded to team.json. Verify:",
       "status": "success",
       "date": "2026-02-20T07:08:58.011Z",
-      "tokens": 153976,
-      "cost": 0.1927,
+      "tokens": 1985257,
+      "cost": 0.9823,
       "model": "Sonnet",
-      "durationSec": 63
+      "durationSec": 280
     },
     {
       "id": "s-7f0c5c11",
@@ -92,10 +92,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:01:14.726Z",
-      "tokens": 20011750,
-      "cost": 46.7289,
+      "tokens": 20168265,
+      "cost": 47.5945,
       "model": "Opus",
-      "durationSec": 43680
+      "durationSec": 43953
     },
     {
       "id": "s-b88a363c",
@@ -116,10 +116,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 1489099,
-      "cost": 4.7163,
+      "tokens": 1549477,
+      "cost": 5.0492,
       "model": "Opus",
-      "durationSec": 45485
+      "durationSec": 45611
     },
     {
       "id": "s-7612c9b5",
@@ -632,7 +632,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-20T06:00:47Z",
+      "lastActive": "2026-02-20T07:11:50Z",
       "statusText": ""
     }
   },
@@ -646,7 +646,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-20T07:10:01Z"
+      "lastRunAt": "2026-02-20T07:20:01Z"
     },
     {
       "id": "bash-frankie-sync",

@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 20011750,
-    "cost": 46.7289,
-    "durationSec": 43680,
+    "tokens": 20168265,
+    "cost": 47.5945,
+    "durationSec": 43953,
     "status": "success",
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
@@ -36,14 +36,26 @@
     "timestamp": "2026-02-19T17:32:32.089Z"
   },
   {
+    "id": "43376cae-400f-4b19-87cf-11bdcd5645c8",
+    "label": "devin-jude-onboarding-verify",
+    "agent": "devin",
+    "task": "Quick task: Jude \u270d\ufe0f was just onboarded to team.json. Verify:",
+    "model": "Sonnet",
+    "tokens": 1985257,
+    "cost": 0.9823,
+    "durationSec": 280,
+    "status": "success",
+    "timestamp": "2026-02-20T07:08:58.011Z"
+  },
+  {
     "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
     "label": "c1c67e23-34e",
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1489099,
-    "cost": 4.7163,
-    "durationSec": 45485,
+    "tokens": 1549477,
+    "cost": 5.0492,
+    "durationSec": 45611,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
@@ -72,6 +84,18 @@
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
+    "id": "354a6fd1-460b-4273-ba5c-fd259579e732",
+    "label": "devin-automations-fix",
+    "agent": "devin",
+    "task": "**Task: Fix automations page display bugs for bash crons.**",
+    "model": "Sonnet",
+    "tokens": 204433,
+    "cost": 0.2665,
+    "durationSec": 131,
+    "status": "success",
+    "timestamp": "2026-02-20T07:09:43.392Z"
+  },
+  {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",
     "label": "Sam: Jude agent proposal",
     "agent": "sam",
@@ -94,18 +118,6 @@
     "durationSec": 46839,
     "status": "success",
     "timestamp": "2026-02-19T14:00:00.055Z"
-  },
-  {
-    "id": "43376cae-400f-4b19-87cf-11bdcd5645c8",
-    "label": "devin-jude-onboarding-verify",
-    "agent": "devin",
-    "task": "Quick task: Jude \u270d\ufe0f was just onboarded to team.json. Verify:",
-    "model": "Sonnet",
-    "tokens": 153976,
-    "cost": 0.1927,
-    "durationSec": 63,
-    "status": "success",
-    "timestamp": "2026-02-20T07:08:58.011Z"
   },
   {
     "id": "5439b4e1-3990-4cb1-8e02-306cbfb1b366",
@@ -190,17 +202,5 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "354a6fd1-460b-4273-ba5c-fd259579e732",
-    "label": "devin-automations-fix",
-    "agent": "devin",
-    "task": "**Task: Fix automations page display bugs for bash crons.**",
-    "model": "Sonnet",
-    "tokens": 25110,
-    "cost": 0.0363,
-    "durationSec": 6,
-    "status": "success",
-    "timestamp": "2026-02-20T07:09:43.392Z"
   }
 ]
