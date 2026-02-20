@@ -121,6 +121,12 @@ function formatDayLabel(dateStr: string): string {
   return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }
 
+function isDraftOverdue(item: ContentItem): boolean {
+  if (!item.suggestedPostTime) return false;
+  if (item.status === "posted") return false;
+  return new Date(item.suggestedPostTime).getTime() < Date.now();
+}
+
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function PlatformPill({ platform }: { platform: string }) {
@@ -271,7 +277,15 @@ function QueueCard({ item }: { item: ContentItem }) {
             Drafted {formatRelTime(item.draftedAt)}
           </span>
           {item.suggestedPostTime && (
-            <span className="text-[11px] text-[var(--text-muted)]">
+            <span className="inline-flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
+              {isDraftOverdue(item) && (
+                <span
+                  className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide"
+                  style={{ background: "#ef444420", color: "#ef4444" }}
+                >
+                  Overdue
+                </span>
+              )}
               Suggested: {formatDateTime(item.suggestedPostTime)}
             </span>
           )}
