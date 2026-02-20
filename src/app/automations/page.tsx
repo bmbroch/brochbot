@@ -873,7 +873,7 @@ export default function AutomationsPage() {
 
                       <div className="rounded-xl border border-mc-medium bg-mc-card overflow-hidden divide-y divide-[var(--border-subtle)]">
                         {dailyJobs.map((item) => {
-                          const { job, parsed, hoursUntilNext, ranAlreadyToday } = item;
+                          const { job, parsed, hoursUntilNext } = item;
                           const ownerKey = ownerToKey(job.owner);
                           const color = agentColors[ownerKey] || "#6b7280";
                           const emoji = OWNER_EMOJI[ownerKey] || "⚙️";
@@ -881,6 +881,11 @@ export default function AutomationsPage() {
                           const isImminent = hoursUntilNext < 1;
                           const timeLabel = parsed
                             ? formatCATTime(parsed.catHour)
+                            : isFinite(hoursUntilNext)
+                            ? (() => {
+                                const nextCATDate = new Date(Date.now() + CAT_OFFSET_MS + hoursUntilNext * 3_600_000);
+                                return formatCATTime(nextCATDate.getUTCHours() + nextCATDate.getUTCMinutes() / 60);
+                              })()
                             : "—";
 
                           return (
@@ -954,11 +959,7 @@ export default function AutomationsPage() {
                                   {lastBadge.label}
                                 </span>
                                 <span className="text-[10px] text-zinc-600">
-                                  {ranAlreadyToday
-                                    ? `ran ${relativeTime(job.lastRunAt)}`
-                                    : job.lastRunAt
-                                    ? relativeTime(job.lastRunAt)
-                                    : "never"}
+                                  {job.lastRunAt ? relativeTime(job.lastRunAt) : "never"}
                                 </span>
                               </div>
                             </div>

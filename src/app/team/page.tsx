@@ -160,7 +160,7 @@ export default function TeamPage() {
                 <span className="text-[11px] sm:text-[13px] font-medium leading-tight text-center" style={{ color }}>{member.role}</span>
                 {/* Last active */}
                 <span className="text-[11px] text-[var(--text-faint)] text-center leading-tight">
-                  {lastActiveLabel(lastActive)}
+                  {member.id === "ben" ? "Founder" : lastActiveLabel(lastActive)}
                 </span>
               </button>
             );

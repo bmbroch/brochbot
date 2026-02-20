@@ -51,7 +51,7 @@ function lastThursdayNoonUTC(): Date {
 }
 
 function fmtTokens(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}M`;
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`;
   return n.toString();
 }
@@ -337,7 +337,7 @@ function RunsTable({
   const filtered = useMemo(() => {
     return runs.filter((r) => {
       if (modelFilter !== "All" && r.model !== modelFilter) return false;
-      if (agentFilter !== "All" && r.agent !== agentFilter) return false;
+      if (agentFilter !== "All" && r.agent.toLowerCase() !== agentFilter.toLowerCase()) return false;
       return true;
     });
   }, [runs, modelFilter, agentFilter]);
@@ -683,7 +683,8 @@ export default function UsagePage() {
       ...allRuns.map((r) => r.agent),
       ...historyEntries.map((e) => e.agent),
     ]);
-    return ["All", ...Array.from(agents).sort()];
+    const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+    return ["All", ...Array.from(agents).map(capitalize).sort()];
   }, [allRuns, historyEntries]);
 
   if (loading) {
