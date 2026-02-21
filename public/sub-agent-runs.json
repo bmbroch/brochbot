@@ -84,18 +84,6 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
-    "id": "c52bb765-ac05-4d16-afa4-3958785dc8c1",
-    "label": "model-benchmark-isk",
-    "agent": "sam",
-    "task": "- OpenRouter API key is in the workspace .env as OPENROUTER_API_KEY",
-    "model": "Sonnet",
-    "tokens": 1165939,
-    "cost": 1.0278,
-    "durationSec": 637,
-    "status": "success",
-    "timestamp": "2026-02-21T07:46:48.250Z"
-  },
-  {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
     "label": "b88a363c-216",
     "agent": "sam",
