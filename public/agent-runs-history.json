@@ -1608,6 +1608,30 @@
     "timestamp": "2026-02-21T07:10:01Z"
   },
   {
+    "id": "8470e554-1261-4ed1-9d0b-bb76643dd9df",
+    "label": "dana-isk-model-schema",
+    "agent": "dana",
+    "task": "Ben wants to understand ISK's interview session model usage. Dig into the ISK Supabase database and answer:",
+    "model": "Sonnet",
+    "tokens": 188549,
+    "cost": 0.2449,
+    "durationSec": 113,
+    "status": "success",
+    "timestamp": "2026-02-21T07:42:21.798Z"
+  },
+  {
+    "id": "c52bb765-ac05-4d16-afa4-3958785dc8c1",
+    "label": "model-benchmark-isk",
+    "agent": "sam",
+    "task": "- OpenRouter API key is in the workspace .env as OPENROUTER_API_KEY",
+    "model": "Sonnet",
+    "tokens": 174072,
+    "cost": 0.2849,
+    "durationSec": 165,
+    "status": "success",
+    "timestamp": "2026-02-21T07:46:48.250Z"
+  },
+  {
     "id": "sam-daily-2026-02-21",
     "label": "Daily total",
     "agent": "sam",
@@ -1617,6 +1641,6 @@
     "cost": 0.1217,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-21T07:40:02Z"
+    "timestamp": "2026-02-21T07:50:01Z"
   }
 ]
