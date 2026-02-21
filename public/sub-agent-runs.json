@@ -96,18 +96,6 @@
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
-    "id": "c53e51bc-43ea-456a-a1bf-c3ac59b96ea3",
-    "label": "devin-openclaw-version-check",
-    "agent": "devin",
-    "task": "**Task: Add OpenClaw version check to the health snapshot + health page.**",
-    "model": "Sonnet",
-    "tokens": 371747,
-    "cost": 0.2672,
-    "durationSec": 97,
-    "status": "success",
-    "timestamp": "2026-02-21T10:21:51.454Z"
-  },
-  {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
     "label": "95a02d1a-513",
     "agent": "sam",
