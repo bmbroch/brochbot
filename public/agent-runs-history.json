@@ -1656,15 +1656,27 @@
     "timestamp": "2026-02-21T10:21:51.454Z"
   },
   {
+    "id": "sam-sync-2026-02-21T13:30:01Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 291016,
+    "cost": 0.1442,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-21T13:30:01Z"
+  },
+  {
     "id": "sam-daily-2026-02-21",
     "label": "Daily total",
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 249151,
-    "cost": 0.2205,
+    "tokens": 540167,
+    "cost": 0.3647,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-21T13:20:01Z"
+    "timestamp": "2026-02-21T13:30:01Z"
   }
 ]
