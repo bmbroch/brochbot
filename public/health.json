@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-21T00:01:02Z",
+  "disk": {
+    "usedPct": 73,
+    "usedGB": 14,
+    "totalGB": 19
+  },
+  "memory": {
+    "usedPct": 28,
+    "totalMB": 3816
+  },
+  "uptime": "2 days, 12 hours, 55 minutes",
+  "openclaw": {
+    "running": true,
+    "pid": 140179
+  },
+  "tailscale": {
+    "connected": true,
+    "ip": "100.113.19.39"
+  },
+  "vercel": {
+    "lastBuild": "READY",
+    "lastBuildTime": "2026-02-21T00:00:06Z"
+  },
+  "crons": {
+    "aiActive": 7,
+    "bashActive": 4,
+    "lastFailure": null
+  },
+  "pendingUpdates": 45,
+  "restartRequired": true
+}

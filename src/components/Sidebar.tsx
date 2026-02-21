@@ -22,6 +22,7 @@ const navItems = [
   { href: "/office", label: "Office", icon: "🏢" },
   { href: "/ops", label: "Surveillance", icon: "📡" },
   { href: "/usage", label: "Usage", icon: "📊" },
+  { href: "/health", label: "Health", icon: "🩺" },
 ];
 
 function SunIcon({ size = 16 }: { size?: number }) {
