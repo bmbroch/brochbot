@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T00:00:02Z",
+  "lastUpdated": "2026-02-21T00:10:01Z",
   "activities": [
     {
       "id": "s-b60fa6af",
@@ -128,10 +128,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 1549477,
-      "cost": 5.0492,
+      "tokens": 1610771,
+      "cost": 5.2543,
       "model": "Opus",
-      "durationSec": 63395
+      "durationSec": 106280
     },
     {
       "id": "s-7612c9b5",
@@ -846,7 +846,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-21T00:00:02Z"
+      "lastRunAt": "2026-02-21T00:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -880,6 +880,17 @@
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log",
       "lastRunAt": "2026-02-20T23:30:02Z"
+    },
+    {
+      "id": "bash-health-snapshot",
+      "title": "Health Snapshot",
+      "schedule": "30 4 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "devin",
+      "description": "Collects server health metrics (disk, memory, uptime, OpenClaw, Tailscale, Vercel, crons, pending updates) and writes health.json to mission-control/public/. Runs daily at 6:30 AM CAT (4:30 UTC) before morning reports.",
+      "script": "scripts/health-snapshot.sh",
+      "log": "ops/health-snapshot.log",
+      "lastRunAt": null
     }
   ]
 }
