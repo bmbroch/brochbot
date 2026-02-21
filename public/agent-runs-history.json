@@ -1558,5 +1558,17 @@
     "durationSec": 96,
     "status": "success",
     "timestamp": "2026-02-21T04:00:00.029Z"
+  },
+  {
+    "id": "613db404-e546-4858-8249-074352064b88",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "Read these files:",
+    "model": "Sonnet",
+    "tokens": 78263,
+    "cost": 0.1383,
+    "durationSec": 51,
+    "status": "success",
+    "timestamp": "2026-02-21T05:30:00.029Z"
   }
 ]

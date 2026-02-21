@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-21T05:30:01Z",
+  "lastUpdated": "2026-02-21T05:40:02Z",
   "activities": [
+    {
+      "id": "s-613db404",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "Read these files:",
+      "status": "success",
+      "date": "2026-02-21T05:30:00.029Z",
+      "tokens": 78263,
+      "cost": 0.1383,
+      "model": "Sonnet",
+      "durationSec": 51
+    },
     {
       "id": "s-b2ca8262",
       "agent": "miles",
@@ -32,10 +44,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 10718390,
-      "cost": 24.8124,
+      "tokens": 10829223,
+      "cost": 25.2048,
       "model": "Opus",
-      "durationSec": 20229
+      "durationSec": 43521
     },
     {
       "id": "s-4f751fcb",
@@ -76,7 +88,7 @@
     {
       "id": "s-3429b4f2",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "3429b4f2-efb",
       "description": "Read these files:",
       "status": "success",
       "date": "2026-02-20T05:30:00.081Z",
@@ -868,7 +880,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-21T05:00:37Z",
+      "lastActive": "2026-02-21T05:30:00.029Z",
       "statusText": ""
     }
   },
@@ -882,7 +894,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-21T05:30:01Z"
+      "lastRunAt": "2026-02-21T05:40:02Z"
     },
     {
       "id": "bash-frankie-sync",
