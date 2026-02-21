@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T14:00:01Z",
+  "lastUpdated": "2026-02-21T14:10:02Z",
   "activities": [
     {
       "id": "s-3988a6e8",
@@ -56,10 +56,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 15079599,
-      "cost": 32.6253,
+      "tokens": 17032836,
+      "cost": 34.184,
       "model": "Opus",
-      "durationSec": 73285
+      "durationSec": 74243
     },
     {
       "id": "s-4f751fcb",
@@ -152,10 +152,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:08:33.763Z",
-      "tokens": 375058,
-      "cost": 0.755,
+      "tokens": 410662,
+      "cost": 0.8703,
       "model": "Opus",
-      "durationSec": 154249
+      "durationSec": 154290
     },
     {
       "id": "s-38288c66",
@@ -876,7 +876,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-21T14:00:01Z"
+      "lastRunAt": "2026-02-21T14:10:02Z"
     },
     {
       "id": "bash-frankie-sync",
