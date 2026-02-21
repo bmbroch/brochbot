@@ -96,18 +96,6 @@
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
-    "id": "b14990ed-5b72-4ad5-8427-e97232e380b3",
-    "label": "dana-premium-profile",
-    "agent": "dana",
-    "task": "Ben wants a single focused summary table of PREMIUM ISK subscribers only ($40-60/mo tier). Pull from the existing matched data \u2014 don't re-pull everything from scratch, use what's already been gathered",
-    "model": "Sonnet",
-    "tokens": 356032,
-    "cost": 0.4628,
-    "durationSec": 249,
-    "status": "success",
-    "timestamp": "2026-02-21T05:50:33.175Z"
-  },
-  {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
     "label": "Penny Daily Check",
     "agent": "penny",
