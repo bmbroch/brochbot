@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-21T06:00:01Z",
+  "lastUpdated": "2026-02-21T06:10:02Z",
   "activities": [
+    {
+      "id": "s-3988a6e8",
+      "agent": "dana",
+      "title": "Morning Analytics Report",
+      "description": "Generate a morning analytics report comparing YESTERDAY vs the SAME DAY LAST WEEK.",
+      "status": "success",
+      "date": "2026-02-21T06:00:00.033Z",
+      "tokens": 73082,
+      "cost": 0.084,
+      "model": "Sonnet",
+      "durationSec": 38
+    },
     {
       "id": "s-b14990ed",
       "agent": "dana",
@@ -87,8 +99,8 @@
     },
     {
       "id": "s-7f0c5c11",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "7f0c5c11-981",
       "description": "1. Get YESTERDAY's data (visitors, sessions, revenue) for all 3 products (CLCP, ISK, SE) using Datafast timeseries endpoint with interval=day",
       "status": "success",
       "date": "2026-02-20T06:00:00.025Z",
@@ -200,10 +212,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 1443215,
-      "cost": 3.2653,
+      "tokens": 1549788,
+      "cost": 3.3068,
       "model": "Opus",
-      "durationSec": 127590
+      "durationSec": 127947
     },
     {
       "id": "s-aae63345",
@@ -868,7 +880,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-21T05:50:33.175Z",
+      "lastActive": "2026-02-21T06:00:00.033Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -892,7 +904,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-21T05:30:00.029Z",
+      "lastActive": "2026-02-21T06:00:47Z",
       "statusText": ""
     }
   },
@@ -906,7 +918,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-21T06:00:01Z"
+      "lastRunAt": "2026-02-21T06:10:02Z"
     },
     {
       "id": "bash-frankie-sync",
