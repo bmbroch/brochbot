@@ -156,18 +156,6 @@
     "timestamp": "2026-02-20T01:00:00.067Z"
   },
   {
-    "id": "8470e554-1261-4ed1-9d0b-bb76643dd9df",
-    "label": "dana-isk-model-schema",
-    "agent": "dana",
-    "task": "Ben wants to understand ISK's interview session model usage. Dig into the ISK Supabase database and answer:",
-    "model": "Sonnet",
-    "tokens": 188549,
-    "cost": 0.2449,
-    "durationSec": 113,
-    "status": "success",
-    "timestamp": "2026-02-21T07:42:21.798Z"
-  },
-  {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
     "label": "42b5ff85-7d6",
     "agent": "sam",
