@@ -1260,6 +1260,18 @@
     "timestamp": "2026-02-20T04:00:00.087Z"
   },
   {
+    "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
+    "label": "76d58d6e-9ff",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Opus",
+    "tokens": 229083,
+    "cost": 0.2839,
+    "durationSec": 78431,
+    "status": "success",
+    "timestamp": "2026-02-20T04:00:45.330Z"
+  },
+  {
     "id": "3429b4f2-efb6-4295-b659-5b4e3f446db1",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -1536,15 +1548,15 @@
     "timestamp": "2026-02-21T03:00:00.031Z"
   },
   {
-    "id": "sam-daily-2026-02-21",
-    "label": "Daily total",
-    "agent": "sam",
-    "task": "Sam \u2194 Ben total conversation cost today",
-    "model": "Opus",
-    "tokens": 208185,
-    "cost": 0.1531,
-    "durationSec": 0,
+    "id": "b2ca8262-a148-4240-a625-f34d03f12c41",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "- Service account key: /home/ubuntu/.openclaw/workspace/.credentials/google-service-account.json",
+    "model": "Sonnet",
+    "tokens": 117936,
+    "cost": 0.1656,
+    "durationSec": 96,
     "status": "success",
-    "timestamp": "2026-02-21T04:00:01Z"
+    "timestamp": "2026-02-21T04:00:00.029Z"
   }
 ]

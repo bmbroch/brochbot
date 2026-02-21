@@ -89,9 +89,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 363491,
-    "cost": 1.1814,
-    "durationSec": 45538,
+    "tokens": 433290,
+    "cost": 1.2633,
+    "durationSec": 119195,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
@@ -120,6 +120,18 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
+    "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
+    "label": "76d58d6e-9ff",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Opus",
+    "tokens": 229083,
+    "cost": 0.2839,
+    "durationSec": 78431,
+    "status": "success",
+    "timestamp": "2026-02-20T04:00:45.330Z"
+  },
+  {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",
     "label": "Sam: Jude agent proposal",
     "agent": "sam",
@@ -145,8 +157,8 @@
   },
   {
     "id": "5439b4e1-3990-4cb1-8e02-306cbfb1b366",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "5439b4e1-399",
+    "agent": "sam",
     "task": "- Service account key: /home/ubuntu/.openclaw/workspace/.credentials/google-service-account.json",
     "model": "Opus",
     "tokens": 149970,
@@ -154,6 +166,18 @@
     "durationSec": 93,
     "status": "success",
     "timestamp": "2026-02-20T04:00:00.087Z"
+  },
+  {
+    "id": "b2ca8262-a148-4240-a625-f34d03f12c41",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "- Service account key: /home/ubuntu/.openclaw/workspace/.credentials/google-service-account.json",
+    "model": "Sonnet",
+    "tokens": 117936,
+    "cost": 0.1656,
+    "durationSec": 96,
+    "status": "success",
+    "timestamp": "2026-02-21T04:00:00.029Z"
   },
   {
     "id": "3429b4f2-efb6-4295-b659-5b4e3f446db1",
