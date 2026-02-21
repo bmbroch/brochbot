@@ -10,7 +10,7 @@ interface HealthData {
   disk: { usedPct: number; usedGB: number; totalGB: number };
   memory: { usedPct: number; totalMB: number };
   uptime: string;
-  openclaw: { running: boolean; pid: number | null };
+  openclaw: { running: boolean; pid: number | null; currentVersion: string | null; latestVersion: string | null; updateAvailable: boolean };
   tailscale: { connected: boolean; ip: string | null };
   vercel: { lastBuild: string; lastBuildTime: string };
   crons: { aiActive: number; bashActive: number; lastFailure: string | null };
@@ -247,11 +247,47 @@ export default function HealthPage() {
             <Card>
               <SectionHeader icon="🔌" title="Services" />
               <div className="space-y-2">
-                <StatusBadge
-                  ok={data.openclaw.running}
-                  label="OpenClaw Gateway"
-                  sublabel={data.openclaw.pid ? `PID ${data.openclaw.pid}` : undefined}
-                />
+                {/* OpenClaw — custom row with version info */}
+                <div className={`flex items-center justify-between p-3.5 rounded-xl border ${
+                  data.openclaw.running
+                    ? "bg-emerald-500/10 border-emerald-500/20"
+                    : "bg-red-500/10 border-red-500/20"
+                }`}>
+                  <div className="flex items-center gap-2.5">
+                    <div className={`w-2 h-2 rounded-full shrink-0 shadow-lg ${
+                      data.openclaw.running
+                        ? "bg-emerald-400 shadow-emerald-500/50"
+                        : "bg-red-400 shadow-red-500/50"
+                    }`} />
+                    <span className="text-[13px] font-medium text-[var(--text-primary)]">OpenClaw Gateway</span>
+                    {/* Version badges */}
+                    {data.openclaw.currentVersion && (
+                      <span className="text-[11px] font-mono text-[var(--text-muted)]">
+                        v{data.openclaw.currentVersion}
+                      </span>
+                    )}
+                    {data.openclaw.currentVersion && data.openclaw.updateAvailable && data.openclaw.latestVersion && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/25 text-amber-400 text-[10px] font-semibold">
+                        Update available → v{data.openclaw.latestVersion}
+                      </span>
+                    )}
+                    {data.openclaw.currentVersion && !data.openclaw.updateAvailable && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/15 text-emerald-500 text-[10px] font-semibold">
+                        Up to date
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {data.openclaw.pid && (
+                      <span className="text-[11px] font-mono text-[var(--text-muted)]">PID {data.openclaw.pid}</span>
+                    )}
+                    <span className={`text-[11px] font-semibold uppercase tracking-wide ${
+                      data.openclaw.running ? "text-emerald-400" : "text-red-400"
+                    }`}>
+                      {data.openclaw.running ? "OK" : "DOWN"}
+                    </span>
+                  </div>
+                </div>
                 <StatusBadge
                   ok={data.tailscale.connected}
                   label="Tailscale VPN"
