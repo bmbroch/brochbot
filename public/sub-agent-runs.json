@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 12092339,
-    "cost": 28.2502,
-    "durationSec": 51796,
+    "tokens": 12961015,
+    "cost": 29.7543,
+    "durationSec": 52452,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -82,6 +82,18 @@
     "durationSec": 127947,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
+  },
+  {
+    "id": "c52bb765-ac05-4d16-afa4-3958785dc8c1",
+    "label": "model-benchmark-isk",
+    "agent": "sam",
+    "task": "- OpenRouter API key is in the workspace .env as OPENROUTER_API_KEY",
+    "model": "Sonnet",
+    "tokens": 1165939,
+    "cost": 1.0278,
+    "durationSec": 637,
+    "status": "success",
+    "timestamp": "2026-02-21T07:46:48.250Z"
   },
   {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
@@ -154,18 +166,6 @@
     "durationSec": 113,
     "status": "success",
     "timestamp": "2026-02-21T07:42:21.798Z"
-  },
-  {
-    "id": "c52bb765-ac05-4d16-afa4-3958785dc8c1",
-    "label": "model-benchmark-isk",
-    "agent": "sam",
-    "task": "- OpenRouter API key is in the workspace .env as OPENROUTER_API_KEY",
-    "model": "Sonnet",
-    "tokens": 174072,
-    "cost": 0.2849,
-    "durationSec": 165,
-    "status": "success",
-    "timestamp": "2026-02-21T07:46:48.250Z"
   },
   {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
