@@ -132,18 +132,6 @@
     "timestamp": "2026-02-22T16:08:47.973Z"
   },
   {
-    "id": "c2bc75e5-9240-49c9-ab8a-edb9d08961ea",
-    "label": "devin-launchpad-inprogress",
-    "agent": "devin",
-    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
-    "model": "Sonnet",
-    "tokens": 274622,
-    "cost": 0.2836,
-    "durationSec": 96,
-    "status": "success",
-    "timestamp": "2026-02-22T20:55:34.253Z"
-  },
-  {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
     "label": "b5bca453-08d",
     "agent": "sam",
@@ -166,18 +154,6 @@
     "durationSec": 78431,
     "status": "success",
     "timestamp": "2026-02-20T04:00:45.330Z"
-  },
-  {
-    "id": "5529538f-4d3b-4b50-bb75-7cd2e3325dfe",
-    "label": "devin-supabase-tables",
-    "agent": "devin",
-    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
-    "model": "Sonnet",
-    "tokens": 224943,
-    "cost": 0.2068,
-    "durationSec": 84,
-    "status": "success",
-    "timestamp": "2026-02-22T20:50:15.485Z"
   },
   {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",
