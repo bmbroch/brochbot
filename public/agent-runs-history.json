@@ -1774,5 +1774,29 @@
     "durationSec": 67,
     "status": "success",
     "timestamp": "2026-02-22T20:47:12.915Z"
+  },
+  {
+    "id": "5529538f-4d3b-4b50-bb75-7cd2e3325dfe",
+    "label": "devin-supabase-tables",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 224943,
+    "cost": 0.2068,
+    "durationSec": 84,
+    "status": "success",
+    "timestamp": "2026-02-22T20:50:15.485Z"
+  },
+  {
+    "id": "c2bc75e5-9240-49c9-ab8a-edb9d08961ea",
+    "label": "devin-launchpad-inprogress",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 274622,
+    "cost": 0.2836,
+    "durationSec": 96,
+    "status": "success",
+    "timestamp": "2026-02-22T20:55:34.253Z"
   }
 ]
