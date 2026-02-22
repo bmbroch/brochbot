@@ -12,9 +12,9 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { href: "/", label: "Activity Feed", icon: "⚡" },
+  { href: "/", label: "Briefings", icon: "⚡" },
   { href: "/tasks", label: "Tasks", icon: "📋" },
-  { href: "/automations", label: "Automations", icon: "⚙️" },
+  { href: "/automations", label: "Launchpad", icon: "🚀" },
   { href: "/changelog", label: "Changelog", icon: "🔄" },
   { href: "/creators", label: "Creators", icon: "🎬" },
   { href: "/content", label: "Content Studio", icon: "✍️" },

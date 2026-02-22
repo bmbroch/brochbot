@@ -12,6 +12,7 @@ interface EnrichedActivity extends Activity {
   cost?: number;
   model?: string;
   durationSec?: number;
+  fullTask?: string;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -68,6 +69,7 @@ export default function Home() {
   const [filterType, setFilterType] = useState<string>("all");
   const [filterProduct, setFilterProduct] = useState<string>("all");
   const [dateTab, setDateTab] = useState<DateTab>("today");
+  const [selectedActivity, setSelectedActivity] = useState<EnrichedActivity | null>(null);
 
   // Fetch enriched activities from agent-runs-history.json
   useEffect(() => {
@@ -99,6 +101,7 @@ export default function Home() {
           type: "task" as Activity["type"],
           title: a.label,
           description: a.task ? a.task.slice(0, 200) : undefined,
+          fullTask: a.task ?? undefined,
           status: (a.status as Activity["status"]) || "success",
           createdAt: new Date(a.timestamp).getTime(),
           tokens: a.tokens,
@@ -153,9 +156,12 @@ export default function Home() {
 
   return (
     <Shell>
+      {selectedActivity && (
+        <BriefingModal activity={selectedActivity} onClose={() => setSelectedActivity(null)} />
+      )}
       <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">Activity Feed</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">Briefings</h1>
           <p className="text-sm text-[var(--text-muted)] mt-1">Everything that happened across all agents</p>
         </div>
 
@@ -223,7 +229,8 @@ export default function Home() {
                   return (
                     <div
                       key={activity._id}
-                      className="group relative flex gap-4 p-4 rounded-xl border border-[var(--border-medium)] hover:border-[var(--border-strong)] transition-all duration-200"
+                      onClick={() => setSelectedActivity(activity)}
+                      className="group relative flex gap-4 p-4 rounded-xl border border-[var(--border-medium)] hover:border-[var(--border-strong)] transition-all duration-200 cursor-pointer active:scale-[0.99]"
                       style={{ background: "var(--bg-card)", animationDelay: `${i * 40}ms` }}
                     >
                       {/* Agent avatar */}
@@ -276,6 +283,95 @@ export default function Home() {
         </div>
       </div>
     </Shell>
+  );
+}
+
+// ── Briefing Modal ────────────────────────────────────────────────────────────
+
+function BriefingModal({ activity, onClose }: { activity: EnrichedActivity; onClose: () => void }) {
+  const color = agentColors[activity.agent] || "#3b82f6";
+  const emoji = agentEmojis[activity.agent] || "🤖";
+
+  const metaParts: string[] = [];
+  if (activity.cost != null && activity.cost > 0) metaParts.push(fmtCostActivity(activity.cost));
+  if (activity.tokens != null && activity.tokens > 0) metaParts.push(`${fmtTokensCompact(activity.tokens)} tokens`);
+  if (activity.model) metaParts.push(activity.model);
+  if (activity.durationSec != null && activity.durationSec > 0) metaParts.push(`${activity.durationSec}s`);
+
+  // Close on Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  const outputText = activity.fullTask ?? activity.description ?? "(No output available)";
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
+
+      {/* Modal */}
+      <div
+        className="relative w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl border border-[#222] bg-[#0f0f0f] shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Color accent bar */}
+        <div className="h-1 w-full flex-shrink-0" style={{ background: color }} />
+
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3 px-5 pt-4 pb-3 flex-shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+              style={{ backgroundColor: `${color}15` }}
+            >
+              {emoji}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-white leading-tight break-words">{activity.title}</p>
+              <p className="text-[11px] text-zinc-500 mt-0.5 capitalize">{activity.agent} · {formatRelativeDate(activity.createdAt)}</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Divider */}
+        <div className="h-px bg-[#222] mx-5 flex-shrink-0" />
+
+        {/* Scrollable content */}
+        <div className="overflow-y-auto flex-1 px-5 py-4 space-y-4">
+          {/* Output text */}
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-2">Output</p>
+            <pre className="text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap break-words font-sans">
+              {outputText}
+            </pre>
+          </div>
+
+          {/* Metadata */}
+          {metaParts.length > 0 && (
+            <div>
+              <div className="h-px bg-[#1a1a1a] mb-3" />
+              <p className="text-[11px] text-zinc-600">{metaParts.join(" · ")}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Safe-area spacer */}
+        <div className="h-4 flex-shrink-0" />
+      </div>
+    </div>
   );
 }
 

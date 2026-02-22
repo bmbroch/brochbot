@@ -170,6 +170,19 @@ function isoToCATDate(iso: string): Date {
   return new Date(new Date(iso).getTime() + CAT_OFFSET_MS);
 }
 
+/** Format a date in CAT as a day label like "Monday Feb 23" */
+function formatUpcomingDateLabel(iso: string): string {
+  const d = isoToCATDate(iso);
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${days[d.getUTCDay()]} ${months[d.getUTCMonth()]} ${d.getUTCDate()}`;
+}
+
+/** Get a YYYY-MM-DD key in CAT for grouping */
+function getCATDateKey(iso: string): string {
+  return isoToCATDate(iso).toISOString().slice(0, 10);
+}
+
 /** Format a CAT Date as "Feb 20, 11 PM" */
 function formatCATDateTime(iso: string): string {
   const d = isoToCATDate(iso);
@@ -554,6 +567,7 @@ export default function AutomationsPage() {
   const [error, setError] = useState<string | null>(null);
   const [, setNow] = useState(() => Date.now());
   const [selectedJob, setSelectedJob] = useState<ModalJob | null>(null);
+  const [refreshCounter, setRefreshCounter] = useState(0);
 
   // Tick every 30s so countdowns stay fresh
   useEffect(() => {
@@ -561,7 +575,14 @@ export default function AutomationsPage() {
     return () => clearInterval(id);
   }, []);
 
+  // 5-minute auto-refresh
   useEffect(() => {
+    const id = setInterval(() => setRefreshCounter((c) => c + 1), 300_000);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
     fetch("/api/mc-data")
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -646,11 +667,10 @@ export default function AutomationsPage() {
         setError(e.message);
         setLoading(false);
       });
-  }, []);
+  }, [refreshCounter]);
 
   const catHourNow = getCATDecimalHour();
   const catDowNow = getCATDayOfWeek();
-  const catDate = getNowCAT();
 
   // ── Build recurring display data ──────────────────────────────────────────
   interface RecurringDisplay {
@@ -694,9 +714,6 @@ export default function AutomationsPage() {
   const dailyJobs = recurringDisplay.filter((r) => !r.isWeekly);
   const weeklyJobs = recurringDisplay.filter((r) => r.isWeekly);
 
-  // Day label for tonight section
-  const todayName = DAY_NAMES[catDowNow] ?? "Today";
-
   return (
     <Shell>
       {selectedJob && (
@@ -706,7 +723,7 @@ export default function AutomationsPage() {
 
         {/* ── Header ── */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold tracking-tight">Automations</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Launchpad</h1>
           <p className="text-sm text-zinc-500 mt-1">
             Scheduled jobs and recurring tasks
           </p>
@@ -730,119 +747,121 @@ export default function AutomationsPage() {
         {!loading && !error && (
           <>
             {/* ══════════════════════════════════════════════════════════════
-                Section 1: Tonight's Tasks (one-shots only; hidden if empty)
+                Section 1: Upcoming (one-shots grouped by date; hidden if empty)
             ══════════════════════════════════════════════════════════════ */}
-            {oneShots.length > 0 && (
-              <div className="mb-10">
-                <div className="flex items-center gap-3 mb-4">
-                  <h2 className="text-sm font-semibold text-mc-primary">Tonight&apos;s Tasks</h2>
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                    {oneShots.length} queued
-                  </span>
-                  <div className="flex-1 h-px bg-[var(--border-medium)]" />
-                  <span className="text-[10px] text-zinc-600">{todayName} · CAT (UTC+2)</span>
-                </div>
+            {oneShots.length > 0 && (() => {
+              // Build date-grouped map
+              type OneShotGroup = { label: string; jobs: Array<{ job: OneShotJob; runAt: string | null; catTimeLabel: string; hrs: number | null }> };
+              const groupMap = new Map<string, OneShotGroup>();
+              for (const job of oneShots) {
+                const parsedJobSched = parseScheduleObj(job.schedule);
+                const runAt = (parsedJobSched?.kind === "at" ? parsedJobSched.at : null) ?? job.nextRunAt ?? null;
+                const dateKey = runAt ? getCATDateKey(runAt) : "unknown";
+                const dateLabel = runAt ? formatUpcomingDateLabel(runAt) : "Unknown";
+                if (!groupMap.has(dateKey)) groupMap.set(dateKey, { label: dateLabel, jobs: [] });
+                groupMap.get(dateKey)!.jobs.push({
+                  job,
+                  runAt,
+                  catTimeLabel: runAt ? formatCATDateTime(runAt) : "—",
+                  hrs: runAt ? hoursUntil(runAt) : null,
+                });
+              }
+              const groups = Array.from(groupMap.entries()).sort(([a], [b]) => a.localeCompare(b));
 
-                <div className="space-y-2">
-                  {oneShots.map((job) => {
-                    const ownerKey = ownerToKey(job.owner);
-                    const color = agentColors[ownerKey] || "#6b7280";
-                    const emoji = OWNER_EMOJI[ownerKey] || "⚙️";
-                    const badge = statusBadge(job.status ?? "pending");
+              return (
+                <div className="mb-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <h2 className="text-sm font-semibold text-mc-primary">Upcoming</h2>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                      {oneShots.length} queued
+                    </span>
+                    <div className="flex-1 h-px bg-[var(--border-medium)]" />
+                    <span className="text-[10px] text-zinc-600">CAT (UTC+2)</span>
+                  </div>
 
-                    // Figure out the run time — handle plain objects, JSON strings, and Python-dict strings
-                    const parsedJobSched = parseScheduleObj(job.schedule);
-                    const runAt =
-                      (parsedJobSched?.kind === "at" ? parsedJobSched.at : null) ??
-                      job.nextRunAt ??
-                      null;
-
-                    const catTimeLabel = runAt ? formatCATDateTime(runAt) : "—";
-                    const hrs = runAt ? hoursUntil(runAt) : null;
-                    const isImminent = hrs !== null && hrs > 0 && hrs < 2;
-                    const isPast = hrs !== null && hrs <= 0;
-
-                    return (
-                      <div
-                        key={job.id}
-                        onClick={() =>
-                          setSelectedJob({
-                            kind: "oneshot",
-                            id: job.id,
-                            title: job.title,
-                            owner: job.owner,
-                            status: job.status ?? "pending",
-                            lastStatus: job.lastStatus,
-                            lastRunAt: job.lastRunAt,
-                            nextRunAt: runAt,
-                            description: job.description,
-                            scheduleLabel: catTimeLabel,
-                            countdown: hrs !== null && hrs > 0 ? formatCountdown(hrs) : undefined,
-                          })
-                        }
-                        className={`rounded-xl border px-4 py-3.5 flex items-center gap-4 transition-all cursor-pointer hover:bg-white/[0.02] active:scale-[0.99] ${
-                          isImminent
-                            ? "border-amber-500/25 bg-amber-500/5"
-                            : isPast
-                            ? "border-mc-medium bg-mc-card"
-                            : "border-mc-subtle bg-mc-base"
-                        }`}
-                      >
-                        {/* Color accent */}
-                        <div
-                          className="w-0.5 h-8 rounded-full flex-shrink-0"
-                          style={{ backgroundColor: color }}
-                        />
-
-                        {/* Time */}
-                        <div className="flex flex-col items-end w-24 flex-shrink-0">
-                          <span className="text-xs font-mono text-mc-secondary tabular-nums">
-                            {catTimeLabel}
-                          </span>
-                          {hrs !== null && hrs > 0 && (
-                            <span
-                              className={`text-[10px] font-semibold tabular-nums ${
-                                isImminent ? "text-amber-400" : "text-zinc-600"
-                              }`}
-                            >
-                              {formatCountdown(hrs)}
-                            </span>
-                          )}
-                          {isPast && (
-                            <span className="text-[10px] text-zinc-500 font-medium">Completed</span>
-                          )}
+                  <div className="space-y-6">
+                    {groups.map(([dateKey, group]) => (
+                      <div key={dateKey}>
+                        {/* Date sub-header */}
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">{group.label}</span>
+                          <div className="flex-1 h-px bg-[var(--border-subtle)]" />
                         </div>
+                        <div className="space-y-2">
+                          {group.jobs.map(({ job, runAt, catTimeLabel, hrs }) => {
+                            const ownerKey = ownerToKey(job.owner);
+                            const color = agentColors[ownerKey] || "#6b7280";
+                            const emoji = OWNER_EMOJI[ownerKey] || "⚙️";
+                            const badge = statusBadge(job.status ?? "pending");
+                            const isImminent = hrs !== null && hrs > 0 && hrs < 2;
+                            const isPast = hrs !== null && hrs <= 0;
 
-                        {/* Agent */}
-                        <span className="text-lg flex-shrink-0">{emoji}</span>
+                            return (
+                              <div
+                                key={job.id}
+                                onClick={() =>
+                                  setSelectedJob({
+                                    kind: "oneshot",
+                                    id: job.id,
+                                    title: job.title,
+                                    owner: job.owner,
+                                    status: job.status ?? "pending",
+                                    lastStatus: job.lastStatus,
+                                    lastRunAt: job.lastRunAt,
+                                    nextRunAt: runAt,
+                                    description: job.description,
+                                    scheduleLabel: catTimeLabel,
+                                    countdown: hrs !== null && hrs > 0 ? formatCountdown(hrs) : undefined,
+                                  })
+                                }
+                                className={`rounded-xl border px-4 py-3.5 flex items-center gap-4 transition-all cursor-pointer hover:bg-white/[0.02] active:scale-[0.99] ${
+                                  isImminent
+                                    ? "border-amber-500/25 bg-amber-500/5"
+                                    : isPast
+                                    ? "border-mc-medium bg-mc-card"
+                                    : "border-mc-subtle bg-mc-base"
+                                }`}
+                              >
+                                {/* Color accent */}
+                                <div className="w-0.5 h-8 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
 
-                        {/* Title */}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm text-mc-primary font-medium truncate">
-                            {job.title}
-                          </p>
-                          {job.description && (
-                            <p className="text-xs text-zinc-500 truncate mt-0.5">
-                              {job.description}
-                            </p>
-                          )}
+                                {/* Time */}
+                                <div className="flex flex-col items-end w-24 flex-shrink-0">
+                                  <span className="text-xs font-mono text-mc-secondary tabular-nums">{catTimeLabel}</span>
+                                  {hrs !== null && hrs > 0 && (
+                                    <span className={`text-[10px] font-semibold tabular-nums ${isImminent ? "text-amber-400" : "text-zinc-600"}`}>
+                                      {formatCountdown(hrs)}
+                                    </span>
+                                  )}
+                                  {isPast && <span className="text-[10px] text-zinc-500 font-medium">Completed</span>}
+                                </div>
+
+                                {/* Agent */}
+                                <span className="text-lg flex-shrink-0">{emoji}</span>
+
+                                {/* Title */}
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm text-mc-primary font-medium truncate">{job.title}</p>
+                                  {job.description && (
+                                    <p className="text-xs text-zinc-500 truncate mt-0.5">{job.description}</p>
+                                  )}
+                                </div>
+
+                                {/* Status badge */}
+                                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold flex-shrink-0 ${badge.bgClass} ${badge.textClass}`}>
+                                  <span className={`w-1.5 h-1.5 rounded-full ${badge.dotClass} ${badge.pulse ? "animate-pulse" : ""}`} />
+                                  {badge.label}
+                                </span>
+                              </div>
+                            );
+                          })}
                         </div>
-
-                        {/* Status badge */}
-                        <span
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold flex-shrink-0 ${badge.bgClass} ${badge.textClass}`}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${badge.dotClass} ${badge.pulse ? "animate-pulse" : ""}`}
-                          />
-                          {badge.label}
-                        </span>
                       </div>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* ══════════════════════════════════════════════════════════════
                 Section 2: Recurring Schedule
