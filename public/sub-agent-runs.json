@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 22026527,
-    "cost": 44.2078,
-    "durationSec": 171857,
+    "tokens": 22569455,
+    "cost": 44.636,
+    "durationSec": 172400,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -84,6 +84,18 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
+    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
+    "label": "95a02d1a-513",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 1062506,
+    "cost": 1.4429,
+    "durationSec": 252650,
+    "status": "success",
+    "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
     "id": "39428fa1-3d06-49a5-9cdd-7031170614f6",
     "label": "39428fa1-3d0",
     "agent": "sam",
@@ -106,18 +118,6 @@
     "durationSec": 249281,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
-  },
-  {
-    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
-    "label": "95a02d1a-513",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 410662,
-    "cost": 0.8703,
-    "durationSec": 154290,
-    "status": "success",
-    "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
