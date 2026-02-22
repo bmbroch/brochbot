@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-02-21T10:22:33Z",
+  "timestamp": "2026-02-22T04:30:01Z",
   "disk": {
-    "usedPct": 73,
+    "usedPct": 75,
     "usedGB": 14,
     "totalGB": 19
   },
   "memory": {
-    "usedPct": 30,
+    "usedPct": 24,
     "totalMB": 3816
   },
-  "uptime": "2 days, 23 hours, 17 minutes",
+  "uptime": "3 days, 17 hours, 24 minutes",
   "openclaw": {
-    "running": true,
-    "pid": 140179,
-    "currentVersion": "2026.2.17",
-    "latestVersion": "2026.2.19-2",
+    "running": false,
+    "pid": null,
+    "currentVersion": "2026.2.19",
+    "latestVersion": "2026.2.21-2",
     "updateAvailable": true
   },
   "tailscale": {
@@ -22,11 +22,11 @@
     "ip": "100.113.19.39"
   },
   "vercel": {
-    "lastBuild": "READY",
-    "lastBuildTime": "2026-02-21T10:21:58Z"
+    "lastBuild": "UNKNOWN",
+    "lastBuildTime": "null"
   },
   "crons": {
-    "aiActive": 5,
+    "aiActive": 0,
     "bashActive": 5,
     "lastFailure": null
   },
