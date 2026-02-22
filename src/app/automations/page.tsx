@@ -558,11 +558,26 @@ function JobDetailModal({
   );
 }
 
+// ─── Active Task type ─────────────────────────────────────────────────────────
+
+interface ActiveTask {
+  _id: string;
+  id: string;
+  title: string;
+  assignee?: string;
+  agent?: string;
+  run_id?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  status: string;
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AutomationsPage() {
   const [oneShots, setOneShots] = useState<OneShotJob[]>([]);
   const [recurring, setRecurring] = useState<RecurringJob[]>([]);
+  const [activeTasks, setActiveTasks] = useState<ActiveTask[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [, setNow] = useState(() => Date.now());
@@ -580,6 +595,16 @@ export default function AutomationsPage() {
     const id = setInterval(() => setRefreshCounter((c) => c + 1), 300_000);
     return () => clearInterval(id);
   }, []);
+
+  // Fetch active tasks (separate from mc-data)
+  useEffect(() => {
+    fetch("/api/tasks/active")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: ActiveTask[]) => {
+        if (Array.isArray(data)) setActiveTasks(data);
+      })
+      .catch(() => {});
+  }, [refreshCounter]);
 
   useEffect(() => {
     setLoading(true);
@@ -862,6 +887,72 @@ export default function AutomationsPage() {
                 </div>
               );
             })()}
+
+            {/* ══════════════════════════════════════════════════════════════
+                Section 1b: In Progress (active tasks from Supabase)
+            ══════════════════════════════════════════════════════════════ */}
+            {activeTasks.length > 0 && (
+              <div className="mb-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <h2 className="text-sm font-semibold text-mc-primary">In Progress</h2>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
+                    {activeTasks.length} active
+                  </span>
+                  <div className="flex-1 h-px bg-[var(--border-medium)]" />
+                </div>
+
+                <div className="space-y-2">
+                  {activeTasks.map((task) => {
+                    const agentKey = (task.assignee ?? task.agent ?? "").toLowerCase();
+                    const emoji = OWNER_EMOJI[agentKey] || "⚙️";
+                    const color = agentColors[agentKey] || "#6b7280";
+                    const agentName = agentKey
+                      ? agentKey.charAt(0).toUpperCase() + agentKey.slice(1)
+                      : "Unknown";
+                    const runIdShort = task.run_id
+                      ? String(task.run_id).slice(0, 8)
+                      : null;
+
+                    return (
+                      <div
+                        key={task._id ?? task.id}
+                        className="rounded-xl border border-green-500/15 bg-green-500/[0.03] px-4 py-3.5 flex items-center gap-4"
+                      >
+                        {/* Color bar */}
+                        <div
+                          className="w-0.5 h-8 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: color }}
+                        />
+
+                        {/* Pulsing green dot */}
+                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
+
+                        {/* Agent */}
+                        <div className="flex items-center gap-1.5 flex-shrink-0 w-20">
+                          <span className="text-base">{emoji}</span>
+                          <span className="text-[11px] text-zinc-400 truncate">{agentName}</span>
+                        </div>
+
+                        {/* Title */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-mc-primary font-medium truncate">{task.title}</p>
+                          <p className="text-[11px] text-zinc-500 mt-0.5">
+                            started {relativeTime(task.updatedAt)}
+                          </p>
+                        </div>
+
+                        {/* run_id badge */}
+                        {runIdShort && (
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-500 border border-zinc-700 flex-shrink-0">
+                            {runIdShort}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* ══════════════════════════════════════════════════════════════
                 Section 2: Recurring Schedule
