@@ -1560,6 +1560,18 @@
     "timestamp": "2026-02-21T04:00:00.029Z"
   },
   {
+    "id": "39428fa1-3d06-49a5-9cdd-7031170614f6",
+    "label": "39428fa1-3d0",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Sonnet",
+    "tokens": 630524,
+    "cost": 0.4654,
+    "durationSec": 33889,
+    "status": "success",
+    "timestamp": "2026-02-21T04:00:34.904Z"
+  },
+  {
     "id": "613db404-e546-4858-8249-074352064b88",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -1678,5 +1690,41 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-21T23:50:01Z"
+  },
+  {
+    "id": "8bdb35f1-94f1-482e-8c38-40900d9b10af",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "Generate a morning analytics report comparing YESTERDAY vs the SAME DAY LAST WEEK.",
+    "model": "Sonnet",
+    "tokens": 50482,
+    "cost": 0.1185,
+    "durationSec": 28,
+    "status": "success",
+    "timestamp": "2026-02-22T16:06:45.040Z"
+  },
+  {
+    "id": "7af296ce-c8ac-495b-bfb4-59066238c23a",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "- Service account key: /home/ubuntu/.openclaw/workspace/.credentials/google-service-account.json",
+    "model": "Sonnet",
+    "tokens": 90503,
+    "cost": 0.1515,
+    "durationSec": 94,
+    "status": "success",
+    "timestamp": "2026-02-22T16:07:13.470Z"
+  },
+  {
+    "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "**IMPORTANT: This is an OBSERVE-ONLY run. Do NOT edit any files, do NOT git commit, do NOT run mc-sync. Report what you find. Ben will review and approve actions in the morning.**",
+    "model": "Sonnet",
+    "tokens": 112558,
+    "cost": 0.1037,
+    "durationSec": 62,
+    "status": "success",
+    "timestamp": "2026-02-22T16:08:47.973Z"
   }
 ]
