@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-22T20:40:01Z",
+  "lastUpdated": "2026-02-22T20:50:01Z",
   "activities": [
+    {
+      "id": "s-24caa2fa",
+      "agent": "devin",
+      "title": "devin-tasks-dragdrop",
+      "description": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+      "status": "success",
+      "date": "2026-02-22T20:47:12.915Z",
+      "tokens": 206148,
+      "cost": 0.1922,
+      "model": "Sonnet",
+      "durationSec": 67
+    },
     {
       "id": "s-a50fee35",
       "agent": "penny",
@@ -104,10 +116,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 24653144,
-      "cost": 47.0577,
+      "tokens": 25022020,
+      "cost": 48.0965,
       "model": "Opus",
-      "durationSec": 184235
+      "durationSec": 185047
     },
     {
       "id": "s-4f751fcb",
@@ -224,10 +236,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:55:11.223Z",
-      "tokens": 433290,
-      "cost": 1.2633,
+      "tokens": 692924,
+      "cost": 1.4858,
       "model": "Opus",
-      "durationSec": 249281
+      "durationSec": 266062
     },
     {
       "id": "s-c1c67e23",
@@ -897,7 +909,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-22T19:08:14.267Z",
+      "lastActive": "2026-02-22T20:47:12.915Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -925,7 +937,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-22T20:11:06Z",
+      "lastActive": "2026-02-22T20:48:36Z",
       "statusText": ""
     }
   },
@@ -939,7 +951,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-22T20:40:01Z"
+      "lastRunAt": "2026-02-22T20:50:01Z"
     },
     {
       "id": "bash-frankie-sync",

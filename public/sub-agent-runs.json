@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 24653144,
-    "cost": 47.0577,
-    "durationSec": 184235,
+    "tokens": 25022020,
+    "cost": 48.0965,
+    "durationSec": 185047,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -96,6 +96,18 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
+    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
+    "label": "b88a363c-216",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 692924,
+    "cost": 1.4858,
+    "durationSec": 266062,
+    "status": "success",
+    "timestamp": "2026-02-19T18:55:11.223Z"
+  },
+  {
     "id": "39428fa1-3d06-49a5-9cdd-7031170614f6",
     "label": "39428fa1-3d0",
     "agent": "sam",
@@ -106,18 +118,6 @@
     "durationSec": 33889,
     "status": "success",
     "timestamp": "2026-02-21T04:00:34.904Z"
-  },
-  {
-    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
-    "label": "b88a363c-216",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 433290,
-    "cost": 1.2633,
-    "durationSec": 249281,
-    "status": "success",
-    "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -154,6 +154,18 @@
     "durationSec": 78431,
     "status": "success",
     "timestamp": "2026-02-20T04:00:45.330Z"
+  },
+  {
+    "id": "24caa2fa-d40a-4fcb-b6c1-d60ed863a6d7",
+    "label": "devin-tasks-dragdrop",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 206148,
+    "cost": 0.1922,
+    "durationSec": 67,
+    "status": "success",
+    "timestamp": "2026-02-22T20:47:12.915Z"
   },
   {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",

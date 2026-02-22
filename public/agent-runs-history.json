@@ -1762,5 +1762,17 @@
     "durationSec": 81,
     "status": "success",
     "timestamp": "2026-02-22T19:08:14.267Z"
+  },
+  {
+    "id": "24caa2fa-d40a-4fcb-b6c1-d60ed863a6d7",
+    "label": "devin-tasks-dragdrop",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 206148,
+    "cost": 0.1922,
+    "durationSec": 67,
+    "status": "success",
+    "timestamp": "2026-02-22T20:47:12.915Z"
   }
 ]
