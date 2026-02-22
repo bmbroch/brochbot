@@ -15,6 +15,8 @@ const statusOrder: TaskStatus[] = ["todo", "in_progress", "done"];
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOverCol, setDragOverCol] = useState<string | null>(null);
 
   // Fetch tasks from API on mount; fall back to /tasks.json, then mockTasks
   useEffect(() => {
@@ -127,9 +129,34 @@ export default function TasksPage() {
                   <h3 className="text-sm font-semibold text-[var(--text-secondary)]">{col.label}</h3>
                   <span className="text-xs text-[var(--text-faint)] ml-auto">{colTasks.length}</span>
                 </div>
-                <div className="flex-1 space-y-2 min-h-[200px]">
+                <div
+                  className={`flex-1 space-y-2 min-h-[200px] rounded-xl transition-all duration-150 p-1 -m-1 ${dragOverCol === col.id ? "ring-1 ring-blue-500/40 bg-blue-500/5" : ""}`}
+                  onDragOver={(e) => { e.preventDefault(); setDragOverCol(col.id); }}
+                  onDragLeave={() => setDragOverCol(null)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    if (draggedId) {
+                      setTasks((prev) => {
+                        const updated = prev.map((t) =>
+                          t._id === draggedId ? { ...t, status: col.id as TaskStatus, updatedAt: Date.now() } : t
+                        );
+                        persistTasks(updated);
+                        return updated;
+                      });
+                    }
+                    setDraggedId(null);
+                    setDragOverCol(null);
+                  }}
+                >
                   {colTasks.map((task) => (
-                    <TaskCard key={task._id} task={task} onMove={moveTask} />
+                    <TaskCard
+                      key={task._id}
+                      task={task}
+                      onMove={moveTask}
+                      isDragging={draggedId === task._id}
+                      onDragStart={() => setDraggedId(task._id)}
+                      onDragEnd={() => { setDraggedId(null); setDragOverCol(null); }}
+                    />
                   ))}
                 </div>
               </div>
@@ -144,13 +171,28 @@ export default function TasksPage() {
   );
 }
 
-function TaskCard({ task, onMove }: { task: Task; onMove: (id: string, dir: 1 | -1) => void }) {
+function TaskCard({
+  task,
+  onMove,
+  isDragging,
+  onDragStart,
+  onDragEnd,
+}: {
+  task: Task;
+  onMove: (id: string, dir: 1 | -1) => void;
+  isDragging?: boolean;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
+}) {
   const pConf = priorityConfig[task.priority];
   const color = agentColors[task.assignee] || "#3b82f6";
 
   return (
     <div
-      className="p-4 rounded-xl border border-[var(--border-medium)] hover:border-[var(--border-strong)] transition-all duration-200 group"
+      draggable
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      className={`p-4 rounded-xl border border-[var(--border-medium)] hover:border-[var(--border-strong)] transition-all duration-200 group select-none ${isDragging ? "opacity-40 cursor-grabbing" : "cursor-grab"}`}
       style={{ background: "var(--bg-card)" }}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
