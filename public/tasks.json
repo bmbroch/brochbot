@@ -99,17 +99,6 @@
     "updatedAt": 1771519100893
   },
   {
-    "_id": "t15",
-    "title": "CLCP organic SEO \u2014 stop the decline",
-    "description": "CLCP organic traffic is declining and Miles has spent zero time on it (ISK-only focus). Need GSC access + keyword audit + at least one actionable recommendation. This is real revenue being left on the table.",
-    "status": "todo",
-    "assignee": "miles",
-    "priority": "high",
-    "product": "CLCP",
-    "createdAt": 1771491360000,
-    "updatedAt": 1771491360000
-  },
-  {
     "_id": "t16",
     "title": "Make Automations page schedule timeline dynamic",
     "description": "Daily Schedule timeline and Weekly Grid are hardcoded arrays in automations/page.tsx (DAILY_JOBS, WEEKLY_JOBS). New crons don't appear there without manual code edits. Should derive schedule from live cron data (d.calendar + d.bashCrons) so any new automation shows up automatically.",
