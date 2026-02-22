@@ -72,18 +72,6 @@
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
   {
-    "id": "561b97bd-d739-494d-a292-5d18c0a4ffb3",
-    "label": "devin-launchpad-briefings",
-    "agent": "devin",
-    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control (brochbot.com). Repo is at `/home/ubuntu/.openclaw/workspace/mission-control`.",
-    "model": "Sonnet",
-    "tokens": 1602408,
-    "cost": 0.9026,
-    "durationSec": 241,
-    "status": "success",
-    "timestamp": "2026-02-22T17:20:45.068Z"
-  },
-  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
