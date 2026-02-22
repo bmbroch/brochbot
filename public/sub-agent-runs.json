@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 23154132,
-    "cost": 45.0942,
-    "durationSec": 172527,
+    "tokens": 23229957,
+    "cost": 45.1238,
+    "durationSec": 172743,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -72,6 +72,18 @@
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
   {
+    "id": "561b97bd-d739-494d-a292-5d18c0a4ffb3",
+    "label": "devin-launchpad-briefings",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control (brochbot.com). Repo is at `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 1602408,
+    "cost": 0.9026,
+    "durationSec": 241,
+    "status": "success",
+    "timestamp": "2026-02-22T17:20:45.068Z"
+  },
+  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
@@ -89,9 +101,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1112145,
-    "cost": 1.6104,
-    "durationSec": 252726,
+    "tokens": 1162050,
+    "cost": 1.7762,
+    "durationSec": 252973,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
@@ -298,18 +310,6 @@
     "durationSec": 17,
     "status": "success",
     "timestamp": "2026-02-19T11:52:45.805Z"
-  },
-  {
-    "id": "561b97bd-d739-494d-a292-5d18c0a4ffb3",
-    "label": "devin-launchpad-briefings",
-    "agent": "devin",
-    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control (brochbot.com). Repo is at `/home/ubuntu/.openclaw/workspace/mission-control`.",
-    "model": "Sonnet",
-    "tokens": 30065,
-    "cost": 0.0718,
-    "durationSec": 6,
-    "status": "success",
-    "timestamp": "2026-02-22T17:20:45.068Z"
   },
   {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",
