@@ -16,14 +16,31 @@ const statusOrder: TaskStatus[] = ["todo", "in_progress", "done"];
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
 
-  // Fetch tasks from /tasks.json on mount; fall back to mockTasks if unavailable
+  // Fetch tasks from API on mount; fall back to /tasks.json, then mockTasks
   useEffect(() => {
-    fetch("/tasks.json")
+    fetch("/api/tasks")
       .then((r) => r.json())
-      .then((data: Task[]) => {
-        if (Array.isArray(data) && data.length > 0) setTasks(data);
+      .then((data: Task[] | null) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setTasks(data);
+        } else {
+          // API returned empty — fall back to static tasks.json
+          return fetch("/tasks.json")
+            .then((r) => r.json())
+            .then((fallback: Task[]) => {
+              if (Array.isArray(fallback) && fallback.length > 0) setTasks(fallback);
+            });
+        }
       })
-      .catch(() => {});
+      .catch(() => {
+        // Network error — try tasks.json
+        fetch("/tasks.json")
+          .then((r) => r.json())
+          .then((fallback: Task[]) => {
+            if (Array.isArray(fallback) && fallback.length > 0) setTasks(fallback);
+          })
+          .catch(() => {});
+      });
   }, []);
   const [filterAssignee, setFilterAssignee] = useState<string>("all");
   const [filterProduct, setFilterProduct] = useState<string>("all");
@@ -37,20 +54,35 @@ export default function TasksPage() {
     return true;
   });
 
+  // Fire-and-forget persist to Supabase via API route
+  const persistTasks = (updated: Task[]) => {
+    fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tasks: updated }),
+    }).catch(() => {}); // best-effort, no UX impact
+  };
+
   const moveTask = (taskId: string, direction: 1 | -1) => {
-    setTasks((prev) =>
-      prev.map((t) => {
+    setTasks((prev) => {
+      const updated = prev.map((t) => {
         if (t._id !== taskId) return t;
         const idx = statusOrder.indexOf(t.status);
         const newIdx = Math.max(0, Math.min(statusOrder.length - 1, idx + direction));
         return { ...t, status: statusOrder[newIdx], updatedAt: Date.now() };
-      })
-    );
+      });
+      persistTasks(updated);
+      return updated;
+    });
   };
 
   const addTask = (task: Omit<Task, "_id" | "createdAt" | "updatedAt">) => {
     const now = Date.now();
-    setTasks((prev) => [...prev, { ...task, _id: `t${now}`, createdAt: now, updatedAt: now }]);
+    setTasks((prev) => {
+      const updated = [...prev, { ...task, _id: `t${now}`, createdAt: now, updatedAt: now }];
+      persistTasks(updated);
+      return updated;
+    });
     setShowNewTask(false);
   };
 
