@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 23229957,
-    "cost": 45.1238,
-    "durationSec": 172743,
+    "tokens": 24563225,
+    "cost": 46.7143,
+    "durationSec": 179032,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -142,6 +142,18 @@
     "durationSec": 154,
     "status": "success",
     "timestamp": "2026-02-21T03:00:00.031Z"
+  },
+  {
+    "id": "8f19ccde-7bdd-48b0-96fc-2d70d5b11b87",
+    "label": "devin-tasks-persist",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 239487,
+    "cost": 0.1867,
+    "durationSec": 81,
+    "status": "success",
+    "timestamp": "2026-02-22T19:08:14.267Z"
   },
   {
     "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
@@ -298,6 +310,18 @@
     "durationSec": 17,
     "status": "success",
     "timestamp": "2026-02-19T11:52:45.805Z"
+  },
+  {
+    "id": "9c5f67f0-49ca-4c21-8cd2-c3b805590535",
+    "label": "devin-tasks-dragdrop",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 29318,
+    "cost": 0.0678,
+    "durationSec": 42,
+    "status": "success",
+    "timestamp": "2026-02-22T19:06:56.208Z"
   },
   {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",

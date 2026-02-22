@@ -1738,5 +1738,29 @@
     "durationSec": 6,
     "status": "success",
     "timestamp": "2026-02-22T17:20:45.068Z"
+  },
+  {
+    "id": "9c5f67f0-49ca-4c21-8cd2-c3b805590535",
+    "label": "devin-tasks-dragdrop",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 29318,
+    "cost": 0.0678,
+    "durationSec": 42,
+    "status": "success",
+    "timestamp": "2026-02-22T19:06:56.208Z"
+  },
+  {
+    "id": "8f19ccde-7bdd-48b0-96fc-2d70d5b11b87",
+    "label": "devin-tasks-persist",
+    "agent": "devin",
+    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
+    "model": "Sonnet",
+    "tokens": 239487,
+    "cost": 0.1867,
+    "durationSec": 81,
+    "status": "success",
+    "timestamp": "2026-02-22T19:08:14.267Z"
   }
 ]
