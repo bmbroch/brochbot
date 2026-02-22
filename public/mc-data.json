@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T21:40:02Z",
+  "lastUpdated": "2026-02-22T21:50:02Z",
   "activities": [
     {
       "id": "s-c2bc75e5",
@@ -24,18 +24,6 @@
       "cost": 0.2068,
       "model": "Sonnet",
       "durationSec": 84
-    },
-    {
-      "id": "s-24caa2fa",
-      "agent": "devin",
-      "title": "devin-tasks-dragdrop",
-      "description": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
-      "status": "success",
-      "date": "2026-02-22T20:47:12.915Z",
-      "tokens": 206148,
-      "cost": 0.1922,
-      "model": "Sonnet",
-      "durationSec": 67
     },
     {
       "id": "s-a50fee35",
@@ -975,7 +963,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-22T21:40:02Z"
+      "lastRunAt": "2026-02-22T21:50:02Z"
     },
     {
       "id": "bash-frankie-sync",

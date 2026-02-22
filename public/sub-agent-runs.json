@@ -180,18 +180,6 @@
     "timestamp": "2026-02-22T20:50:15.485Z"
   },
   {
-    "id": "24caa2fa-d40a-4fcb-b6c1-d60ed863a6d7",
-    "label": "devin-tasks-dragdrop",
-    "agent": "devin",
-    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
-    "model": "Sonnet",
-    "tokens": 206148,
-    "cost": 0.1922,
-    "durationSec": 67,
-    "status": "success",
-    "timestamp": "2026-02-22T20:47:12.915Z"
-  },
-  {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",
     "label": "Sam: Jude agent proposal",
     "agent": "sam",
