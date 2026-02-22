@@ -62,6 +62,17 @@ function nowCATDateStr(): string {
 
 type DateTab = "today" | "week" | "all";
 
+interface AutomationOutput {
+  id?: number | string;
+  agent: string;
+  job_slug: string;
+  run_date: string; // YYYY-MM-DD
+  output_text?: string;
+  tokens?: number;
+  cost?: number;
+  model?: string;
+}
+
 export default function Home() {
   const [activities, setActivities] = useState<EnrichedActivity[]>([]);
   const [fetchError, setFetchError] = useState(false);
@@ -70,6 +81,19 @@ export default function Home() {
   const [filterProduct, setFilterProduct] = useState<string>("all");
   const [dateTab, setDateTab] = useState<DateTab>("today");
   const [selectedActivity, setSelectedActivity] = useState<EnrichedActivity | null>(null);
+  const [automationOutputs, setAutomationOutputs] = useState<AutomationOutput[]>([]);
+
+  // Fetch automation outputs
+  useEffect(() => {
+    fetch("/api/automation-outputs?limit=30")
+      .then((r) => r.json())
+      .then((data: AutomationOutput[]) => {
+        if (Array.isArray(data)) setAutomationOutputs(data);
+      })
+      .catch(() => {
+        // Non-fatal: fall back to task prompt text
+      });
+  }, []);
 
   // Fetch enriched activities from agent-runs-history.json
   useEffect(() => {
@@ -157,7 +181,7 @@ export default function Home() {
   return (
     <Shell>
       {selectedActivity && (
-        <BriefingModal activity={selectedActivity} onClose={() => setSelectedActivity(null)} />
+        <BriefingModal activity={selectedActivity} automationOutputs={automationOutputs} onClose={() => setSelectedActivity(null)} />
       )}
       <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8">
@@ -288,7 +312,7 @@ export default function Home() {
 
 // ── Briefing Modal ────────────────────────────────────────────────────────────
 
-function BriefingModal({ activity, onClose }: { activity: EnrichedActivity; onClose: () => void }) {
+function BriefingModal({ activity, automationOutputs, onClose }: { activity: EnrichedActivity; automationOutputs: AutomationOutput[]; onClose: () => void }) {
   const color = agentColors[activity.agent] || "#3b82f6";
   const emoji = agentEmojis[activity.agent] || "🤖";
 
@@ -305,7 +329,13 @@ function BriefingModal({ activity, onClose }: { activity: EnrichedActivity; onCl
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  const outputText = activity.fullTask ?? activity.description ?? "(No output available)";
+  // Match automation output by agent + same calendar day (UTC)
+  const activityDateStr = new Date(activity.createdAt).toISOString().slice(0, 10);
+  const matchedOutput = automationOutputs.find(
+    (o) => o.agent === activity.agent && o.run_date === activityDateStr && o.output_text
+  );
+
+  const outputText = matchedOutput?.output_text ?? activity.fullTask ?? activity.description ?? "(No output available)";
 
   return (
     <div

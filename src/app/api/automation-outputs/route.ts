@@ -15,7 +15,7 @@ function supabaseHeaders(extra?: Record<string, string>) {
   };
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   const url = SUPABASE_URL();
   const key = SUPABASE_KEY();
 
@@ -23,7 +23,16 @@ export async function GET() {
     return NextResponse.json({ error: 'no supabase config' }, { status: 500 });
   }
 
-  const res = await fetch(`${url}/rest/v1/tasks?select=*&order=created_at.asc`, {
+  const { searchParams } = new URL(req.url);
+  const agent = searchParams.get('agent');
+  const limit = searchParams.get('limit') ?? '30';
+
+  let endpoint = `${url}/rest/v1/automation_outputs?select=*&order=run_date.desc&limit=${encodeURIComponent(limit)}`;
+  if (agent) {
+    endpoint += `&agent=eq.${encodeURIComponent(agent)}`;
+  }
+
+  const res = await fetch(endpoint, {
     headers: supabaseHeaders(),
     cache: 'no-store',
   });
@@ -32,22 +41,8 @@ export async function GET() {
     return NextResponse.json({ error: `supabase error: ${res.status}` }, { status: 502 });
   }
 
-  const rows: Array<Record<string, unknown>> = await res.json();
-
-  if (!rows || rows.length === 0) {
-    return NextResponse.json([]);
-  }
-
-  // Map Supabase columns → frontend Task shape
-  const mapped = rows.map((row) => ({
-    ...row,
-    _id: row.id,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
-    // id, created_at, updated_at kept as-is for completeness; frontend uses _id/createdAt/updatedAt
-  }));
-
-  return NextResponse.json(mapped);
+  const rows = await res.json();
+  return NextResponse.json(rows ?? []);
 }
 
 export async function POST(req: Request) {
@@ -59,27 +54,21 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json();
-  const tasks = body?.tasks;
+  const { agent, job_slug, run_date, output_text, tokens, cost, model } = body ?? {};
 
-  if (!Array.isArray(tasks)) {
-    return NextResponse.json({ error: 'invalid body: expected { tasks: Task[] }' }, { status: 400 });
+  if (!agent || !job_slug || !run_date) {
+    return NextResponse.json(
+      { error: 'invalid body: agent, job_slug, and run_date are required' },
+      { status: 400 }
+    );
   }
 
-  // Map frontend Task shape → Supabase columns
-  const rows = tasks.map((t: Record<string, unknown>) => {
-    const { _id, createdAt, updatedAt, ...rest } = t;
-    return {
-      ...rest,
-      ...((_id !== undefined) && { id: _id }),
-      ...(createdAt !== undefined && { created_at: createdAt }),
-      ...(updatedAt !== undefined && { updated_at: updatedAt }),
-    };
-  });
+  const row = { agent, job_slug, run_date, output_text, tokens, cost, model };
 
-  const res = await fetch(`${url}/rest/v1/tasks`, {
+  const res = await fetch(`${url}/rest/v1/automation_outputs`, {
     method: 'POST',
     headers: supabaseHeaders({ Prefer: 'resolution=merge-duplicates' }),
-    body: JSON.stringify(rows),
+    body: JSON.stringify(row),
   });
 
   if (!res.ok) {
