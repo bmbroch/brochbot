@@ -108,6 +108,18 @@
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
+    "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "**IMPORTANT: This is an OBSERVE-ONLY run. Do NOT edit any files, do NOT git commit, do NOT run mc-sync. Report what you find. Ben will review and approve actions in the morning.**",
+    "model": "Sonnet",
+    "tokens": 633654,
+    "cost": 0.6269,
+    "durationSec": 39252,
+    "status": "success",
+    "timestamp": "2026-02-22T16:08:47.973Z"
+  },
+  {
     "id": "39428fa1-3d06-49a5-9cdd-7031170614f6",
     "label": "39428fa1-3d0",
     "agent": "sam",
@@ -118,18 +130,6 @@
     "durationSec": 33889,
     "status": "success",
     "timestamp": "2026-02-21T04:00:34.904Z"
-  },
-  {
-    "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
-    "label": "Penny Daily Check",
-    "agent": "penny",
-    "task": "**IMPORTANT: This is an OBSERVE-ONLY run. Do NOT edit any files, do NOT git commit, do NOT run mc-sync. Report what you find. Ben will review and approve actions in the morning.**",
-    "model": "Sonnet",
-    "tokens": 381402,
-    "cost": 0.2609,
-    "durationSec": 180,
-    "status": "success",
-    "timestamp": "2026-02-22T16:08:47.973Z"
   },
   {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
