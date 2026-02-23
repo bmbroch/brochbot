@@ -2,8 +2,8 @@
 
 import Shell from "@/components/Shell";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useAllCreatorsTimeSeries, creatorColors } from "@/lib/data-provider";
+import { useState, useEffect, useMemo } from "react";
+import { creatorColors } from "@/lib/data-provider";
 import { useTheme } from "@/components/ThemeProvider";
 import {
   LineChart, Line, BarChart, Bar,
@@ -33,6 +33,21 @@ interface CreatorData {
   posts_detail: PostDetail[];
 }
 
+type DateRange = "7D" | "30D" | "90D" | "All";
+type Platform = "All" | "TikTok" | "Instagram";
+type SortCol = "posts" | "ttViews" | "igViews" | "total" | "avgPerPost" | "earnings" | "cpm";
+type SortDir = "asc" | "desc";
+
+interface CreatorStats {
+  name: string;
+  posts: number;
+  ttViews: number;
+  igViews: number;
+  avgPerPost: number;
+  earnings: number;
+  paymentCount: number;
+}
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function fmt(n: number): string {
@@ -60,6 +75,40 @@ function cpmColor(cpm: number): string {
   return "text-red-500 dark:text-red-400";
 }
 
+function getCutoff(range: DateRange): Date | null {
+  if (range === "All") return null;
+  const days = range === "7D" ? 7 : range === "30D" ? 30 : 90;
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function computeStats(creator: CreatorData, cutoff: Date | null): CreatorStats {
+  const filtered = creator.posts_detail.filter(p => {
+    if (!p.date) return false;
+    if (!cutoff) return true;
+    return new Date(p.date) >= cutoff;
+  });
+  const ttViews = filtered.filter(p => p.platform === "tiktok").reduce((s, p) => s + p.views, 0);
+  const igViews = filtered.filter(p => p.platform === "instagram").reduce((s, p) => s + p.views, 0);
+  const posts = filtered.length;
+  const avgPerPost = posts > 0 ? Math.round((ttViews + igViews) / posts) : 0;
+  return { name: creator.name, posts, ttViews, igViews, avgPerPost, earnings: creator.earnings, paymentCount: creator.paymentCount };
+}
+
+function buildTsMap(creator: CreatorData, cutoff: Date | null): Record<string, { ttViews: number; igViews: number }> {
+  const map: Record<string, { ttViews: number; igViews: number }> = {};
+  creator.posts_detail.forEach(p => {
+    if (!p.date) return;
+    if (cutoff && new Date(p.date) < cutoff) return;
+    if (!map[p.date]) map[p.date] = { ttViews: 0, igViews: 0 };
+    if (p.platform === "tiktok") map[p.date].ttViews += p.views;
+    else map[p.date].igViews += p.views;
+  });
+  return map;
+}
+
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function CreatorsPage() {
@@ -67,22 +116,17 @@ export default function CreatorsPage() {
   const [creatorsMap, setCreatorsMap] = useState<Record<string, CreatorData> | null>(null);
   const [enabledCreators, setEnabledCreators] = useState<Record<string, boolean>>({});
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const creatorsTimeSeries = useAllCreatorsTimeSeries();
 
-  // Theme-aware chart tooltip styles
+  // Filter / sort state
+  const [dateRange, setDateRange] = useState<DateRange>("All");
+  const [platform, setPlatform] = useState<Platform>("All");
+  const [sortCol, setSortCol] = useState<SortCol>("total");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
+
+  // Theme-aware chart colours
   const tooltipStyle = theme === "dark"
-    ? {
-        contentStyle: { backgroundColor: "#1a1a1a", border: "1px solid #333", borderRadius: 8, fontSize: 12 },
-        labelStyle: { color: "#a1a1aa" },
-        itemStyle: { color: "#e4e4e7" },
-      }
-    : {
-        contentStyle: { backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" },
-        labelStyle: { color: "#6b7280" },
-        itemStyle: { color: "#374151" },
-      };
-
-  // Grid stroke color for charts
+    ? { contentStyle: { backgroundColor: "#1a1a1a", border: "1px solid #333", borderRadius: 8, fontSize: 12 }, labelStyle: { color: "#a1a1aa" }, itemStyle: { color: "#e4e4e7" } }
+    : { contentStyle: { backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }, labelStyle: { color: "#6b7280" }, itemStyle: { color: "#374151" } };
   const gridColor = theme === "dark" ? "#262626" : "#e5e7eb";
   const tickColor = theme === "dark" ? "#71717a" : "#9ca3af";
   const axisColor = theme === "dark" ? "#262626" : "#e5e7eb";
@@ -103,58 +147,104 @@ export default function CreatorsPage() {
       .catch(err => console.error("Failed to load creator-data.json", err));
   }, []);
 
-  const creators: CreatorData[] = creatorsMap
-    ? Object.values(creatorsMap).sort((a, b) => (b.ttViews + b.igViews) - (a.ttViews + a.igViews))
-    : [];
+  // Stable array from creatorsMap
+  const allCreators = useMemo<CreatorData[]>(
+    () => (creatorsMap ? Object.values(creatorsMap) : []),
+    [creatorsMap]
+  );
 
-  const totalPosts = creators.reduce((s, c) => s + c.posts, 0);
-  const totalViews = creators.reduce((s, c) => s + c.ttViews + c.igViews, 0);
-  const avgViews = totalPosts > 0 ? Math.round(totalViews / totalPosts) : 0;
+  // Date cutoff (memoised so it doesn't create a new Date object every render)
+  const cutoff = useMemo(() => getCutoff(dateRange), [dateRange]);
 
-  function getCreatorCpm(c: CreatorData): number | null {
-    const views = c.ttViews + c.igViews;
-    if (!views || !c.earnings) return null;
-    return (c.earnings / views) * 1000;
+  // Per-creator stats with date filter applied
+  const creatorStats = useMemo(
+    () => allCreators.map(c => computeStats(c, cutoff)),
+    [allCreators, cutoff]
+  );
+
+  // Sort helpers
+  function getCreatorCpm(s: CreatorStats): number | null {
+    const views = s.ttViews + s.igViews;
+    if (!views || !s.earnings) return null;
+    return (s.earnings / views) * 1000;
   }
 
-  const bestCpmCreator = creators.reduce<{ name: string; cpm: number } | null>((best, c) => {
+  function sortVal(s: CreatorStats): number {
+    switch (sortCol) {
+      case "posts":      return s.posts;
+      case "ttViews":    return s.ttViews;
+      case "igViews":    return s.igViews;
+      case "total":      return s.ttViews + s.igViews;
+      case "avgPerPost": return s.avgPerPost;
+      case "earnings":   return s.earnings;
+      case "cpm":        return getCreatorCpm(s) ?? -1;
+    }
+  }
+
+  const sortedCreators = useMemo(
+    () => [...creatorStats].sort((a, b) => sortDir === "desc" ? sortVal(b) - sortVal(a) : sortVal(a) - sortVal(b)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [creatorStats, sortCol, sortDir]
+  );
+
+  function handleSort(col: SortCol) {
+    if (sortCol === col) setSortDir(d => d === "desc" ? "asc" : "desc");
+    else { setSortCol(col); setSortDir("desc"); }
+  }
+
+  function SortInd({ col }: { col: SortCol }) {
+    if (sortCol !== col) return <span className="opacity-25 ml-1">↕</span>;
+    return <span className="ml-1">{sortDir === "desc" ? "▼" : "▲"}</span>;
+  }
+
+  // Aggregate totals for stat cards
+  const totalPosts  = creatorStats.reduce((s, c) => s + c.posts, 0);
+  const totalTT     = creatorStats.reduce((s, c) => s + c.ttViews, 0);
+  const totalIG     = creatorStats.reduce((s, c) => s + c.igViews, 0);
+  const totalViews  = platform === "TikTok" ? totalTT : platform === "Instagram" ? totalIG : totalTT + totalIG;
+  const avgViews    = totalPosts > 0 ? Math.round(totalViews / totalPosts) : 0;
+
+  const bestCpm = creatorStats.reduce<{ name: string; cpm: number } | null>((best, c) => {
     const cpm = getCreatorCpm(c);
     if (cpm === null) return best;
     if (!best || cpm < best.cpm) return { name: c.name, cpm };
     return best;
   }, null);
 
-  // Chart data
-  const allDatesMap: Record<string, boolean> = {};
-  creators.forEach(c => {
-    if (enabledCreators[c.name]) {
-      creatorsTimeSeries[c.name]?.forEach(p => { allDatesMap[p.date] = true; });
-    }
-  });
-  const dates = Object.keys(allDatesMap).sort();
-
-  const lineChartData = dates.map(date => {
-    const point: Record<string, string | number> = { date: date.slice(5) };
-    creators.forEach(c => {
+  // Line chart — built from posts_detail, respects date range + platform filter
+  const lineChartData = useMemo(() => {
+    // Pre-build per-creator date maps
+    const tsMaps: Record<string, Record<string, { ttViews: number; igViews: number }>> = {};
+    const allDates = new Set<string>();
+    allCreators.forEach(c => {
       if (!enabledCreators[c.name]) return;
-      const ts = creatorsTimeSeries[c.name] || [];
-      const match = ts.find(p => p.date === date);
-      if (match) point[c.name] = match.ttViews + match.igViews;
+      const m = buildTsMap(c, cutoff);
+      tsMaps[c.name] = m;
+      Object.keys(m).forEach(d => allDates.add(d));
     });
-    return point;
-  });
+    const dates = Array.from(allDates).sort();
+    return dates.map(date => {
+      const point: Record<string, string | number> = { date: date.slice(5) };
+      allCreators.forEach(c => {
+        if (!enabledCreators[c.name]) return;
+        const d = tsMaps[c.name]?.[date];
+        if (d) {
+          point[c.name] = platform === "TikTok" ? d.ttViews : platform === "Instagram" ? d.igViews : d.ttViews + d.igViews;
+        }
+      });
+      return point;
+    });
+  }, [allCreators, enabledCreators, cutoff, platform]);
 
-  const barData = creators.map(c => ({
+  // Bar chart data (respects date range)
+  const barData = useMemo(() => creatorStats.map(c => ({
     name: c.name,
     TikTok: c.ttViews,
     Instagram: c.igViews,
-  }));
+  })), [creatorStats]);
 
-  const toggle = (name: string) => {
-    setEnabledCreators(prev => ({ ...prev, [name]: !prev[name] }));
-  };
+  const toggle = (name: string) => setEnabledCreators(prev => ({ ...prev, [name]: !prev[name] }));
 
-  // Time-ago for lastUpdated
   function timeAgo(iso: string): string {
     const diffH = Math.floor((Date.now() - new Date(iso).getTime()) / 3_600_000);
     if (diffH < 1) return "just now";
@@ -162,10 +252,18 @@ export default function CreatorsPage() {
     return `${Math.floor(diffH / 24)}d ago`;
   }
 
+  const showTT = platform !== "Instagram";
+  const showIG = platform !== "TikTok";
+
+  const pillBase = "px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer";
+  const pillActive = "bg-[var(--text-primary)] text-[var(--bg-primary)]";
+  const pillInactive = "border border-[var(--border-medium)] text-[var(--text-muted)] hover:border-[var(--border-strong)]";
+
   return (
     <Shell>
       <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
-        <div className="mb-8 flex items-end justify-between gap-4">
+        {/* Header */}
+        <div className="mb-6 flex items-end justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">Creators</h1>
             <p className="text-sm text-[var(--text-muted)] mt-1">UGC creator performance dashboard</p>
@@ -175,14 +273,34 @@ export default function CreatorsPage() {
           )}
         </div>
 
+        {/* Filter Bar */}
+        <div className="flex flex-wrap items-center gap-3 mb-6">
+          {/* Date range pills */}
+          <div className="flex items-center gap-1.5">
+            {(["7D", "30D", "90D", "All"] as DateRange[]).map(r => (
+              <button key={r} onClick={() => setDateRange(r)} className={`${pillBase} ${dateRange === r ? pillActive : pillInactive}`}>{r}</button>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div className="w-px h-5 bg-[var(--border-medium)]" />
+
+          {/* Platform pills */}
+          <div className="flex items-center gap-1.5">
+            {(["All", "TikTok", "Instagram"] as Platform[]).map(p => (
+              <button key={p} onClick={() => setPlatform(p)} className={`${pillBase} ${platform === p ? pillActive : pillInactive}`}>{p}</button>
+            ))}
+          </div>
+        </div>
+
         {/* Overview Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <StatCard label="Total Creators" value={String(creators.length)} sub="Active" />
-          <StatCard label="Total Posts" value={String(totalPosts)} sub="All platforms" />
-          <StatCard label="Total Views" value={fmt(totalViews)} sub="TikTok + Instagram" />
+          <StatCard label="Total Creators" value={String(allCreators.length)} sub="Active" />
+          <StatCard label="Total Posts" value={String(totalPosts)} sub={dateRange === "All" ? "All platforms" : `Last ${dateRange}`} />
+          <StatCard label="Total Views" value={fmt(totalViews)} sub={platform === "All" ? "TikTok + Instagram" : platform} />
           <StatCard label="Avg Views/Post" value={fmt(avgViews)} />
-          {bestCpmCreator
-            ? <StatCard label="Best CPM" value={`${bestCpmCreator.name} · $${bestCpmCreator.cpm.toFixed(2)}`} sub="cost per 1K views" />
+          {bestCpm
+            ? <StatCard label="Best CPM" value={`${bestCpm.name} · $${bestCpm.cpm.toFixed(2)}`} sub="cost per 1K views" />
             : <StatCard label="Best CPM" value="—" sub="cost per 1K views" />}
         </div>
 
@@ -194,9 +312,10 @@ export default function CreatorsPage() {
           </div>
         )}
 
-        {/* Leaderboard */}
+        {/* Main content */}
         {creatorsMap && (
           <>
+            {/* Leaderboard */}
             <div
               className="rounded-xl border overflow-hidden mb-8"
               style={{ background: "var(--bg-card)", borderColor: "var(--border-medium)" }}
@@ -210,26 +329,42 @@ export default function CreatorsPage() {
                     <tr className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider border-b border-[var(--border-medium)]">
                       <th className="text-left px-5 py-3 font-medium">#</th>
                       <th className="text-left px-5 py-3 font-medium">Creator</th>
-                      <th className="text-right px-5 py-3 font-medium">Posts</th>
-                      <th className="text-right px-5 py-3 font-medium"><span className="text-cyan-500 dark:text-cyan-400">TikTok</span></th>
-                      <th className="text-right px-5 py-3 font-medium"><span className="text-pink-500 dark:text-pink-400">Instagram</span></th>
-                      <th className="text-right px-5 py-3 font-medium">Total Views</th>
-                      <th className="text-right px-5 py-3 font-medium">Avg/Post</th>
-                      <th className="text-right px-5 py-3 font-medium">Earnings</th>
-                      <th className="text-right px-5 py-3 font-medium">CPM</th>
+                      <th className="text-right px-5 py-3 font-medium cursor-pointer select-none hover:text-[var(--text-primary)]" onClick={() => handleSort("posts")}>
+                        Posts<SortInd col="posts" />
+                      </th>
+                      {showTT && (
+                        <th className="text-right px-5 py-3 font-medium cursor-pointer select-none hover:text-[var(--text-primary)]" onClick={() => handleSort("ttViews")}>
+                          <span className="text-cyan-500 dark:text-cyan-400">TikTok</span><SortInd col="ttViews" />
+                        </th>
+                      )}
+                      {showIG && (
+                        <th className="text-right px-5 py-3 font-medium cursor-pointer select-none hover:text-[var(--text-primary)]" onClick={() => handleSort("igViews")}>
+                          <span className="text-pink-500 dark:text-pink-400">Instagram</span><SortInd col="igViews" />
+                        </th>
+                      )}
+                      <th className="text-right px-5 py-3 font-medium cursor-pointer select-none hover:text-[var(--text-primary)]" onClick={() => handleSort("total")}>
+                        Total Views<SortInd col="total" />
+                      </th>
+                      <th className="text-right px-5 py-3 font-medium cursor-pointer select-none hover:text-[var(--text-primary)]" onClick={() => handleSort("avgPerPost")}>
+                        Avg/Post<SortInd col="avgPerPost" />
+                      </th>
+                      <th className="text-right px-5 py-3 font-medium cursor-pointer select-none hover:text-[var(--text-primary)]" onClick={() => handleSort("earnings")}>
+                        Earnings<SortInd col="earnings" />
+                      </th>
+                      <th className="text-right px-5 py-3 font-medium cursor-pointer select-none hover:text-[var(--text-primary)]" onClick={() => handleSort("cpm")}>
+                        CPM<SortInd col="cpm" />
+                      </th>
                       <th className="text-center px-5 py-3 font-medium">Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {creators.map((c, i) => {
+                    {sortedCreators.map((c, i) => {
                       const total = c.ttViews + c.igViews;
+                      const displayTotal = platform === "TikTok" ? c.ttViews : platform === "Instagram" ? c.igViews : total;
                       const dominant = c.igViews > c.ttViews ? "ig" : "tt";
                       const cpm = getCreatorCpm(c);
                       return (
-                        <tr
-                          key={c.name}
-                          className="border-b border-[var(--border-subtle)] hover:bg-[var(--bg-hover)] transition-colors"
-                        >
+                        <tr key={c.name} className="border-b border-[var(--border-subtle)] hover:bg-[var(--bg-hover)] transition-colors">
                           <td className="px-5 py-3 text-[var(--text-muted)] font-mono">{i + 1}</td>
                           <td className="px-5 py-3">
                             <Link href={`/creators/${c.name.toLowerCase()}`} className="flex items-center gap-2 hover:text-blue-500 transition-colors text-[var(--text-primary)]">
@@ -240,9 +375,9 @@ export default function CreatorsPage() {
                             </Link>
                           </td>
                           <td className="px-5 py-3 text-right text-[var(--text-secondary)]">{c.posts}</td>
-                          <td className="px-5 py-3 text-right"><span className="text-cyan-500 dark:text-cyan-400">{fmt(c.ttViews)}</span></td>
-                          <td className="px-5 py-3 text-right"><span className="text-pink-500 dark:text-pink-400">{fmt(c.igViews)}</span></td>
-                          <td className="px-5 py-3 text-right font-semibold text-[var(--text-primary)]">{fmt(total)}</td>
+                          {showTT && <td className="px-5 py-3 text-right"><span className="text-cyan-500 dark:text-cyan-400">{fmt(c.ttViews)}</span></td>}
+                          {showIG && <td className="px-5 py-3 text-right"><span className="text-pink-500 dark:text-pink-400">{fmt(c.igViews)}</span></td>}
+                          <td className="px-5 py-3 text-right font-semibold text-[var(--text-primary)]">{fmt(displayTotal)}</td>
                           <td className="px-5 py-3 text-right text-[var(--text-secondary)]">{fmt(c.avgPerPost)}</td>
                           <td className="px-5 py-3 text-right">
                             <span className="text-green-500 dark:text-green-400 font-semibold">${c.earnings.toLocaleString()}</span>
@@ -276,7 +411,7 @@ export default function CreatorsPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <h2 className="text-sm font-semibold text-[var(--text-primary)]">Views Over Time</h2>
                 <div className="flex flex-wrap gap-2">
-                  {creators.map(c => (
+                  {allCreators.map(c => (
                     <button
                       key={c.name}
                       onClick={() => toggle(c.name)}
@@ -294,7 +429,7 @@ export default function CreatorsPage() {
                   <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} />
                   <YAxis tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
                   <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
-                  {creators.filter(c => enabledCreators[c.name]).map(c => (
+                  {allCreators.filter(c => enabledCreators[c.name]).map(c => (
                     <Line key={c.name} type="monotone" dataKey={c.name} stroke={creatorColors[c.name]} strokeWidth={2} dot={false} />
                   ))}
                 </LineChart>
@@ -314,8 +449,8 @@ export default function CreatorsPage() {
                   <YAxis type="category" dataKey="name" tick={{ fill: yLabelColor, fontSize: 12 }} tickLine={false} axisLine={{ stroke: axisColor }} width={60} />
                   <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
                   <Legend wrapperStyle={{ fontSize: 11, color: tickColor }} />
-                  <Bar dataKey="TikTok" fill="#06b6d4" radius={[0, 4, 4, 0]} />
-                  <Bar dataKey="Instagram" fill="#ec4899" radius={[0, 4, 4, 0]} />
+                  {showTT && <Bar dataKey="TikTok" fill="#06b6d4" radius={[0, 4, 4, 0]} />}
+                  {showIG && <Bar dataKey="Instagram" fill="#ec4899" radius={[0, 4, 4, 0]} />}
                 </BarChart>
               </ResponsiveContainer>
             </div>
