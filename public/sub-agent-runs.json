@@ -31,7 +31,7 @@
     "model": "Opus",
     "tokens": 61109044,
     "cost": 104.3332,
-    "durationSec": 233022,
+    "durationSec": 233320,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -65,9 +65,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 3311104,
-    "cost": 8.214,
-    "durationSec": 307593,
+    "tokens": 3387359,
+    "cost": 8.4781,
+    "durationSec": 315579,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
@@ -190,6 +190,18 @@
     "durationSec": 93,
     "status": "success",
     "timestamp": "2026-02-20T04:00:00.087Z"
+  },
+  {
+    "id": "a9017c33-0928-4c94-a9a7-8468f27d92fc",
+    "label": "a9017c33-092",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 145333,
+    "cost": 0.4239,
+    "durationSec": 256,
+    "status": "success",
+    "timestamp": "2026-02-23T10:15:16.158Z"
   },
   {
     "id": "b2ca8262-a148-4240-a625-f34d03f12c41",

@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-23T10:10:01Z",
+  "lastUpdated": "2026-02-23T10:20:01Z",
   "activities": [
+    {
+      "id": "s-a9017c33",
+      "agent": "sam",
+      "title": "a9017c33-092",
+      "description": "Conversation info (untrusted metadata):",
+      "status": "success",
+      "date": "2026-02-23T10:15:16.158Z",
+      "tokens": 145333,
+      "cost": 0.4239,
+      "model": "Sonnet",
+      "durationSec": 256
+    },
     {
       "id": "s-5423ca5a",
       "agent": "miles",
@@ -119,7 +131,7 @@
       "tokens": 61109044,
       "cost": 104.3332,
       "model": "Opus",
-      "durationSec": 233022
+      "durationSec": 233320
     },
     {
       "id": "s-4f751fcb",
@@ -248,10 +260,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 3311104,
-      "cost": 8.214,
+      "tokens": 3387359,
+      "cost": 8.4781,
       "model": "Opus",
-      "durationSec": 307593
+      "durationSec": 315579
     },
     {
       "id": "s-7612c9b5",
@@ -922,7 +934,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-23T09:46:10Z",
+      "lastActive": "2026-02-23T10:16:24Z",
       "statusText": ""
     }
   },
@@ -936,7 +948,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-23T10:10:01Z"
+      "lastRunAt": "2026-02-23T10:20:01Z"
     },
     {
       "id": "bash-frankie-sync",
