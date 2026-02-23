@@ -1908,6 +1908,18 @@
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
   {
+    "id": "0a558919-6ca7-4236-a577-7650f818546b",
+    "label": "0a558919-6ca",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 20525,
+    "cost": 0.0554,
+    "durationSec": 4,
+    "status": "success",
+    "timestamp": "2026-02-23T10:40:05.669Z"
+  },
+  {
     "id": "sam-daily-2026-02-23",
     "label": "Daily total",
     "agent": "sam",
@@ -1917,6 +1929,6 @@
     "cost": 1.4083,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-23T10:40:02Z"
+    "timestamp": "2026-02-23T10:50:01Z"
   }
 ]
