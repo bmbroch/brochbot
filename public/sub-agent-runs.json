@@ -77,9 +77,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 2272538,
-    "cost": 4.3848,
-    "durationSec": 1457,
+    "tokens": 2406958,
+    "cost": 4.6435,
+    "durationSec": 4503,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -142,6 +142,18 @@
     "durationSec": 33889,
     "status": "success",
     "timestamp": "2026-02-21T04:00:34.904Z"
+  },
+  {
+    "id": "0a558919-6ca7-4236-a577-7650f818546b",
+    "label": "0a558919-6ca",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 368772,
+    "cost": 0.7362,
+    "durationSec": 3383,
+    "status": "success",
+    "timestamp": "2026-02-23T10:40:05.669Z"
   },
   {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
@@ -238,18 +250,6 @@
     "durationSec": 94,
     "status": "success",
     "timestamp": "2026-02-22T16:07:13.470Z"
-  },
-  {
-    "id": "0a558919-6ca7-4236-a577-7650f818546b",
-    "label": "0a558919-6ca",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Sonnet",
-    "tokens": 85731,
-    "cost": 0.1406,
-    "durationSec": 2987,
-    "status": "success",
-    "timestamp": "2026-02-23T10:40:05.669Z"
   },
   {
     "id": "613db404-e546-4858-8249-074352064b88",
