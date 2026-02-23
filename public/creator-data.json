@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T06:00:31Z",
+  "lastUpdated": "2026-02-23T06:11:23Z",
   "abby": {
     "name": "Abby",
     "startDate": "2026-01-08",
@@ -7,9 +7,9 @@
     "igViews": 630266,
     "posts": 50,
     "avgPerPost": 18554,
-    "earnings": 955.0,
-    "paymentCount": 8,
-    "lastPaidAt": "2026-02-17",
+    "earnings": 1230.0,
+    "paymentCount": 11,
+    "lastPaidAt": "2026-02-23",
     "posts_detail": [
       {
         "date": "2026-02-20",
@@ -370,9 +370,9 @@
     "igViews": 57496,
     "posts": 46,
     "avgPerPost": 1733,
-    "earnings": 400.0,
-    "paymentCount": 3,
-    "lastPaidAt": "2026-02-17",
+    "earnings": 575.0,
+    "paymentCount": 4,
+    "lastPaidAt": "2026-02-23",
     "posts_detail": [
       {
         "date": "2026-02-22",
@@ -705,9 +705,9 @@
     "igViews": 21542,
     "posts": 14,
     "avgPerPost": 1824,
-    "earnings": 0.0,
-    "paymentCount": 0,
-    "lastPaidAt": null,
+    "earnings": 175.0,
+    "paymentCount": 1,
+    "lastPaidAt": "2026-02-23",
     "posts_detail": [
       {
         "date": "2026-02-23",
@@ -816,9 +816,9 @@
     "igViews": 79919,
     "posts": 62,
     "avgPerPost": 1773,
-    "earnings": 600.0,
-    "paymentCount": 4,
-    "lastPaidAt": "2026-02-17",
+    "earnings": 790.0,
+    "paymentCount": 6,
+    "lastPaidAt": "2026-02-23",
     "posts_detail": [
       {
         "date": "2026-02-23",
@@ -1263,9 +1263,9 @@
     "igViews": 413815,
     "posts": 57,
     "avgPerPost": 8457,
-    "earnings": 1035.0,
-    "paymentCount": 10,
-    "lastPaidAt": "2026-02-19",
+    "earnings": 3220.0,
+    "paymentCount": 22,
+    "lastPaidAt": "2026-02-23",
     "posts_detail": [
       {
         "date": "2026-02-23",
@@ -1675,9 +1675,9 @@
     "igViews": 136356,
     "posts": 84,
     "avgPerPost": 34533,
-    "earnings": 1760.0,
-    "paymentCount": 15,
-    "lastPaidAt": "2026-02-17",
+    "earnings": 3370.0,
+    "paymentCount": 26,
+    "lastPaidAt": "2026-02-23",
     "posts_detail": [
       {
         "date": "2026-02-21",
@@ -2276,9 +2276,9 @@
     "igViews": 14429,
     "posts": 24,
     "avgPerPost": 945,
-    "earnings": 125.0,
-    "paymentCount": 1,
-    "lastPaidAt": "2026-02-17",
+    "earnings": 300.0,
+    "paymentCount": 2,
+    "lastPaidAt": "2026-02-23",
     "posts_detail": [
       {
         "date": "2026-02-23",
@@ -2457,9 +2457,9 @@
     "igViews": 116932,
     "posts": 12,
     "avgPerPost": 9879,
-    "earnings": 75.0,
-    "paymentCount": 1,
-    "lastPaidAt": "2026-02-18",
+    "earnings": 150.0,
+    "paymentCount": 2,
+    "lastPaidAt": "2026-02-23",
     "posts_detail": [
       {
         "date": "2026-02-22",
