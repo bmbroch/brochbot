@@ -241,8 +241,8 @@
   },
   {
     "id": "7af296ce-c8ac-495b-bfb4-59066238c23a",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "7af296ce-c8a",
+    "agent": "sam",
     "task": "- Service account key: /home/ubuntu/.openclaw/workspace/.credentials/google-service-account.json",
     "model": "Sonnet",
     "tokens": 90503,
