@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-02-23T07:58:22Z",
+  "lastUpdated": "2026-02-23T08:00:01Z",
   "activities": [
+    {
+      "id": "s-d7d8afa9",
+      "agent": "devin",
+      "title": "devin-creator-payment-filter",
+      "description": "**Task: Update the Creators page to use per-transaction payment data for date-filtered earnings + CPM.**",
+      "status": "success",
+      "date": "2026-02-23T07:58:19.342Z",
+      "tokens": 26463,
+      "cost": 0.0998,
+      "model": "Opus",
+      "durationSec": 8
+    },
+    {
+      "id": "s-1310aa92",
+      "agent": "frankie",
+      "title": "frankie-transaction-history",
+      "description": "**Task: Update `scripts/frankie-creator-sync.sh` to pull individual Mercury transactions per creator (not just totals).**",
+      "status": "success",
+      "date": "2026-02-23T07:58:19.210Z",
+      "tokens": 27693,
+      "cost": 0.1054,
+      "model": "Opus",
+      "durationSec": 7
+    },
     {
       "id": "s-8f5861f2",
       "agent": "devin",
@@ -128,10 +152,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 38431899,
-      "cost": 65.9012,
+      "tokens": 38764986,
+      "cost": 66.0107,
       "model": "Opus",
-      "durationSec": 225155
+      "durationSec": 225163
     },
     {
       "id": "s-4f751fcb",
@@ -906,7 +930,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-23T07:43:16.667Z",
+      "lastActive": "2026-02-23T07:58:19.342Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -930,7 +954,7 @@
       "statusText": "Active as of today. Owns daily delegation audit (6 PM CAT)."
     },
     "frankie": {
-      "lastActive": "2026-02-23T06:07:16.265Z",
+      "lastActive": "2026-02-23T07:58:19.210Z",
       "statusText": ""
     },
     "sam": {
@@ -948,7 +972,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-23T07:58:22Z"
+      "lastRunAt": "2026-02-23T08:00:01Z"
     },
     {
       "id": "bash-frankie-sync",
