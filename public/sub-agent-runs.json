@@ -120,6 +120,18 @@
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
+    "id": "0a558919-6ca7-4236-a577-7650f818546b",
+    "label": "0a558919-6ca",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 786612,
+    "cost": 1.1911,
+    "durationSec": 11837,
+    "status": "success",
+    "timestamp": "2026-02-23T10:40:05.669Z"
+  },
+  {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
     "label": "Penny Daily Check",
     "agent": "penny",
@@ -142,18 +154,6 @@
     "durationSec": 33889,
     "status": "success",
     "timestamp": "2026-02-21T04:00:34.904Z"
-  },
-  {
-    "id": "0a558919-6ca7-4236-a577-7650f818546b",
-    "label": "0a558919-6ca",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Sonnet",
-    "tokens": 498590,
-    "cost": 0.8787,
-    "durationSec": 4036,
-    "status": "success",
-    "timestamp": "2026-02-23T10:40:05.669Z"
   },
   {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
