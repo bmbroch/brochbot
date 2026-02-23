@@ -312,18 +312,6 @@
     "timestamp": "2026-02-19T11:52:45.805Z"
   },
   {
-    "id": "1310aa92-0519-4822-bf8c-54ddfaa3f39e",
-    "label": "frankie-transaction-history",
-    "agent": "frankie",
-    "task": "**Task: Update `scripts/frankie-creator-sync.sh` to pull individual Mercury transactions per creator (not just totals).**",
-    "model": "Opus",
-    "tokens": 27693,
-    "cost": 0.1054,
-    "durationSec": 7,
-    "status": "success",
-    "timestamp": "2026-02-23T07:58:19.210Z"
-  },
-  {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",
     "label": "dc7287f0-d36",
     "agent": "sam",
@@ -334,18 +322,6 @@
     "durationSec": 8,
     "status": "success",
     "timestamp": "2026-02-19T00:00:00.059Z"
-  },
-  {
-    "id": "d7d8afa9-e06b-453d-adc0-2e8c72ddf56d",
-    "label": "devin-creator-payment-filter",
-    "agent": "devin",
-    "task": "**Task: Update the Creators page to use per-transaction payment data for date-filtered earnings + CPM.**",
-    "model": "Opus",
-    "tokens": 26463,
-    "cost": 0.0998,
-    "durationSec": 8,
-    "status": "success",
-    "timestamp": "2026-02-23T07:58:19.342Z"
   },
   {
     "id": "a4b6f095-849f-482b-ae31-a80e1764a200",

@@ -1,30 +1,6 @@
 {
-  "lastUpdated": "2026-02-23T08:50:01Z",
+  "lastUpdated": "2026-02-23T09:00:01Z",
   "activities": [
-    {
-      "id": "s-d7d8afa9",
-      "agent": "devin",
-      "title": "devin-creator-payment-filter",
-      "description": "**Task: Update the Creators page to use per-transaction payment data for date-filtered earnings + CPM.**",
-      "status": "success",
-      "date": "2026-02-23T07:58:19.342Z",
-      "tokens": 26463,
-      "cost": 0.0998,
-      "model": "Opus",
-      "durationSec": 8
-    },
-    {
-      "id": "s-1310aa92",
-      "agent": "frankie",
-      "title": "frankie-transaction-history",
-      "description": "**Task: Update `scripts/frankie-creator-sync.sh` to pull individual Mercury transactions per creator (not just totals).**",
-      "status": "success",
-      "date": "2026-02-23T07:58:19.210Z",
-      "tokens": 27693,
-      "cost": 0.1054,
-      "model": "Opus",
-      "durationSec": 7
-    },
     {
       "id": "s-5423ca5a",
       "agent": "miles",
@@ -946,7 +922,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-23T08:28:58Z",
+      "lastActive": "2026-02-23T08:58:58Z",
       "statusText": ""
     }
   },
@@ -960,7 +936,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-23T08:50:01Z"
+      "lastRunAt": "2026-02-23T09:00:01Z"
     },
     {
       "id": "bash-frankie-sync",
