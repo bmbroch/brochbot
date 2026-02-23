@@ -240,6 +240,18 @@
     "timestamp": "2026-02-22T16:07:13.470Z"
   },
   {
+    "id": "0a558919-6ca7-4236-a577-7650f818546b",
+    "label": "0a558919-6ca",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 85731,
+    "cost": 0.1406,
+    "durationSec": 2987,
+    "status": "success",
+    "timestamp": "2026-02-23T10:40:05.669Z"
+  },
+  {
     "id": "613db404-e546-4858-8249-074352064b88",
     "label": "613db404-e54",
     "agent": "sam",
@@ -346,17 +358,5 @@
     "durationSec": 34476,
     "status": "success",
     "timestamp": "2026-02-20T07:03:05.484Z"
-  },
-  {
-    "id": "0a558919-6ca7-4236-a577-7650f818546b",
-    "label": "0a558919-6ca",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Sonnet",
-    "tokens": 20525,
-    "cost": 0.0554,
-    "durationSec": 4,
-    "status": "success",
-    "timestamp": "2026-02-23T10:40:05.669Z"
   }
 ]
