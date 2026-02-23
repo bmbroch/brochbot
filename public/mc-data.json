@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-23T06:00:31Z",
+  "lastUpdated": "2026-02-23T06:10:01Z",
   "activities": [
+    {
+      "id": "s-d2fdd2e3",
+      "agent": "frankie",
+      "title": "frankie-nick-reconciliation",
+      "description": "You're Frankie \ud83d\udcb0, Finance agent. Investigate a payout discrepancy for Nick (Nicholas Schindehette).",
+      "status": "success",
+      "date": "2026-02-23T06:07:16.265Z",
+      "tokens": 197796,
+      "cost": 0.2611,
+      "model": "Sonnet",
+      "durationSec": 152
+    },
     {
       "id": "s-5423ca5a",
       "agent": "miles",
@@ -116,10 +128,10 @@
       "description": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
       "status": "success",
       "date": "2026-02-20T17:25:43.608Z",
-      "tokens": 27339372,
-      "cost": 52.7964,
+      "tokens": 29261531,
+      "cost": 55.4919,
       "model": "Opus",
-      "durationSec": 218085
+      "durationSec": 218645
     },
     {
       "id": "s-4f751fcb",
@@ -506,21 +518,6 @@
     }
   ],
   "calendar": [
-    {
-      "id": "cab52e19-0cda-4c98-ab02-c9fafa080753",
-      "title": "ISK Model Simulation Reminder",
-      "schedule": "{'kind': 'at', 'at': '2026-02-23T07:30:00.000Z'}",
-      "timezone": "",
-      "owner": "sam",
-      "enabled": true,
-      "status": "idle",
-      "lastStatus": "idle",
-      "lastRunAt": null,
-      "nextRunAt": "2026-02-23T07:30:00Z",
-      "consecutiveErrors": 0,
-      "description": "",
-      "oneShot": true
-    },
     {
       "id": "7044e775-bf3a-4c95-97fb-33c7b8aa7836",
       "title": "YouTube transcript setup reminder",
@@ -933,7 +930,7 @@
       "statusText": "Active as of today. Owns daily delegation audit (6 PM CAT)."
     },
     "frankie": {
-      "lastActive": "2026-02-19T13:04:52.326Z",
+      "lastActive": "2026-02-23T06:07:16.265Z",
       "statusText": ""
     },
     "sam": {
@@ -951,7 +948,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-23T06:00:31Z"
+      "lastRunAt": "2026-02-23T06:10:01Z"
     },
     {
       "id": "bash-frankie-sync",

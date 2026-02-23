@@ -1824,6 +1824,18 @@
     "timestamp": "2026-02-23T04:10:01Z"
   },
   {
+    "id": "d2fdd2e3-b22a-45c2-9556-86c4fd5b3785",
+    "label": "frankie-nick-reconciliation",
+    "agent": "frankie",
+    "task": "You're Frankie \ud83d\udcb0, Finance agent. Investigate a payout discrepancy for Nick (Nicholas Schindehette).",
+    "model": "Sonnet",
+    "tokens": 197796,
+    "cost": 0.2611,
+    "durationSec": 152,
+    "status": "success",
+    "timestamp": "2026-02-23T06:07:16.265Z"
+  },
+  {
     "id": "sam-daily-2026-02-23",
     "label": "Daily total",
     "agent": "sam",
@@ -1833,6 +1845,6 @@
     "cost": 0.6776,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-23T06:00:31Z"
+    "timestamp": "2026-02-23T06:10:01Z"
   }
 ]
