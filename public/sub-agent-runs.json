@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 49964686,
-    "cost": 79.913,
-    "durationSec": 227175,
+    "tokens": 50643205,
+    "cost": 82.3896,
+    "durationSec": 228099,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -130,18 +130,6 @@
     "durationSec": 33889,
     "status": "success",
     "timestamp": "2026-02-21T04:00:34.904Z"
-  },
-  {
-    "id": "8f5861f2-29df-48de-9fa1-a1fd7a46a51f",
-    "label": "devin-creators-ux",
-    "agent": "devin",
-    "task": "You're Devin \ud83d\udee0\ufe0f, Web Developer for Mission Control. Repo: `/home/ubuntu/.openclaw/workspace/mission-control`.",
-    "model": "Sonnet",
-    "tokens": 309588,
-    "cost": 0.6523,
-    "durationSec": 329,
-    "status": "success",
-    "timestamp": "2026-02-23T07:43:16.667Z"
   },
   {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
