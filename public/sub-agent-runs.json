@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Pre-compaction memory flush. Store durable memories now (use memory/2026-02-20.md; create memory/ if needed). IMPORTANT: If the file already exists, APPEND new content only and do not overwrite existi",
     "model": "Opus",
-    "tokens": 29913482,
-    "cost": 56.131,
-    "durationSec": 218748,
+    "tokens": 30861375,
+    "cost": 57.3795,
+    "durationSec": 223796,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -166,18 +166,6 @@
     "durationSec": 300,
     "status": "success",
     "timestamp": "2026-02-20T01:00:00.067Z"
-  },
-  {
-    "id": "d2fdd2e3-b22a-45c2-9556-86c4fd5b3785",
-    "label": "frankie-nick-reconciliation",
-    "agent": "frankie",
-    "task": "You're Frankie \ud83d\udcb0, Finance agent. Investigate a payout discrepancy for Nick (Nicholas Schindehette).",
-    "model": "Sonnet",
-    "tokens": 197796,
-    "cost": 0.2611,
-    "durationSec": 152,
-    "status": "success",
-    "timestamp": "2026-02-23T06:07:16.265Z"
   },
   {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
