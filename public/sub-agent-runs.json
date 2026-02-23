@@ -31,7 +31,7 @@
     "model": "Opus",
     "tokens": 26551911,
     "cost": 51.411,
-    "durationSec": 185801,
+    "durationSec": 211283,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
@@ -101,9 +101,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 899342,
-    "cost": 1.8111,
-    "durationSec": 266220,
+    "tokens": 1124983,
+    "cost": 2.0525,
+    "durationSec": 292029,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
@@ -202,6 +202,18 @@
     "durationSec": 96,
     "status": "success",
     "timestamp": "2026-02-21T04:00:00.029Z"
+  },
+  {
+    "id": "5423ca5a-4ab8-4836-af81-965c4708fd72",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 117525,
+    "cost": 0.163,
+    "durationSec": 108,
+    "status": "success",
+    "timestamp": "2026-02-23T04:00:00.031Z"
   },
   {
     "id": "7af296ce-c8ac-495b-bfb4-59066238c23a",

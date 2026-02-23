@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-23T04:00:01Z",
+  "lastUpdated": "2026-02-23T04:10:01Z",
   "activities": [
+    {
+      "id": "s-5423ca5a",
+      "agent": "miles",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+      "status": "success",
+      "date": "2026-02-23T04:00:00.031Z",
+      "tokens": 117525,
+      "cost": 0.163,
+      "model": "Sonnet",
+      "durationSec": 108
+    },
     {
       "id": "s-a50fee35",
       "agent": "penny",
@@ -107,7 +119,7 @@
       "tokens": 26551911,
       "cost": 51.411,
       "model": "Opus",
-      "durationSec": 185801
+      "durationSec": 211283
     },
     {
       "id": "s-4f751fcb",
@@ -224,10 +236,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:55:11.223Z",
-      "tokens": 899342,
-      "cost": 1.8111,
+      "tokens": 1124983,
+      "cost": 2.0525,
       "model": "Opus",
-      "durationSec": 266220
+      "durationSec": 292029
     },
     {
       "id": "s-c1c67e23",
@@ -495,20 +507,6 @@
   ],
   "calendar": [
     {
-      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
-      "title": "Daily GSC Report \u2014 All Products (Miles)",
-      "schedule": "0 6 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "miles",
-      "enabled": true,
-      "status": "error (1 consecutive)",
-      "lastStatus": "error",
-      "lastRunAt": "2026-02-22T16:07:13Z",
-      "nextRunAt": "2026-02-23T04:00:00Z",
-      "consecutiveErrors": 1,
-      "description": "Miles pulls GSC data for ISK, CLCP, SE \u2014 tracked keywords, clicks, impressions, position trends. Daily 6 AM CAT."
-    },
-    {
       "id": "7ca362c4-033a-407b-9386-d99e5910a909",
       "title": "Sam Morning Brief",
       "schedule": "30 7 * * *",
@@ -579,6 +577,20 @@
       "nextRunAt": "2026-02-24T03:00:00Z",
       "consecutiveErrors": 2,
       "description": "Penny's overnight quality sweep \u2014 delegation audit, cron/MC drift check, file hygiene scan. Observe-only."
+    },
+    {
+      "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "schedule": "0 6 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "miles",
+      "enabled": true,
+      "status": "error (2 consecutive)",
+      "lastStatus": "error",
+      "lastRunAt": "2026-02-23T04:00:00Z",
+      "nextRunAt": "2026-02-24T04:00:00Z",
+      "consecutiveErrors": 2,
+      "description": "Miles pulls GSC data for ISK, CLCP, SE \u2014 tracked keywords, clicks, impressions, position trends. Daily 6 AM CAT."
     },
     {
       "id": "6e98d078-5f1f-4ce8-8b61-b5bafde02879",
@@ -905,7 +917,7 @@
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
-      "lastActive": "2026-02-22T16:07:13.470Z",
+      "lastActive": "2026-02-23T04:00:00.031Z",
       "statusText": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted."
     },
     "cara": {
@@ -925,7 +937,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-23T03:52:26Z",
+      "lastActive": "2026-02-23T04:07:16Z",
       "statusText": ""
     }
   },
@@ -939,7 +951,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-23T04:00:01Z"
+      "lastRunAt": "2026-02-23T04:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
