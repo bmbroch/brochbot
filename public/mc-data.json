@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T10:20:03Z",
+  "lastUpdated": "2026-02-24T10:30:02Z",
   "activities": [
     {
       "id": "s-81b9b199",
@@ -8,10 +8,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-24T10:19:38.513Z",
-      "tokens": 20768,
-      "cost": 0.0581,
+      "tokens": 88817,
+      "cost": 0.151,
       "model": "Sonnet",
-      "durationSec": 7
+      "durationSec": 140
     },
     {
       "id": "s-e6de0f83",
@@ -32,10 +32,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-24T10:13:18.254Z",
-      "tokens": 259872,
-      "cost": 0.2986,
+      "tokens": 851742,
+      "cost": 0.7164,
       "model": "Sonnet",
-      "durationSec": 174
+      "durationSec": 956
     },
     {
       "id": "s-d1a844b5",
@@ -62,28 +62,16 @@
       "durationSec": 250
     },
     {
-      "id": "s-e3bcd381",
-      "agent": "devin",
-      "title": "devin-ugc-ux-fixes",
-      "description": "Currently \"New Posts\" and \"Refresh Counts\" buttons are inside the per-creator content area. Move them to the top of the Drill Down section, on the same row as the \"Per-Creator Analytics\" heading or ju",
-      "status": "success",
-      "date": "2026-02-24T09:19:59.003Z",
-      "tokens": 1072805,
-      "cost": 0.7646,
-      "model": "Sonnet",
-      "durationSec": 341
-    },
-    {
       "id": "s-c82a1e98",
       "agent": "sam",
       "title": "c82a1e98-5dd",
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 22036708,
-      "cost": 9.2595,
+      "tokens": 22127757,
+      "cost": 9.5898,
       "model": "unknown",
-      "durationSec": 9175
+      "durationSec": 11548
     },
     {
       "id": "s-66dde37a",
@@ -224,10 +212,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 31403140,
-      "cost": 25.8908,
+      "tokens": 34919132,
+      "cost": 30.9329,
       "model": "Sonnet",
-      "durationSec": 86686
+      "durationSec": 87275
     },
     {
       "id": "s-5423ca5a",
@@ -1149,7 +1137,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T10:20:03Z"
+      "lastRunAt": "2026-02-24T10:30:02Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -1182,7 +1170,7 @@
       "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log",
-      "lastRunAt": "2026-02-23T23:30:01Z"
+      "lastRunAt": "2026-02-24T10:30:01Z"
     },
     {
       "id": "bash-health-snapshot",

@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 31403140,
-    "cost": 25.8908,
-    "durationSec": 86686,
+    "tokens": 34919132,
+    "cost": 30.9329,
+    "durationSec": 87275,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -53,9 +53,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 22036708,
-    "cost": 9.2595,
-    "durationSec": 9175,
+    "tokens": 22127757,
+    "cost": 9.5898,
+    "durationSec": 11548,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -156,18 +156,6 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
-    "id": "e3bcd381-7124-4a52-96b3-1d980d306e4a",
-    "label": "devin-ugc-ux-fixes",
-    "agent": "devin",
-    "task": "Currently \"New Posts\" and \"Refresh Counts\" buttons are inside the per-creator content area. Move them to the top of the Drill Down section, on the same row as the \"Per-Creator Analytics\" heading or ju",
-    "model": "Sonnet",
-    "tokens": 1072805,
-    "cost": 0.7646,
-    "durationSec": 341,
-    "status": "success",
-    "timestamp": "2026-02-24T09:19:59.003Z"
-  },
-  {
     "id": "d1a844b5-758b-4b71-86d4-6132fc564aaf",
     "label": "devin-mobile-audit",
     "agent": "devin",
@@ -178,6 +166,18 @@
     "durationSec": 184,
     "status": "success",
     "timestamp": "2026-02-24T09:40:33.519Z"
+  },
+  {
+    "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
+    "label": "20309a2a-9ef",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 851742,
+    "cost": 0.7164,
+    "durationSec": 956,
+    "status": "success",
+    "timestamp": "2026-02-24T10:13:18.254Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -262,18 +262,6 @@
     "durationSec": 118,
     "status": "success",
     "timestamp": "2026-02-24T05:30:00.172Z"
-  },
-  {
-    "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
-    "label": "20309a2a-9ef",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Sonnet",
-    "tokens": 259872,
-    "cost": 0.2986,
-    "durationSec": 174,
-    "status": "success",
-    "timestamp": "2026-02-24T10:13:18.254Z"
   },
   {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
@@ -420,6 +408,18 @@
     "timestamp": "2026-02-22T16:07:13.470Z"
   },
   {
+    "id": "81b9b199-e8c0-43e8-a75e-24ebf5f25b8a",
+    "label": "81b9b199-e8c",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 88817,
+    "cost": 0.151,
+    "durationSec": 140,
+    "status": "success",
+    "timestamp": "2026-02-24T10:19:38.513Z"
+  },
+  {
     "id": "613db404-e546-4858-8249-074352064b88",
     "label": "613db404-e54",
     "agent": "sam",
@@ -550,17 +550,5 @@
     "durationSec": 34476,
     "status": "success",
     "timestamp": "2026-02-20T07:03:05.484Z"
-  },
-  {
-    "id": "81b9b199-e8c0-43e8-a75e-24ebf5f25b8a",
-    "label": "81b9b199-e8c",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Sonnet",
-    "tokens": 20768,
-    "cost": 0.0581,
-    "durationSec": 7,
-    "status": "success",
-    "timestamp": "2026-02-24T10:19:38.513Z"
   }
 ]
