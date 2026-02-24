@@ -204,14 +204,23 @@ function CreatorCard({
   computedData,
   payout,
   onClick,
+  syncingHandle,
+  onRefresh,
+  lastSync,
 }: {
   creator: { name: string; handle: string | null; igHandle: string | null };
   computedData: ComputedCreator | undefined;
   payout: CreatorPayout | undefined;
   onClick: () => void;
+  syncingHandle: string | null;
+  onRefresh: (handle: string) => void;
+  lastSync: string | null | undefined;
 }) {
   const color = getCreatorColor(creator.name);
   const hasData = computedData && (computedData.posts > 0 || computedData.ttViews > 0 || computedData.igViews > 0);
+
+  const isThisSyncing = !!creator.handle && syncingHandle === creator.handle;
+  const isAnotherSyncing = !!syncingHandle && syncingHandle !== creator.handle;
 
   if (!hasData) {
     return (
@@ -245,61 +254,93 @@ function CreatorCard({
   const hasIG = igViews > 0;
 
   return (
-    <button
-      onClick={onClick}
-      className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-4 flex flex-col gap-3 hover:border-gray-300 dark:hover:border-[#333] transition-all text-left w-full cursor-pointer hover:shadow-sm"
-    >
-      {/* Top row: creator name + post count */}
-      <div className="flex items-center justify-between gap-2">
-        <span
-          className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold truncate"
-          style={{ backgroundColor: `${color}25`, color }}
+    <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-4 flex flex-col gap-3 hover:border-gray-300 dark:hover:border-[#333] transition-all hover:shadow-sm">
+      {/* Top row: creator name + post count + refresh button */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={onClick}
+          className="flex-1 flex items-center gap-2 min-w-0 text-left"
         >
-          {creator.name}
-        </span>
+          <span
+            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold truncate"
+            style={{ backgroundColor: `${color}25`, color }}
+          >
+            {creator.name}
+          </span>
+        </button>
         <span className="text-[11px] text-gray-400 dark:text-white/30 whitespace-nowrap flex-shrink-0">
           {posts} posts
         </span>
+        {creator.handle && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isAnotherSyncing && !isThisSyncing) onRefresh(creator.handle!);
+            }}
+            disabled={isAnotherSyncing || isThisSyncing}
+            title={isAnotherSyncing ? "Another creator is syncing…" : "Sync new posts"}
+            className={[
+              "flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all",
+              isAnotherSyncing ? "opacity-40 cursor-not-allowed" : "",
+              isThisSyncing ? "cursor-default" : "",
+            ].join(" ")}
+          >
+            {isThisSyncing ? (
+              <Loader2 size={13} className="animate-spin" />
+            ) : (
+              <RefreshCw size={13} />
+            )}
+          </button>
+        )}
       </div>
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-3 gap-1">
-        <div>
-          <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">Total Views</p>
-          <p className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{fmt(totalViews)}</p>
+      {/* Stats grid — clicking anywhere on the card body goes to drilldown */}
+      <button onClick={onClick} className="flex flex-col gap-3 text-left w-full cursor-pointer">
+        <div className="grid grid-cols-3 gap-1">
+          <div>
+            <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">Total Views</p>
+            <p className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{fmt(totalViews)}</p>
+          </div>
+          <div>
+            <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">Avg/Post</p>
+            <p className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{avgPost > 0 ? fmt(avgPost) : "—"}</p>
+          </div>
+          <div>
+            <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">CPM</p>
+            <p className={`text-sm font-bold tabular-nums ${cpm !== null ? cpmColor(cpm) : "text-gray-300 dark:text-white/20"}`}>
+              {cpm !== null ? `$${cpm.toFixed(2)}` : "—"}
+            </p>
+          </div>
         </div>
-        <div>
-          <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">Avg/Post</p>
-          <p className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{avgPost > 0 ? fmt(avgPost) : "—"}</p>
-        </div>
-        <div>
-          <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">CPM</p>
-          <p className={`text-sm font-bold tabular-nums ${cpm !== null ? cpmColor(cpm) : "text-gray-300 dark:text-white/20"}`}>
-            {cpm !== null ? `$${cpm.toFixed(2)}` : "—"}
+
+        {/* Sync timestamp */}
+        {lastSync && (
+          <p className="text-[9px] text-gray-300 dark:text-white/20">
+            synced {timeAgo(lastSync)}
           </p>
-        </div>
-      </div>
+        )}
 
-      {/* Bottom: platform breakdown */}
-      <div className="flex items-center gap-2 flex-wrap">
-        {hasTT && (
-          <span className="flex items-center gap-1 text-[10px] text-cyan-600 dark:text-cyan-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0" />
-            TikTok {fmt(ttViews)}
-          </span>
-        )}
-        {hasTT && hasIG && <span className="text-gray-300 dark:text-white/20 text-[10px]">·</span>}
-        {hasIG && (
-          <span className="flex items-center gap-1 text-[10px] text-pink-600 dark:text-pink-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-pink-500 flex-shrink-0" />
-            IG {fmt(igViews)}
-          </span>
-        )}
-        {!hasTT && !hasIG && (
-          <span className="text-[10px] text-gray-300 dark:text-white/20">No views yet</span>
-        )}
-      </div>
-    </button>
+        {/* Bottom: platform breakdown */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {hasTT && (
+            <span className="flex items-center gap-1 text-[10px] text-cyan-600 dark:text-cyan-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0" />
+              TikTok {fmt(ttViews)}
+            </span>
+          )}
+          {hasTT && hasIG && <span className="text-gray-300 dark:text-white/20 text-[10px]">·</span>}
+          {hasIG && (
+            <span className="flex items-center gap-1 text-[10px] text-pink-600 dark:text-pink-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-pink-500 flex-shrink-0" />
+              IG {fmt(igViews)}
+            </span>
+          )}
+          {!hasTT && !hasIG && (
+            <span className="text-[10px] text-gray-300 dark:text-white/20">No views yet</span>
+          )}
+        </div>
+      </button>
+    </div>
   );
 }
 
@@ -552,6 +593,7 @@ export default function UGCPage() {
   const [dateRange, setDateRange] = useState<DateRange>("All");
   const [overviewPlatform, setOverviewPlatform] = useState<OverviewPlatform>("All");
   const [groupBy, setGroupBy] = useState<GroupBy>("week");
+  const [syncingHandle, setSyncingHandle] = useState<string | null>(null);
 
   // ── Table sort ────────────────────────────────────────────────────────────
   const [sortCol, setSortCol] = useState<SortCol>("totalViews");
@@ -761,6 +803,54 @@ export default function UGCPage() {
   const handleCreatorPillClick = (name: string) => {
     setIsolatedCreator((prev) => (prev === name ? null : name));
   };
+
+  // ── Card-level refresh ─────────────────────────────────────────────────────
+  const pollCardUntilDone = useCallback((runId: string, handle: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const timer = setInterval(async () => {
+        try {
+          const res = await fetch(
+            `/api/tiktok/poll?runId=${encodeURIComponent(runId)}&handle=${encodeURIComponent(handle)}&mode=new-posts`
+          );
+          const json = await res.json();
+          if (json.status === "DONE") {
+            clearInterval(timer);
+            resolve();
+          } else if (json.status === "FAILED") {
+            clearInterval(timer);
+            reject(new Error("Apify run failed"));
+          }
+        } catch {
+          // transient — keep polling
+        }
+      }, POLL_INTERVAL_MS);
+    });
+  }, []);
+
+  const handleCardRefresh = useCallback(
+    async (handle: string) => {
+      if (syncingHandle) return;
+      setSyncingHandle(handle);
+      try {
+        const res = await fetch("/api/tiktok/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ handle, mode: "new-posts", firstFetch: false }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? "Failed to start run");
+        await pollCardUntilDone(json.runId, handle);
+        // Re-fetch allCreatorData so card stats update immediately
+        const updated = await fetch("/api/tiktok/all-data");
+        setAllData(await updated.json());
+      } catch (err) {
+        console.error("Card refresh failed:", err);
+      } finally {
+        setSyncingHandle(null);
+      }
+    },
+    [syncingHandle, pollCardUntilDone]
+  );
 
   // ── Earnings row for active creator ────────────────────────────────────────
   const earningsRow = useMemo(() => {
@@ -1111,6 +1201,9 @@ export default function UGCPage() {
                 {TIKTOK_CREATORS.map((creator) => {
                   const computed = computedCreators.find((c) => c.name === creator.name);
                   const payout = payoutMap[creator.name];
+                  const lastSync = creator.handle
+                    ? allData?.tiktok[creator.handle]?.lastNewPostsSync ?? null
+                    : null;
                   return (
                     <CreatorCard
                       key={creator.name}
@@ -1123,6 +1216,9 @@ export default function UGCPage() {
                           setPageMode("drilldown");
                         }
                       }}
+                      syncingHandle={syncingHandle}
+                      onRefresh={handleCardRefresh}
+                      lastSync={lastSync}
                     />
                   );
                 })}
