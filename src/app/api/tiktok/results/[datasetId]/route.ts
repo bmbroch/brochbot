@@ -27,7 +27,7 @@ export async function GET(
     const items: TikTokVideo[] = await res.json();
 
     // Store in cache for matching entry
-    for (const [handle, entry] of tiktokCache.entries()) {
+    Array.from(tiktokCache.entries()).forEach(([handle, entry]) => {
       if (entry.datasetId === datasetId) {
         tiktokCache.set(handle, {
           ...entry,
@@ -35,9 +35,8 @@ export async function GET(
           data: items,
           lastFetched: Date.now(),
         });
-        break;
       }
-    }
+    });
 
     return NextResponse.json({ items, lastFetched: Date.now() });
   } catch (err) {

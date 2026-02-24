@@ -29,16 +29,15 @@ export async function GET(
     const defaultDatasetId: string = json?.data?.defaultDatasetId;
 
     // Update any matching cache entry
-    for (const [handle, entry] of tiktokCache.entries()) {
+    Array.from(tiktokCache.entries()).forEach(([handle, entry]) => {
       if (entry.runId === runId) {
         if (status === "SUCCEEDED") {
           tiktokCache.set(handle, { ...entry, status: "succeeded", datasetId: defaultDatasetId });
         } else if (status === "FAILED" || status === "ABORTED" || status === "TIMED-OUT") {
           tiktokCache.set(handle, { ...entry, status: "failed" });
         }
-        break;
       }
-    }
+    });
 
     return NextResponse.json({ status, defaultDatasetId });
   } catch (err) {
