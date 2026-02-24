@@ -162,7 +162,7 @@ export default function SurveillancePage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-10 max-w-4xl mx-auto space-y-8">
+      <div className="p-4 sm:p-6 lg:p-10 max-w-4xl mx-auto space-y-8">
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold tracking-tight">🕵️ Surveillance</h1>

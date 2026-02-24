@@ -246,10 +246,10 @@ function NewTaskModal({ onClose, onAdd }: { onClose: () => void; onAdd: (task: O
   const [product, setProduct] = useState<string>("");
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={onClose}>
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={onClose}>
       <div className="fixed inset-0 backdrop-blur-sm" style={{ background: "var(--bg-overlay)" }} />
       <div
-        className="relative w-full max-w-md rounded-2xl p-6 shadow-2xl border border-[var(--border-medium)]"
+        className="relative w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 shadow-2xl border border-[var(--border-medium)]"
         style={{ background: "var(--bg-card)" }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -270,7 +270,7 @@ function NewTaskModal({ onClose, onAdd }: { onClose: () => void; onAdd: (task: O
             className="w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500 transition-colors resize-none border border-[var(--border-medium)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
             style={{ background: "var(--bg-primary)" }}
           />
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <select
               value={assignee}
               onChange={(e) => setAssignee(e.target.value as Assignee)}

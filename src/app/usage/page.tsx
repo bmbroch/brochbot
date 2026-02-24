@@ -690,7 +690,7 @@ export default function UsagePage() {
   if (loading) {
     return (
       <Shell>
-        <div className="p-6 lg:p-10 max-w-7xl mx-auto flex items-center justify-center min-h-64">
+        <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto flex items-center justify-center min-h-64">
           <p className="text-[var(--text-muted)] text-sm animate-pulse">Loading cost data…</p>
         </div>
       </Shell>
@@ -699,7 +699,7 @@ export default function UsagePage() {
 
   return (
     <Shell>
-      <div className="p-6 lg:p-10 max-w-7xl mx-auto space-y-8">
+      <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto space-y-8">
 
         {/* ── Header ── */}
         <div>

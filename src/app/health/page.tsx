@@ -148,15 +148,15 @@ export default function HealthPage() {
 
   return (
     <Shell>
-      <div className="p-6 max-w-3xl mx-auto space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto space-y-6">
         {/* Page Header */}
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
           <div>
             <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">System Health</h1>
             <p className="text-[13px] text-[var(--text-muted)] mt-0.5">Live snapshot of server and services status</p>
           </div>
           {data && (
-            <div className="text-right">
+            <div className="text-left sm:text-right">
               <div className="text-[11px] text-[var(--text-muted)] uppercase tracking-wide">Last updated</div>
               <div className="text-[12px] text-[var(--text-secondary)] font-mono mt-0.5">{fmtTime(data.timestamp)}</div>
             </div>
