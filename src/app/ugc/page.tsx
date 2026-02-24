@@ -1028,13 +1028,13 @@ export default function UGCPage() {
                   </div>
                 </div>
 
-                {/* Card header row 2: creator pills */}
-                <div className="flex flex-wrap items-center gap-1.5 mb-4">
+                {/* Card header row 2: creator pills — scrollable on mobile */}
+                <div className="flex overflow-x-auto gap-1.5 pb-1 -mx-1 px-1 mb-4 scrollbar-hide">
                   {/* All pill */}
                   <button
                     onClick={() => setIsolatedCreator(null)}
                     className={[
-                      "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer border",
+                      "flex-shrink-0 px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all cursor-pointer border",
                       isolatedCreator === null
                         ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent"
                         : "border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444]",
@@ -1052,7 +1052,7 @@ export default function UGCPage() {
                         key={c.name}
                         onClick={() => handleCreatorPillClick(c.name)}
                         className={[
-                          "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer border",
+                          "flex-shrink-0 px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all cursor-pointer border",
                           isFaded ? "opacity-30 grayscale" : "",
                         ].join(" ")}
                         style={
@@ -1076,7 +1076,8 @@ export default function UGCPage() {
                     </p>
                   </div>
                 ) : (
-                  <ResponsiveContainer width="100%" height={280}>
+                  <div className="h-[200px] sm:h-[280px]">
+                  <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={lineChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                       <CartesianGrid
                         strokeDasharray="3 3"
@@ -1125,6 +1126,7 @@ export default function UGCPage() {
                       ))}
                     </LineChart>
                   </ResponsiveContainer>
+                  </div>
                 )}
               </div>
             ) : (
@@ -1156,7 +1158,8 @@ export default function UGCPage() {
                     ))}
                   </div>
                 </div>
-                <ResponsiveContainer width="100%" height={260}>
+                <div className="h-[200px] sm:h-[260px]">
+                <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={barData} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />
                     <XAxis type="number" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
@@ -1167,6 +1170,7 @@ export default function UGCPage() {
                     {showIG && <Bar dataKey="Instagram" fill="#ec4899" radius={[0, 4, 4, 0]} />}
                   </BarChart>
                 </ResponsiveContainer>
+                </div>
               </div>
             )}
 
@@ -1177,26 +1181,38 @@ export default function UGCPage() {
                   <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">Creator Comparison</h3>
                   <p className="text-xs text-gray-400 dark:text-white/30 mt-0.5">Click a row to drill down into that creator</p>
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
+                <div className="overflow-x-auto -mx-4 sm:mx-0">
+                  <table className="min-w-full text-sm">
                     <thead className="sticky top-0 bg-white dark:bg-[#111] z-10">
                       <tr className="border-b border-gray-100 dark:border-[#1a1a1a]">
+                        {/* Creator — sticky on mobile */}
+                        <th
+                          onClick={() => handleSort("name")}
+                          className="sticky left-0 bg-white dark:bg-[#111] z-10 text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:text-gray-600 dark:hover:text-white/60 transition-colors select-none"
+                        >
+                          <span className="flex items-center gap-1">
+                            Creator
+                            <SortIcon col="name" active={sortCol === "name"} dir={sortDir} />
+                          </span>
+                        </th>
                         {(
                           [
-                            { key: "name" as SortCol, label: "Creator" },
-                            { key: "posts" as SortCol, label: "Posts" },
-                            { key: "totalViews" as SortCol, label: "Total Views" },
-                            { key: "ttViews" as SortCol, label: "TT Views" },
-                            { key: "igViews" as SortCol, label: "IG Views" },
-                            { key: "avgPost" as SortCol, label: "Avg/Post" },
-                            { key: "earnings" as SortCol, label: "Earnings" },
-                            { key: "cpm" as SortCol, label: "CPM" },
-                          ] as { key: SortCol; label: string }[]
-                        ).map(({ key, label }) => (
+                            { key: "posts" as SortCol, label: "Posts", hide: false },
+                            { key: "totalViews" as SortCol, label: "Total Views", hide: false },
+                            { key: "ttViews" as SortCol, label: "TT Views", hide: true },
+                            { key: "igViews" as SortCol, label: "IG Views", hide: true },
+                            { key: "avgPost" as SortCol, label: "Avg/Post", hide: false },
+                            { key: "earnings" as SortCol, label: "Earnings", hide: false },
+                            { key: "cpm" as SortCol, label: "CPM", hide: false },
+                          ] as { key: SortCol; label: string; hide: boolean }[]
+                        ).map(({ key, label, hide }) => (
                           <th
                             key={key}
                             onClick={() => handleSort(key)}
-                            className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:text-gray-600 dark:hover:text-white/60 transition-colors select-none"
+                            className={[
+                              "text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:text-gray-600 dark:hover:text-white/60 transition-colors select-none",
+                              hide ? "hidden md:table-cell" : "",
+                            ].join(" ")}
                           >
                             <span className="flex items-center gap-1">
                               {label}
@@ -1226,14 +1242,14 @@ export default function UGCPage() {
                               i % 2 === 0 ? "" : "bg-gray-50/50 dark:bg-white/[0.01]",
                             ].join(" ")}
                           >
-                            {/* Creator */}
-                            <td className="px-4 py-3">
+                            {/* Creator — sticky on mobile */}
+                            <td className="sticky left-0 bg-white dark:bg-[#111] z-10 px-4 py-3" style={i % 2 !== 0 ? { backgroundColor: undefined } : {}}>
                               <div className="flex items-center gap-2">
                                 <span
                                   className="w-2 h-2 rounded-full flex-shrink-0"
                                   style={{ backgroundColor: color }}
                                 />
-                                <span className="font-medium text-gray-900 dark:text-white text-sm">
+                                <span className="font-medium text-gray-900 dark:text-white text-sm whitespace-nowrap">
                                   {row.name}
                                 </span>
                               </div>
@@ -1246,12 +1262,12 @@ export default function UGCPage() {
                             <td className="px-4 py-3 font-semibold text-gray-800 dark:text-white/90 whitespace-nowrap">
                               {row.totalViews > 0 ? fmt(row.totalViews) : <span className="font-normal text-gray-300 dark:text-white/20">—</span>}
                             </td>
-                            {/* TT Views */}
-                            <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
+                            {/* TT Views — hidden on mobile */}
+                            <td className="hidden md:table-cell px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
                               {row.ttViews > 0 ? fmt(row.ttViews) : <span className="text-gray-300 dark:text-white/20">—</span>}
                             </td>
-                            {/* IG Views */}
-                            <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
+                            {/* IG Views — hidden on mobile */}
+                            <td className="hidden md:table-cell px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
                               {row.igViews > 0 ? fmt(row.igViews) : <span className="text-gray-300 dark:text-white/20">—</span>}
                             </td>
                             {/* Avg/Post */}
@@ -1302,10 +1318,10 @@ export default function UGCPage() {
                   <button
                     onClick={() => handleRun("new-posts")}
                     disabled={newPostsRunning || refreshRunning}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-3 py-2 sm:py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed min-h-[36px]"
                   >
                     {newPostsRunning ? <Loader2 size={13} className="animate-spin" /> : <Search size={13} />}
-                    {newPostsRunning ? "Syncing..." : "New Posts"}
+                    <span className="hidden sm:inline">{newPostsRunning ? "Syncing..." : "New Posts"}</span>
                   </button>
                   <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap">
                     · synced {timeAgo(activeSyncTime)}
@@ -1315,10 +1331,10 @@ export default function UGCPage() {
                   <button
                     onClick={() => handleRun("refresh-counts")}
                     disabled={newPostsRunning || refreshRunning}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-3 py-2 sm:py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed min-h-[36px]"
                   >
                     {refreshRunning ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
-                    {refreshRunning ? "Refreshing..." : "Refresh Counts"}
+                    <span className="hidden sm:inline">{refreshRunning ? "Refreshing..." : "Refresh Counts"}</span>
                   </button>
                   <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap">
                     · updated {timeAgo(activeRefreshTime)}
@@ -1327,9 +1343,9 @@ export default function UGCPage() {
               </div>
             </div>
 
-            {/* Creator Tabs + Platform Toggle on same row */}
-            <div className="flex items-center justify-between gap-3 mb-5 flex-wrap">
-              <div className="flex items-center gap-2 flex-wrap flex-1">
+            {/* Creator Tabs + Platform Toggle — stacked on mobile, same row on sm+ */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+              <div className="flex overflow-x-auto gap-2 pb-1 -mx-1 px-1 scrollbar-hide">
                 {TIKTOK_CREATORS.map((creator) => {
                   const active = creator.handle === activeHandle;
                   const disabled = !creator.handle;
@@ -1339,7 +1355,7 @@ export default function UGCPage() {
                       onClick={() => { if (creator.handle && !disabled) setActiveHandle(creator.handle); }}
                       disabled={disabled}
                       className={[
-                        "px-4 py-2 rounded-xl text-sm font-medium transition-all border",
+                        "flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all border",
                         active
                           ? "bg-blue-600/20 border-blue-500/40 text-blue-500 dark:text-blue-400"
                           : disabled
@@ -1353,7 +1369,9 @@ export default function UGCPage() {
                   );
                 })}
               </div>
-              <PlatformToggle platform={platform} onChange={setPlatform} />
+              <div className="flex-shrink-0">
+                <PlatformToggle platform={platform} onChange={setPlatform} />
+              </div>
             </div>
 
             {/* Earnings Row */}
@@ -1438,7 +1456,8 @@ export default function UGCPage() {
                       {ttChartData.length === 0 ? (
                         <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
                       ) : (
-                        <ResponsiveContainer width="100%" height={240}>
+                        <div className="h-[200px] sm:h-[240px]">
+                        <ResponsiveContainer width="100%" height="100%">
                           <BarChart data={ttChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
                             <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} axisLine={{ stroke: axisColor }} tickLine={false} />
@@ -1447,6 +1466,7 @@ export default function UGCPage() {
                             <Bar dataKey="views" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
                           </BarChart>
                         </ResponsiveContainer>
+                        </div>
                       )}
                     </div>
                     <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] overflow-hidden">
@@ -1557,7 +1577,8 @@ export default function UGCPage() {
                           {igChartData.length === 0 ? (
                             <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
                           ) : (
-                            <ResponsiveContainer width="100%" height={240}>
+                            <div className="h-[200px] sm:h-[240px]">
+                            <ResponsiveContainer width="100%" height="100%">
                               <BarChart data={igChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
                                 <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} axisLine={{ stroke: axisColor }} tickLine={false} />
@@ -1566,6 +1587,7 @@ export default function UGCPage() {
                                 <Bar dataKey="views" fill="#ec4899" radius={[4, 4, 0, 0]} maxBarSize={40} />
                               </BarChart>
                             </ResponsiveContainer>
+                            </div>
                           )}
                         </div>
                         <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] overflow-hidden">
