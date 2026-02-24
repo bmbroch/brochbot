@@ -1184,6 +1184,24 @@ export default function UGCPage() {
                         </button>
                       ))}
                     </div>
+                    <div className="w-px h-4 bg-gray-200 dark:bg-[#333]" />
+                    {/* Group by toggle */}
+                    <div className="flex items-center gap-1">
+                      {(["day", "week", "month"] as GroupBy[]).map((g) => (
+                        <button
+                          key={g}
+                          onClick={() => setGroupBy(g)}
+                          className={[
+                            "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer capitalize",
+                            groupBy === g
+                              ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
+                              : "border border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444] hover:text-gray-600 dark:hover:text-white/60",
+                          ].join(" ")}
+                        >
+                          {g.charAt(0).toUpperCase() + g.slice(1)}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
