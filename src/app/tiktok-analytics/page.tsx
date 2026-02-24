@@ -186,11 +186,14 @@ export default function TikTokAnalyticsPage() {
       setRunState("running");
       setError(null);
 
+      // First fetch = no existing videos → grab full history, no day limit
+      const firstFetch = !storeData || storeData.videos.length === 0;
+
       try {
         const res = await fetch("/api/tiktok/run", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ handle: activeHandle, mode }),
+          body: JSON.stringify({ handle: activeHandle, mode, firstFetch }),
         });
         const json = await res.json();
         if (!res.ok) throw new Error(json.error ?? "Failed to start run");
@@ -200,7 +203,7 @@ export default function TikTokAnalyticsPage() {
         setError(String(err));
       }
     },
-    [activeHandle, startPolling]
+    [activeHandle, storeData, startPolling]
   );
 
   useEffect(() => {

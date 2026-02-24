@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { handle, mode } = body;
+  const { handle, mode, firstFetch } = body as { handle?: string; mode?: string; firstFetch?: boolean };
   if (!handle) return NextResponse.json({ error: "handle is required" }, { status: 400 });
   if (mode !== "new-posts" && mode !== "refresh-counts") {
     return NextResponse.json({ error: "mode must be new-posts or refresh-counts" }, { status: 400 });
@@ -24,11 +24,16 @@ export async function POST(req: NextRequest) {
 
   const isNewPosts = mode === "new-posts";
 
-  const apifyInput = {
+  // First fetch: grab full history (no day limit, max results)
+  // New posts: last 7 days only (cheap, incremental)
+  // Refresh counts: last 60 days to update view numbers
+  const apifyInput: Record<string, unknown> = {
     profiles: [`https://www.tiktok.com/@${handle}`],
-    resultsPerPage: isNewPosts ? 20 : 50,
-    scrapeLastNDays: isNewPosts ? 7 : 60,
+    resultsPerPage: firstFetch ? 100 : isNewPosts ? 20 : 50,
   };
+  if (!firstFetch) {
+    apifyInput.scrapeLastNDays = isNewPosts ? 7 : 60;
+  }
 
   try {
     const res = await fetch(
