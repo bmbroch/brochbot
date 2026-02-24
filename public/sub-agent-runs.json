@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 41425468,
-    "cost": 37.103,
-    "durationSec": 102692,
+    "tokens": 41521637,
+    "cost": 37.4641,
+    "durationSec": 112971,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -262,18 +262,6 @@
     "durationSec": 118,
     "status": "success",
     "timestamp": "2026-02-24T05:30:00.172Z"
-  },
-  {
-    "id": "68e16793-6cb6-47ea-b56e-05acdc2f3daf",
-    "label": "devin-ugc-card-mobile",
-    "agent": "devin",
-    "task": "**Desktop (lg+):** Keep the horizontal layout \u2014 avatar + name left, stats right.",
-    "model": "Sonnet",
-    "tokens": 279726,
-    "cost": 0.3283,
-    "durationSec": 105,
-    "status": "success",
-    "timestamp": "2026-02-24T16:30:44.525Z"
   },
   {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
