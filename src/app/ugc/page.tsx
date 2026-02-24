@@ -224,42 +224,78 @@ function CreatorCard({
   const isThisSyncing = !!creator.handle && syncingHandle === creator.handle;
   const isAnotherSyncing = !!syncingHandle && syncingHandle !== creator.handle;
 
-  // No data state — horizontal layout, greyed out
+  const Avatar = () =>
+    avatarUrl ? (
+      <img
+        src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
+        className="w-9 h-9 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
+        alt={creator.name}
+      />
+    ) : (
+      <div
+        className="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center text-white text-sm font-bold ring-1 ring-black/10"
+        style={{ background: color }}
+      >
+        {creator.name[0]}
+      </div>
+    );
+
+  const RefreshBtn = () =>
+    creator.handle ? (
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          if (!isAnotherSyncing && !isThisSyncing) onRefresh(creator.handle!);
+        }}
+        disabled={isAnotherSyncing || isThisSyncing}
+        title={isAnotherSyncing ? "Another creator is syncing…" : "Sync new posts"}
+        className={[
+          "flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all",
+          isAnotherSyncing ? "opacity-40 cursor-not-allowed" : "",
+          isThisSyncing ? "cursor-default" : "",
+        ].join(" ")}
+      >
+        {isThisSyncing ? (
+          <Loader2 size={13} className="animate-spin" />
+        ) : (
+          <RefreshCw size={13} />
+        )}
+      </button>
+    ) : null;
+
+  // ── No data state — same card shape, greyed out ───────────────────────────
   if (!hasData) {
     return (
-      <div
-        className="flex items-center gap-4 p-4 rounded-2xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] opacity-50 select-none"
-        title="No data yet"
-      >
-        {/* Left: avatar + name */}
-        <div className="flex items-center gap-3 min-w-[140px] flex-shrink-0">
-          {avatarUrl ? (
-            <img
-              src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
-              className="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
-              alt={creator.name}
-            />
-          ) : (
-            <div
-              className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-white text-sm font-bold ring-1 ring-black/10"
-              style={{ background: color }}
-            >
-              {creator.name[0]}
-            </div>
-          )}
-          <div>
-            <div className="font-semibold text-sm text-gray-900 dark:text-white">{creator.name}</div>
+      <div className="rounded-2xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] p-4 opacity-60 select-none">
+        {/* Header row */}
+        <div className="flex items-center gap-3 mb-3">
+          <Avatar />
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-sm text-gray-900 dark:text-white truncate">{creator.name}</div>
             <div className="text-xs text-gray-400 dark:text-white/30">— posts</div>
           </div>
+          <RefreshBtn />
         </div>
-        {/* Divider */}
-        <div className="w-px h-10 bg-gray-200 dark:bg-[#333] flex-shrink-0" />
-        {/* No data placeholder */}
-        <div className="flex-1 text-xs text-gray-300 dark:text-white/20">No data yet</div>
+
+        {/* Stats grid */}
+        <div className="grid grid-cols-3 gap-2 mb-3">
+          {(["Views", "Avg/Post", "CPM"] as const).map((label) => (
+            <div key={label}>
+              <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium mb-0.5">{label}</div>
+              <div className="text-base font-bold text-gray-300 dark:text-white/20">—</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Platform row */}
+        <div className="text-xs text-gray-300 dark:text-white/20">
+          No data — click ↻ to sync
+        </div>
       </div>
     );
   }
 
+  // ── Has data ──────────────────────────────────────────────────────────────
   const ttViews = computedData.ttViews;
   const igViews = computedData.igViews;
   const totalViews = ttViews + igViews;
@@ -272,87 +308,56 @@ function CreatorCard({
   const hasIG = igViews > 0;
 
   return (
-    <div className="flex items-center gap-4 p-4 rounded-2xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] hover:border-gray-300 dark:hover:border-[#333] transition-all hover:shadow-sm">
-      {/* Left: avatar + name + post count — clicks to drilldown */}
-      <button onClick={onClick} className="flex items-center gap-3 min-w-[140px] flex-shrink-0 text-left">
-        {avatarUrl ? (
-          <img
-            src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
-            className="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
-            alt={creator.name}
-          />
-        ) : (
-          <div
-            className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-white text-sm font-bold ring-1 ring-black/10"
-            style={{ background: color }}
-          >
-            {creator.name[0]}
-          </div>
-        )}
-        <div>
-          <div className="font-semibold text-sm text-gray-900 dark:text-white">{creator.name}</div>
+    <div
+      onClick={onClick}
+      className="rounded-2xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] p-4 cursor-pointer hover:border-gray-300 dark:hover:border-[#333] hover:shadow-sm transition-all"
+    >
+      {/* Header row: avatar + name/posts + refresh */}
+      <div className="flex items-center gap-3 mb-3">
+        <Avatar />
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-sm text-gray-900 dark:text-white truncate">{creator.name}</div>
           <div className="text-xs text-gray-400 dark:text-white/30">{posts} posts</div>
         </div>
-      </button>
+        <RefreshBtn />
+      </div>
 
-      {/* Divider */}
-      <div className="w-px h-10 bg-gray-200 dark:bg-[#333] flex-shrink-0" />
-
-      {/* Right: stats row — clicks to drilldown, wraps on mobile */}
-      <button onClick={onClick} className="flex items-center gap-6 flex-1 flex-wrap text-left min-w-0">
+      {/* Stats: 3-col grid */}
+      <div className="grid grid-cols-3 gap-2 mb-3">
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium">Total Views</div>
-          <div className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{fmt(totalViews)}</div>
+          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium mb-0.5">Views</div>
+          <div className="text-base font-bold text-gray-900 dark:text-white tabular-nums">{totalViews > 0 ? fmt(totalViews) : "—"}</div>
         </div>
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium">Avg/Post</div>
-          <div className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{avgPost > 0 ? fmt(avgPost) : "—"}</div>
+          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium mb-0.5">Avg/Post</div>
+          <div className="text-base font-bold text-gray-900 dark:text-white tabular-nums">{avgPost > 0 ? fmt(avgPost) : "—"}</div>
         </div>
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium">CPM</div>
-          <div className={`text-sm font-bold tabular-nums ${cpm !== null ? cpmColor(cpm) : "text-gray-300 dark:text-white/20"}`}>
+          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium mb-0.5">CPM</div>
+          <div className={`text-base font-bold tabular-nums ${cpm !== null ? cpmColor(cpm) : "text-gray-300 dark:text-white/20"}`}>
             {cpm !== null ? `$${cpm.toFixed(2)}` : "—"}
           </div>
         </div>
-        {/* Platform breakdown — pushed right */}
-        <div className="ml-auto flex items-center gap-3 text-xs text-gray-400 dark:text-white/30">
-          {hasTT && (
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-cyan-500 inline-block flex-shrink-0" />
-              TikTok {fmt(ttViews)}
-            </span>
-          )}
-          {hasIG && (
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-pink-500 inline-block flex-shrink-0" />
-              IG {fmt(igViews)}
-            </span>
-          )}
-        </div>
-      </button>
+      </div>
 
-      {/* Refresh button */}
-      {creator.handle && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (!isAnotherSyncing && !isThisSyncing) onRefresh(creator.handle!);
-          }}
-          disabled={isAnotherSyncing || isThisSyncing}
-          title={isAnotherSyncing ? "Another creator is syncing…" : "Sync new posts"}
-          className={[
-            "flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all",
-            isAnotherSyncing ? "opacity-40 cursor-not-allowed" : "",
-            isThisSyncing ? "cursor-default" : "",
-          ].join(" ")}
-        >
-          {isThisSyncing ? (
-            <Loader2 size={13} className="animate-spin" />
-          ) : (
-            <RefreshCw size={13} />
-          )}
-        </button>
-      )}
+      {/* Platform split + sync time */}
+      <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-white/30">
+        {hasTT && (
+          <span className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0" />
+            TikTok {fmt(ttViews)}
+          </span>
+        )}
+        {hasIG && (
+          <span className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-pink-500 flex-shrink-0" />
+            IG {fmt(igViews)}
+          </span>
+        )}
+        {lastSync && (
+          <span className="ml-auto text-gray-300 dark:text-white/20">synced {timeAgo(lastSync)}</span>
+        )}
+      </div>
     </div>
   );
 }
