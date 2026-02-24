@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T09:50:01Z",
+  "lastUpdated": "2026-02-24T10:00:01Z",
   "activities": [
     {
       "id": "s-d1a844b5",
@@ -72,18 +72,6 @@
       "cost": 0.6627,
       "model": "Sonnet",
       "durationSec": 244
-    },
-    {
-      "id": "s-e1bb36c3",
-      "agent": "devin",
-      "title": "devin-ugc-page",
-      "description": "Create a new `/ugc` page that combines:",
-      "status": "success",
-      "date": "2026-02-24T08:53:22.424Z",
-      "tokens": 460012,
-      "cost": 0.6079,
-      "model": "Sonnet",
-      "durationSec": 251
     },
     {
       "id": "s-c82a1e98",
@@ -1161,7 +1149,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T09:50:01Z"
+      "lastRunAt": "2026-02-24T10:00:01Z"
     },
     {
       "id": "bash-frankie-sync",

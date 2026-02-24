@@ -240,18 +240,6 @@
     "timestamp": "2026-02-24T09:01:35.166Z"
   },
   {
-    "id": "e1bb36c3-2de3-4d0a-9b8a-5697a73f66a1",
-    "label": "devin-ugc-page",
-    "agent": "devin",
-    "task": "Create a new `/ugc` page that combines:",
-    "model": "Sonnet",
-    "tokens": 460012,
-    "cost": 0.6079,
-    "durationSec": 251,
-    "status": "success",
-    "timestamp": "2026-02-24T08:53:22.424Z"
-  },
-  {
     "id": "b4765783-5ff3-4d52-ab19-6024dc26456b",
     "label": "devin-ugc-chart-ux",
     "agent": "devin",
