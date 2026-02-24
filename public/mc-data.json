@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-24T10:30:02Z",
+  "lastUpdated": "2026-02-24T10:32:18Z",
   "activities": [
+    {
+      "id": "s-3a4eaac8",
+      "agent": "sam",
+      "title": "office-overhaul",
+      "description": "Task: Office view overhaul in Mission Control.",
+      "status": "success",
+      "date": "2026-02-24T10:30:15.925Z",
+      "tokens": 102674,
+      "cost": 0.2258,
+      "model": "Sonnet",
+      "durationSec": 121
+    },
     {
       "id": "s-81b9b199",
       "agent": "sam",
@@ -32,10 +44,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-24T10:13:18.254Z",
-      "tokens": 851742,
-      "cost": 0.7164,
+      "tokens": 946124,
+      "cost": 0.9108,
       "model": "Sonnet",
-      "durationSec": 956
+      "durationSec": 1046
     },
     {
       "id": "s-d1a844b5",
@@ -212,10 +224,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 34919132,
-      "cost": 30.9329,
+      "tokens": 35990447,
+      "cost": 32.9147,
       "model": "Sonnet",
-      "durationSec": 87275
+      "durationSec": 87342
     },
     {
       "id": "s-5423ca5a",
@@ -1123,7 +1135,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T10:19:38.513Z",
+      "lastActive": "2026-02-24T10:30:15.925Z",
       "statusText": ""
     }
   },
@@ -1137,7 +1149,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T10:30:02Z"
+      "lastRunAt": "2026-02-24T10:32:17Z"
     },
     {
       "id": "bash-frankie-sync",

@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 34919132,
-    "cost": 30.9329,
-    "durationSec": 87275,
+    "tokens": 35990447,
+    "cost": 32.9147,
+    "durationSec": 87342,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -173,9 +173,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 851742,
-    "cost": 0.7164,
-    "durationSec": 956,
+    "tokens": 946124,
+    "cost": 0.9108,
+    "durationSec": 1046,
     "status": "success",
     "timestamp": "2026-02-24T10:13:18.254Z"
   },
@@ -394,6 +394,18 @@
     "durationSec": 108,
     "status": "success",
     "timestamp": "2026-02-23T04:00:00.031Z"
+  },
+  {
+    "id": "3a4eaac8-0313-4b34-8892-bc1d200c7f1c",
+    "label": "office-overhaul",
+    "agent": "sam",
+    "task": "Task: Office view overhaul in Mission Control.",
+    "model": "Sonnet",
+    "tokens": 102674,
+    "cost": 0.2258,
+    "durationSec": 121,
+    "status": "success",
+    "timestamp": "2026-02-24T10:30:15.925Z"
   },
   {
     "id": "7af296ce-c8ac-495b-bfb4-59066238c23a",

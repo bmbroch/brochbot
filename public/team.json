@@ -2,7 +2,7 @@
   {
     "id": "ben",
     "name": "Ben",
-    "emoji": "\ud83d\udc68\u200d\ud83d\udcbb",
+    "emoji": "👨‍💻",
     "avatar": "/avatars/ben.jpg",
     "role": "Founder",
     "color": "#f59e0b",
@@ -11,8 +11,8 @@
     "gradientLight": "from-zinc-100 to-zinc-50",
     "groupId": null,
     "deskPosition": {
-      "x": 100,
-      "y": 50,
+      "x": 160,
+      "y": 40,
       "facing": "down"
     },
     "description": "Founder & CEO. Sets the vision, reviews work, and keeps everything on track.",
@@ -26,7 +26,7 @@
   {
     "id": "sam",
     "name": "Sam",
-    "emoji": "\ud83e\udd1d",
+    "emoji": "🤝",
     "avatar": "/avatars/sam.png",
     "role": "Chief of Staff",
     "color": "#3b82f6",
@@ -35,8 +35,8 @@
     "gradientLight": "from-blue-50 to-sky-100",
     "groupId": "-5137141366",
     "deskPosition": {
-      "x": 300,
-      "y": 50,
+      "x": 320,
+      "y": 40,
       "facing": "down"
     },
     "description": "Coordinates all agents, manages workflows, and handles complex multi-step operations.",
@@ -55,7 +55,7 @@
   {
     "id": "devin",
     "name": "Devin",
-    "emoji": "\ud83d\udee0\ufe0f",
+    "emoji": "🛠️",
     "avatar": "/avatars/dev.png",
     "role": "Web Developer",
     "color": "#f59e0b",
@@ -64,8 +64,8 @@
     "gradientLight": "from-yellow-50 to-amber-100",
     "groupId": "-5191880198",
     "deskPosition": {
-      "x": 500,
-      "y": 50,
+      "x": 680,
+      "y": 40,
       "facing": "down"
     },
     "description": "Owns the Mission Control codebase. Handles all frontend changes, bug fixes, and deployments.",
@@ -80,7 +80,7 @@
   {
     "id": "cara",
     "name": "Cara",
-    "emoji": "\ud83c\udfa7",
+    "emoji": "🎧",
     "avatar": "/avatars/cara.png",
     "role": "Customer Support",
     "color": "#a855f7",
@@ -89,8 +89,8 @@
     "gradientLight": "from-purple-50 to-violet-100",
     "groupId": "-5116620759",
     "deskPosition": {
-      "x": 700,
-      "y": 50,
+      "x": 720,
+      "y": 220,
       "facing": "down"
     },
     "description": "Handles customer inquiries, subscription issues, and refund requests via Stripe.",
@@ -104,7 +104,7 @@
   {
     "id": "dana",
     "name": "Dana",
-    "emoji": "\ud83d\udcca",
+    "emoji": "📊",
     "avatar": "/avatars/dana.png",
     "role": "Data Analyst",
     "color": "#22c55e",
@@ -113,8 +113,8 @@
     "gradientLight": "from-green-50 to-emerald-100",
     "groupId": "-5118324440",
     "deskPosition": {
-      "x": 100,
-      "y": 380,
+      "x": 280,
+      "y": 220,
       "facing": "down"
     },
     "description": "Runs analytics queries, generates reports, and monitors KPIs across all products.",
@@ -131,7 +131,7 @@
   {
     "id": "miles",
     "name": "Miles",
-    "emoji": "\ud83d\ude80",
+    "emoji": "🚀",
     "avatar": "/avatars/miles.png",
     "role": "GTM Lead",
     "color": "#f97316",
@@ -140,9 +140,9 @@
     "gradientLight": "from-orange-50 to-amber-100",
     "groupId": "-5101253807",
     "deskPosition": {
-      "x": 316,
-      "y": 380,
-      "facing": "down"
+      "x": 200,
+      "y": 420,
+      "facing": "up"
     },
     "description": "Drives growth through SEO, GEO, UGC, and paid campaigns. Tracks marketing performance.",
     "dataSources": [
@@ -151,7 +151,7 @@
       "SEO Tools"
     ],
     "recurringTasks": [
-      "Daily GSC Report \u2014 All Products (6 AM CAT)"
+      "Daily GSC Report — All Products (6 AM CAT)"
     ],
     "isAgent": true,
     "sortOrder": 5
@@ -159,7 +159,7 @@
   {
     "id": "penny",
     "name": "Penny",
-    "emoji": "\ud83d\udccc",
+    "emoji": "📌",
     "avatar": "/avatars/penny.png",
     "role": "Secretary",
     "color": "#f43f5e",
@@ -168,8 +168,8 @@
     "gradientLight": "from-rose-50 to-pink-100",
     "groupId": "-5280216031",
     "deskPosition": {
-      "x": 533,
-      "y": 380,
+      "x": 120,
+      "y": 220,
       "facing": "down"
     },
     "description": "Captures ideas, maintains ops logs, runs delegation audits, and keeps the team accountable.",
@@ -186,7 +186,7 @@
   {
     "id": "mia",
     "name": "Mia",
-    "emoji": "\ud83d\udcf1",
+    "emoji": "📱",
     "avatar": "/avatars/mia.png",
     "role": "Social Media Manager",
     "color": "#d946ef",
@@ -195,9 +195,9 @@
     "gradientLight": "from-fuchsia-50 to-pink-100",
     "groupId": "-5191464468",
     "deskPosition": {
-      "x": 750,
-      "y": 380,
-      "facing": "down"
+      "x": 680,
+      "y": 420,
+      "facing": "up"
     },
     "description": "Tracks UGC creator performance. Analyzes social media metrics across TikTok and Instagram.",
     "dataSources": [
@@ -213,7 +213,7 @@
   {
     "id": "frankie",
     "name": "Frankie",
-    "emoji": "\ud83d\udcb0",
+    "emoji": "💰",
     "avatar": "/avatars/frankie.png",
     "role": "Finance",
     "color": "#10b981",
@@ -222,8 +222,8 @@
     "gradientLight": "from-emerald-50 to-teal-100",
     "groupId": "-5113425776",
     "deskPosition": {
-      "x": 900,
-      "y": 50,
+      "x": 840,
+      "y": 40,
       "facing": "down"
     },
     "description": "The money guy. Tracks banking, payouts, expenses, and revenue across all three businesses.",
@@ -239,7 +239,7 @@
   {
     "id": "jude",
     "name": "Jude",
-    "emoji": "\u270d\ufe0f",
+    "emoji": "✍️",
     "avatar": "/avatars/jude.png",
     "role": "Content Engine",
     "color": "#f472b6",
@@ -248,8 +248,8 @@
     "gradientLight": "from-pink-50 to-pink-100",
     "groupId": "-5210308407",
     "deskPosition": {
-      "x": 966,
-      "y": 380,
+      "x": 880,
+      "y": 220,
       "facing": "down"
     },
     "description": "The content machine. Drafts posts, edits video, manages the publishing pipeline for indietomilly. Turns overnight agent work into building-in-public content.",
@@ -266,7 +266,7 @@
   {
     "id": "marco",
     "name": "Marco",
-    "emoji": "\ud83d\udce3",
+    "emoji": "📣",
     "avatar": "/avatars/marco.png",
     "role": "Paid Ads & Retargeting",
     "color": "#f97316",
@@ -275,9 +275,9 @@
     "gradientLight": "from-orange-50 to-orange-100",
     "groupId": "-5289473461",
     "deskPosition": {
-      "x": 1150,
-      "y": 380,
-      "facing": "down"
+      "x": 440,
+      "y": 420,
+      "facing": "up"
     },
     "description": "Performance marketer. Manages Meta Ads campaigns, retargeting audiences, and paid acquisition for ISK. Lives in CPAs, ROAS, and audience segments.",
     "dataSources": [
