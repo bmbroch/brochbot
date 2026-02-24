@@ -1,18 +1,6 @@
 {
-  "lastUpdated": "2026-02-24T15:20:01Z",
+  "lastUpdated": "2026-02-24T15:30:01Z",
   "activities": [
-    {
-      "id": "s-af3af5e7",
-      "agent": "devin",
-      "title": "devin-ugc-buttons-top",
-      "description": "The sync buttons only appear inside the Drill Down tab section, buried below creator tabs. Ben wants them prominent in the page header, always accessible.",
-      "status": "success",
-      "date": "2026-02-24T14:24:00.218Z",
-      "tokens": 314278,
-      "cost": 0.3168,
-      "model": "Sonnet",
-      "durationSec": 83
-    },
     {
       "id": "s-a8651c84",
       "agent": "devin",
@@ -1161,7 +1149,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T15:20:01Z"
+      "lastRunAt": "2026-02-24T15:30:01Z"
     },
     {
       "id": "bash-frankie-sync",

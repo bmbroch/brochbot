@@ -264,18 +264,6 @@
     "timestamp": "2026-02-24T05:30:00.172Z"
   },
   {
-    "id": "af3af5e7-f820-43a6-8ca1-9b2ff07f2153",
-    "label": "devin-ugc-buttons-top",
-    "agent": "devin",
-    "task": "The sync buttons only appear inside the Drill Down tab section, buried below creator tabs. Ben wants them prominent in the page header, always accessible.",
-    "model": "Sonnet",
-    "tokens": 314278,
-    "cost": 0.3168,
-    "durationSec": 83,
-    "status": "success",
-    "timestamp": "2026-02-24T14:24:00.218Z"
-  },
-  {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
     "label": "b5bca453-08d",
     "agent": "sam",
