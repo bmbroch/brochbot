@@ -53,9 +53,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 12637544,
-    "cost": 5.3258,
-    "durationSec": 4035,
+    "tokens": 14407228,
+    "cost": 5.9806,
+    "durationSec": 4757,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -144,6 +144,30 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
+    "id": "cfbb16c1-a46a-4e8a-b96b-18c21f6db3db",
+    "label": "devin-ig-profile-header",
+    "agent": "devin",
+    "task": "- `src/lib/instagram-store.ts` \u2014 has `InstagramStoreData` with `posts`, `lastNewPostsSync`, `lastCountsRefresh`",
+    "model": "Sonnet",
+    "tokens": 713951,
+    "cost": 0.4977,
+    "durationSec": 176,
+    "status": "success",
+    "timestamp": "2026-02-24T08:27:04.019Z"
+  },
+  {
+    "id": "24799fbd-6eb1-4221-a6fa-17870cda448d",
+    "label": "devin-instagram-support",
+    "agent": "devin",
+    "task": "Add a platform toggle (TikTok / Instagram) to the `/tiktok-analytics` page. Each creator already has both `handle` (TikTok) and `igHandle` (Instagram) in `src/lib/tiktok-creators.ts`. When Instagram i",
+    "model": "Sonnet",
+    "tokens": 695055,
+    "cost": 0.6278,
+    "durationSec": 284,
+    "status": "success",
+    "timestamp": "2026-02-24T08:17:43.268Z"
+  },
+  {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
     "label": "a50fee35-8a4",
     "agent": "sam",
@@ -228,18 +252,6 @@
     "timestamp": "2026-02-24T03:00:00.193Z"
   },
   {
-    "id": "9f4d7855-f205-4f6f-a05d-37f50d1d684f",
-    "label": "devin-tiktok-cache-fix",
-    "agent": "devin",
-    "task": "The current in-memory cache (globalThis) doesn't persist reliably on Vercel serverless \u2014 function instances can be recycled or spun up fresh, causing Apify to be called on every page load.",
-    "model": "Sonnet",
-    "tokens": 426418,
-    "cost": 0.5508,
-    "durationSec": 253,
-    "status": "success",
-    "timestamp": "2026-02-24T07:25:28.687Z"
-  },
-  {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -322,18 +334,6 @@
     "durationSec": 65,
     "status": "success",
     "timestamp": "2026-02-24T06:00:00.174Z"
-  },
-  {
-    "id": "24799fbd-6eb1-4221-a6fa-17870cda448d",
-    "label": "devin-instagram-support",
-    "agent": "devin",
-    "task": "Add a platform toggle (TikTok / Instagram) to the `/tiktok-analytics` page. Each creator already has both `handle` (TikTok) and `igHandle` (Instagram) in `src/lib/tiktok-creators.ts`. When Instagram i",
-    "model": "Sonnet",
-    "tokens": 189064,
-    "cost": 0.2056,
-    "durationSec": 60,
-    "status": "success",
-    "timestamp": "2026-02-24T08:17:43.268Z"
   },
   {
     "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",

@@ -2218,5 +2218,17 @@
     "durationSec": 3,
     "status": "success",
     "timestamp": "2026-02-24T08:17:43.268Z"
+  },
+  {
+    "id": "cfbb16c1-a46a-4e8a-b96b-18c21f6db3db",
+    "label": "devin-ig-profile-header",
+    "agent": "devin",
+    "task": "- `src/lib/instagram-store.ts` \u2014 has `InstagramStoreData` with `posts`, `lastNewPostsSync`, `lastCountsRefresh`",
+    "model": "Sonnet",
+    "tokens": 713951,
+    "cost": 0.4977,
+    "durationSec": 176,
+    "status": "success",
+    "timestamp": "2026-02-24T08:27:04.019Z"
   }
 ]
