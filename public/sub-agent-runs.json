@@ -53,9 +53,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 17971238,
-    "cost": 7.2727,
-    "durationSec": 6165,
+    "tokens": 19192008,
+    "cost": 7.7032,
+    "durationSec": 6531,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -65,9 +65,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 10617184,
-    "cost": 6.7004,
-    "durationSec": 68667,
+    "tokens": 11425244,
+    "cost": 7.7885,
+    "durationSec": 80228,
     "status": "success",
     "timestamp": "2026-02-23T10:40:05.669Z"
   },
@@ -202,6 +202,18 @@
     "durationSec": 196,
     "status": "success",
     "timestamp": "2026-02-24T06:01:08.604Z"
+  },
+  {
+    "id": "e1bb36c3-2de3-4d0a-9b8a-5697a73f66a1",
+    "label": "devin-ugc-page",
+    "agent": "devin",
+    "task": "Create a new `/ugc` page that combines:",
+    "model": "Sonnet",
+    "tokens": 460012,
+    "cost": 0.6079,
+    "durationSec": 251,
+    "status": "success",
+    "timestamp": "2026-02-24T08:53:22.424Z"
   },
   {
     "id": "7e5e67dd-b622-4bd1-bbcd-862ba7d32c6b",
@@ -514,17 +526,5 @@
     "durationSec": 34476,
     "status": "success",
     "timestamp": "2026-02-20T07:03:05.484Z"
-  },
-  {
-    "id": "e1bb36c3-2de3-4d0a-9b8a-5697a73f66a1",
-    "label": "devin-ugc-page",
-    "agent": "devin",
-    "task": "Create a new `/ugc` page that combines:",
-    "model": "Sonnet",
-    "tokens": 14930,
-    "cost": 0.0384,
-    "durationSec": 3,
-    "status": "success",
-    "timestamp": "2026-02-24T08:53:22.424Z"
   }
 ]
