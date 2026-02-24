@@ -41,6 +41,7 @@ type RunState = "idle" | "running" | "done" | "error";
 type Platform = "tiktok" | "instagram";
 type DateRange = "7D" | "30D" | "90D" | "All";
 type OverviewPlatform = "All" | "TikTok" | "Instagram";
+type GroupBy = "day" | "week" | "month";
 type PageMode = "overview" | "drilldown";
 type SortCol =
   | "name"
@@ -159,6 +160,19 @@ function buildPayoutMap(payouts: CreatorPayout[]): Record<string, CreatorPayout>
     map[name] = p;
   }
   return map;
+}
+
+function truncateDate(dateStr: string, groupBy: GroupBy): string {
+  const d = new Date(dateStr);
+  if (groupBy === "day") return dateStr.slice(0, 10);
+  if (groupBy === "week") {
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    const monday = new Date(d.setDate(diff));
+    return monday.toISOString().slice(0, 10);
+  }
+  if (groupBy === "month") return dateStr.slice(0, 7) + "-01";
+  return dateStr.slice(0, 10);
 }
 
 /** Get color for a creator, handling the Flo/Sophie mapping */
