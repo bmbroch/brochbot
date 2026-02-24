@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T06:10:02Z",
+  "lastUpdated": "2026-02-24T06:20:02Z",
   "activities": [
     {
       "id": "s-66dde37a",
@@ -140,10 +140,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 16096409,
-      "cost": 13.8651,
+      "tokens": 17786470,
+      "cost": 14.8551,
       "model": "Sonnet",
-      "durationSec": 71352
+      "durationSec": 72187
     },
     {
       "id": "s-5423ca5a",
@@ -663,6 +663,21 @@
   ],
   "calendar": [
     {
+      "id": "a9d16fe7-6e22-4d94-a74a-b92aed1f7953",
+      "title": "Penny Test Run",
+      "schedule": "{'kind': 'at', 'at': '2026-02-24T06:43:08.221Z'}",
+      "timezone": "",
+      "owner": "sam",
+      "enabled": true,
+      "status": "idle",
+      "lastStatus": "idle",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-24T06:43:08Z",
+      "consecutiveErrors": 0,
+      "description": "",
+      "oneShot": true
+    },
+    {
       "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
       "title": "Penny Daily Check",
       "schedule": "0 5 * * *",
@@ -1077,7 +1092,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T06:10:01Z"
+      "lastRunAt": "2026-02-24T06:20:02Z"
     },
     {
       "id": "bash-frankie-sync",

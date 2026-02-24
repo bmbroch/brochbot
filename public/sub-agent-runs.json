@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 16096409,
-    "cost": 13.8651,
-    "durationSec": 71352,
+    "tokens": 17786470,
+    "cost": 14.8551,
+    "durationSec": 72187,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
