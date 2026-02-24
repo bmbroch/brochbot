@@ -168,18 +168,6 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
-    "id": "61eb3893-3e87-4b58-b655-1dce85ba276b",
-    "label": "devin-ugc-header-tighten",
-    "agent": "devin",
-    "task": "UGC Analytics                          [line 1]",
-    "model": "Sonnet",
-    "tokens": 773481,
-    "cost": 0.9359,
-    "durationSec": 2306,
-    "status": "success",
-    "timestamp": "2026-02-24T10:51:38.431Z"
-  },
-  {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
     "label": "a50fee35-8a4",
     "agent": "sam",
