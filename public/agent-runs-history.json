@@ -2194,5 +2194,17 @@
     "durationSec": 3,
     "status": "success",
     "timestamp": "2026-02-24T07:36:09.655Z"
+  },
+  {
+    "id": "3cab2d60-0498-4688-b1b0-bdd9487ec40f",
+    "label": "devin-tiktok-profile-header",
+    "agent": "devin",
+    "task": "The profile scraper (`clockworks~tiktok-profile-scraper`) returns `authorMeta` on each video item \u2014 we already have this data in Supabase from the last scrape. No new Apify call needed to get it.",
+    "model": "Sonnet",
+    "tokens": 304882,
+    "cost": 0.2432,
+    "durationSec": 98,
+    "status": "success",
+    "timestamp": "2026-02-24T07:52:53.015Z"
   }
 ]

@@ -77,9 +77,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 4452110,
-    "cost": 2.2122,
-    "durationSec": 2340,
+    "tokens": 7058297,
+    "cost": 3.2401,
+    "durationSec": 2941,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -262,6 +262,18 @@
     "durationSec": 118,
     "status": "success",
     "timestamp": "2026-02-24T05:30:00.172Z"
+  },
+  {
+    "id": "3cab2d60-0498-4688-b1b0-bdd9487ec40f",
+    "label": "devin-tiktok-profile-header",
+    "agent": "devin",
+    "task": "The profile scraper (`clockworks~tiktok-profile-scraper`) returns `authorMeta` on each video item \u2014 we already have this data in Supabase from the last scrape. No new Apify call needed to get it.",
+    "model": "Sonnet",
+    "tokens": 304882,
+    "cost": 0.2432,
+    "durationSec": 98,
+    "status": "success",
+    "timestamp": "2026-02-24T07:52:53.015Z"
   },
   {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
