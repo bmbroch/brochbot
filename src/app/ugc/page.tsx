@@ -30,15 +30,32 @@ type Platform = "tiktok" | "instagram";
 type DateRange = "7D" | "30D" | "90D" | "All";
 type OverviewPlatform = "All" | "TikTok" | "Instagram";
 
-// Earnings-only data from creator-data.json
-interface CreatorEarnings {
-  earnings: number;
-  paymentCount: number;
-  lastPaidAt: string | null;
+interface PostDetail {
+  date: string | null;
+  platform: "tiktok" | "instagram";
+  views: number;
+  url: string;
+  title: null;
 }
 
-// Bulk Supabase data from /api/tiktok/all-data
-interface AllCreatorData {
+// Mercury payout record (from /creator-payouts.json)
+interface CreatorPayout {
+  creator: string;
+  totalPaid: number;
+  payments: number;
+  lastPayment: string;
+}
+
+// Computed per-creator analytics built from /api/tiktok/all-data
+interface ComputedCreator {
+  name: string;
+  ttViews: number;
+  igViews: number;
+  posts: number;
+  posts_detail: PostDetail[];
+}
+
+interface AllDataResponse {
   tiktok: Record<string, TikTokStoreData>;
   instagram: Record<string, InstagramStoreData>;
 }
@@ -82,21 +99,36 @@ function getCutoff(range: DateRange): Date | null {
   return d;
 }
 
+function buildTsMap(
+  creator: ComputedCreator,
+  cutoff: Date | null
+): Record<string, { ttViews: number; igViews: number }> {
+  const map: Record<string, { ttViews: number; igViews: number }> = {};
+  creator.posts_detail.forEach((p) => {
+    if (!p.date) return;
+    if (cutoff && new Date(p.date) < cutoff) return;
+    if (!map[p.date]) map[p.date] = { ttViews: 0, igViews: 0 };
+    if (p.platform === "tiktok") map[p.date].ttViews += p.views;
+    else map[p.date].igViews += p.views;
+  });
+  return map;
+}
+
 function cpmColor(cpm: number): string {
   if (cpm < 3) return "text-green-500 dark:text-green-400";
   if (cpm <= 10) return "text-yellow-500 dark:text-yellow-400";
   return "text-red-500 dark:text-red-400";
 }
 
-// Map from TIKTOK_CREATORS handle → creator-data.json key
-// "Flo" creator has handle that maps to "sophie" key
-function getCreatorDataKey(handle: string): string {
-  const creator = TIKTOK_CREATORS.find((c) => c.handle === handle);
-  if (!creator) return "";
-  const name = creator.name.toLowerCase();
-  // "Flo" maps to "sophie" in creator-data.json
-  if (name === "flo") return "sophie";
-  return name;
+// Build payoutMap keyed by TIKTOK_CREATORS display name.
+// "Sophie" in Mercury → "Flo" in TIKTOK_CREATORS.
+function buildPayoutMap(payouts: CreatorPayout[]): Record<string, CreatorPayout> {
+  const map: Record<string, CreatorPayout> = {};
+  for (const p of payouts) {
+    const name = p.creator.toLowerCase() === "sophie" ? "Flo" : p.creator;
+    map[name] = p;
+  }
+  return map;
 }
 
 // ─── Stat Cards ────────────────────────────────────────────────────────────────
@@ -301,12 +333,10 @@ export default function UGCPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // ── Overview state ─────────────────────────────────────────────────────────
-  // Earnings only from creator-data.json
-  const [earningsMap, setEarningsMap] = useState<Record<string, CreatorEarnings> | null>(null);
-  // All TikTok + Instagram data from Supabase (bulk fetch)
-  const [allData, setAllData] = useState<AllCreatorData | null>(null);
-  const [allDataLoading, setAllDataLoading] = useState(true);
+  // ── Overview state (Mercury payouts + Supabase all-data) ───────────────────
+  const [payouts, setPayouts] = useState<CreatorPayout[] | null>(null);
+  const [payoutsLastUpdated, setPayoutsLastUpdated] = useState<string | null>(null);
+  const [allData, setAllData] = useState<AllDataResponse | null>(null);
   const [enabledCreators, setEnabledCreators] = useState<Record<string, boolean>>(
     () => Object.fromEntries(TIKTOK_CREATORS.map((c) => [c.name, true]))
   );
@@ -329,145 +359,129 @@ export default function UGCPage() {
   const activeCreator = TIKTOK_CREATORS.find((c) => c.handle === activeHandle);
   const activeIgHandle = activeCreator?.igHandle ?? null;
 
-  // ── Load earnings from creator-data.json (earnings/payments only) ──────────
+  // ── Load overview data (payouts + all-data) ────────────────────────────────
   useEffect(() => {
-    fetch("/creator-data.json")
-      .then((r) => r.json())
-      .then((data: Record<string, unknown>) => {
-        const map: Record<string, CreatorEarnings> = {};
-        for (const [key, val] of Object.entries(data)) {
-          if (key === "lastUpdated" || typeof val !== "object" || !val) continue;
-          const v = val as Record<string, unknown>;
-          map[key] = {
-            earnings: (v.earnings as number) ?? 0,
-            paymentCount: (v.paymentCount as number) ?? 0,
-            lastPaidAt: (v.lastPaidAt as string | null) ?? null,
-          };
-        }
-        setEarningsMap(map);
+    Promise.all([
+      fetch("/creator-payouts.json").then((r) => r.json()),
+      fetch("/api/tiktok/all-data").then((r) => r.json()),
+    ])
+      .then(([payoutsJson, allDataJson]) => {
+        setPayouts(payoutsJson.payouts ?? []);
+        setPayoutsLastUpdated(payoutsJson.lastUpdated ?? null);
+        setAllData(allDataJson);
       })
-      .catch((err) => console.error("Failed to load creator-data.json", err));
+      .catch((err) => console.error("Failed to load overview data", err));
   }, []);
 
-  // ── Load all Supabase creator data (bulk, 2 queries) ──────────────────────
-  useEffect(() => {
-    setAllDataLoading(true);
-    fetch("/api/tiktok/all-data")
-      .then((r) => r.json())
-      .then((data: AllCreatorData) => {
-        setAllData(data);
-      })
-      .catch((err) => console.error("Failed to load all-data", err))
-      .finally(() => setAllDataLoading(false));
-  }, []);
+  // ── Build payoutMap keyed by creator display name ──────────────────────────
+  const payoutMap = useMemo<Record<string, CreatorPayout>>(() => {
+    if (!payouts) return {};
+    return buildPayoutMap(payouts);
+  }, [payouts]);
 
-  // All creators list (static — always from TIKTOK_CREATORS config)
-  const allCreators = TIKTOK_CREATORS;
+  // ── Compute per-creator analytics from Supabase all-data ──────────────────
+  const computedCreators = useMemo<ComputedCreator[]>(() => {
+    if (!allData) return [];
+    return TIKTOK_CREATORS.filter((c) => c.handle).map((c) => {
+      const ttVideos = allData.tiktok[c.handle!]?.videos ?? [];
+      const igPosts = allData.instagram[c.igHandle ?? ""]?.posts ?? [];
+      const ttViews = ttVideos.reduce((s, v) => s + (v.views || 0), 0);
+      const igViews = igPosts.reduce((s, p) => s + (p.views || 0), 0);
+      const posts_detail: PostDetail[] = [
+        ...ttVideos.map((v) => ({
+          date: v.postedAt ? v.postedAt.slice(0, 10) : null,
+          platform: "tiktok" as const,
+          views: v.views || 0,
+          url: v.url,
+          title: null,
+        })),
+        ...igPosts.map((p) => ({
+          date: p.postedAt ? p.postedAt.slice(0, 10) : null,
+          platform: "instagram" as const,
+          views: p.views || 0,
+          url: p.url,
+          title: null,
+        })),
+      ];
+      return { name: c.name, ttViews, igViews, posts: ttVideos.length + igPosts.length, posts_detail };
+    });
+  }, [allData]);
+
+  const allCreators = computedCreators;
+  const overviewLoaded = allData !== null && payouts !== null;
 
   const cutoff = useMemo(() => getCutoff(dateRange), [dateRange]);
 
-  // Overview computed stats — from Supabase allData
+  // ── Overview computed stats ────────────────────────────────────────────────
   const overviewStats = useMemo(() => {
-    let totalTT = 0, totalIG = 0, totalPosts = 0;
-    if (allData) {
-      for (const creator of TIKTOK_CREATORS) {
-        const ttData = creator.handle ? allData.tiktok[creator.handle] : null;
-        const igData = creator.igHandle ? allData.instagram[creator.igHandle] : null;
-        totalTT += ttData?.videos?.reduce((s, v) => s + (v.views || 0), 0) ?? 0;
-        totalIG += igData?.posts?.reduce((s, p) => s + (p.views || 0), 0) ?? 0;
-        totalPosts += (ttData?.videos?.length ?? 0) + (igData?.posts?.length ?? 0);
-      }
-    }
-    const totalViews = overviewPlatform === "TikTok" ? totalTT : overviewPlatform === "Instagram" ? totalIG : totalTT + totalIG;
+    if (!overviewLoaded) return { totalViews: 0, totalPosts: 0, totalEarnings: 0, avgCpm: 0, activeCount: 0 };
+    const totalTT = computedCreators.reduce((s, c) => s + c.ttViews, 0);
+    const totalIG = computedCreators.reduce((s, c) => s + c.igViews, 0);
+    const totalViews =
+      overviewPlatform === "TikTok" ? totalTT : overviewPlatform === "Instagram" ? totalIG : totalTT + totalIG;
+    const totalPosts = computedCreators.reduce((s, c) => s + c.posts, 0);
+    const totalEarnings = (payouts ?? []).reduce((s, p) => s + p.totalPaid, 0);
     const allViews = totalTT + totalIG;
-    const totalEarnings = earningsMap ? Object.values(earningsMap).reduce((s, e) => s + (e.earnings || 0), 0) : 0;
     const avgCpm = allViews > 0 ? (totalEarnings / allViews) * 1000 : 0;
-    return { totalViews, totalPosts, totalEarnings, avgCpm, activeCount: TIKTOK_CREATORS.length };
-  }, [allData, overviewPlatform, earningsMap]);
+    return { totalViews, totalPosts, totalEarnings, avgCpm, activeCount: computedCreators.length };
+  }, [computedCreators, payouts, overviewPlatform, overviewLoaded]);
 
-  // Line chart data — built from Supabase video/post postedAt dates
+  // ── Line chart data ────────────────────────────────────────────────────────
   const lineChartData = useMemo(() => {
+    const tsMaps: Record<string, Record<string, { ttViews: number; igViews: number }>> = {};
     const allDates = new Set<string>();
-    const creatorDateMaps: Record<string, Record<string, number>> = {};
-
-    for (const creator of TIKTOK_CREATORS) {
-      if (!enabledCreators[creator.name]) continue;
-      const dateMap: Record<string, number> = {};
-
-      // TikTok videos
-      if (overviewPlatform !== "Instagram" && creator.handle) {
-        const ttData = allData?.tiktok[creator.handle];
-        for (const video of ttData?.videos ?? []) {
-          if (!video.postedAt) continue;
-          const date = video.postedAt.slice(0, 10);
-          if (cutoff && new Date(date) < cutoff) continue;
-          dateMap[date] = (dateMap[date] ?? 0) + (video.views || 0);
-          allDates.add(date);
-        }
-      }
-
-      // Instagram posts
-      if (overviewPlatform !== "TikTok" && creator.igHandle) {
-        const igData = allData?.instagram[creator.igHandle];
-        for (const post of igData?.posts ?? []) {
-          if (!post.postedAt) continue;
-          const date = post.postedAt.slice(0, 10);
-          if (cutoff && new Date(date) < cutoff) continue;
-          dateMap[date] = (dateMap[date] ?? 0) + (post.views || 0);
-          allDates.add(date);
-        }
-      }
-
-      creatorDateMaps[creator.name] = dateMap;
-    }
-
+    allCreators.forEach((c) => {
+      if (!enabledCreators[c.name]) return;
+      const m = buildTsMap(c, cutoff);
+      tsMaps[c.name] = m;
+      Object.keys(m).forEach((d) => allDates.add(d));
+    });
     const dates = Array.from(allDates).sort();
     return dates.map((date) => {
       const point: Record<string, string | number> = { date: date.slice(5) };
-      for (const creator of TIKTOK_CREATORS) {
-        if (!enabledCreators[creator.name]) continue;
-        const views = creatorDateMaps[creator.name]?.[date];
-        if (views) point[creator.name] = views;
-      }
+      allCreators.forEach((c) => {
+        if (!enabledCreators[c.name]) return;
+        const d = tsMaps[c.name]?.[date];
+        if (d) {
+          point[c.name] =
+            overviewPlatform === "TikTok"
+              ? d.ttViews
+              : overviewPlatform === "Instagram"
+              ? d.igViews
+              : d.ttViews + d.igViews;
+        }
+      });
       return point;
     });
-  }, [allData, enabledCreators, cutoff, overviewPlatform]);
+  }, [allCreators, enabledCreators, cutoff, overviewPlatform]);
 
-  // Bar chart data — TT vs IG views per creator from Supabase
+  // ── Bar chart data ─────────────────────────────────────────────────────────
   const barData = useMemo(
     () =>
-      TIKTOK_CREATORS.map((creator) => ({
-        name: creator.name,
-        TikTok: creator.handle ? (allData?.tiktok[creator.handle]?.videos?.reduce((s, v) => s + (v.views || 0), 0) ?? 0) : 0,
-        Instagram: creator.igHandle ? (allData?.instagram[creator.igHandle]?.posts?.reduce((s, p) => s + (p.views || 0), 0) ?? 0) : 0,
+      allCreators.map((c) => ({
+        name: c.name,
+        TikTok: c.ttViews,
+        Instagram: c.igViews,
       })),
-    [allData]
+    [allCreators]
   );
 
   const toggleCreator = (name: string) =>
     setEnabledCreators((prev) => ({ ...prev, [name]: !prev[name] }));
 
-  // ── Earnings row for active creator — earnings from creator-data.json, views from Supabase ──
+  // ── Earnings row for active creator ────────────────────────────────────────
   const earningsRow = useMemo(() => {
-    const key = getCreatorDataKey(activeHandle);
-    const earningsData = earningsMap?.[key];
-    if (!earningsData || !earningsData.earnings) return null;
-
-    // Views from Supabase for CPM calculation
-    const ttData = allData?.tiktok[activeHandle];
-    const activeCreatorConfig = TIKTOK_CREATORS.find((c) => c.handle === activeHandle);
-    const igHandle = activeCreatorConfig?.igHandle ?? null;
-    const igData = igHandle ? allData?.instagram[igHandle] : null;
-    const ttViews = ttData?.videos?.reduce((s, v) => s + (v.views || 0), 0) ?? 0;
-    const igViews = igData?.posts?.reduce((s, p) => s + (p.views || 0), 0) ?? 0;
-    const totalViews = ttViews + igViews;
-
-    const cpm = totalViews > 0 ? (earningsData.earnings / totalViews) * 1000 : null;
-    const lastPaid = earningsData.lastPaidAt
-      ? new Date(earningsData.lastPaidAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+    if (!payouts || !activeCreator) return null;
+    const payout = payoutMap[activeCreator.name];
+    if (!payout || !payout.totalPaid) return null;
+    const computed = computedCreators.find((c) => c.name === activeCreator.name);
+    const totalViews = (computed?.ttViews ?? 0) + (computed?.igViews ?? 0);
+    const cpm = totalViews > 0 ? (payout.totalPaid / totalViews) * 1000 : null;
+    const lastPaid = payout.lastPayment
+      ? new Date(payout.lastPayment).toLocaleDateString("en-US", { month: "short", day: "numeric" })
       : null;
-    return { earnings: earningsData.earnings, cpm, payments: earningsData.paymentCount, lastPaid };
-  }, [earningsMap, activeHandle, allData]);
+    return { earnings: payout.totalPaid, cpm, payments: payout.payments, lastPaid };
+  }, [payouts, payoutMap, computedCreators, activeCreator]);
 
   // ── Apify / Supabase loading ────────────────────────────────────────────────
   const stopPolling = useCallback(() => {
@@ -689,7 +703,10 @@ export default function UGCPage() {
         {/* ══ Page Header ══════════════════════════════════════════════════════ */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">UGC Analytics</h1>
-          <p className="text-sm text-gray-400 dark:text-white/40 mt-1">Powered by Apify + Supabase</p>
+          <p className="text-sm text-gray-400 dark:text-white/40 mt-1">Powered by Apify + Mercury</p>
+          {payoutsLastUpdated && (
+            <p className="text-[11px] text-gray-400 dark:text-white/30 mt-0.5">Payouts synced {timeAgo(payoutsLastUpdated)}</p>
+          )}
         </div>
 
         {/* ══ Overview Section ═════════════════════════════════════════════════ */}
@@ -725,55 +742,49 @@ export default function UGCPage() {
           </div>
 
           {/* Views Over Time line chart */}
-          <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">Total Views Over Time</h3>
-              <div className="flex flex-wrap gap-2">
-                {allCreators.map((c) => (
-                  <button
-                    key={c.name}
-                    onClick={() => toggleCreator(c.name)}
-                    className={`text-[11px] px-2 py-1 rounded-full border transition-all ${enabledCreators[c.name] ? "border-transparent" : "border-[var(--border-medium)] opacity-40"}`}
-                    style={
-                      enabledCreators[c.name]
-                        ? { backgroundColor: `${creatorColors[c.name]}20`, color: creatorColors[c.name] }
-                        : { color: "var(--text-muted)" }
-                    }
-                  >
-                    {c.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-            {allDataLoading ? (
-              <div className="flex items-center justify-center py-16 gap-2 text-gray-400 dark:text-white/30 text-sm">
-                <Loader2 size={14} className="animate-spin" /> Loading data...
-              </div>
-            ) : lineChartData.length === 0 ? (
-              <div className="flex items-center justify-center py-16 text-gray-400 dark:text-white/30 text-sm">No data for this range</div>
-            ) : (
-              <ResponsiveContainer width="100%" height={260}>
-                <LineChart data={lineChartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                  <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} />
-                  <YAxis tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
-                  <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
-                  {allCreators.filter((c) => enabledCreators[c.name]).map((c) => (
-                    <Line key={c.name} type="monotone" dataKey={c.name} stroke={creatorColors[c.name]} strokeWidth={2} dot={false} />
+          {overviewLoaded && (
+            <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">Total Views Over Time</h3>
+                <div className="flex flex-wrap gap-2">
+                  {allCreators.map((c) => (
+                    <button
+                      key={c.name}
+                      onClick={() => toggleCreator(c.name)}
+                      className={`text-[11px] px-2 py-1 rounded-full border transition-all ${enabledCreators[c.name] ? "border-transparent" : "border-[var(--border-medium)] opacity-40"}`}
+                      style={
+                        enabledCreators[c.name]
+                          ? { backgroundColor: `${creatorColors[c.name]}20`, color: creatorColors[c.name] }
+                          : { color: "var(--text-muted)" }
+                      }
+                    >
+                      {c.name}
+                    </button>
                   ))}
-                </LineChart>
-              </ResponsiveContainer>
-            )}
-          </div>
+                </div>
+              </div>
+              {lineChartData.length === 0 ? (
+                <div className="flex items-center justify-center py-16 text-gray-400 dark:text-white/30 text-sm">No data for this range</div>
+              ) : (
+                <ResponsiveContainer width="100%" height={260}>
+                  <LineChart data={lineChartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                    <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} />
+                    <YAxis tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
+                    <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
+                    {allCreators.filter((c) => enabledCreators[c.name]).map((c) => (
+                      <Line key={c.name} type="monotone" dataKey={c.name} stroke={creatorColors[c.name]} strokeWidth={2} dot={false} />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+          )}
 
           {/* Platform comparison bar chart */}
-          <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70 mb-4">Platform Comparison</h3>
-            {allDataLoading ? (
-              <div className="flex items-center justify-center py-16 gap-2 text-gray-400 dark:text-white/30 text-sm">
-                <Loader2 size={14} className="animate-spin" /> Loading data...
-              </div>
-            ) : (
+          {overviewLoaded && (
+            <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70 mb-4">Platform Comparison</h3>
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={barData} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />
@@ -785,8 +796,16 @@ export default function UGCPage() {
                   {showIG && <Bar dataKey="Instagram" fill="#ec4899" radius={[0, 4, 4, 0]} />}
                 </BarChart>
               </ResponsiveContainer>
-            )}
-          </div>
+            </div>
+          )}
+
+          {/* Loading skeleton for overview */}
+          {!overviewLoaded && (
+            <div className="flex items-center gap-3 text-gray-400 dark:text-white/40 py-12 justify-center">
+              <Loader2 size={16} className="animate-spin" />
+              <span className="text-sm">Loading overview data...</span>
+            </div>
+          )}
         </div>
 
         {/* ── Divider ──────────────────────────────────────────────────────── */}
@@ -1025,6 +1044,7 @@ export default function UGCPage() {
                         {igChartData.length === 0 ? (
                           <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
                         ) : (
+
                           <ResponsiveContainer width="100%" height={240}>
                             <BarChart data={igChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                               <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
