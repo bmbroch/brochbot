@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-24T16:30:02Z",
+  "lastUpdated": "2026-02-24T16:40:02Z",
   "activities": [
+    {
+      "id": "s-68e16793",
+      "agent": "devin",
+      "title": "devin-ugc-card-mobile",
+      "description": "**Desktop (lg+):** Keep the horizontal layout \u2014 avatar + name left, stats right.",
+      "status": "success",
+      "date": "2026-02-24T16:30:44.525Z",
+      "tokens": 279726,
+      "cost": 0.3283,
+      "model": "Sonnet",
+      "durationSec": 105
+    },
     {
       "id": "s-df92f7d9",
       "agent": "devin",
@@ -92,10 +104,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 23980784,
-      "cost": 11.9542,
+      "tokens": 24211318,
+      "cost": 12.0562,
       "model": "unknown",
-      "durationSec": 32202
+      "durationSec": 33707
     },
     {
       "id": "s-66dde37a",
@@ -1119,7 +1131,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-24T16:05:23.225Z",
+      "lastActive": "2026-02-24T16:30:44.525Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1147,7 +1159,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T15:33:18Z",
+      "lastActive": "2026-02-24T16:31:58Z",
       "statusText": ""
     }
   },
@@ -1161,7 +1173,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T16:30:02Z"
+      "lastRunAt": "2026-02-24T16:40:02Z"
     },
     {
       "id": "bash-frankie-sync",
