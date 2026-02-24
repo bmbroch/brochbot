@@ -1,18 +1,6 @@
 {
-  "lastUpdated": "2026-02-24T12:00:02Z",
+  "lastUpdated": "2026-02-24T14:20:01Z",
   "activities": [
-    {
-      "id": "s-c1f337ed",
-      "agent": "sam",
-      "title": "marco-avatar-fix",
-      "description": "DiceBear Personas generates different looks based on seed. The goal: short dark hair, male-looking, clean-cut. No long hair, no feminine features.",
-      "status": "success",
-      "date": "2026-02-24T11:29:06.199Z",
-      "tokens": 150104,
-      "cost": 0.1097,
-      "model": "Sonnet",
-      "durationSec": 76
-    },
     {
       "id": "s-a8651c84",
       "agent": "devin",
@@ -92,10 +80,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 23328618,
-      "cost": 10.4247,
+      "tokens": 23431723,
+      "cost": 10.7425,
       "model": "unknown",
-      "durationSec": 15562
+      "durationSec": 25729
     },
     {
       "id": "s-66dde37a",
@@ -236,10 +224,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 37611692,
-      "cost": 34.6842,
+      "tokens": 37917774,
+      "cost": 34.9854,
       "model": "Sonnet",
-      "durationSec": 90906
+      "durationSec": 101081
     },
     {
       "id": "s-5423ca5a",
@@ -1147,7 +1135,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T11:30:00Z",
+      "lastActive": "2026-02-24T13:29:47Z",
       "statusText": ""
     }
   },
@@ -1161,7 +1149,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T12:00:02Z"
+      "lastRunAt": "2026-02-24T14:20:01Z"
     },
     {
       "id": "bash-frankie-sync",

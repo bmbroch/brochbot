@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 37611692,
-    "cost": 34.6842,
-    "durationSec": 90906,
+    "tokens": 37917774,
+    "cost": 34.9854,
+    "durationSec": 101081,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -53,9 +53,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 23328618,
-    "cost": 10.4247,
-    "durationSec": 15562,
+    "tokens": 23431723,
+    "cost": 10.7425,
+    "durationSec": 25729,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -358,18 +358,6 @@
     "durationSec": 56,
     "status": "success",
     "timestamp": "2026-02-24T06:00:00.242Z"
-  },
-  {
-    "id": "c1f337ed-134c-4a7b-bf48-9a1b725dbf7a",
-    "label": "marco-avatar-fix",
-    "agent": "sam",
-    "task": "DiceBear Personas generates different looks based on seed. The goal: short dark hair, male-looking, clean-cut. No long hair, no feminine features.",
-    "model": "Sonnet",
-    "tokens": 150104,
-    "cost": 0.1097,
-    "durationSec": 76,
-    "status": "success",
-    "timestamp": "2026-02-24T11:29:06.199Z"
   },
   {
     "id": "5439b4e1-3990-4cb1-8e02-306cbfb1b366",
