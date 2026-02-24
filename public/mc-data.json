@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-02-24T06:20:02Z",
+  "lastUpdated": "2026-02-24T06:30:02Z",
   "activities": [
+    {
+      "id": "s-23c8b5a3",
+      "agent": "penny",
+      "title": "Penny Test Run",
+      "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+      "status": "success",
+      "date": "2026-02-24T06:28:03.440Z",
+      "tokens": 296612,
+      "cost": 0.2685,
+      "model": "Sonnet",
+      "durationSec": 103
+    },
+    {
+      "id": "s-6fcddab7",
+      "agent": "penny",
+      "title": "Penny Test Run",
+      "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+      "status": "success",
+      "date": "2026-02-24T06:28:03.437Z",
+      "tokens": 216538,
+      "cost": 0.2158,
+      "model": "Sonnet",
+      "durationSec": 100
+    },
     {
       "id": "s-66dde37a",
       "agent": "mia",
@@ -140,10 +164,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 17786470,
-      "cost": 14.8551,
+      "tokens": 18186981,
+      "cost": 14.9855,
       "model": "Sonnet",
-      "durationSec": 72187
+      "durationSec": 72476
     },
     {
       "id": "s-5423ca5a",
@@ -663,16 +687,16 @@
   ],
   "calendar": [
     {
-      "id": "a9d16fe7-6e22-4d94-a74a-b92aed1f7953",
+      "id": "1c78b729-b930-4789-aeb1-76112c1fb604",
       "title": "Penny Test Run",
-      "schedule": "{'kind': 'at', 'at': '2026-02-24T06:43:08.221Z'}",
+      "schedule": "{'kind': 'at', 'at': '2026-02-24T06:28:03.259Z'}",
       "timezone": "",
       "owner": "sam",
       "enabled": true,
       "status": "idle",
       "lastStatus": "idle",
       "lastRunAt": null,
-      "nextRunAt": "2026-02-24T06:43:08Z",
+      "nextRunAt": "2026-02-24T06:28:03Z",
       "consecutiveErrors": 0,
       "description": "",
       "oneShot": true
@@ -1070,7 +1094,7 @@
       "statusText": "Idle. Needs recurring weekly UGC performance tracking."
     },
     "penny": {
-      "lastActive": "2026-02-24T03:00:00.193Z",
+      "lastActive": "2026-02-24T06:28:03.440Z",
       "statusText": "Active as of today. Owns daily delegation audit (6 PM CAT)."
     },
     "frankie": {
@@ -1092,7 +1116,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T06:20:02Z"
+      "lastRunAt": "2026-02-24T06:30:02Z"
     },
     {
       "id": "bash-frankie-sync",
