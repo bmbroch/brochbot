@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-02-24T05:30:01Z",
+  "lastUpdated": "2026-02-24T05:40:01Z",
   "activities": [
+    {
+      "id": "s-cdbe948e",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-02-24T05:30:00.172Z",
+      "tokens": 348119,
+      "cost": 0.3344,
+      "model": "Sonnet",
+      "durationSec": 118
+    },
+    {
+      "id": "s-ed75b4b7",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-02-24T05:30:00.089Z",
+      "tokens": 219317,
+      "cost": 0.205,
+      "model": "Sonnet",
+      "durationSec": 71
+    },
     {
       "id": "s-fd10a07f",
       "agent": "miles",
@@ -68,10 +92,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 15606645,
-      "cost": 12.9404,
+      "tokens": 15846704,
+      "cost": 13.7735,
       "model": "Sonnet",
-      "durationSec": 63979
+      "durationSec": 69410
     },
     {
       "id": "s-5423ca5a",
@@ -591,20 +615,6 @@
   ],
   "calendar": [
     {
-      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
-      "title": "Sam Morning Brief",
-      "schedule": "30 7 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "sam",
-      "enabled": true,
-      "status": "error (2 consecutive)",
-      "lastStatus": "error",
-      "lastRunAt": "2026-02-23T05:30:00Z",
-      "nextRunAt": "2026-02-24T05:30:00Z",
-      "consecutiveErrors": 2,
-      "description": "Sam's morning coffee read \u2014 overnight results, costs, priorities. 7:30 AM CAT."
-    },
-    {
       "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
       "title": "Morning Analytics Report",
       "schedule": "0 8 * * *",
@@ -659,6 +669,20 @@
       "nextRunAt": "2026-02-25T04:00:00Z",
       "consecutiveErrors": 0,
       "description": "Miles pulls GSC data for ISK, CLCP, SE \u2014 tracked keywords, clicks, impressions, position trends. Daily 6 AM CAT."
+    },
+    {
+      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
+      "title": "Sam Morning Brief",
+      "schedule": "30 7 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-24T05:30:00Z",
+      "nextRunAt": "2026-02-25T05:30:00Z",
+      "consecutiveErrors": 0,
+      "description": "Sam's morning coffee read \u2014 overnight results, costs, priorities. 7:30 AM CAT."
     }
   ],
   "decisions": [
@@ -991,7 +1015,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T05:04:58Z",
+      "lastActive": "2026-02-24T05:30:00.172Z",
       "statusText": ""
     }
   },
@@ -1005,7 +1029,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T05:30:01Z"
+      "lastRunAt": "2026-02-24T05:40:01Z"
     },
     {
       "id": "bash-frankie-sync",

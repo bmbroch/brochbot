@@ -2050,5 +2050,29 @@
     "durationSec": 125,
     "status": "success",
     "timestamp": "2026-02-24T04:00:00.249Z"
+  },
+  {
+    "id": "ed75b4b7-854b-493a-ad83-09effc5ac255",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 219317,
+    "cost": 0.205,
+    "durationSec": 71,
+    "status": "success",
+    "timestamp": "2026-02-24T05:30:00.089Z"
+  },
+  {
+    "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 348119,
+    "cost": 0.3344,
+    "durationSec": 118,
+    "status": "success",
+    "timestamp": "2026-02-24T05:30:00.172Z"
   }
 ]
