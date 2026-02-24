@@ -2400,6 +2400,30 @@
     "timestamp": "2026-02-24T10:40:50.240Z"
   },
   {
+    "id": "a8651c84-4492-438c-a04f-aed69e0b33d0",
+    "label": "devin-card-refresh",
+    "agent": "devin",
+    "task": "On each `CreatorCard` in the Overview grid, add a small \ud83d\udd04 refresh icon button in the top-right corner of the card. Clicking it kicks off a \"New Posts\" scrape for just that creator \u2014 without having to ",
+    "model": "Sonnet",
+    "tokens": 434901,
+    "cost": 0.4033,
+    "durationSec": 157,
+    "status": "success",
+    "timestamp": "2026-02-24T10:45:42.622Z"
+  },
+  {
+    "id": "b8f1c375-4a01-40ed-be12-ea2aff73b051",
+    "label": "devin-creator-avatars",
+    "agent": "devin",
+    "task": "Already in `allData` state (fetched from Supabase):",
+    "model": "Sonnet",
+    "tokens": 363061,
+    "cost": 0.3382,
+    "durationSec": 102,
+    "status": "success",
+    "timestamp": "2026-02-24T10:47:27.433Z"
+  },
+  {
     "id": "sam-daily-2026-02-24",
     "label": "Daily total",
     "agent": "sam",
@@ -2409,6 +2433,6 @@
     "cost": 0.0417,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-24T10:42:20Z"
+    "timestamp": "2026-02-24T10:50:02Z"
   }
 ]
