@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T08:17:49Z",
+  "lastUpdated": "2026-02-24T08:20:01Z",
   "activities": [
     {
       "id": "s-24799fbd",
@@ -8,10 +8,10 @@
       "description": "Add a platform toggle (TikTok / Instagram) to the `/tiktok-analytics` page. Each creator already has both `handle` (TikTok) and `igHandle` (Instagram) in `src/lib/tiktok-creators.ts`. When Instagram i",
       "status": "success",
       "date": "2026-02-24T08:17:43.268Z",
-      "tokens": 15011,
-      "cost": 0.0385,
+      "tokens": 189064,
+      "cost": 0.2056,
       "model": "Sonnet",
-      "durationSec": 3
+      "durationSec": 60
     },
     {
       "id": "s-3cab2d60",
@@ -56,10 +56,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 12496244,
-      "cost": 5.2781,
+      "tokens": 12637544,
+      "cost": 5.3258,
       "model": "unknown",
-      "durationSec": 4025
+      "durationSec": 4035
     },
     {
       "id": "s-66dde37a",
@@ -1111,7 +1111,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T08:11:25Z",
+      "lastActive": "2026-02-24T08:18:07Z",
       "statusText": ""
     }
   },
@@ -1125,7 +1125,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T08:17:49Z"
+      "lastRunAt": "2026-02-24T08:20:01Z"
     },
     {
       "id": "bash-frankie-sync",
