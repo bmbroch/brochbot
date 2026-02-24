@@ -16,10 +16,22 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
-import { Search, RefreshCw, ExternalLink, Loader2, Music, Camera } from "lucide-react";
+import {
+  Search,
+  RefreshCw,
+  ExternalLink,
+  Loader2,
+  Music,
+  Camera,
+  BarChart2,
+  User,
+  ChevronUp,
+  ChevronDown,
+  Minus,
+} from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -29,6 +41,16 @@ type RunState = "idle" | "running" | "done" | "error";
 type Platform = "tiktok" | "instagram";
 type DateRange = "7D" | "30D" | "90D" | "All";
 type OverviewPlatform = "All" | "TikTok" | "Instagram";
+type PageMode = "overview" | "drilldown";
+type SortCol =
+  | "name"
+  | "posts"
+  | "ttViews"
+  | "igViews"
+  | "totalViews"
+  | "avgPost"
+  | "earnings"
+  | "cpm";
 
 interface PostDetail {
   date: string | null;
@@ -38,7 +60,6 @@ interface PostDetail {
   title: null;
 }
 
-// Mercury payout record (from /creator-payouts.json)
 interface CreatorPayout {
   creator: string;
   totalPaid: number;
@@ -46,7 +67,6 @@ interface CreatorPayout {
   lastPayment: string;
 }
 
-// Computed per-creator analytics built from /api/tiktok/all-data
 interface ComputedCreator {
   name: string;
   ttViews: number;
@@ -58,6 +78,18 @@ interface ComputedCreator {
 interface AllDataResponse {
   tiktok: Record<string, TikTokStoreData>;
   instagram: Record<string, InstagramStoreData>;
+}
+
+interface TableRow {
+  name: string;
+  handle: string | null;
+  posts: number;
+  ttViews: number;
+  igViews: number;
+  totalViews: number;
+  avgPost: number;
+  earnings: number;
+  cpm: number | null;
 }
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
@@ -120,8 +152,6 @@ function cpmColor(cpm: number): string {
   return "text-red-500 dark:text-red-400";
 }
 
-// Build payoutMap keyed by TIKTOK_CREATORS display name.
-// "Sophie" in Mercury → "Flo" in TIKTOK_CREATORS.
 function buildPayoutMap(payouts: CreatorPayout[]): Record<string, CreatorPayout> {
   const map: Record<string, CreatorPayout> = {};
   for (const p of payouts) {
@@ -129,6 +159,11 @@ function buildPayoutMap(payouts: CreatorPayout[]): Record<string, CreatorPayout>
     map[name] = p;
   }
   return map;
+}
+
+/** Get color for a creator, handling the Flo/Sophie mapping */
+function getCreatorColor(name: string): string {
+  return creatorColors[name] ?? (name === "Flo" ? creatorColors["Sophie"] : "#94a3b8") ?? "#94a3b8";
 }
 
 // ─── Stat Cards ────────────────────────────────────────────────────────────────
@@ -145,7 +180,54 @@ function StatCard({ label, value, sub }: { label: string; value: string | number
   );
 }
 
-// ─── Custom Tooltips ───────────────────────────────────────────────────────────
+// ─── Custom Line Chart Tooltip ─────────────────────────────────────────────────
+
+function LineChartTooltip({
+  active,
+  payload,
+  label,
+  isDark,
+}: {
+  active?: boolean;
+  payload?: Array<{ name: string; value: number; color: string }>;
+  label?: string;
+  isDark?: boolean;
+}) {
+  if (!active || !payload?.length) return null;
+  const entries = payload.filter((p) => p.value != null && p.value > 0);
+  if (entries.length === 0) return null;
+  return (
+    <div
+      className="rounded-xl px-3 py-2 text-xs shadow-xl border"
+      style={{
+        backgroundColor: isDark ? "#1a1a1a" : "#ffffff",
+        borderColor: isDark ? "#333333" : "#e5e7eb",
+        minWidth: 140,
+      }}
+    >
+      <p
+        className="mb-2 font-medium text-[11px]"
+        style={{ color: isDark ? "#a1a1aa" : "#6b7280" }}
+      >
+        {label}
+      </p>
+      {entries.map((entry) => (
+        <div key={entry.name} className="flex items-center gap-2 mb-1 last:mb-0">
+          <span
+            className="w-2 h-2 rounded-full flex-shrink-0"
+            style={{ backgroundColor: entry.color }}
+          />
+          <span style={{ color: isDark ? "#e4e4e7" : "#374151" }}>
+            <span className="font-semibold">{entry.name}</span>:{" "}
+            <span className="font-medium">{fmt(entry.value)} views</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Custom Bar Tooltips ───────────────────────────────────────────────────────
 
 function CustomTooltip({
   active,
@@ -288,7 +370,7 @@ function IgProfileHeader({ meta }: { meta: IgAuthorMeta }) {
   );
 }
 
-// ─── Platform Toggle ───────────────────────────────────────────────────────────
+// ─── Platform Toggle (per-creator) ────────────────────────────────────────────
 
 function PlatformToggle({ platform, onChange }: { platform: Platform; onChange: (p: Platform) => void }) {
   return (
@@ -321,29 +403,37 @@ function PlatformToggle({ platform, onChange }: { platform: Platform; onChange: 
   );
 }
 
+// ─── Sort Icon ─────────────────────────────────────────────────────────────────
+
+function SortIcon({ col, active, dir }: { col: string; active: boolean; dir: "asc" | "desc" }) {
+  if (!active) return <Minus size={10} className="opacity-20" />;
+  return dir === "asc" ? <ChevronUp size={11} className="opacity-70" /> : <ChevronDown size={11} className="opacity-70" />;
+}
+
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
 const POLL_INTERVAL_MS = 5_000;
-
-const pillBase = "px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer";
-const pillActive = "bg-[var(--text-primary)] text-[var(--bg-primary)]";
-const pillInactive = "border border-[var(--border-medium)] text-[var(--text-muted)] hover:border-[var(--border-strong)]";
 
 export default function UGCPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // ── Overview state (Mercury payouts + Supabase all-data) ───────────────────
+  // ── Page mode ─────────────────────────────────────────────────────────────
+  const [pageMode, setPageMode] = useState<PageMode>("overview");
+
+  // ── Overview state ─────────────────────────────────────────────────────────
   const [payouts, setPayouts] = useState<CreatorPayout[] | null>(null);
   const [payoutsLastUpdated, setPayoutsLastUpdated] = useState<string | null>(null);
   const [allData, setAllData] = useState<AllDataResponse | null>(null);
-  const [enabledCreators, setEnabledCreators] = useState<Record<string, boolean>>(
-    () => Object.fromEntries(TIKTOK_CREATORS.map((c) => [c.name, true]))
-  );
+  const [isolatedCreator, setIsolatedCreator] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState<DateRange>("All");
   const [overviewPlatform, setOverviewPlatform] = useState<OverviewPlatform>("All");
 
-  // ── Per-creator (Apify/Supabase) state ─────────────────────────────────────
+  // ── Table sort ────────────────────────────────────────────────────────────
+  const [sortCol, setSortCol] = useState<SortCol>("totalViews");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+
+  // ── Per-creator state ──────────────────────────────────────────────────────
   const [activeHandle, setActiveHandle] = useState<string>("sell.with.nick");
   const [platform, setPlatform] = useState<Platform>("tiktok");
   const [loadState, setLoadState] = useState<LoadState>("loading");
@@ -359,7 +449,7 @@ export default function UGCPage() {
   const activeCreator = TIKTOK_CREATORS.find((c) => c.handle === activeHandle);
   const activeIgHandle = activeCreator?.igHandle ?? null;
 
-  // ── Load overview data (payouts + all-data) ────────────────────────────────
+  // ── Load overview data ─────────────────────────────────────────────────────
   useEffect(() => {
     Promise.all([
       fetch("/creator-payouts.json").then((r) => r.json()),
@@ -373,13 +463,13 @@ export default function UGCPage() {
       .catch((err) => console.error("Failed to load overview data", err));
   }, []);
 
-  // ── Build payoutMap keyed by creator display name ──────────────────────────
+  // ── Build payoutMap ────────────────────────────────────────────────────────
   const payoutMap = useMemo<Record<string, CreatorPayout>>(() => {
     if (!payouts) return {};
     return buildPayoutMap(payouts);
   }, [payouts]);
 
-  // ── Compute per-creator analytics from Supabase all-data ──────────────────
+  // ── Compute per-creator analytics ─────────────────────────────────────────
   const computedCreators = useMemo<ComputedCreator[]>(() => {
     if (!allData) return [];
     return TIKTOK_CREATORS.filter((c) => c.handle).map((c) => {
@@ -431,7 +521,7 @@ export default function UGCPage() {
     const tsMaps: Record<string, Record<string, { ttViews: number; igViews: number }>> = {};
     const allDates = new Set<string>();
     allCreators.forEach((c) => {
-      if (!enabledCreators[c.name]) return;
+      if (isolatedCreator !== null && isolatedCreator !== c.name) return;
       const m = buildTsMap(c, cutoff);
       tsMaps[c.name] = m;
       Object.keys(m).forEach((d) => allDates.add(d));
@@ -440,7 +530,7 @@ export default function UGCPage() {
     return dates.map((date) => {
       const point: Record<string, string | number> = { date: date.slice(5) };
       allCreators.forEach((c) => {
-        if (!enabledCreators[c.name]) return;
+        if (isolatedCreator !== null && isolatedCreator !== c.name) return;
         const d = tsMaps[c.name]?.[date];
         if (d) {
           point[c.name] =
@@ -453,7 +543,7 @@ export default function UGCPage() {
       });
       return point;
     });
-  }, [allCreators, enabledCreators, cutoff, overviewPlatform]);
+  }, [allCreators, isolatedCreator, cutoff, overviewPlatform]);
 
   // ── Bar chart data ─────────────────────────────────────────────────────────
   const barData = useMemo(
@@ -466,8 +556,50 @@ export default function UGCPage() {
     [allCreators]
   );
 
-  const toggleCreator = (name: string) =>
-    setEnabledCreators((prev) => ({ ...prev, [name]: !prev[name] }));
+  // ── Creator comparison table ───────────────────────────────────────────────
+  const tableRows = useMemo<TableRow[]>(() => {
+    return computedCreators.map((c) => {
+      const payout = payoutMap[c.name];
+      const earnings = payout?.totalPaid ?? 0;
+      const allViews = c.ttViews + c.igViews;
+      const totalViews =
+        overviewPlatform === "TikTok"
+          ? c.ttViews
+          : overviewPlatform === "Instagram"
+          ? c.igViews
+          : allViews;
+      const avgPost = c.posts > 0 ? Math.round(totalViews / c.posts) : 0;
+      const cpm = allViews > 0 && earnings > 0 ? (earnings / allViews) * 1000 : null;
+      const handle = TIKTOK_CREATORS.find((tc) => tc.name === c.name)?.handle ?? null;
+      return { name: c.name, handle, posts: c.posts, ttViews: c.ttViews, igViews: c.igViews, totalViews, avgPost, earnings, cpm };
+    });
+  }, [computedCreators, payoutMap, overviewPlatform]);
+
+  const sortedTableRows = useMemo<TableRow[]>(() => {
+    return [...tableRows].sort((a, b) => {
+      const av = a[sortCol] ?? 0;
+      const bv = b[sortCol] ?? 0;
+      if (typeof av === "string" && typeof bv === "string") {
+        return sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+      }
+      return sortDir === "asc"
+        ? (av as number) - (bv as number)
+        : (bv as number) - (av as number);
+    });
+  }, [tableRows, sortCol, sortDir]);
+
+  const handleSort = (col: SortCol) => {
+    if (sortCol === col) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortCol(col);
+      setSortDir("desc");
+    }
+  };
+
+  const handleCreatorPillClick = (name: string) => {
+    setIsolatedCreator((prev) => (prev === name ? null : name));
+  };
 
   // ── Earnings row for active creator ────────────────────────────────────────
   const earningsRow = useMemo(() => {
@@ -696,12 +828,20 @@ export default function UGCPage() {
   const showTT = overviewPlatform !== "Instagram";
   const showIG = overviewPlatform !== "TikTok";
 
+  // ── X-axis tick interval for line chart ───────────────────────────────────
+  const xAxisInterval = Math.max(0, Math.ceil(lineChartData.length / 8) - 1);
+
+  // ── Visible creators in the line chart ───────────────────────────────────
+  const visibleCreators = allCreators.filter(
+    (c) => isolatedCreator === null || isolatedCreator === c.name
+  );
+
   return (
     <Shell>
       <div className="min-h-full bg-gray-50 dark:bg-[#0a0a0a] p-6 lg:p-8">
 
         {/* ══ Page Header ══════════════════════════════════════════════════════ */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">UGC Analytics</h1>
           <p className="text-sm text-gray-400 dark:text-white/40 mt-1">Powered by Apify + Mercury</p>
           {payoutsLastUpdated && (
@@ -709,389 +849,645 @@ export default function UGCPage() {
           )}
         </div>
 
-        {/* ══ Overview Section ═════════════════════════════════════════════════ */}
-        <div className="mb-10">
-          <div className="flex flex-wrap items-center gap-3 mb-5">
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-white/70 mr-2">Overview</h2>
-            {/* Date range pills */}
-            <div className="flex items-center gap-1.5">
-              {(["7D", "30D", "90D", "All"] as DateRange[]).map((r) => (
-                <button key={r} onClick={() => setDateRange(r)} className={`${pillBase} ${dateRange === r ? pillActive : pillInactive}`}>{r}</button>
-              ))}
-            </div>
-            <div className="w-px h-5 bg-[var(--border-medium)]" />
-            {/* Platform pills */}
-            <div className="flex items-center gap-1.5">
-              {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => (
-                <button key={p} onClick={() => setOverviewPlatform(p)} className={`${pillBase} ${overviewPlatform === p ? pillActive : pillInactive}`}>{p}</button>
-              ))}
-            </div>
+        {/* ══ Mode Toggle ══════════════════════════════════════════════════════ */}
+        <div className="flex items-center gap-2 mb-8">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-gray-100 dark:bg-[#1a1a1a] border border-gray-200 dark:border-[#222]">
+            <button
+              onClick={() => setPageMode("overview")}
+              className={[
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                pageMode === "overview"
+                  ? "bg-white dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm border border-gray-200 dark:border-[#333]"
+                  : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
+              ].join(" ")}
+            >
+              <BarChart2 size={14} />
+              Overview
+            </button>
+            <button
+              onClick={() => setPageMode("drilldown")}
+              className={[
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                pageMode === "drilldown"
+                  ? "bg-white dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm border border-gray-200 dark:border-[#333]"
+                  : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
+              ].join(" ")}
+            >
+              <User size={14} />
+              Creator Drill Down
+            </button>
           </div>
-
-          {/* Overview stat cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-            <StatCard label="Total Views" value={fmt(overviewStats.totalViews)} sub={overviewPlatform === "All" ? "TikTok + Instagram" : overviewPlatform} />
-            <StatCard label="Total Posts" value={fmt(overviewStats.totalPosts)} />
-            <StatCard label="Total Earnings" value={`$${overviewStats.totalEarnings.toLocaleString()}`} />
-            <StatCard
-              label="Avg CPM"
-              value={overviewStats.avgCpm > 0 ? `$${overviewStats.avgCpm.toFixed(2)}` : "—"}
-              sub="cost per 1K views"
-            />
-            <StatCard label="Active Creators" value={overviewStats.activeCount} />
-          </div>
-
-          {/* Views Over Time line chart */}
-          {overviewLoaded && (
-            <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">Total Views Over Time</h3>
-                <div className="flex flex-wrap gap-2">
-                  {allCreators.map((c) => (
-                    <button
-                      key={c.name}
-                      onClick={() => toggleCreator(c.name)}
-                      className={`text-[11px] px-2 py-1 rounded-full border transition-all ${enabledCreators[c.name] ? "border-transparent" : "border-[var(--border-medium)] opacity-40"}`}
-                      style={
-                        enabledCreators[c.name]
-                          ? { backgroundColor: `${creatorColors[c.name]}20`, color: creatorColors[c.name] }
-                          : { color: "var(--text-muted)" }
-                      }
-                    >
-                      {c.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              {lineChartData.length === 0 ? (
-                <div className="flex items-center justify-center py-16 text-gray-400 dark:text-white/30 text-sm">No data for this range</div>
-              ) : (
-                <ResponsiveContainer width="100%" height={260}>
-                  <LineChart data={lineChartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                    <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} />
-                    <YAxis tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
-                    <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
-                    {allCreators.filter((c) => enabledCreators[c.name]).map((c) => (
-                      <Line key={c.name} type="monotone" dataKey={c.name} stroke={creatorColors[c.name]} strokeWidth={2} dot={false} />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              )}
-            </div>
-          )}
-
-          {/* Platform comparison bar chart */}
-          {overviewLoaded && (
-            <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70 mb-4">Platform Comparison</h3>
-              <ResponsiveContainer width="100%" height={260}>
-                <BarChart data={barData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />
-                  <XAxis type="number" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
-                  <YAxis type="category" dataKey="name" tick={{ fill: yLabelColor, fontSize: 12 }} tickLine={false} axisLine={{ stroke: axisColor }} width={60} />
-                  <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
-                  <Legend wrapperStyle={{ fontSize: 11, color: tickColor }} />
-                  {showTT && <Bar dataKey="TikTok" fill="#06b6d4" radius={[0, 4, 4, 0]} />}
-                  {showIG && <Bar dataKey="Instagram" fill="#ec4899" radius={[0, 4, 4, 0]} />}
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-
-          {/* Loading skeleton for overview */}
-          {!overviewLoaded && (
-            <div className="flex items-center gap-3 text-gray-400 dark:text-white/40 py-12 justify-center">
-              <Loader2 size={16} className="animate-spin" />
-              <span className="text-sm">Loading overview data...</span>
-            </div>
-          )}
         </div>
 
-        {/* ── Divider ──────────────────────────────────────────────────────── */}
-        <div className="border-t border-gray-200 dark:border-[#222] mb-8" />
-
-        {/* ══ Per-Creator Section ══════════════════════════════════════════════ */}
-        <div>
-          {/* Section header + action buttons */}
-          <div className="flex items-start justify-between mb-5 gap-4 flex-wrap">
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-white/70">Per-Creator Analytics</h2>
-
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleRun("new-posts")}
-                  disabled={newPostsRunning || refreshRunning}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  {newPostsRunning ? <Loader2 size={13} className="animate-spin" /> : <Search size={13} />}
-                  {newPostsRunning ? "Syncing..." : "New Posts"}
-                </button>
-                <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap">
-                  · synced {timeAgo(activeSyncTime)}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleRun("refresh-counts")}
-                  disabled={newPostsRunning || refreshRunning}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  {refreshRunning ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
-                  {refreshRunning ? "Refreshing..." : "Refresh Counts"}
-                </button>
-                <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap">
-                  · updated {timeAgo(activeRefreshTime)}
-                </span>
+        {/* ══ OVERVIEW MODE ════════════════════════════════════════════════════ */}
+        {pageMode === "overview" && (
+          <div>
+            {/* Stat cards — platform filter lives inline above them */}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h2 className="text-sm font-semibold text-gray-700 dark:text-white/70">Overview</h2>
+              <div className="flex items-center gap-1.5">
+                {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setOverviewPlatform(p)}
+                    className={[
+                      "px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer",
+                      overviewPlatform === p
+                        ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
+                        : "border border-gray-300 dark:border-[#333] text-gray-500 dark:text-white/50 hover:border-gray-400 dark:hover:border-[#444]",
+                    ].join(" ")}
+                  >
+                    {p}
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* Creator Tabs */}
-          <div className="flex items-center gap-2 mb-4 flex-wrap">
-            {TIKTOK_CREATORS.map((creator) => {
-              const active = creator.handle === activeHandle;
-              const disabled = !creator.handle;
-              return (
-                <button
-                  key={creator.name}
-                  onClick={() => { if (creator.handle && !disabled) setActiveHandle(creator.handle); }}
-                  disabled={disabled}
-                  className={[
-                    "px-4 py-2 rounded-xl text-sm font-medium transition-all border",
-                    active
-                      ? "bg-blue-600/20 border-blue-500/40 text-blue-500 dark:text-blue-400"
-                      : disabled
-                      ? "bg-transparent border-gray-100 dark:border-[#1a1a1a] text-gray-300 dark:text-white/20 cursor-not-allowed"
-                      : "bg-white dark:bg-[#111] border-gray-200 dark:border-[#222] text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333]",
-                  ].join(" ")}
-                >
-                  {creator.name}
-                  {disabled && <span className="ml-2 text-[10px] text-gray-300 dark:text-white/20 font-normal">soon</span>}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Platform Toggle */}
-          <div className="mb-5">
-            <PlatformToggle platform={platform} onChange={setPlatform} />
-          </div>
-
-          {/* Earnings Row */}
-          {earningsRow && (
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-4 px-1 text-sm text-gray-500 dark:text-white/50">
-              <span>💰 <span className="text-green-500 dark:text-green-400 font-semibold">${earningsRow.earnings.toLocaleString()}</span> earned</span>
-              {earningsRow.cpm !== null && (
-                <span>📊 <span className={`font-semibold ${cpmColor(earningsRow.cpm)}`}>${earningsRow.cpm.toFixed(2)}</span> CPM</span>
-              )}
-              {earningsRow.payments > 0 && (
-                <span>💳 {earningsRow.payments} payment{earningsRow.payments !== 1 ? "s" : ""}</span>
-              )}
-              {earningsRow.lastPaid && (
-                <span>📅 Last paid {earningsRow.lastPaid}</span>
-              )}
+            {/* Stat cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+              <StatCard
+                label="Total Views"
+                value={fmt(overviewStats.totalViews)}
+                sub={overviewPlatform === "All" ? "TikTok + Instagram" : overviewPlatform}
+              />
+              <StatCard label="Total Posts" value={fmt(overviewStats.totalPosts)} />
+              <StatCard label="Total Earnings" value={`$${overviewStats.totalEarnings.toLocaleString()}`} />
+              <StatCard
+                label="Avg CPM"
+                value={overviewStats.avgCpm > 0 ? `$${overviewStats.avgCpm.toFixed(2)}` : "—"}
+                sub="cost per 1K views"
+              />
+              <StatCard label="Active Creators" value={overviewStats.activeCount} />
             </div>
-          )}
 
-          {/* ── TikTok Content ──────────────────────────────────────────────── */}
-          {platform === "tiktok" && (
-            <>
-              {storeData?.authorMeta && <ProfileHeader meta={storeData.authorMeta} />}
-              {error && (
-                <div className="rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 p-4 mb-6">
-                  <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
-                </div>
-              )}
-              {activeLoadState === "loading" && (
-                <div className="flex items-center justify-center py-32 gap-3">
-                  <Loader2 size={20} className="animate-spin text-blue-500" />
-                  <span className="text-sm text-gray-400 dark:text-white/40">Loading cached data...</span>
-                </div>
-              )}
-              {activeLoadState === "idle" && (
-                <div className="flex flex-col items-center justify-center py-32 gap-5">
-                  <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] flex items-center justify-center">
-                    <Search size={22} className="text-gray-300 dark:text-white/20" />
+            {/* ── Views Over Time ─────────────────────────────────────────── */}
+            {overviewLoaded ? (
+              <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-5">
+                {/* Card header row 1: title + platform + date range */}
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                  <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">
+                    Total Views Over Time
+                  </h3>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {/* Platform filter */}
+                    <div className="flex items-center gap-1">
+                      {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => (
+                        <button
+                          key={p}
+                          onClick={() => setOverviewPlatform(p)}
+                          className={[
+                            "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer",
+                            overviewPlatform === p
+                              ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
+                              : "border border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444] hover:text-gray-600 dark:hover:text-white/60",
+                          ].join(" ")}
+                        >
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="w-px h-4 bg-gray-200 dark:bg-[#333]" />
+                    {/* Date range filter */}
+                    <div className="flex items-center gap-1">
+                      {(["7D", "30D", "90D", "All"] as DateRange[]).map((r) => (
+                        <button
+                          key={r}
+                          onClick={() => setDateRange(r)}
+                          className={[
+                            "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer",
+                            dateRange === r
+                              ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
+                              : "border border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444] hover:text-gray-600 dark:hover:text-white/60",
+                          ].join(" ")}
+                        >
+                          {r}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No data yet for {activeCreator?.name ?? activeHandle}</p>
-                    <p className="text-gray-400 dark:text-white/30 text-sm">Click &quot;New Posts&quot; to fetch their TikTok videos.</p>
+                </div>
+
+                {/* Card header row 2: creator pills */}
+                <div className="flex flex-wrap items-center gap-1.5 mb-4">
+                  {/* All pill */}
+                  <button
+                    onClick={() => setIsolatedCreator(null)}
+                    className={[
+                      "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer border",
+                      isolatedCreator === null
+                        ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent"
+                        : "border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444]",
+                    ].join(" ")}
+                  >
+                    All
+                  </button>
+                  {allCreators.map((c) => {
+                    const color = getCreatorColor(c.name);
+                    const isSelected = isolatedCreator === c.name;
+                    const isIsolateMode = isolatedCreator !== null;
+                    const isFaded = isIsolateMode && !isSelected;
+                    return (
+                      <button
+                        key={c.name}
+                        onClick={() => handleCreatorPillClick(c.name)}
+                        className={[
+                          "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer border",
+                          isFaded ? "opacity-30 grayscale" : "",
+                        ].join(" ")}
+                        style={
+                          isSelected
+                            ? { backgroundColor: color, color: "#fff", borderColor: "transparent" }
+                            : { backgroundColor: `${color}20`, color: color, borderColor: "transparent" }
+                        }
+                      >
+                        {c.name}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Chart */}
+                {lineChartData.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-16 gap-2">
+                    <p className="text-gray-400 dark:text-white/30 text-sm font-medium">No posts in this period</p>
+                    <p className="text-gray-300 dark:text-white/20 text-xs">
+                      Try a wider date range or select a different platform
+                    </p>
                   </div>
+                ) : (
+                  <ResponsiveContainer width="100%" height={280}>
+                    <LineChart data={lineChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke={isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="date"
+                        tick={{ fill: tickColor, fontSize: 10 }}
+                        tickLine={false}
+                        axisLine={{ stroke: axisColor }}
+                        interval={xAxisInterval}
+                      />
+                      <YAxis
+                        tick={{ fill: tickColor, fontSize: 10 }}
+                        tickLine={false}
+                        axisLine={false}
+                        tickFormatter={fmt}
+                        width={48}
+                      />
+                      <Tooltip
+                        content={(props) => (
+                          <LineChartTooltip
+                            active={props.active}
+                            payload={props.payload as Array<{ name: string; value: number; color: string }>}
+                            label={props.label as string}
+                            isDark={isDark}
+                          />
+                        )}
+                      />
+                      {visibleCreators.map((c) => (
+                        <Line
+                          key={c.name}
+                          type="monotone"
+                          dataKey={c.name}
+                          stroke={getCreatorColor(c.name)}
+                          strokeWidth={2.5}
+                          dot={false}
+                          activeDot={{ r: 5, strokeWidth: 0 }}
+                          connectNulls={false}
+                        />
+                      ))}
+                    </LineChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-3 text-gray-400 dark:text-white/40 py-12 justify-center mb-5">
+                <Loader2 size={16} className="animate-spin" />
+                <span className="text-sm">Loading overview data...</span>
+              </div>
+            )}
+
+            {/* ── Platform comparison bar chart ───────────────────────────── */}
+            {overviewLoaded && (
+              <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-6">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70 mb-4">Platform Comparison</h3>
+                <ResponsiveContainer width="100%" height={260}>
+                  <BarChart data={barData} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />
+                    <XAxis type="number" tick={{ fill: tickColor, fontSize: 10 }} tickLine={false} axisLine={{ stroke: axisColor }} tickFormatter={fmt} />
+                    <YAxis type="category" dataKey="name" tick={{ fill: yLabelColor, fontSize: 12 }} tickLine={false} axisLine={{ stroke: axisColor }} width={60} />
+                    <Tooltip {...tooltipStyle} formatter={(value) => fmt(Number(value))} />
+                    <Legend wrapperStyle={{ fontSize: 11, color: tickColor }} />
+                    {showTT && <Bar dataKey="TikTok" fill="#06b6d4" radius={[0, 4, 4, 0]} />}
+                    {showIG && <Bar dataKey="Instagram" fill="#ec4899" radius={[0, 4, 4, 0]} />}
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {/* ── Creator Comparison Table ─────────────────────────────────── */}
+            {overviewLoaded && (
+              <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] overflow-hidden">
+                <div className="px-6 py-4 border-b border-gray-100 dark:border-[#1a1a1a]">
+                  <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">Creator Comparison</h3>
+                  <p className="text-xs text-gray-400 dark:text-white/30 mt-0.5">Click a row to drill down into that creator</p>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="sticky top-0 bg-white dark:bg-[#111] z-10">
+                      <tr className="border-b border-gray-100 dark:border-[#1a1a1a]">
+                        {(
+                          [
+                            { key: "name" as SortCol, label: "Creator" },
+                            { key: "posts" as SortCol, label: "Posts" },
+                            { key: "ttViews" as SortCol, label: "TT Views" },
+                            { key: "igViews" as SortCol, label: "IG Views" },
+                            { key: "totalViews" as SortCol, label: "Total Views" },
+                            { key: "avgPost" as SortCol, label: "Avg/Post" },
+                            { key: "earnings" as SortCol, label: "Earnings" },
+                            { key: "cpm" as SortCol, label: "CPM" },
+                          ] as { key: SortCol; label: string }[]
+                        ).map(({ key, label }) => (
+                          <th
+                            key={key}
+                            onClick={() => handleSort(key)}
+                            className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:text-gray-600 dark:hover:text-white/60 transition-colors select-none"
+                          >
+                            <span className="flex items-center gap-1">
+                              {label}
+                              <SortIcon col={key} active={sortCol === key} dir={sortDir} />
+                            </span>
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sortedTableRows.map((row, i) => {
+                        const color = getCreatorColor(row.name);
+                        return (
+                          <tr
+                            key={row.name}
+                            onClick={() => {
+                              if (row.handle) {
+                                setActiveHandle(row.handle);
+                                setPageMode("drilldown");
+                              }
+                            }}
+                            className={[
+                              "border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 transition-colors",
+                              row.handle
+                                ? "cursor-pointer hover:bg-gray-50 dark:hover:bg-white/[0.03]"
+                                : "opacity-50",
+                              i % 2 === 0 ? "" : "bg-gray-50/50 dark:bg-white/[0.01]",
+                            ].join(" ")}
+                          >
+                            {/* Creator */}
+                            <td className="px-4 py-3">
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className="w-2 h-2 rounded-full flex-shrink-0"
+                                  style={{ backgroundColor: color }}
+                                />
+                                <span className="font-medium text-gray-900 dark:text-white text-sm">
+                                  {row.name}
+                                </span>
+                              </div>
+                            </td>
+                            {/* Posts */}
+                            <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
+                              {row.posts}
+                            </td>
+                            {/* TT Views */}
+                            <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
+                              {row.ttViews > 0 ? fmt(row.ttViews) : <span className="text-gray-300 dark:text-white/20">—</span>}
+                            </td>
+                            {/* IG Views */}
+                            <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
+                              {row.igViews > 0 ? fmt(row.igViews) : <span className="text-gray-300 dark:text-white/20">—</span>}
+                            </td>
+                            {/* Total Views */}
+                            <td className="px-4 py-3 font-semibold text-gray-800 dark:text-white/90 whitespace-nowrap">
+                              {row.totalViews > 0 ? fmt(row.totalViews) : <span className="font-normal text-gray-300 dark:text-white/20">—</span>}
+                            </td>
+                            {/* Avg/Post */}
+                            <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
+                              {row.avgPost > 0 ? fmt(row.avgPost) : <span className="text-gray-300 dark:text-white/20">—</span>}
+                            </td>
+                            {/* Earnings */}
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {row.earnings > 0 ? (
+                                <span className="text-green-600 dark:text-green-400 font-medium">
+                                  ${row.earnings.toLocaleString()}
+                                </span>
+                              ) : (
+                                <span className="text-gray-300 dark:text-white/20">—</span>
+                              )}
+                            </td>
+                            {/* CPM */}
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {row.cpm != null ? (
+                                <span className={`font-medium ${cpmColor(row.cpm)}`}>
+                                  ${row.cpm.toFixed(2)}
+                                </span>
+                              ) : (
+                                <span className="text-gray-300 dark:text-white/20">—</span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ══ DRILL DOWN MODE ══════════════════════════════════════════════════ */}
+        {pageMode === "drilldown" && (
+          <div>
+            {/* Section header + action buttons */}
+            <div className="flex items-start justify-between mb-5 gap-4 flex-wrap">
+              <h2 className="text-sm font-semibold text-gray-700 dark:text-white/70">Per-Creator Analytics</h2>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleRun("new-posts")}
-                    disabled={newPostsRunning}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600/10 border border-blue-500/30 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-600/20 hover:border-blue-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    disabled={newPostsRunning || refreshRunning}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   >
-                    {newPostsRunning ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
-                    {newPostsRunning ? "Syncing..." : `Fetch ${activeCreator?.name ?? activeHandle}'s videos`}
+                    {newPostsRunning ? <Loader2 size={13} className="animate-spin" /> : <Search size={13} />}
+                    {newPostsRunning ? "Syncing..." : "New Posts"}
                   </button>
+                  <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap">
+                    · synced {timeAgo(activeSyncTime)}
+                  </span>
                 </div>
-              )}
-              {(activeLoadState === "done" || (activeLoadState !== "loading" && activeLoadState !== "idle" && videos.length > 0)) && (
-                <>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-                    <StatCard label="Total Videos" value={totalVideos} />
-                    <StatCard label="Total Views" value={fmt(totalViews)} />
-                    <StatCard label="Avg Views/Video" value={fmt(avgViews)} />
-                    <StatCard label="Total Likes" value={fmt(totalLikes)} />
-                    <StatCard label="Total Comments" value={fmt(totalComments)} />
-                  </div>
-                  <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-6 mb-8">
-                    <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70 mb-6">Views Per Video (last 30)</h2>
-                    {ttChartData.length === 0 ? (
-                      <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
-                    ) : (
-                      <ResponsiveContainer width="100%" height={240}>
-                        <BarChart data={ttChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-                          <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
-                          <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} axisLine={{ stroke: axisColor }} tickLine={false} />
-                          <YAxis tickFormatter={fmt} tick={{ fill: tickColor, fontSize: 10 }} axisLine={false} tickLine={false} width={48} />
-                          <Tooltip content={<CustomTooltip videos={videos} />} cursor={{ fill: "rgba(59,130,246,0.06)" }} />
-                          <Bar dataKey="views" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    )}
-                  </div>
-                  <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-100 dark:border-[#1a1a1a]">
-                      <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70">All Videos ({totalVideos})</h2>
-                    </div>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm">
-                        <thead className="sticky top-0 bg-white dark:bg-[#111] z-10">
-                          <tr className="border-b border-gray-100 dark:border-[#1a1a1a]">
-                            {["Date", "Caption", "Views", "Likes", "Comments", "Shares", ""].map((h, i) => (
-                              <th key={i} className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap">{h}</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {tableVideos.map((v, i) => (
-                            <tr key={v.id || i} className={["border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors", i % 2 === 0 ? "" : "bg-gray-50/50 dark:bg-white/[0.01]"].join(" ")}>
-                              <td className="px-4 py-3 text-gray-400 dark:text-white/40 whitespace-nowrap text-xs">{shortDate(v.postedAt)}</td>
-                              <td className="px-4 py-3 text-gray-700 dark:text-white/70 max-w-xs"><span className="block truncate max-w-[280px]" title={v.caption}>{truncate(v.caption, 80)}</span></td>
-                              <td className="px-4 py-3 text-gray-800 dark:text-white/80 whitespace-nowrap font-medium">{fmt(v.views || 0)}</td>
-                              <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(v.likes || 0)}</td>
-                              <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(v.comments || 0)}</td>
-                              <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(v.shares || 0)}</td>
-                              <td className="px-4 py-3">{v.url && (<a href={v.url} target="_blank" rel="noopener noreferrer" className="text-gray-300 dark:text-white/20 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"><ExternalLink size={14} /></a>)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </>
-              )}
-            </>
-          )}
-
-          {/* ── Instagram Content ───────────────────────────────────────────── */}
-          {platform === "instagram" && (
-            <>
-              {!activeIgHandle && (
-                <div className="flex flex-col items-center justify-center py-32 gap-4">
-                  <Camera size={32} className="text-gray-300 dark:text-white/20" />
-                  <p className="text-gray-500 dark:text-white/50 text-sm">No Instagram handle configured for this creator.</p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleRun("refresh-counts")}
+                    disabled={newPostsRunning || refreshRunning}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {refreshRunning ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
+                    {refreshRunning ? "Refreshing..." : "Refresh Counts"}
+                  </button>
+                  <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap">
+                    · updated {timeAgo(activeRefreshTime)}
+                  </span>
                 </div>
-              )}
-              {activeIgHandle && (
-                <>
-                  {igStoreData?.igAuthorMeta && <IgProfileHeader meta={igStoreData.igAuthorMeta} />}
-                  {error && (
-                    <div className="rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 p-4 mb-6">
-                      <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
-                    </div>
-                  )}
-                  {igLoadState === "loading" && (
-                    <div className="flex items-center justify-center py-32 gap-3">
-                      <Loader2 size={20} className="animate-spin text-blue-500" />
-                      <span className="text-sm text-gray-400 dark:text-white/40">Loading cached data...</span>
-                    </div>
-                  )}
-                  {igLoadState === "idle" && (
-                    <div className="flex flex-col items-center justify-center py-32 gap-5">
-                      <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] flex items-center justify-center">
-                        <Camera size={22} className="text-gray-300 dark:text-white/20" />
-                      </div>
-                      <div className="text-center">
-                        <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No Instagram data yet for {activeCreator?.name ?? activeHandle}</p>
-                        <p className="text-gray-400 dark:text-white/30 text-sm">Click &quot;New Posts&quot; to fetch their Instagram posts.</p>
-                      </div>
-                      <button
-                        onClick={() => handleRun("new-posts")}
-                        disabled={newPostsRunning}
-                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600/10 border border-blue-500/30 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-600/20 hover:border-blue-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                      >
-                        {newPostsRunning ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
-                        {newPostsRunning ? "Syncing..." : `Fetch ${activeCreator?.name ?? activeHandle}'s Instagram posts`}
-                      </button>
-                    </div>
-                  )}
-                  {(igLoadState === "done" || (igLoadState !== "loading" && igLoadState !== "idle" && posts.length > 0)) && (
-                    <>
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-                        <StatCard label="Total Posts" value={totalPosts} />
-                        <StatCard label="Total Views" value={fmt(igTotalViews)} />
-                        <StatCard label="Avg Views/Post" value={fmt(igAvgViews)} />
-                        <StatCard label="Total Likes" value={fmt(igTotalLikes)} />
-                        <StatCard label="Total Comments" value={fmt(igTotalComments)} />
-                      </div>
-                      <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-6 mb-8">
-                        <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70 mb-6">Views Per Post (last 30)</h2>
-                        {igChartData.length === 0 ? (
-                          <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
-                        ) : (
+              </div>
+            </div>
 
-                          <ResponsiveContainer width="100%" height={240}>
-                            <BarChart data={igChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-                              <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
-                              <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} axisLine={{ stroke: axisColor }} tickLine={false} />
-                              <YAxis tickFormatter={fmt} tick={{ fill: tickColor, fontSize: 10 }} axisLine={false} tickLine={false} width={48} />
-                              <Tooltip content={<IgTooltip posts={posts} />} cursor={{ fill: "rgba(236,72,153,0.06)" }} />
-                              <Bar dataKey="views" fill="#ec4899" radius={[4, 4, 0, 0]} maxBarSize={40} />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        )}
+            {/* Creator Tabs */}
+            <div className="flex items-center gap-2 mb-4 flex-wrap">
+              {TIKTOK_CREATORS.map((creator) => {
+                const active = creator.handle === activeHandle;
+                const disabled = !creator.handle;
+                return (
+                  <button
+                    key={creator.name}
+                    onClick={() => { if (creator.handle && !disabled) setActiveHandle(creator.handle); }}
+                    disabled={disabled}
+                    className={[
+                      "px-4 py-2 rounded-xl text-sm font-medium transition-all border",
+                      active
+                        ? "bg-blue-600/20 border-blue-500/40 text-blue-500 dark:text-blue-400"
+                        : disabled
+                        ? "bg-transparent border-gray-100 dark:border-[#1a1a1a] text-gray-300 dark:text-white/20 cursor-not-allowed"
+                        : "bg-white dark:bg-[#111] border-gray-200 dark:border-[#222] text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333]",
+                    ].join(" ")}
+                  >
+                    {creator.name}
+                    {disabled && <span className="ml-2 text-[10px] text-gray-300 dark:text-white/20 font-normal">soon</span>}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Platform Toggle */}
+            <div className="mb-5">
+              <PlatformToggle platform={platform} onChange={setPlatform} />
+            </div>
+
+            {/* Earnings Row */}
+            {earningsRow && (
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-4 px-1 text-sm text-gray-500 dark:text-white/50">
+                <span>💰 <span className="text-green-500 dark:text-green-400 font-semibold">${earningsRow.earnings.toLocaleString()}</span> earned</span>
+                {earningsRow.cpm !== null && (
+                  <span>📊 <span className={`font-semibold ${cpmColor(earningsRow.cpm)}`}>${earningsRow.cpm.toFixed(2)}</span> CPM</span>
+                )}
+                {earningsRow.payments > 0 && (
+                  <span>💳 {earningsRow.payments} payment{earningsRow.payments !== 1 ? "s" : ""}</span>
+                )}
+                {earningsRow.lastPaid && (
+                  <span>📅 Last paid {earningsRow.lastPaid}</span>
+                )}
+              </div>
+            )}
+
+            {/* ── TikTok Content ──────────────────────────────────────────── */}
+            {platform === "tiktok" && (
+              <>
+                {storeData?.authorMeta && <ProfileHeader meta={storeData.authorMeta} />}
+                {error && (
+                  <div className="rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 p-4 mb-6">
+                    <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+                  </div>
+                )}
+                {activeLoadState === "loading" && (
+                  <div className="flex items-center justify-center py-32 gap-3">
+                    <Loader2 size={20} className="animate-spin text-blue-500" />
+                    <span className="text-sm text-gray-400 dark:text-white/40">Loading cached data...</span>
+                  </div>
+                )}
+                {activeLoadState === "idle" && (
+                  <div className="flex flex-col items-center justify-center py-32 gap-5">
+                    <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] flex items-center justify-center">
+                      <Search size={22} className="text-gray-300 dark:text-white/20" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No data yet for {activeCreator?.name ?? activeHandle}</p>
+                      <p className="text-gray-400 dark:text-white/30 text-sm">Click &quot;New Posts&quot; to fetch their TikTok videos.</p>
+                    </div>
+                    <button
+                      onClick={() => handleRun("new-posts")}
+                      disabled={newPostsRunning}
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600/10 border border-blue-500/30 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-600/20 hover:border-blue-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {newPostsRunning ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
+                      {newPostsRunning ? "Syncing..." : `Fetch ${activeCreator?.name ?? activeHandle}&apos;s videos`}
+                    </button>
+                  </div>
+                )}
+                {(activeLoadState === "done" || (activeLoadState !== "loading" && activeLoadState !== "idle" && videos.length > 0)) && (
+                  <>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                      <StatCard label="Total Videos" value={totalVideos} />
+                      <StatCard label="Total Views" value={fmt(totalViews)} />
+                      <StatCard label="Avg Views/Video" value={fmt(avgViews)} />
+                      <StatCard label="Total Likes" value={fmt(totalLikes)} />
+                      <StatCard label="Total Comments" value={fmt(totalComments)} />
+                    </div>
+                    <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-6 mb-8">
+                      <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70 mb-6">Views Per Video (last 30)</h2>
+                      {ttChartData.length === 0 ? (
+                        <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
+                      ) : (
+                        <ResponsiveContainer width="100%" height={240}>
+                          <BarChart data={ttChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
+                            <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} axisLine={{ stroke: axisColor }} tickLine={false} />
+                            <YAxis tickFormatter={fmt} tick={{ fill: tickColor, fontSize: 10 }} axisLine={false} tickLine={false} width={48} />
+                            <Tooltip content={<CustomTooltip videos={videos} />} cursor={{ fill: "rgba(59,130,246,0.06)" }} />
+                            <Bar dataKey="views" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      )}
+                    </div>
+                    <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] overflow-hidden">
+                      <div className="px-6 py-4 border-b border-gray-100 dark:border-[#1a1a1a]">
+                        <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70">All Videos ({totalVideos})</h2>
                       </div>
-                      <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-100 dark:border-[#1a1a1a]">
-                          <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70">All Posts ({totalPosts})</h2>
-                        </div>
-                        <div className="overflow-x-auto">
-                          <table className="w-full text-sm">
-                            <thead className="sticky top-0 bg-white dark:bg-[#111] z-10">
-                              <tr className="border-b border-gray-100 dark:border-[#1a1a1a]">
-                                {["Date", "Caption", "Type", "Views", "Likes", "Comments", ""].map((h, i) => (
-                                  <th key={i} className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap">{h}</th>
-                                ))}
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {tablePosts.map((p, i) => (
-                                <tr key={p.id || i} className={["border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors", i % 2 === 0 ? "" : "bg-gray-50/50 dark:bg-white/[0.01]"].join(" ")}>
-                                  <td className="px-4 py-3 text-gray-400 dark:text-white/40 whitespace-nowrap text-xs">{shortDate(p.postedAt)}</td>
-                                  <td className="px-4 py-3 text-gray-700 dark:text-white/70 max-w-xs"><span className="block truncate max-w-[280px]" title={p.caption}>{truncate(p.caption, 80)}</span></td>
-                                  <td className="px-4 py-3 text-gray-400 dark:text-white/40 whitespace-nowrap text-xs">{p.type || "—"}</td>
-                                  <td className="px-4 py-3 text-gray-800 dark:text-white/80 whitespace-nowrap font-medium">{fmt(p.views || 0)}</td>
-                                  <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(p.likes || 0)}</td>
-                                  <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(p.comments || 0)}</td>
-                                  <td className="px-4 py-3">{p.url && (<a href={p.url} target="_blank" rel="noopener noreferrer" className="text-gray-300 dark:text-white/20 hover:text-pink-500 dark:hover:text-pink-400 transition-colors"><ExternalLink size={14} /></a>)}</td>
-                                </tr>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead className="sticky top-0 bg-white dark:bg-[#111] z-10">
+                            <tr className="border-b border-gray-100 dark:border-[#1a1a1a]">
+                              {["Date", "Caption", "Views", "Likes", "Comments", "Shares", ""].map((h, i) => (
+                                <th key={i} className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap">{h}</th>
                               ))}
-                            </tbody>
-                          </table>
-                        </div>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {tableVideos.map((v, i) => (
+                              <tr key={v.id || i} className={["border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors", i % 2 === 0 ? "" : "bg-gray-50/50 dark:bg-white/[0.01]"].join(" ")}>
+                                <td className="px-4 py-3 text-gray-400 dark:text-white/40 whitespace-nowrap text-xs">{shortDate(v.postedAt)}</td>
+                                <td className="px-4 py-3 text-gray-700 dark:text-white/70 max-w-xs"><span className="block truncate max-w-[280px]" title={v.caption}>{truncate(v.caption, 80)}</span></td>
+                                <td className="px-4 py-3 text-gray-800 dark:text-white/80 whitespace-nowrap font-medium">{fmt(v.views || 0)}</td>
+                                <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(v.likes || 0)}</td>
+                                <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(v.comments || 0)}</td>
+                                <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(v.shares || 0)}</td>
+                                <td className="px-4 py-3">{v.url && (<a href={v.url} target="_blank" rel="noopener noreferrer" className="text-gray-300 dark:text-white/20 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"><ExternalLink size={14} /></a>)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
+            {/* ── Instagram Content ───────────────────────────────────────── */}
+            {platform === "instagram" && (
+              <>
+                {!activeIgHandle && (
+                  <div className="flex flex-col items-center justify-center py-32 gap-4">
+                    <Camera size={32} className="text-gray-300 dark:text-white/20" />
+                    <p className="text-gray-500 dark:text-white/50 text-sm">No Instagram handle configured for this creator.</p>
+                  </div>
+                )}
+                {activeIgHandle && (
+                  <>
+                    {igStoreData?.igAuthorMeta && <IgProfileHeader meta={igStoreData.igAuthorMeta} />}
+                    {error && (
+                      <div className="rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 p-4 mb-6">
+                        <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+                      </div>
+                    )}
+                    {igLoadState === "loading" && (
+                      <div className="flex items-center justify-center py-32 gap-3">
+                        <Loader2 size={20} className="animate-spin text-blue-500" />
+                        <span className="text-sm text-gray-400 dark:text-white/40">Loading cached data...</span>
+                      </div>
+                    )}
+                    {igLoadState === "idle" && (
+                      <div className="flex flex-col items-center justify-center py-32 gap-5">
+                        <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] flex items-center justify-center">
+                          <Camera size={22} className="text-gray-300 dark:text-white/20" />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No Instagram data yet for {activeCreator?.name ?? activeHandle}</p>
+                          <p className="text-gray-400 dark:text-white/30 text-sm">Click &quot;New Posts&quot; to fetch their Instagram posts.</p>
+                        </div>
+                        <button
+                          onClick={() => handleRun("new-posts")}
+                          disabled={newPostsRunning}
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600/10 border border-blue-500/30 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-600/20 hover:border-blue-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          {newPostsRunning ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
+                          {newPostsRunning ? "Syncing..." : `Fetch ${activeCreator?.name ?? activeHandle}&apos;s Instagram posts`}
+                        </button>
+                      </div>
+                    )}
+                    {(igLoadState === "done" || (igLoadState !== "loading" && igLoadState !== "idle" && posts.length > 0)) && (
+                      <>
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                          <StatCard label="Total Posts" value={totalPosts} />
+                          <StatCard label="Total Views" value={fmt(igTotalViews)} />
+                          <StatCard label="Avg Views/Post" value={fmt(igAvgViews)} />
+                          <StatCard label="Total Likes" value={fmt(igTotalLikes)} />
+                          <StatCard label="Total Comments" value={fmt(igTotalComments)} />
+                        </div>
+                        <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-6 mb-8">
+                          <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70 mb-6">Views Per Post (last 30)</h2>
+                          {igChartData.length === 0 ? (
+                            <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
+                          ) : (
+                            <ResponsiveContainer width="100%" height={240}>
+                              <BarChart data={igChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
+                                <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 10 }} axisLine={{ stroke: axisColor }} tickLine={false} />
+                                <YAxis tickFormatter={fmt} tick={{ fill: tickColor, fontSize: 10 }} axisLine={false} tickLine={false} width={48} />
+                                <Tooltip content={<IgTooltip posts={posts} />} cursor={{ fill: "rgba(236,72,153,0.06)" }} />
+                                <Bar dataKey="views" fill="#ec4899" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                              </BarChart>
+                            </ResponsiveContainer>
+                          )}
+                        </div>
+                        <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] overflow-hidden">
+                          <div className="px-6 py-4 border-b border-gray-100 dark:border-[#1a1a1a]">
+                            <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70">All Posts ({totalPosts})</h2>
+                          </div>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead className="sticky top-0 bg-white dark:bg-[#111] z-10">
+                                <tr className="border-b border-gray-100 dark:border-[#1a1a1a]">
+                                  {["Date", "Caption", "Type", "Views", "Likes", "Comments", ""].map((h, i) => (
+                                    <th key={i} className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {tablePosts.map((p, i) => (
+                                  <tr key={p.id || i} className={["border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors", i % 2 === 0 ? "" : "bg-gray-50/50 dark:bg-white/[0.01]"].join(" ")}>
+                                    <td className="px-4 py-3 text-gray-400 dark:text-white/40 whitespace-nowrap text-xs">{shortDate(p.postedAt)}</td>
+                                    <td className="px-4 py-3 text-gray-700 dark:text-white/70 max-w-xs"><span className="block truncate max-w-[280px]" title={p.caption}>{truncate(p.caption, 80)}</span></td>
+                                    <td className="px-4 py-3 text-gray-400 dark:text-white/40 whitespace-nowrap text-xs">{p.type || "—"}</td>
+                                    <td className="px-4 py-3 text-gray-800 dark:text-white/80 whitespace-nowrap font-medium">{fmt(p.views || 0)}</td>
+                                    <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(p.likes || 0)}</td>
+                                    <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">{fmt(p.comments || 0)}</td>
+                                    <td className="px-4 py-3">{p.url && (<a href={p.url} target="_blank" rel="noopener noreferrer" className="text-gray-300 dark:text-white/20 hover:text-pink-500 dark:hover:text-pink-400 transition-colors"><ExternalLink size={14} /></a>)}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        )}
       </div>
     </Shell>
   );
