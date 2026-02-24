@@ -197,6 +197,112 @@ function StatCard({ label, value, sub, icon }: { label: string; value: string | 
   );
 }
 
+// ─── Creator Card ─────────────────────────────────────────────────────────────
+
+function CreatorCard({
+  creator,
+  computedData,
+  payout,
+  onClick,
+}: {
+  creator: { name: string; handle: string | null; igHandle: string | null };
+  computedData: ComputedCreator | undefined;
+  payout: CreatorPayout | undefined;
+  onClick: () => void;
+}) {
+  const color = getCreatorColor(creator.name);
+  const hasData = computedData && (computedData.posts > 0 || computedData.ttViews > 0 || computedData.igViews > 0);
+
+  if (!hasData) {
+    return (
+      <div
+        className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-4 flex flex-col gap-3 opacity-50 select-none"
+        title="No data yet"
+      >
+        <div className="flex items-center justify-between">
+          <span
+            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold"
+            style={{ backgroundColor: `${color}25`, color }}
+          >
+            {creator.name}
+          </span>
+          <span className="text-[11px] text-gray-400 dark:text-white/30">—</span>
+        </div>
+        <p className="text-xs text-gray-300 dark:text-white/20 text-center py-2">No data yet</p>
+      </div>
+    );
+  }
+
+  const ttViews = computedData.ttViews;
+  const igViews = computedData.igViews;
+  const totalViews = ttViews + igViews;
+  const posts = computedData.posts;
+  const avgPost = posts > 0 ? Math.round(totalViews / posts) : 0;
+  const totalPaid = payout?.totalPaid ?? 0;
+  const cpm = totalViews > 0 && totalPaid > 0 ? (totalPaid / totalViews) * 1000 : null;
+
+  const hasTT = ttViews > 0;
+  const hasIG = igViews > 0;
+
+  return (
+    <button
+      onClick={onClick}
+      className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-4 flex flex-col gap-3 hover:border-gray-300 dark:hover:border-[#333] transition-all text-left w-full cursor-pointer hover:shadow-sm"
+    >
+      {/* Top row: creator name + post count */}
+      <div className="flex items-center justify-between gap-2">
+        <span
+          className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold truncate"
+          style={{ backgroundColor: `${color}25`, color }}
+        >
+          {creator.name}
+        </span>
+        <span className="text-[11px] text-gray-400 dark:text-white/30 whitespace-nowrap flex-shrink-0">
+          {posts} posts
+        </span>
+      </div>
+
+      {/* Stats grid */}
+      <div className="grid grid-cols-3 gap-1">
+        <div>
+          <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">Total Views</p>
+          <p className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{fmt(totalViews)}</p>
+        </div>
+        <div>
+          <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">Avg/Post</p>
+          <p className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{avgPost > 0 ? fmt(avgPost) : "—"}</p>
+        </div>
+        <div>
+          <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">CPM</p>
+          <p className={`text-sm font-bold tabular-nums ${cpm !== null ? cpmColor(cpm) : "text-gray-300 dark:text-white/20"}`}>
+            {cpm !== null ? `$${cpm.toFixed(2)}` : "—"}
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom: platform breakdown */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {hasTT && (
+          <span className="flex items-center gap-1 text-[10px] text-cyan-600 dark:text-cyan-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0" />
+            TikTok {fmt(ttViews)}
+          </span>
+        )}
+        {hasTT && hasIG && <span className="text-gray-300 dark:text-white/20 text-[10px]">·</span>}
+        {hasIG && (
+          <span className="flex items-center gap-1 text-[10px] text-pink-600 dark:text-pink-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-pink-500 flex-shrink-0" />
+            IG {fmt(igViews)}
+          </span>
+        )}
+        {!hasTT && !hasIG && (
+          <span className="text-[10px] text-gray-300 dark:text-white/20">No views yet</span>
+        )}
+      </div>
+    </button>
+  );
+}
+
 // ─── Custom Line Chart Tooltip ─────────────────────────────────────────────────
 
 function LineChartTooltip({
@@ -445,6 +551,7 @@ export default function UGCPage() {
   const [isolatedCreator, setIsolatedCreator] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState<DateRange>("All");
   const [overviewPlatform, setOverviewPlatform] = useState<OverviewPlatform>("All");
+  const [groupBy, setGroupBy] = useState<GroupBy>("week");
 
   // ── Table sort ────────────────────────────────────────────────────────────
   const [sortCol, setSortCol] = useState<SortCol>("totalViews");
@@ -544,20 +651,34 @@ export default function UGCPage() {
 
   // ── Line chart data ────────────────────────────────────────────────────────
   const lineChartData = useMemo(() => {
-    const tsMaps: Record<string, Record<string, { ttViews: number; igViews: number }>> = {};
-    const allDates = new Set<string>();
+    // Build grouped maps: creatorName → bucketDate → { ttViews, igViews }
+    const groupedMaps: Record<string, Record<string, { ttViews: number; igViews: number }>> = {};
+    const allBuckets = new Set<string>();
+
     allCreators.forEach((c) => {
       if (isolatedCreator !== null && isolatedCreator !== c.name) return;
-      const m = buildTsMap(c, cutoff);
-      tsMaps[c.name] = m;
-      Object.keys(m).forEach((d) => allDates.add(d));
+      const grouped: Record<string, { ttViews: number; igViews: number }> = {};
+      c.posts_detail.forEach((p) => {
+        if (!p.date) return;
+        if (cutoff && new Date(p.date) < cutoff) return;
+        const bucket = truncateDate(p.date, groupBy);
+        if (!grouped[bucket]) grouped[bucket] = { ttViews: 0, igViews: 0 };
+        if (p.platform === "tiktok") grouped[bucket].ttViews += p.views;
+        else grouped[bucket].igViews += p.views;
+      });
+      groupedMaps[c.name] = grouped;
+      Object.keys(grouped).forEach((b) => allBuckets.add(b));
     });
-    const dates = Array.from(allDates).sort();
+
+    const dates = Array.from(allBuckets).sort();
     return dates.map((date) => {
-      const point: Record<string, string | number> = { date: date.slice(5) };
+      // Format label based on groupBy
+      let label = date.slice(5); // MM-DD by default
+      if (groupBy === "month") label = date.slice(0, 7); // YYYY-MM
+      const point: Record<string, string | number> = { date: label };
       allCreators.forEach((c) => {
         if (isolatedCreator !== null && isolatedCreator !== c.name) return;
-        const d = tsMaps[c.name]?.[date];
+        const d = groupedMaps[c.name]?.[date];
         if (d) {
           point[c.name] =
             overviewPlatform === "TikTok"
@@ -569,7 +690,7 @@ export default function UGCPage() {
       });
       return point;
     });
-  }, [allCreators, isolatedCreator, cutoff, overviewPlatform]);
+  }, [allCreators, isolatedCreator, cutoff, overviewPlatform, groupBy]);
 
   // ── Bar chart data ─────────────────────────────────────────────────────────
   const barData = useMemo(
@@ -983,6 +1104,30 @@ export default function UGCPage() {
               />
               <StatCard icon="👥" label="Active Creators" value={overviewStats.activeCount} />
             </div>
+
+            {/* ── Creator Cards ───────────────────────────────────────────── */}
+            {overviewLoaded && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                {TIKTOK_CREATORS.map((creator) => {
+                  const computed = computedCreators.find((c) => c.name === creator.name);
+                  const payout = payoutMap[creator.name];
+                  return (
+                    <CreatorCard
+                      key={creator.name}
+                      creator={creator}
+                      computedData={computed}
+                      payout={payout}
+                      onClick={() => {
+                        if (creator.handle) {
+                          setActiveHandle(creator.handle);
+                          setPageMode("drilldown");
+                        }
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            )}
 
             {/* ── Views Over Time ─────────────────────────────────────────── */}
             {overviewLoaded ? (

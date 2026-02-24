@@ -43,7 +43,7 @@
     "model": "Sonnet",
     "tokens": 36887881,
     "cost": 34.1155,
-    "durationSec": 87938,
+    "durationSec": 87977,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -132,6 +132,18 @@
     "timestamp": "2026-02-24T09:24:08.663Z"
   },
   {
+    "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
+    "label": "20309a2a-9ef",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 1531126,
+    "cost": 1.3357,
+    "durationSec": 1741,
+    "status": "success",
+    "timestamp": "2026-02-24T10:13:18.254Z"
+  },
+  {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
     "label": "b88a363c-216",
     "agent": "sam",
@@ -154,18 +166,6 @@
     "durationSec": 252973,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
-    "label": "20309a2a-9ef",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Sonnet",
-    "tokens": 1151493,
-    "cost": 1.1867,
-    "durationSec": 1686,
-    "status": "success",
-    "timestamp": "2026-02-24T10:13:18.254Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -240,6 +240,18 @@
     "timestamp": "2026-02-24T03:00:00.193Z"
   },
   {
+    "id": "13f22b32-9add-47d9-a5e9-f0bdb2725618",
+    "label": "devin-ugc-creator-cards",
+    "agent": "devin",
+    "task": "In Overview mode, add a row of creator cards **above** the \"Total Views Over Time\" chart. One card per creator (8 total), laid out in a responsive grid (4 across on desktop, 2 on mobile). Each card sh",
+    "model": "Sonnet",
+    "tokens": 403339,
+    "cost": 0.3685,
+    "durationSec": 99,
+    "status": "success",
+    "timestamp": "2026-02-24T10:40:32.530Z"
+  },
+  {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -310,18 +322,6 @@
     "durationSec": 65,
     "status": "success",
     "timestamp": "2026-02-24T06:00:00.174Z"
-  },
-  {
-    "id": "13f22b32-9add-47d9-a5e9-f0bdb2725618",
-    "label": "devin-ugc-creator-cards",
-    "agent": "devin",
-    "task": "In Overview mode, add a row of creator cards **above** the \"Total Views Over Time\" chart. One card per creator (8 total), laid out in a responsive grid (4 across on desktop, 2 on mobile). Each card sh",
-    "model": "Sonnet",
-    "tokens": 183671,
-    "cost": 0.231,
-    "durationSec": 34,
-    "status": "success",
-    "timestamp": "2026-02-24T10:40:32.530Z"
   },
   {
     "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",
@@ -468,6 +468,18 @@
     "timestamp": "2026-02-24T04:00:00.191Z"
   },
   {
+    "id": "995689f9-563f-4f21-b34c-792fa7e21747",
+    "label": "marco-avatar",
+    "agent": "sam",
+    "task": "1. Marco should look like a young tech-bro type \u2014 dark hair, simple features, confident expression. Use DiceBear Personas style.",
+    "model": "Sonnet",
+    "tokens": 70481,
+    "cost": 0.0696,
+    "durationSec": 42,
+    "status": "success",
+    "timestamp": "2026-02-24T10:40:50.240Z"
+  },
+  {
     "id": "e6de0f83-a526-4d2f-a842-e2c1eb1964b7",
     "label": "marco-avatar",
     "agent": "sam",
@@ -478,18 +490,6 @@
     "durationSec": 30,
     "status": "success",
     "timestamp": "2026-02-24T10:17:25.651Z"
-  },
-  {
-    "id": "995689f9-563f-4f21-b34c-792fa7e21747",
-    "label": "marco-avatar",
-    "agent": "sam",
-    "task": "1. Marco should look like a young tech-bro type \u2014 dark hair, simple features, confident expression. Use DiceBear Personas style.",
-    "model": "Sonnet",
-    "tokens": 55503,
-    "cost": 0.0607,
-    "durationSec": 35,
-    "status": "success",
-    "timestamp": "2026-02-24T10:40:50.240Z"
   },
   {
     "id": "8bdb35f1-94f1-482e-8c38-40900d9b10af",

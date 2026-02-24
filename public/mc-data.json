@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T10:41:26Z",
+  "lastUpdated": "2026-02-24T10:42:20Z",
   "activities": [
     {
       "id": "s-995689f9",
@@ -8,10 +8,10 @@
       "description": "1. Marco should look like a young tech-bro type \u2014 dark hair, simple features, confident expression. Use DiceBear Personas style.",
       "status": "success",
       "date": "2026-02-24T10:40:50.240Z",
-      "tokens": 55503,
-      "cost": 0.0607,
+      "tokens": 70481,
+      "cost": 0.0696,
       "model": "Sonnet",
-      "durationSec": 35
+      "durationSec": 42
     },
     {
       "id": "s-13f22b32",
@@ -20,10 +20,10 @@
       "description": "In Overview mode, add a row of creator cards **above** the \"Total Views Over Time\" chart. One card per creator (8 total), laid out in a responsive grid (4 across on desktop, 2 on mobile). Each card sh",
       "status": "success",
       "date": "2026-02-24T10:40:32.530Z",
-      "tokens": 183671,
-      "cost": 0.231,
+      "tokens": 403339,
+      "cost": 0.3685,
       "model": "Sonnet",
-      "durationSec": 34
+      "durationSec": 99
     },
     {
       "id": "s-3a4eaac8",
@@ -68,10 +68,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-24T10:13:18.254Z",
-      "tokens": 1151493,
-      "cost": 1.1867,
+      "tokens": 1531126,
+      "cost": 1.3357,
       "model": "Sonnet",
-      "durationSec": 1686
+      "durationSec": 1741
     },
     {
       "id": "s-93459557",
@@ -239,7 +239,7 @@
       "tokens": 36887881,
       "cost": 34.1155,
       "model": "Sonnet",
-      "durationSec": 87938
+      "durationSec": 87977
     },
     {
       "id": "s-5423ca5a",
@@ -1161,7 +1161,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T10:41:26Z"
+      "lastRunAt": "2026-02-24T10:42:20Z"
     },
     {
       "id": "bash-frankie-sync",
