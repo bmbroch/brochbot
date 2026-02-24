@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T09:10:01Z",
+  "lastUpdated": "2026-02-24T09:20:01Z",
   "activities": [
     {
       "id": "s-b4765783",
@@ -8,10 +8,10 @@
       "description": "Currently clicking a creator pill toggles them on/off but shows all active creators at once. Change it to:",
       "status": "success",
       "date": "2026-02-24T09:08:38.377Z",
-      "tokens": 60042,
-      "cost": 0.1127,
+      "tokens": 440662,
+      "cost": 0.8758,
       "model": "Sonnet",
-      "durationSec": 58
+      "durationSec": 431
     },
     {
       "id": "s-21b404c0",
@@ -62,28 +62,16 @@
       "durationSec": 185
     },
     {
-      "id": "s-24799fbd",
-      "agent": "devin",
-      "title": "devin-instagram-support",
-      "description": "Add a platform toggle (TikTok / Instagram) to the `/tiktok-analytics` page. Each creator already has both `handle` (TikTok) and `igHandle` (Instagram) in `src/lib/tiktok-creators.ts`. When Instagram i",
-      "status": "success",
-      "date": "2026-02-24T08:17:43.268Z",
-      "tokens": 695055,
-      "cost": 0.6278,
-      "model": "Sonnet",
-      "durationSec": 284
-    },
-    {
       "id": "s-c82a1e98",
       "agent": "sam",
       "title": "c82a1e98-5dd",
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 20580076,
-      "cost": 8.5992,
+      "tokens": 20780559,
+      "cost": 8.7196,
       "model": "unknown",
-      "durationSec": 7139
+      "durationSec": 7755
     },
     {
       "id": "s-66dde37a",
@@ -476,10 +464,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:55:11.223Z",
-      "tokens": 1273089,
-      "cost": 2.2893,
+      "tokens": 1319540,
+      "cost": 2.4494,
       "model": "Opus",
-      "durationSec": 378420
+      "durationSec": 397231
     },
     {
       "id": "s-7612c9b5",
@@ -488,10 +476,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 1717192,
-      "cost": 3.5297,
+      "tokens": 1863433,
+      "cost": 3.8759,
       "model": "Opus",
-      "durationSec": 387165
+      "durationSec": 398821
     },
     {
       "id": "s-aae63345",
@@ -1149,7 +1137,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T09:10:01Z"
+      "lastRunAt": "2026-02-24T09:20:01Z"
     },
     {
       "id": "bash-frankie-sync",

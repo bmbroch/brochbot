@@ -53,9 +53,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 20580076,
-    "cost": 8.5992,
-    "durationSec": 7139,
+    "tokens": 20780559,
+    "cost": 8.7196,
+    "durationSec": 7755,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -113,9 +113,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1717192,
-    "cost": 3.5297,
-    "durationSec": 387165,
+    "tokens": 1863433,
+    "cost": 3.8759,
+    "durationSec": 398821,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
@@ -125,9 +125,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1273089,
-    "cost": 2.2893,
-    "durationSec": 378420,
+    "tokens": 1319540,
+    "cost": 2.4494,
+    "durationSec": 397231,
     "status": "success",
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
@@ -166,18 +166,6 @@
     "durationSec": 185,
     "status": "success",
     "timestamp": "2026-02-24T08:27:04.019Z"
-  },
-  {
-    "id": "24799fbd-6eb1-4221-a6fa-17870cda448d",
-    "label": "devin-instagram-support",
-    "agent": "devin",
-    "task": "Add a platform toggle (TikTok / Instagram) to the `/tiktok-analytics` page. Each creator already has both `handle` (TikTok) and `igHandle` (Instagram) in `src/lib/tiktok-creators.ts`. When Instagram i",
-    "model": "Sonnet",
-    "tokens": 695055,
-    "cost": 0.6278,
-    "durationSec": 284,
-    "status": "success",
-    "timestamp": "2026-02-24T08:17:43.268Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -238,6 +226,18 @@
     "durationSec": 251,
     "status": "success",
     "timestamp": "2026-02-24T08:53:22.424Z"
+  },
+  {
+    "id": "b4765783-5ff3-4d52-ab19-6024dc26456b",
+    "label": "devin-ugc-chart-ux",
+    "agent": "devin",
+    "task": "Currently clicking a creator pill toggles them on/off but shows all active creators at once. Change it to:",
+    "model": "Sonnet",
+    "tokens": 440662,
+    "cost": 0.8758,
+    "durationSec": 431,
+    "status": "success",
+    "timestamp": "2026-02-24T09:08:38.377Z"
   },
   {
     "id": "7e5e67dd-b622-4bd1-bbcd-862ba7d32c6b",
@@ -466,18 +466,6 @@
     "durationSec": 90,
     "status": "success",
     "timestamp": "2026-02-24T04:00:00.191Z"
-  },
-  {
-    "id": "b4765783-5ff3-4d52-ab19-6024dc26456b",
-    "label": "devin-ugc-chart-ux",
-    "agent": "devin",
-    "task": "Currently clicking a creator pill toggles them on/off but shows all active creators at once. Change it to:",
-    "model": "Sonnet",
-    "tokens": 60042,
-    "cost": 0.1127,
-    "durationSec": 58,
-    "status": "success",
-    "timestamp": "2026-02-24T09:08:38.377Z"
   },
   {
     "id": "8bdb35f1-94f1-482e-8c38-40900d9b10af",
