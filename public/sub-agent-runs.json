@@ -48,6 +48,18 @@
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
   {
+    "id": "c82a1e98-5ddc-43a2-80f6-6cfc18f98520",
+    "label": "c82a1e98-5dd",
+    "agent": "sam",
+    "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
+    "model": "unknown",
+    "tokens": 12496244,
+    "cost": 5.2781,
+    "durationSec": 4025,
+    "status": "success",
+    "timestamp": "2026-02-24T07:10:43.159Z"
+  },
+  {
     "id": "0a558919-6ca7-4236-a577-7650f818546b",
     "label": "0a558919-6ca",
     "agent": "sam",
@@ -58,18 +70,6 @@
     "durationSec": 68667,
     "status": "success",
     "timestamp": "2026-02-23T10:40:05.669Z"
-  },
-  {
-    "id": "c82a1e98-5ddc-43a2-80f6-6cfc18f98520",
-    "label": "c82a1e98-5dd",
-    "agent": "sam",
-    "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
-    "model": "unknown",
-    "tokens": 10329435,
-    "cost": 4.4964,
-    "durationSec": 3504,
-    "status": "success",
-    "timestamp": "2026-02-24T07:10:43.159Z"
   },
   {
     "id": "4f751fcb-efc9-4014-ac52-3ccc00f3bf50",
@@ -142,18 +142,6 @@
     "durationSec": 252973,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "3e1d5990-cdd9-4976-b609-def45cf60313",
-    "label": "devin-tiktok-analytics",
-    "agent": "devin",
-    "task": "Build a new page `/tiktok-analytics` in Mission Control that shows TikTok performance data for our UGC creators \u2014 like a mini Playkit dashboard.",
-    "model": "Sonnet",
-    "tokens": 871515,
-    "cost": 0.6339,
-    "durationSec": 315,
-    "status": "success",
-    "timestamp": "2026-02-24T07:17:25.973Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -538,5 +526,17 @@
     "durationSec": 34476,
     "status": "success",
     "timestamp": "2026-02-20T07:03:05.484Z"
+  },
+  {
+    "id": "24799fbd-6eb1-4221-a6fa-17870cda448d",
+    "label": "devin-instagram-support",
+    "agent": "devin",
+    "task": "Add a platform toggle (TikTok / Instagram) to the `/tiktok-analytics` page. Each creator already has both `handle` (TikTok) and `igHandle` (Instagram) in `src/lib/tiktok-creators.ts`. When Instagram i",
+    "model": "Sonnet",
+    "tokens": 15011,
+    "cost": 0.0385,
+    "durationSec": 3,
+    "status": "success",
+    "timestamp": "2026-02-24T08:17:43.268Z"
   }
 ]

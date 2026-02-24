@@ -2206,5 +2206,17 @@
     "durationSec": 98,
     "status": "success",
     "timestamp": "2026-02-24T07:52:53.015Z"
+  },
+  {
+    "id": "24799fbd-6eb1-4221-a6fa-17870cda448d",
+    "label": "devin-instagram-support",
+    "agent": "devin",
+    "task": "Add a platform toggle (TikTok / Instagram) to the `/tiktok-analytics` page. Each creator already has both `handle` (TikTok) and `igHandle` (Instagram) in `src/lib/tiktok-creators.ts`. When Instagram i",
+    "model": "Sonnet",
+    "tokens": 15011,
+    "cost": 0.0385,
+    "durationSec": 3,
+    "status": "success",
+    "timestamp": "2026-02-24T08:17:43.268Z"
   }
 ]
