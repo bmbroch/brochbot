@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-24T10:10:01Z",
+  "lastUpdated": "2026-02-24T10:15:48Z",
   "activities": [
+    {
+      "id": "s-20309a2a",
+      "agent": "sam",
+      "title": "20309a2a-9ef",
+      "description": "Conversation info (untrusted metadata):",
+      "status": "success",
+      "date": "2026-02-24T10:13:18.254Z",
+      "tokens": 231729,
+      "cost": 0.2815,
+      "model": "Sonnet",
+      "durationSec": 124
+    },
     {
       "id": "s-d1a844b5",
       "agent": "devin",
@@ -36,18 +48,6 @@
       "cost": 0.7646,
       "model": "Sonnet",
       "durationSec": 341
-    },
-    {
-      "id": "s-b4765783",
-      "agent": "devin",
-      "title": "devin-ugc-chart-ux",
-      "description": "Currently clicking a creator pill toggles them on/off but shows all active creators at once. Change it to:",
-      "status": "success",
-      "date": "2026-02-24T09:08:38.377Z",
-      "tokens": 440662,
-      "cost": 0.8758,
-      "model": "Sonnet",
-      "durationSec": 431
     },
     {
       "id": "s-c82a1e98",
@@ -200,10 +200,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 25726285,
-      "cost": 19.4334,
+      "tokens": 29161857,
+      "cost": 22.4715,
       "model": "Sonnet",
-      "durationSec": 76321
+      "durationSec": 86431
     },
     {
       "id": "s-5423ca5a",
@@ -1111,7 +1111,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T09:39:05Z",
+      "lastActive": "2026-02-24T10:13:18.254Z",
       "statusText": ""
     }
   },
@@ -1125,7 +1125,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T10:10:01Z"
+      "lastRunAt": "2026-02-24T10:15:48Z"
     },
     {
       "id": "bash-frankie-sync",

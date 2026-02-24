@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 25726285,
-    "cost": 19.4334,
-    "durationSec": 76321,
+    "tokens": 29161857,
+    "cost": 22.4715,
+    "durationSec": 86431,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -216,18 +216,6 @@
     "timestamp": "2026-02-24T06:01:08.604Z"
   },
   {
-    "id": "b4765783-5ff3-4d52-ab19-6024dc26456b",
-    "label": "devin-ugc-chart-ux",
-    "agent": "devin",
-    "task": "Currently clicking a creator pill toggles them on/off but shows all active creators at once. Change it to:",
-    "model": "Sonnet",
-    "tokens": 440662,
-    "cost": 0.8758,
-    "durationSec": 431,
-    "status": "success",
-    "timestamp": "2026-02-24T09:08:38.377Z"
-  },
-  {
     "id": "7e5e67dd-b622-4bd1-bbcd-862ba7d32c6b",
     "label": "Mia: Weekly UGC Performance Report",
     "agent": "mia",
@@ -286,6 +274,18 @@
     "durationSec": 154,
     "status": "success",
     "timestamp": "2026-02-21T03:00:00.031Z"
+  },
+  {
+    "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
+    "label": "20309a2a-9ef",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 231729,
+    "cost": 0.2815,
+    "durationSec": 124,
+    "status": "success",
+    "timestamp": "2026-02-24T10:13:18.254Z"
   },
   {
     "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
