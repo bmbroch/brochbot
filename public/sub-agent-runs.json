@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 18186981,
-    "cost": 14.9855,
-    "durationSec": 72476,
+    "tokens": 23022512,
+    "cost": 17.5251,
+    "durationSec": 75279,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -103,7 +103,7 @@
     "model": "Opus",
     "tokens": 3387359,
     "cost": 8.4781,
-    "durationSec": 315579,
+    "durationSec": 391081,
     "status": "success",
     "timestamp": "2026-02-19T18:31:48.211Z"
   },
@@ -228,18 +228,6 @@
     "timestamp": "2026-02-24T05:30:00.172Z"
   },
   {
-    "id": "23c8b5a3-a3b3-4e81-a7af-9145fd3425a4",
-    "label": "Penny Test Run",
-    "agent": "penny",
-    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
-    "model": "Sonnet",
-    "tokens": 296612,
-    "cost": 0.2685,
-    "durationSec": 103,
-    "status": "success",
-    "timestamp": "2026-02-24T06:28:03.440Z"
-  },
-  {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
     "label": "b5bca453-08d",
     "agent": "sam",
@@ -274,18 +262,6 @@
     "durationSec": 71,
     "status": "success",
     "timestamp": "2026-02-24T05:30:00.089Z"
-  },
-  {
-    "id": "6fcddab7-0433-4f7f-9ef8-c78cb03a5cfd",
-    "label": "Penny Test Run",
-    "agent": "penny",
-    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
-    "model": "Sonnet",
-    "tokens": 216538,
-    "cost": 0.2158,
-    "durationSec": 100,
-    "status": "success",
-    "timestamp": "2026-02-24T06:28:03.437Z"
   },
   {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",
