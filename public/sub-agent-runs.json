@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 15846704,
-    "cost": 13.7735,
-    "durationSec": 69410,
+    "tokens": 16096409,
+    "cost": 13.8651,
+    "durationSec": 71352,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -113,9 +113,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1549788,
-    "cost": 3.3068,
-    "durationSec": 250889,
+    "tokens": 1717192,
+    "cost": 3.5297,
+    "durationSec": 387165,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
@@ -166,6 +166,30 @@
     "durationSec": 33889,
     "status": "success",
     "timestamp": "2026-02-21T04:00:34.904Z"
+  },
+  {
+    "id": "66dde37a-1df9-4bd5-9944-dafb1d8fd43f",
+    "label": "Mia: Weekly UGC Performance Report",
+    "agent": "mia",
+    "task": "You're Mia \ud83d\udcf1, Social Media Manager.",
+    "model": "Sonnet",
+    "tokens": 606752,
+    "cost": 0.5237,
+    "durationSec": 196,
+    "status": "success",
+    "timestamp": "2026-02-24T06:01:08.604Z"
+  },
+  {
+    "id": "7e5e67dd-b622-4bd1-bbcd-862ba7d32c6b",
+    "label": "Mia: Weekly UGC Performance Report",
+    "agent": "mia",
+    "task": "You're Mia \ud83d\udcf1, Social Media Manager.",
+    "model": "Sonnet",
+    "tokens": 430070,
+    "cost": 0.4785,
+    "durationSec": 172,
+    "status": "success",
+    "timestamp": "2026-02-24T06:01:04.825Z"
   },
   {
     "id": "71402d35-8c39-43ce-9d86-a4745d4e7290",
@@ -252,6 +276,18 @@
     "timestamp": "2026-02-20T01:00:00.067Z"
   },
   {
+    "id": "4d9bc39e-63c5-4883-a88d-0a500b4436d2",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 197106,
+    "cost": 0.1853,
+    "durationSec": 65,
+    "status": "success",
+    "timestamp": "2026-02-24T06:00:00.174Z"
+  },
+  {
     "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",
     "label": "Daily GSC Report \u2014 All Products (Miles)",
     "agent": "miles",
@@ -274,6 +310,18 @@
     "durationSec": 46839,
     "status": "success",
     "timestamp": "2026-02-19T14:00:00.055Z"
+  },
+  {
+    "id": "07605915-6095-4d89-88b7-70950b8ca53f",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 158543,
+    "cost": 0.1399,
+    "durationSec": 56,
+    "status": "success",
+    "timestamp": "2026-02-24T06:00:00.242Z"
   },
   {
     "id": "5439b4e1-3990-4cb1-8e02-306cbfb1b366",

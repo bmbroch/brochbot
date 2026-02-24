@@ -2074,5 +2074,53 @@
     "durationSec": 118,
     "status": "success",
     "timestamp": "2026-02-24T05:30:00.172Z"
+  },
+  {
+    "id": "4d9bc39e-63c5-4883-a88d-0a500b4436d2",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 197106,
+    "cost": 0.1853,
+    "durationSec": 65,
+    "status": "success",
+    "timestamp": "2026-02-24T06:00:00.174Z"
+  },
+  {
+    "id": "07605915-6095-4d89-88b7-70950b8ca53f",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 158543,
+    "cost": 0.1399,
+    "durationSec": 56,
+    "status": "success",
+    "timestamp": "2026-02-24T06:00:00.242Z"
+  },
+  {
+    "id": "7e5e67dd-b622-4bd1-bbcd-862ba7d32c6b",
+    "label": "Mia: Weekly UGC Performance Report",
+    "agent": "mia",
+    "task": "You're Mia \ud83d\udcf1, Social Media Manager.",
+    "model": "Sonnet",
+    "tokens": 430070,
+    "cost": 0.4785,
+    "durationSec": 172,
+    "status": "success",
+    "timestamp": "2026-02-24T06:01:04.825Z"
+  },
+  {
+    "id": "66dde37a-1df9-4bd5-9944-dafb1d8fd43f",
+    "label": "Mia: Weekly UGC Performance Report",
+    "agent": "mia",
+    "task": "You're Mia \ud83d\udcf1, Social Media Manager.",
+    "model": "Sonnet",
+    "tokens": 606752,
+    "cost": 0.5237,
+    "durationSec": 196,
+    "status": "success",
+    "timestamp": "2026-02-24T06:01:08.604Z"
   }
 ]
