@@ -113,9 +113,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1967455,
-    "cost": 4.0989,
-    "durationSec": 439290,
+    "tokens": 2022046,
+    "cost": 4.1275,
+    "durationSec": 439312,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
