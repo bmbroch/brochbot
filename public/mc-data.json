@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T11:30:02Z",
+  "lastUpdated": "2026-02-24T11:30:07Z",
   "activities": [
     {
       "id": "s-c1f337ed",
@@ -8,10 +8,10 @@
       "description": "DiceBear Personas generates different looks based on seed. The goal: short dark hair, male-looking, clean-cut. No long hair, no feminine features.",
       "status": "success",
       "date": "2026-02-24T11:29:06.199Z",
-      "tokens": 84878,
-      "cost": 0.0783,
+      "tokens": 116645,
+      "cost": 0.0924,
       "model": "Sonnet",
-      "durationSec": 55
+      "durationSec": 61
     },
     {
       "id": "s-61eb3893",
@@ -20,10 +20,10 @@
       "description": "UGC Analytics                          [line 1]",
       "status": "success",
       "date": "2026-02-24T10:51:38.431Z",
-      "tokens": 722366,
-      "cost": 0.9041,
+      "tokens": 773481,
+      "cost": 0.9359,
       "model": "Sonnet",
-      "durationSec": 2300
+      "durationSec": 2306
     },
     {
       "id": "s-b8f1c375",
@@ -131,7 +131,7 @@
       "tokens": 23328618,
       "cost": 10.4247,
       "model": "unknown",
-      "durationSec": 15556
+      "durationSec": 15562
     },
     {
       "id": "s-66dde37a",
@@ -1197,7 +1197,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T11:30:01Z"
+      "lastRunAt": "2026-02-24T11:30:07Z"
     },
     {
       "id": "bash-frankie-sync",

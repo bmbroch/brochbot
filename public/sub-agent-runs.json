@@ -55,7 +55,7 @@
     "model": "unknown",
     "tokens": 23328618,
     "cost": 10.4247,
-    "durationSec": 15556,
+    "durationSec": 15562,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -173,9 +173,9 @@
     "agent": "devin",
     "task": "UGC Analytics                          [line 1]",
     "model": "Sonnet",
-    "tokens": 722366,
-    "cost": 0.9041,
-    "durationSec": 2300,
+    "tokens": 773481,
+    "cost": 0.9359,
+    "durationSec": 2306,
     "status": "success",
     "timestamp": "2026-02-24T10:51:38.431Z"
   },
@@ -444,6 +444,18 @@
     "timestamp": "2026-02-23T04:00:00.031Z"
   },
   {
+    "id": "c1f337ed-134c-4a7b-bf48-9a1b725dbf7a",
+    "label": "marco-avatar-fix",
+    "agent": "sam",
+    "task": "DiceBear Personas generates different looks based on seed. The goal: short dark hair, male-looking, clean-cut. No long hair, no feminine features.",
+    "model": "Sonnet",
+    "tokens": 116645,
+    "cost": 0.0924,
+    "durationSec": 61,
+    "status": "success",
+    "timestamp": "2026-02-24T11:29:06.199Z"
+  },
+  {
     "id": "7af296ce-c8ac-495b-bfb4-59066238c23a",
     "label": "7af296ce-c8a",
     "agent": "sam",
@@ -466,18 +478,6 @@
     "durationSec": 140,
     "status": "success",
     "timestamp": "2026-02-24T10:19:38.513Z"
-  },
-  {
-    "id": "c1f337ed-134c-4a7b-bf48-9a1b725dbf7a",
-    "label": "marco-avatar-fix",
-    "agent": "sam",
-    "task": "DiceBear Personas generates different looks based on seed. The goal: short dark hair, male-looking, clean-cut. No long hair, no feminine features.",
-    "model": "Sonnet",
-    "tokens": 84878,
-    "cost": 0.0783,
-    "durationSec": 55,
-    "status": "success",
-    "timestamp": "2026-02-24T11:29:06.199Z"
   },
   {
     "id": "613db404-e546-4858-8249-074352064b88",
