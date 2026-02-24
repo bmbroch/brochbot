@@ -168,12 +168,15 @@ function getCreatorColor(name: string): string {
 
 // ─── Stat Cards ────────────────────────────────────────────────────────────────
 
-function StatCard({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
+function StatCard({ label, value, sub, icon }: { label: string; value: string | number; sub?: string; icon?: string }) {
   return (
     <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 flex flex-col gap-1 hover:border-gray-300 dark:hover:border-[#333] transition-colors">
-      <p className="text-xs text-gray-400 dark:text-white/40 font-medium uppercase tracking-wider">
-        {label}
-      </p>
+      <div className="flex items-center gap-1.5">
+        {icon && <span className="text-sm leading-none">{icon}</span>}
+        <p className="text-xs text-gray-400 dark:text-white/40 font-medium uppercase tracking-wider">
+          {label}
+        </p>
+      </div>
       <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
       {sub && <p className="text-xs text-gray-400 dark:text-white/30 mt-0.5">{sub}</p>}
     </div>
@@ -433,6 +436,15 @@ export default function UGCPage() {
   const [sortCol, setSortCol] = useState<SortCol>("totalViews");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
 
+  // ── Drill-down date range ──────────────────────────────────────────────────
+  const [drillDateRange, setDrillDateRange] = useState<DateRange>("30D");
+
+  // ── Log scale toggle ───────────────────────────────────────────────────────
+  const [logScale, setLogScale] = useState(false);
+
+  // ── Platform comparison mode ───────────────────────────────────────────────
+  const [platformCompMode, setPlatformCompMode] = useState<"absolute" | "perPost">("absolute");
+
   // ── Per-creator state ──────────────────────────────────────────────────────
   const [activeHandle, setActiveHandle] = useState<string>("sell.with.nick");
   const [platform, setPlatform] = useState<Platform>("tiktok");
@@ -548,12 +560,26 @@ export default function UGCPage() {
   // ── Bar chart data ─────────────────────────────────────────────────────────
   const barData = useMemo(
     () =>
-      allCreators.map((c) => ({
-        name: c.name,
-        TikTok: c.ttViews,
-        Instagram: c.igViews,
-      })),
-    [allCreators]
+      allCreators.map((c) => {
+        const ttPosts = c.posts_detail.filter((p) => p.platform === "tiktok").length;
+        const igPosts = c.posts_detail.filter((p) => p.platform === "instagram").length;
+        return {
+          name: c.name,
+          TikTok:
+            platformCompMode === "perPost"
+              ? ttPosts > 0
+                ? Math.round(c.ttViews / ttPosts)
+                : 0
+              : c.ttViews,
+          Instagram:
+            platformCompMode === "perPost"
+              ? igPosts > 0
+                ? Math.round(c.igViews / igPosts)
+                : 0
+              : c.igViews,
+        };
+      }),
+    [allCreators, platformCompMode]
   );
 
   // ── Creator comparison table ───────────────────────────────────────────────
@@ -789,11 +815,23 @@ export default function UGCPage() {
   const totalLikes = videos.reduce((s, v) => s + (v.likes || 0), 0);
   const totalComments = videos.reduce((s, v) => s + (v.comments || 0), 0);
   const avgViews = totalVideos > 0 ? Math.round(totalViews / totalVideos) : 0;
-  const ttChartData = [...videos]
-    .sort((a, b) => new Date(a.postedAt).getTime() - new Date(b.postedAt).getTime())
-    .slice(-30)
-    .map((v) => ({ date: shortDate(v.postedAt), views: v.views || 0 }));
-  const tableVideos = [...videos].sort((a, b) => new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime());
+
+  const drillCutoff = useMemo(() => getCutoff(drillDateRange), [drillDateRange]);
+
+  const ttChartData = useMemo(() => {
+    return [...videos]
+      .filter((v) => {
+        if (!drillCutoff) return true;
+        return new Date(v.postedAt) >= drillCutoff;
+      })
+      .sort((a, b) => new Date(a.postedAt).getTime() - new Date(b.postedAt).getTime())
+      .map((v) => ({ date: shortDate(v.postedAt), views: v.views || 0 }));
+  }, [videos, drillCutoff]);
+
+  const tableVideos = useMemo(
+    () => [...videos].sort((a, b) => new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()),
+    [videos]
+  );
 
   // ── Derived: Instagram ────────────────────────────────────────────────────
   const posts = igStoreData?.posts ?? [];
@@ -802,11 +840,21 @@ export default function UGCPage() {
   const igTotalLikes = posts.reduce((s, p) => s + (p.likes || 0), 0);
   const igTotalComments = posts.reduce((s, p) => s + (p.comments || 0), 0);
   const igAvgViews = totalPosts > 0 ? Math.round(igTotalViews / totalPosts) : 0;
-  const igChartData = [...posts]
-    .sort((a, b) => new Date(a.postedAt).getTime() - new Date(b.postedAt).getTime())
-    .slice(-30)
-    .map((p) => ({ date: shortDate(p.postedAt), views: p.views || 0 }));
-  const tablePosts = [...posts].sort((a, b) => new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime());
+
+  const igChartData = useMemo(() => {
+    return [...posts]
+      .filter((p) => {
+        if (!drillCutoff) return true;
+        return new Date(p.postedAt) >= drillCutoff;
+      })
+      .sort((a, b) => new Date(a.postedAt).getTime() - new Date(b.postedAt).getTime())
+      .map((p) => ({ date: shortDate(p.postedAt), views: p.views || 0 }));
+  }, [posts, drillCutoff]);
+
+  const tablePosts = useMemo(
+    () => [...posts].sort((a, b) => new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()),
+    [posts]
+  );
 
   // ── Shared ────────────────────────────────────────────────────────────────
   const activeLoadState = platform === "tiktok" ? loadState : igLoadState;
@@ -838,7 +886,7 @@ export default function UGCPage() {
 
   return (
     <Shell>
-      <div className="min-h-full bg-gray-50 dark:bg-[#0a0a0a] p-6 lg:p-8">
+      <div className="min-h-full bg-gray-50 dark:bg-[#0a0a0a] px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 
         {/* ══ Page Header ══════════════════════════════════════════════════════ */}
         <div className="mb-6">
@@ -904,31 +952,44 @@ export default function UGCPage() {
             </div>
 
             {/* Stat cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
               <StatCard
+                icon="👁"
                 label="Total Views"
                 value={fmt(overviewStats.totalViews)}
                 sub={overviewPlatform === "All" ? "TikTok + Instagram" : overviewPlatform}
               />
-              <StatCard label="Total Posts" value={fmt(overviewStats.totalPosts)} />
-              <StatCard label="Total Earnings" value={`$${overviewStats.totalEarnings.toLocaleString()}`} />
+              <StatCard icon="📹" label="Total Posts" value={fmt(overviewStats.totalPosts)} />
+              <StatCard icon="💰" label="Total Earnings" value={`$${overviewStats.totalEarnings.toLocaleString()}`} />
               <StatCard
+                icon="📊"
                 label="Avg CPM"
                 value={overviewStats.avgCpm > 0 ? `$${overviewStats.avgCpm.toFixed(2)}` : "—"}
                 sub="cost per 1K views"
               />
-              <StatCard label="Active Creators" value={overviewStats.activeCount} />
+              <StatCard icon="👥" label="Active Creators" value={overviewStats.activeCount} />
             </div>
 
             {/* ── Views Over Time ─────────────────────────────────────────── */}
             {overviewLoaded ? (
               <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-5">
                 {/* Card header row 1: title + platform + date range */}
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                  <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">
-                    Total Views Over Time
-                  </h3>
-                  <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">
+                      Total Views Over Time
+                    </h3>
+                    <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={logScale}
+                        onChange={(e) => setLogScale(e.target.checked)}
+                        className="w-3 h-3 accent-gray-600 dark:accent-white cursor-pointer"
+                      />
+                      <span className="text-[11px] text-gray-400 dark:text-white/40">Log scale</span>
+                    </label>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
                     {/* Platform filter */}
                     <div className="flex items-center gap-1">
                       {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => (
@@ -1030,6 +1091,10 @@ export default function UGCPage() {
                         interval={xAxisInterval}
                       />
                       <YAxis
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        scale={logScale ? ("log" as any) : "auto"}
+                        domain={logScale ? ([1, "auto"] as [number, string]) : ([0, "auto"] as [number, string])}
+                        allowDataOverflow={logScale}
                         tick={{ fill: tickColor, fontSize: 10 }}
                         tickLine={false}
                         axisLine={false}
@@ -1072,7 +1137,25 @@ export default function UGCPage() {
             {/* ── Platform comparison bar chart ───────────────────────────── */}
             {overviewLoaded && (
               <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-6">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70 mb-4">Platform Comparison</h3>
+                <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+                  <h3 className="text-sm font-semibold text-gray-700 dark:text-white/70">Platform Comparison</h3>
+                  <div className="flex items-center gap-1 p-0.5 rounded-lg bg-gray-100 dark:bg-[#1a1a1a] border border-gray-200 dark:border-[#222]">
+                    {(["absolute", "perPost"] as const).map((mode) => (
+                      <button
+                        key={mode}
+                        onClick={() => setPlatformCompMode(mode)}
+                        className={[
+                          "px-2.5 py-1 rounded-md text-[11px] font-medium transition-all",
+                          platformCompMode === mode
+                            ? "bg-white dark:bg-[#2a2a2a] text-gray-800 dark:text-white shadow-sm border border-gray-200 dark:border-[#333]"
+                            : "text-gray-400 dark:text-white/40 hover:text-gray-600 dark:hover:text-white/60",
+                        ].join(" ")}
+                      >
+                        {mode === "absolute" ? "Absolute" : "Per Post"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <ResponsiveContainer width="100%" height={260}>
                   <BarChart data={barData} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />
@@ -1102,9 +1185,9 @@ export default function UGCPage() {
                           [
                             { key: "name" as SortCol, label: "Creator" },
                             { key: "posts" as SortCol, label: "Posts" },
+                            { key: "totalViews" as SortCol, label: "Total Views" },
                             { key: "ttViews" as SortCol, label: "TT Views" },
                             { key: "igViews" as SortCol, label: "IG Views" },
-                            { key: "totalViews" as SortCol, label: "Total Views" },
                             { key: "avgPost" as SortCol, label: "Avg/Post" },
                             { key: "earnings" as SortCol, label: "Earnings" },
                             { key: "cpm" as SortCol, label: "CPM" },
@@ -1159,6 +1242,10 @@ export default function UGCPage() {
                             <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
                               {row.posts}
                             </td>
+                            {/* Total Views */}
+                            <td className="px-4 py-3 font-semibold text-gray-800 dark:text-white/90 whitespace-nowrap">
+                              {row.totalViews > 0 ? fmt(row.totalViews) : <span className="font-normal text-gray-300 dark:text-white/20">—</span>}
+                            </td>
                             {/* TT Views */}
                             <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
                               {row.ttViews > 0 ? fmt(row.ttViews) : <span className="text-gray-300 dark:text-white/20">—</span>}
@@ -1166,10 +1253,6 @@ export default function UGCPage() {
                             {/* IG Views */}
                             <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
                               {row.igViews > 0 ? fmt(row.igViews) : <span className="text-gray-300 dark:text-white/20">—</span>}
-                            </td>
-                            {/* Total Views */}
-                            <td className="px-4 py-3 font-semibold text-gray-800 dark:text-white/90 whitespace-nowrap">
-                              {row.totalViews > 0 ? fmt(row.totalViews) : <span className="font-normal text-gray-300 dark:text-white/20">—</span>}
                             </td>
                             {/* Avg/Post */}
                             <td className="px-4 py-3 text-gray-500 dark:text-white/60 whitespace-nowrap">
@@ -1244,34 +1327,32 @@ export default function UGCPage() {
               </div>
             </div>
 
-            {/* Creator Tabs */}
-            <div className="flex items-center gap-2 mb-4 flex-wrap">
-              {TIKTOK_CREATORS.map((creator) => {
-                const active = creator.handle === activeHandle;
-                const disabled = !creator.handle;
-                return (
-                  <button
-                    key={creator.name}
-                    onClick={() => { if (creator.handle && !disabled) setActiveHandle(creator.handle); }}
-                    disabled={disabled}
-                    className={[
-                      "px-4 py-2 rounded-xl text-sm font-medium transition-all border",
-                      active
-                        ? "bg-blue-600/20 border-blue-500/40 text-blue-500 dark:text-blue-400"
-                        : disabled
-                        ? "bg-transparent border-gray-100 dark:border-[#1a1a1a] text-gray-300 dark:text-white/20 cursor-not-allowed"
-                        : "bg-white dark:bg-[#111] border-gray-200 dark:border-[#222] text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333]",
-                    ].join(" ")}
-                  >
-                    {creator.name}
-                    {disabled && <span className="ml-2 text-[10px] text-gray-300 dark:text-white/20 font-normal">soon</span>}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Platform Toggle */}
-            <div className="mb-5">
+            {/* Creator Tabs + Platform Toggle on same row */}
+            <div className="flex items-center justify-between gap-3 mb-5 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap flex-1">
+                {TIKTOK_CREATORS.map((creator) => {
+                  const active = creator.handle === activeHandle;
+                  const disabled = !creator.handle;
+                  return (
+                    <button
+                      key={creator.name}
+                      onClick={() => { if (creator.handle && !disabled) setActiveHandle(creator.handle); }}
+                      disabled={disabled}
+                      className={[
+                        "px-4 py-2 rounded-xl text-sm font-medium transition-all border",
+                        active
+                          ? "bg-blue-600/20 border-blue-500/40 text-blue-500 dark:text-blue-400"
+                          : disabled
+                          ? "bg-transparent border-gray-100 dark:border-[#1a1a1a] text-gray-300 dark:text-white/20 cursor-not-allowed"
+                          : "bg-white dark:bg-[#111] border-gray-200 dark:border-[#222] text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333]",
+                      ].join(" ")}
+                    >
+                      {creator.name}
+                      {disabled && <span className="ml-2 text-[10px] text-gray-300 dark:text-white/20 font-normal">soon</span>}
+                    </button>
+                  );
+                })}
+              </div>
               <PlatformToggle platform={platform} onChange={setPlatform} />
             </div>
 
@@ -1328,14 +1409,32 @@ export default function UGCPage() {
                 {(activeLoadState === "done" || (activeLoadState !== "loading" && activeLoadState !== "idle" && videos.length > 0)) && (
                   <>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-                      <StatCard label="Total Videos" value={totalVideos} />
-                      <StatCard label="Total Views" value={fmt(totalViews)} />
-                      <StatCard label="Avg Views/Video" value={fmt(avgViews)} />
-                      <StatCard label="Total Likes" value={fmt(totalLikes)} />
-                      <StatCard label="Total Comments" value={fmt(totalComments)} />
+                      <StatCard icon="📹" label="Total Videos" value={totalVideos} />
+                      <StatCard icon="👁" label="Total Views" value={fmt(totalViews)} />
+                      <StatCard icon="📊" label="Avg Views/Video" value={fmt(avgViews)} />
+                      <StatCard icon="❤️" label="Total Likes" value={fmt(totalLikes)} />
+                      <StatCard icon="💬" label="Total Comments" value={fmt(totalComments)} />
                     </div>
                     <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-6 mb-8">
-                      <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70 mb-6">Views Per Video (last 30)</h2>
+                      <div className="flex items-center justify-between mb-5 gap-3 flex-wrap">
+                        <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70">Views Per Video</h2>
+                        <div className="flex items-center gap-1">
+                          {(["7D", "30D", "90D", "All"] as DateRange[]).map((r) => (
+                            <button
+                              key={r}
+                              onClick={() => setDrillDateRange(r)}
+                              className={[
+                                "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer",
+                                drillDateRange === r
+                                  ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
+                                  : "border border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444] hover:text-gray-600 dark:hover:text-white/60",
+                              ].join(" ")}
+                            >
+                              {r}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                       {ttChartData.length === 0 ? (
                         <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
                       ) : (
@@ -1429,14 +1528,32 @@ export default function UGCPage() {
                     {(igLoadState === "done" || (igLoadState !== "loading" && igLoadState !== "idle" && posts.length > 0)) && (
                       <>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-                          <StatCard label="Total Posts" value={totalPosts} />
-                          <StatCard label="Total Views" value={fmt(igTotalViews)} />
-                          <StatCard label="Avg Views/Post" value={fmt(igAvgViews)} />
-                          <StatCard label="Total Likes" value={fmt(igTotalLikes)} />
-                          <StatCard label="Total Comments" value={fmt(igTotalComments)} />
+                          <StatCard icon="📸" label="Total Posts" value={totalPosts} />
+                          <StatCard icon="👁" label="Total Views" value={fmt(igTotalViews)} />
+                          <StatCard icon="📊" label="Avg Views/Post" value={fmt(igAvgViews)} />
+                          <StatCard icon="❤️" label="Total Likes" value={fmt(igTotalLikes)} />
+                          <StatCard icon="💬" label="Total Comments" value={fmt(igTotalComments)} />
                         </div>
                         <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-6 mb-8">
-                          <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70 mb-6">Views Per Post (last 30)</h2>
+                          <div className="flex items-center justify-between mb-5 gap-3 flex-wrap">
+                            <h2 className="text-sm font-semibold text-gray-500 dark:text-white/70">Views Per Post</h2>
+                            <div className="flex items-center gap-1">
+                              {(["7D", "30D", "90D", "All"] as DateRange[]).map((r) => (
+                                <button
+                                  key={r}
+                                  onClick={() => setDrillDateRange(r)}
+                                  className={[
+                                    "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer",
+                                    drillDateRange === r
+                                      ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
+                                      : "border border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444] hover:text-gray-600 dark:hover:text-white/60",
+                                  ].join(" ")}
+                                >
+                                  {r}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
                           {igChartData.length === 0 ? (
                             <p className="text-gray-300 dark:text-white/30 text-sm text-center py-8">No data</p>
                           ) : (
