@@ -61,6 +61,23 @@ export async function GET(req: NextRequest) {
       const rawItems: Record<string, unknown>[] = await itemsRes.json();
       const mapped = rawItems.map(mapApifyItem).filter(Boolean) as NonNullable<ReturnType<typeof mapApifyItem>>[];
 
+      // Extract authorMeta from the first item
+      const firstItem = rawItems[0];
+      const rawAuthor = firstItem?.authorMeta as Record<string, unknown> | undefined;
+      const authorMeta = rawAuthor
+        ? {
+            avatar: (rawAuthor.avatar as string) ?? "",
+            nickName: (rawAuthor.nickName as string) ?? "",
+            signature: (rawAuthor.signature as string) ?? "",
+            fans: (rawAuthor.fans as number) ?? 0,
+            heart: (rawAuthor.heart as number) ?? 0,
+            video: (rawAuthor.video as number) ?? 0,
+            verified: (rawAuthor.verified as boolean) ?? false,
+            following: (rawAuthor.following as number) ?? 0,
+            profileUrl: (rawAuthor.profileUrl as string) ?? "",
+          }
+        : undefined;
+
       // Merge into Supabase
       const existing = await getStoreData(handle);
 
@@ -69,6 +86,13 @@ export async function GET(req: NextRequest) {
         updated = mergeNewPosts(existing, mapped);
       } else {
         updated = mergeRefreshCounts(existing, mapped);
+      }
+
+      // Attach authorMeta if we got it (prefer fresh over stored)
+      if (authorMeta) {
+        updated = { ...updated, authorMeta };
+      } else if (existing?.authorMeta) {
+        updated = { ...updated, authorMeta: existing.authorMeta };
       }
 
       await setStoreData(handle, updated);

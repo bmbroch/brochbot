@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Shell from "@/components/Shell";
 import { useTheme } from "@/components/ThemeProvider";
 import { TIKTOK_CREATORS } from "@/lib/tiktok-creators";
-import { TikTokStoreData, TikTokVideo } from "@/lib/tiktok-store";
+import { TikTokStoreData, TikTokVideo, TikTokAuthorMeta } from "@/lib/tiktok-store";
 import {
   BarChart,
   Bar,
@@ -93,6 +93,74 @@ function CustomTooltip({
           {truncate(caption, 60)}
         </p>
       )}
+    </div>
+  );
+}
+
+// ─── Profile Header ────────────────────────────────────────────────────────────
+
+function ProfileHeader({ meta }: { meta: TikTokAuthorMeta }) {
+  const initials = meta.nickName
+    ? meta.nickName.slice(0, 2).toUpperCase()
+    : "?";
+
+  return (
+    <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-6 flex items-center gap-5">
+      {/* Avatar */}
+      {meta.avatar ? (
+        <img
+          src={meta.avatar}
+          alt={meta.nickName}
+          className="w-16 h-16 rounded-full object-cover ring-2 ring-white/10 flex-shrink-0"
+        />
+      ) : (
+        <div className="w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-pink-500 to-blue-500 text-white font-bold text-lg ring-2 ring-white/10">
+          {initials}
+        </div>
+      )}
+
+      {/* Info */}
+      <div className="flex flex-col gap-1 min-w-0">
+        {/* Name + verified */}
+        <div className="flex items-center gap-1.5">
+          <span className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+            {meta.nickName || "Unknown"}
+          </span>
+          {meta.verified && (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="w-4 h-4 text-blue-500 flex-shrink-0"
+              aria-label="Verified"
+            >
+              <circle cx="12" cy="12" r="12" fill="currentColor" opacity="0.15" />
+              <path
+                d="M7 12.5l3.5 3.5L17 9"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </div>
+
+        {/* Bio */}
+        {meta.signature && (
+          <p className="text-sm text-gray-500 dark:text-white/50 max-w-md line-clamp-2 leading-snug">
+            {meta.signature}
+          </p>
+        )}
+
+        {/* Stats row */}
+        <p className="text-sm text-gray-400 dark:text-white/40 mt-0.5">
+          {fmt(meta.fans)} Followers
+          {" · "}
+          {fmt(meta.heart)} Likes
+          {" · "}
+          {meta.video} Videos
+        </p>
+      </div>
     </div>
   );
 }
@@ -336,6 +404,11 @@ export default function TikTokAnalyticsPage() {
             );
           })}
         </div>
+
+        {/* Profile Header */}
+        {storeData?.authorMeta && (
+          <ProfileHeader meta={storeData.authorMeta} />
+        )}
 
         {/* Error */}
         {error && (

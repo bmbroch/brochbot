@@ -12,8 +12,21 @@ export interface TikTokVideo {
   url: string;
 }
 
+export interface TikTokAuthorMeta {
+  avatar: string;
+  nickName: string;
+  signature: string;
+  fans: number;
+  heart: number;
+  video: number;
+  verified: boolean;
+  following: number;
+  profileUrl: string;
+}
+
 export interface TikTokStoreData {
   videos: TikTokVideo[];
+  authorMeta?: TikTokAuthorMeta;
   lastNewPostsSync: string | null; // ISO string
   lastCountsRefresh: string | null; // ISO string
 }
