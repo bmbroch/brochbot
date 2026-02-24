@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 37467360,
-    "cost": 34.3373,
-    "durationSec": 90687,
+    "tokens": 37611692,
+    "cost": 34.6842,
+    "durationSec": 90834,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -55,7 +55,7 @@
     "model": "unknown",
     "tokens": 23328618,
     "cost": 10.4247,
-    "durationSec": 13260,
+    "durationSec": 15556,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -166,6 +166,18 @@
     "durationSec": 252973,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
+    "id": "61eb3893-3e87-4b58-b655-1dce85ba276b",
+    "label": "devin-ugc-header-tighten",
+    "agent": "devin",
+    "task": "UGC Analytics                          [line 1]",
+    "model": "Sonnet",
+    "tokens": 722366,
+    "cost": 0.9041,
+    "durationSec": 2300,
+    "status": "success",
+    "timestamp": "2026-02-24T10:51:38.431Z"
   },
   {
     "id": "13f22b32-9add-47d9-a5e9-f0bdb2725618",
@@ -348,18 +360,6 @@
     "timestamp": "2026-02-24T06:00:00.174Z"
   },
   {
-    "id": "61eb3893-3e87-4b58-b655-1dce85ba276b",
-    "label": "devin-ugc-header-tighten",
-    "agent": "devin",
-    "task": "UGC Analytics                          [line 1]",
-    "model": "Sonnet",
-    "tokens": 182052,
-    "cost": 0.31,
-    "durationSec": 2104,
-    "status": "success",
-    "timestamp": "2026-02-24T10:51:38.431Z"
-  },
-  {
     "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",
     "label": "Daily GSC Report \u2014 All Products (Miles)",
     "agent": "miles",
@@ -468,6 +468,18 @@
     "timestamp": "2026-02-24T10:19:38.513Z"
   },
   {
+    "id": "c1f337ed-134c-4a7b-bf48-9a1b725dbf7a",
+    "label": "marco-avatar-fix",
+    "agent": "sam",
+    "task": "DiceBear Personas generates different looks based on seed. The goal: short dark hair, male-looking, clean-cut. No long hair, no feminine features.",
+    "model": "Sonnet",
+    "tokens": 84878,
+    "cost": 0.0783,
+    "durationSec": 55,
+    "status": "success",
+    "timestamp": "2026-02-24T11:29:06.199Z"
+  },
+  {
     "id": "613db404-e546-4858-8249-074352064b88",
     "label": "613db404-e54",
     "agent": "sam",
@@ -514,18 +526,6 @@
     "durationSec": 42,
     "status": "success",
     "timestamp": "2026-02-24T10:40:50.240Z"
-  },
-  {
-    "id": "e6de0f83-a526-4d2f-a842-e2c1eb1964b7",
-    "label": "marco-avatar",
-    "agent": "sam",
-    "task": "Task: Generate a Marco avatar for Mission Control.",
-    "model": "Sonnet",
-    "tokens": 62020,
-    "cost": 0.0885,
-    "durationSec": 30,
-    "status": "success",
-    "timestamp": "2026-02-24T10:17:25.651Z"
   },
   {
     "id": "8bdb35f1-94f1-482e-8c38-40900d9b10af",

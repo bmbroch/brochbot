@@ -2436,6 +2436,18 @@
     "timestamp": "2026-02-24T10:51:38.431Z"
   },
   {
+    "id": "c1f337ed-134c-4a7b-bf48-9a1b725dbf7a",
+    "label": "marco-avatar-fix",
+    "agent": "sam",
+    "task": "DiceBear Personas generates different looks based on seed. The goal: short dark hair, male-looking, clean-cut. No long hair, no feminine features.",
+    "model": "Sonnet",
+    "tokens": 84878,
+    "cost": 0.0783,
+    "durationSec": 55,
+    "status": "success",
+    "timestamp": "2026-02-24T11:29:06.199Z"
+  },
+  {
     "id": "sam-daily-2026-02-24",
     "label": "Daily total",
     "agent": "sam",
@@ -2445,6 +2457,6 @@
     "cost": 0.0417,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-24T11:26:46Z"
+    "timestamp": "2026-02-24T11:30:02Z"
   }
 ]

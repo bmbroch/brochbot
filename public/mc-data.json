@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-24T11:26:46Z",
+  "lastUpdated": "2026-02-24T11:30:02Z",
   "activities": [
+    {
+      "id": "s-c1f337ed",
+      "agent": "sam",
+      "title": "marco-avatar-fix",
+      "description": "DiceBear Personas generates different looks based on seed. The goal: short dark hair, male-looking, clean-cut. No long hair, no feminine features.",
+      "status": "success",
+      "date": "2026-02-24T11:29:06.199Z",
+      "tokens": 84878,
+      "cost": 0.0783,
+      "model": "Sonnet",
+      "durationSec": 55
+    },
     {
       "id": "s-61eb3893",
       "agent": "devin",
@@ -8,10 +20,10 @@
       "description": "UGC Analytics                          [line 1]",
       "status": "success",
       "date": "2026-02-24T10:51:38.431Z",
-      "tokens": 182052,
-      "cost": 0.31,
+      "tokens": 722366,
+      "cost": 0.9041,
       "model": "Sonnet",
-      "durationSec": 2104
+      "durationSec": 2300
     },
     {
       "id": "s-b8f1c375",
@@ -86,18 +98,6 @@
       "durationSec": 140
     },
     {
-      "id": "s-e6de0f83",
-      "agent": "sam",
-      "title": "marco-avatar",
-      "description": "Task: Generate a Marco avatar for Mission Control.",
-      "status": "success",
-      "date": "2026-02-24T10:17:25.651Z",
-      "tokens": 62020,
-      "cost": 0.0885,
-      "model": "Sonnet",
-      "durationSec": 30
-    },
-    {
       "id": "s-20309a2a",
       "agent": "sam",
       "title": "20309a2a-9ef",
@@ -131,7 +131,7 @@
       "tokens": 23328618,
       "cost": 10.4247,
       "model": "unknown",
-      "durationSec": 13260
+      "durationSec": 15556
     },
     {
       "id": "s-66dde37a",
@@ -272,10 +272,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 37467360,
-      "cost": 34.3373,
+      "tokens": 37611692,
+      "cost": 34.6842,
       "model": "Sonnet",
-      "durationSec": 90687
+      "durationSec": 90834
     },
     {
       "id": "s-5423ca5a",
@@ -1183,7 +1183,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T10:40:50.240Z",
+      "lastActive": "2026-02-24T11:30:00Z",
       "statusText": ""
     }
   },
@@ -1197,7 +1197,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T11:26:44Z"
+      "lastRunAt": "2026-02-24T11:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
