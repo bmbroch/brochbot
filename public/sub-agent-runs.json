@@ -43,7 +43,7 @@
     "model": "Sonnet",
     "tokens": 15606645,
     "cost": 12.9404,
-    "durationSec": 60637,
+    "durationSec": 63979,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -70,6 +70,18 @@
     "durationSec": 8303,
     "status": "success",
     "timestamp": "2026-02-20T08:15:42.760Z"
+  },
+  {
+    "id": "e9dbf3b1-d271-4019-b56f-85d45329fd99",
+    "label": "e9dbf3b1-d27",
+    "agent": "sam",
+    "task": "System: [2026-02-22 16:07:13 UTC] Cron (error): Got all the data. Let me crunch the numbers.",
+    "model": "Sonnet",
+    "tokens": 4359528,
+    "cost": 2.6223,
+    "durationSec": 125788,
+    "status": "success",
+    "timestamp": "2026-02-22T16:09:28.028Z"
   },
   {
     "id": "aae63345-e753-451e-8902-32e9d6391345",
@@ -108,6 +120,18 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
+    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
+    "label": "b88a363c-216",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 1273089,
+    "cost": 2.2893,
+    "durationSec": 378420,
+    "status": "success",
+    "timestamp": "2026-02-19T18:55:11.223Z"
+  },
+  {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
     "label": "95a02d1a-513",
     "agent": "sam",
@@ -118,18 +142,6 @@
     "durationSec": 252973,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
-  },
-  {
-    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
-    "label": "b88a363c-216",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 1124983,
-    "cost": 2.0525,
-    "durationSec": 292029,
-    "status": "success",
-    "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -216,6 +228,18 @@
     "timestamp": "2026-02-20T01:00:00.067Z"
   },
   {
+    "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 168280,
+    "cost": 0.2142,
+    "durationSec": 125,
+    "status": "success",
+    "timestamp": "2026-02-24T04:00:00.249Z"
+  },
+  {
     "id": "42b5ff85-7d63-4802-999c-6968ca88f32f",
     "label": "42b5ff85-7d6",
     "agent": "sam",
@@ -253,8 +277,8 @@
   },
   {
     "id": "5423ca5a-4ab8-4836-af81-965c4708fd72",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "5423ca5a-4ab",
+    "agent": "sam",
     "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
     "model": "Sonnet",
     "tokens": 117525,
@@ -298,6 +322,18 @@
     "durationSec": 38,
     "status": "success",
     "timestamp": "2026-02-21T06:00:00.033Z"
+  },
+  {
+    "id": "e9ec5412-ee22-4140-9ba2-858ec7d7da0f",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 70863,
+    "cost": 0.129,
+    "durationSec": 90,
+    "status": "success",
+    "timestamp": "2026-02-24T04:00:00.191Z"
   },
   {
     "id": "8bdb35f1-94f1-482e-8c38-40900d9b10af",

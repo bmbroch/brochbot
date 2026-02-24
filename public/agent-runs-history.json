@@ -1728,6 +1728,18 @@
     "timestamp": "2026-02-22T16:08:47.973Z"
   },
   {
+    "id": "e9dbf3b1-d271-4019-b56f-85d45329fd99",
+    "label": "e9dbf3b1-d27",
+    "agent": "sam",
+    "task": "System: [2026-02-22 16:07:13 UTC] Cron (error): Got all the data. Let me crunch the numbers.",
+    "model": "Sonnet",
+    "tokens": 4359528,
+    "cost": 2.6223,
+    "durationSec": 125788,
+    "status": "success",
+    "timestamp": "2026-02-22T16:09:28.028Z"
+  },
+  {
     "id": "561b97bd-d739-494d-a292-5d18c0a4ffb3",
     "label": "devin-launchpad-briefings",
     "agent": "devin",
@@ -2016,15 +2028,27 @@
     "timestamp": "2026-02-24T03:10:02Z"
   },
   {
-    "id": "sam-daily-2026-02-24",
-    "label": "Daily total",
-    "agent": "sam",
-    "task": "Sam \u2194 Ben total conversation cost today",
-    "model": "Opus",
-    "tokens": 1052872,
-    "cost": 0.391,
-    "durationSec": 0,
+    "id": "e9ec5412-ee22-4140-9ba2-858ec7d7da0f",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 70863,
+    "cost": 0.129,
+    "durationSec": 90,
     "status": "success",
-    "timestamp": "2026-02-24T04:00:02Z"
+    "timestamp": "2026-02-24T04:00:00.191Z"
+  },
+  {
+    "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 168280,
+    "cost": 0.2142,
+    "durationSec": 125,
+    "status": "success",
+    "timestamp": "2026-02-24T04:00:00.249Z"
   }
 ]
