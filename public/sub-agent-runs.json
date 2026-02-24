@@ -180,18 +180,6 @@
     "timestamp": "2026-02-24T10:51:38.431Z"
   },
   {
-    "id": "13f22b32-9add-47d9-a5e9-f0bdb2725618",
-    "label": "devin-ugc-creator-cards",
-    "agent": "devin",
-    "task": "In Overview mode, add a row of creator cards **above** the \"Total Views Over Time\" chart. One card per creator (8 total), laid out in a responsive grid (4 across on desktop, 2 on mobile). Each card sh",
-    "model": "Sonnet",
-    "tokens": 695037,
-    "cost": 0.4981,
-    "durationSec": 178,
-    "status": "success",
-    "timestamp": "2026-02-24T10:40:32.530Z"
-  },
-  {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
     "label": "a50fee35-8a4",
     "agent": "sam",
@@ -274,18 +262,6 @@
     "durationSec": 179,
     "status": "success",
     "timestamp": "2026-02-24T03:00:00.193Z"
-  },
-  {
-    "id": "b8f1c375-4a01-40ed-be12-ea2aff73b051",
-    "label": "devin-creator-avatars",
-    "agent": "devin",
-    "task": "Already in `allData` state (fetched from Supabase):",
-    "model": "Sonnet",
-    "tokens": 363061,
-    "cost": 0.3382,
-    "durationSec": 102,
-    "status": "success",
-    "timestamp": "2026-02-24T10:47:27.433Z"
   },
   {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
