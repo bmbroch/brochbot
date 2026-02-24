@@ -139,11 +139,9 @@ function ProfileHeader({ meta }: { meta: TikTokAuthorMeta }) {
       {/* Avatar */}
       {meta.avatar ? (
         <img
-          src={meta.avatar}
+          src={`/api/proxy-image?url=${encodeURIComponent(meta.avatar)}`}
           alt={meta.nickName}
           className="w-16 h-16 rounded-full object-cover ring-2 ring-white/10 flex-shrink-0"
-          referrerPolicy="no-referrer"
-          crossOrigin="anonymous"
         />
       ) : (
         <div className="w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-pink-500 to-blue-500 text-white font-bold text-lg ring-2 ring-white/10">
@@ -211,11 +209,9 @@ function IgProfileHeader({ meta }: { meta: IgAuthorMeta }) {
       {/* Avatar */}
       {meta.avatar ? (
         <img
-          src={meta.avatar}
+          src={`/api/proxy-image?url=${encodeURIComponent(meta.avatar)}`}
           alt={meta.fullName || meta.username}
           className="w-16 h-16 rounded-full object-cover ring-2 ring-white/10 flex-shrink-0"
-          referrerPolicy="no-referrer"
-          crossOrigin="anonymous"
         />
       ) : (
         <div className="w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-pink-500 to-purple-600 text-white font-bold text-lg ring-2 ring-white/10">
