@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-02-24T07:10:02Z",
+  "lastUpdated": "2026-02-24T07:17:32Z",
   "activities": [
+    {
+      "id": "s-3e1d5990",
+      "agent": "devin",
+      "title": "devin-tiktok-analytics",
+      "description": "Build a new page `/tiktok-analytics` in Mission Control that shows TikTok performance data for our UGC creators \u2014 like a mini Playkit dashboard.",
+      "status": "success",
+      "date": "2026-02-24T07:17:25.973Z",
+      "tokens": 15134,
+      "cost": 0.0589,
+      "model": "Sonnet",
+      "durationSec": 3
+    },
+    {
+      "id": "s-c82a1e98",
+      "agent": "sam",
+      "title": "c82a1e98-5dd",
+      "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
+      "status": "success",
+      "date": "2026-02-24T07:10:43.159Z",
+      "tokens": 635957,
+      "cost": 0.5455,
+      "model": "unknown",
+      "durationSec": 409
+    },
     {
       "id": "s-66dde37a",
       "agent": "mia",
@@ -140,10 +164,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 23022512,
-      "cost": 17.5251,
+      "tokens": 23802776,
+      "cost": 18.8085,
       "model": "Sonnet",
-      "durationSec": 75279
+      "durationSec": 75731
     },
     {
       "id": "s-5423ca5a",
@@ -396,18 +420,6 @@
       "cost": 2.2893,
       "model": "Opus",
       "durationSec": 378420
-    },
-    {
-      "id": "s-c1c67e23",
-      "agent": "sam",
-      "title": "c1c67e23-34e",
-      "description": "Conversation info (untrusted metadata):",
-      "status": "success",
-      "date": "2026-02-19T18:31:48.211Z",
-      "tokens": 3387359,
-      "cost": 8.4781,
-      "model": "Opus",
-      "durationSec": 391081
     },
     {
       "id": "s-7612c9b5",
@@ -1035,7 +1047,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-23T07:58:19.342Z",
+      "lastActive": "2026-02-24T07:17:25.973Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1063,7 +1075,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T06:04:53Z",
+      "lastActive": "2026-02-24T07:10:43.159Z",
       "statusText": ""
     }
   },
@@ -1077,7 +1089,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T07:10:01Z"
+      "lastRunAt": "2026-02-24T07:17:32Z"
     },
     {
       "id": "bash-frankie-sync",

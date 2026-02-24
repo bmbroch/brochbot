@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 23022512,
-    "cost": 17.5251,
-    "durationSec": 75279,
+    "tokens": 23802776,
+    "cost": 18.8085,
+    "durationSec": 75731,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -96,18 +96,6 @@
     "timestamp": "2026-02-19T17:32:32.089Z"
   },
   {
-    "id": "c1c67e23-34e1-4322-ae42-39ba765fb193",
-    "label": "c1c67e23-34e",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 3387359,
-    "cost": 8.4781,
-    "durationSec": 391081,
-    "status": "success",
-    "timestamp": "2026-02-19T18:31:48.211Z"
-  },
-  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
@@ -142,6 +130,18 @@
     "durationSec": 252973,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
+    "id": "c82a1e98-5ddc-43a2-80f6-6cfc18f98520",
+    "label": "c82a1e98-5dd",
+    "agent": "sam",
+    "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
+    "model": "unknown",
+    "tokens": 635957,
+    "cost": 0.5455,
+    "durationSec": 409,
+    "status": "success",
+    "timestamp": "2026-02-24T07:10:43.159Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -490,5 +490,17 @@
     "durationSec": 34476,
     "status": "success",
     "timestamp": "2026-02-20T07:03:05.484Z"
+  },
+  {
+    "id": "3e1d5990-cdd9-4976-b609-def45cf60313",
+    "label": "devin-tiktok-analytics",
+    "agent": "devin",
+    "task": "Build a new page `/tiktok-analytics` in Mission Control that shows TikTok performance data for our UGC creators \u2014 like a mini Playkit dashboard.",
+    "model": "Sonnet",
+    "tokens": 15134,
+    "cost": 0.0589,
+    "durationSec": 3,
+    "status": "success",
+    "timestamp": "2026-02-24T07:17:25.973Z"
   }
 ]
