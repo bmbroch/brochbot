@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { tiktokCache, TikTokVideo } from "@/lib/tiktok-cache";
+import { getCachedData, setCachedData, TikTokVideo } from "@/lib/tiktok-cache";
 
 export const dynamic = "force-dynamic";
 
+// GET /api/tiktok/results/[datasetId]?handle=... — fetches dataset items and persists to Supabase cache
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ datasetId: string }> }
 ) {
   const APIFY_KEY = process.env.APIFY_API_KEY;
@@ -13,6 +14,7 @@ export async function GET(
   }
 
   const { datasetId } = await params;
+  const handle = req.nextUrl.searchParams.get("handle");
 
   try {
     const res = await fetch(
@@ -25,20 +27,21 @@ export async function GET(
     }
 
     const items: TikTokVideo[] = await res.json();
+    const lastFetched = Date.now();
 
-    // Store in cache for matching entry
-    Array.from(tiktokCache.entries()).forEach(([handle, entry]) => {
-      if (entry.datasetId === datasetId) {
-        tiktokCache.set(handle, {
-          ...entry,
-          status: "succeeded",
-          data: items,
-          lastFetched: Date.now(),
-        });
-      }
-    });
+    // Persist to Supabase cache if handle is known
+    if (handle) {
+      const existing = await getCachedData(handle);
+      await setCachedData(handle, {
+        ...(existing ?? {}),
+        datasetId,
+        status: "succeeded",
+        data: items,
+        lastFetched,
+      });
+    }
 
-    return NextResponse.json({ items, lastFetched: Date.now() });
+    return NextResponse.json({ items, lastFetched });
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }

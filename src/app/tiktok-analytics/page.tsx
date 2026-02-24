@@ -26,7 +26,8 @@ interface TikTokVideo {
   text: string;
 }
 
-type LoadState = "idle" | "starting" | "polling" | "fetching" | "done" | "error";
+// loading = initial cache read | no-data = cache empty | starting/polling/fetching = scrape in progress
+type LoadState = "loading" | "no-data" | "starting" | "polling" | "fetching" | "done" | "error";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -54,6 +55,11 @@ function shortDate(iso: string): string {
   }
 }
 
+function creatorName(handle: string): string {
+  const found = TIKTOK_CREATORS.find((c) => c.handle === handle);
+  return found?.name ?? handle;
+}
+
 // ─── Stat Card ─────────────────────────────────────────────────────────────────
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
@@ -65,29 +71,31 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
   );
 }
 
-// ─── Skeleton ──────────────────────────────────────────────────────────────────
+// ─── Loading Spinner ───────────────────────────────────────────────────────────
 
-function Skeleton({ className = "" }: { className?: string }) {
-  return (
-    <div className={`animate-pulse rounded-lg bg-white/[0.05] ${className}`} />
-  );
-}
-
-function LoadingSkeleton({ label }: { label?: string }) {
+function LoadingSpinner({ label }: { label?: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-24">
       <div className="relative w-12 h-12">
         <div className="absolute inset-0 rounded-full border-2 border-blue-500/30" />
         <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-blue-500 animate-spin" />
       </div>
-      <p className="text-white/50 text-sm">{label ?? "Fetching TikTok data..."}</p>
+      <p className="text-white/50 text-sm">{label ?? "Loading..."}</p>
     </div>
   );
 }
 
 // ─── Custom Tooltip ────────────────────────────────────────────────────────────
 
-function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) {
+function CustomTooltip({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: Array<{ value: number }>;
+  label?: string;
+}) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl bg-[#1a1a1a] border border-[#333] px-3 py-2 text-xs text-white shadow-xl">
@@ -100,11 +108,10 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
 const POLL_INTERVAL_MS = 5_000;
-const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1_000;
 
 export default function TikTokAnalyticsPage() {
   const [activeHandle, setActiveHandle] = useState<string>("sell.with.nick");
-  const [loadState, setLoadState] = useState<LoadState>("idle");
+  const [loadState, setLoadState] = useState<LoadState>("loading");
   const [videos, setVideos] = useState<TikTokVideo[]>([]);
   const [lastFetched, setLastFetched] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -118,10 +125,12 @@ export default function TikTokAnalyticsPage() {
   }, []);
 
   // Fetch results from dataset
-  const fetchResults = useCallback(async (datasetId: string) => {
+  const fetchResults = useCallback(async (datasetId: string, handle: string) => {
     setLoadState("fetching");
     try {
-      const res = await fetch(`/api/tiktok/results/${datasetId}`);
+      const res = await fetch(
+        `/api/tiktok/results/${datasetId}?handle=${encodeURIComponent(handle)}`
+      );
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Failed to fetch results");
       setVideos(json.items ?? []);
@@ -133,33 +142,35 @@ export default function TikTokAnalyticsPage() {
     }
   }, []);
 
-  // Poll status until done
+  // Poll Apify status until done
   const startPolling = useCallback(
-    (runId: string, datasetId: string) => {
+    (runId: string, datasetId: string, handle: string) => {
       setLoadState("polling");
       stopPolling();
       pollRef.current = setInterval(async () => {
         try {
-          const res = await fetch(`/api/tiktok/status/${runId}`);
+          const res = await fetch(
+            `/api/tiktok/status/${runId}?handle=${encodeURIComponent(handle)}`
+          );
           const json = await res.json();
           const s: string = json.status;
           if (s === "SUCCEEDED") {
             stopPolling();
-            await fetchResults(datasetId);
+            await fetchResults(json.defaultDatasetId ?? datasetId, handle);
           } else if (s === "FAILED" || s === "ABORTED" || s === "TIMED-OUT") {
             stopPolling();
             setError("Apify run failed or was aborted.");
             setLoadState("error");
           }
         } catch {
-          // keep polling
+          // keep polling on transient errors
         }
       }, POLL_INTERVAL_MS);
     },
     [stopPolling, fetchResults]
   );
 
-  // Start a new scrape
+  // Trigger a new Apify scrape (manual refresh only)
   const startScrape = useCallback(
     async (handle: string) => {
       setError(null);
@@ -172,8 +183,8 @@ export default function TikTokAnalyticsPage() {
         });
         const json = await res.json();
         if (!res.ok) throw new Error(json.error ?? "Failed to start scrape");
-        if (json.status === "running" && json.runId) {
-          startPolling(json.runId, json.datasetId);
+        if (json.runId) {
+          startPolling(json.runId, json.datasetId, handle);
         }
       } catch (err) {
         setError(String(err));
@@ -183,46 +194,45 @@ export default function TikTokAnalyticsPage() {
     [startPolling]
   );
 
-  // Load data for a handle (check cache first)
-  const loadHandle = useCallback(
+  // Read cache from Supabase — no auto-scrape
+  const loadFromCache = useCallback(
     async (handle: string) => {
       stopPolling();
       setVideos([]);
+      setLastFetched(null);
       setError(null);
-      setLoadState("starting");
+      setLoadState("loading");
 
       try {
         const res = await fetch(`/api/tiktok/run?handle=${encodeURIComponent(handle)}`);
         const json = await res.json();
 
-        if (json.status === "succeeded" && json.data && json.lastFetched) {
-          const age = Date.now() - json.lastFetched;
-          if (age < CACHE_MAX_AGE_MS) {
-            setVideos(json.data);
-            setLastFetched(json.lastFetched);
-            setLoadState("done");
-            return;
-          }
-        }
-
-        if (json.status === "running" && json.runId) {
-          startPolling(json.runId, json.datasetId);
+        if (json.status === "succeeded" && json.data?.length) {
+          setVideos(json.data);
+          setLastFetched(json.lastFetched ?? null);
+          setLoadState("done");
           return;
         }
 
-        // No fresh cache → start a new scrape
-        await startScrape(handle);
+        // Run was in progress when the page was last visited — resume polling
+        if (json.status === "running" && json.runId) {
+          startPolling(json.runId, json.datasetId, handle);
+          return;
+        }
+
+        // No cache — show empty state
+        setLoadState("no-data");
       } catch (err) {
         setError(String(err));
         setLoadState("error");
       }
     },
-    [stopPolling, startPolling, startScrape]
+    [stopPolling, startPolling]
   );
 
-  // On mount / handle change
+  // On mount / handle change — just read cache
   useEffect(() => {
-    loadHandle(activeHandle);
+    loadFromCache(activeHandle);
     return () => stopPolling();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeHandle]);
@@ -240,13 +250,12 @@ export default function TikTokAnalyticsPage() {
   const sorted = [...videos]
     .sort((a, b) => new Date(a.createTimeISO).getTime() - new Date(b.createTimeISO).getTime())
     .slice(-30)
-    .map((v) => ({
-      date: shortDate(v.createTimeISO),
-      views: v.playCount || 0,
-    }));
+    .map((v) => ({ date: shortDate(v.createTimeISO), views: v.playCount || 0 }));
 
-  const isLoading = loadState === "starting" || loadState === "polling" || loadState === "fetching";
-  const loadingLabel =
+  const isScraping =
+    loadState === "starting" || loadState === "polling" || loadState === "fetching";
+
+  const scrapingLabel =
     loadState === "starting"
       ? "Starting Apify run..."
       : loadState === "polling"
@@ -260,7 +269,6 @@ export default function TikTokAnalyticsPage() {
         <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              {/* TikTok-style icon */}
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-blue-500 flex items-center justify-center shadow-lg">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
                   <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.05a8.12 8.12 0 004.77 1.53V7.12a4.85 4.85 0 01-1-.43z" />
@@ -272,12 +280,14 @@ export default function TikTokAnalyticsPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            {lastFetched && !isLoading && (
-              <span className="text-xs text-white/30">Updated {timeAgo(lastFetched)}</span>
+            {lastFetched && loadState === "done" && (
+              <span className="text-xs text-white/30">
+                Last updated {timeAgo(lastFetched)}
+              </span>
             )}
             <button
               onClick={handleRefresh}
-              disabled={isLoading}
+              disabled={isScraping || loadState === "loading"}
               className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#111] border border-[#222] text-sm text-white/70 hover:text-white hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <svg
@@ -289,14 +299,14 @@ export default function TikTokAnalyticsPage() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={isLoading ? "animate-spin" : ""}
+                className={isScraping ? "animate-spin" : ""}
               >
                 <path d="M21 2v6h-6" />
                 <path d="M3 12a9 9 0 0115-6.7L21 8" />
                 <path d="M3 22v-6h6" />
                 <path d="M21 12a9 9 0 01-15 6.7L3 16" />
               </svg>
-              {isLoading ? "Refreshing..." : "Refresh"}
+              {isScraping ? "Refreshing..." : "Refresh"}
             </button>
           </div>
         </div>
@@ -331,11 +341,16 @@ export default function TikTokAnalyticsPage() {
           })}
         </div>
 
-        {/* Loading */}
-        {isLoading && <LoadingSkeleton label={loadingLabel} />}
+        {/* Initial cache read */}
+        {loadState === "loading" && (
+          <LoadingSpinner label="Loading cached data..." />
+        )}
+
+        {/* Apify scrape in progress */}
+        {isScraping && <LoadingSpinner label={scrapingLabel} />}
 
         {/* Error */}
-        {!isLoading && loadState === "error" && (
+        {loadState === "error" && (
           <div className="rounded-2xl bg-red-500/10 border border-red-500/20 p-6 text-center">
             <p className="text-red-400 text-sm">{error ?? "Something went wrong."}</p>
             <button
@@ -347,8 +362,56 @@ export default function TikTokAnalyticsPage() {
           </div>
         )}
 
+        {/* Empty state — no cache yet */}
+        {loadState === "no-data" && (
+          <div className="flex flex-col items-center justify-center py-32 gap-5">
+            <div className="w-14 h-14 rounded-2xl bg-[#111] border border-[#222] flex items-center justify-center">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-white/20"
+              >
+                <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" />
+              </svg>
+            </div>
+            <div className="text-center">
+              <p className="text-white/60 text-sm font-medium mb-1">No data yet</p>
+              <p className="text-white/30 text-sm">
+                Click Refresh to fetch {creatorName(activeHandle)}&apos;s TikTok stats.
+              </p>
+            </div>
+            <button
+              onClick={handleRefresh}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600/20 border border-blue-500/40 text-sm text-blue-400 hover:bg-blue-600/30 hover:border-blue-500/60 transition-all"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 2v6h-6" />
+                <path d="M3 12a9 9 0 0115-6.7L21 8" />
+                <path d="M3 22v-6h6" />
+                <path d="M21 12a9 9 0 01-15 6.7L3 16" />
+              </svg>
+              Fetch {creatorName(activeHandle)}&apos;s stats
+            </button>
+          </div>
+        )}
+
         {/* Data */}
-        {!isLoading && loadState === "done" && (
+        {loadState === "done" && (
           <>
             {/* Stat cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
@@ -361,7 +424,9 @@ export default function TikTokAnalyticsPage() {
 
             {/* Chart */}
             <div className="rounded-2xl bg-[#111] border border-[#222] p-6 mb-8">
-              <h2 className="text-sm font-semibold text-white/70 mb-6">Views Per Video (last 30)</h2>
+              <h2 className="text-sm font-semibold text-white/70 mb-6">
+                Views Per Video (last 30)
+              </h2>
               {sorted.length === 0 ? (
                 <p className="text-white/30 text-sm text-center py-8">No data</p>
               ) : (
@@ -381,7 +446,10 @@ export default function TikTokAnalyticsPage() {
                       tickLine={false}
                       width={48}
                     />
-                    <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.04)" }} />
+                    <Tooltip
+                      content={<CustomTooltip />}
+                      cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                    />
                     <Bar dataKey="views" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -397,21 +465,24 @@ export default function TikTokAnalyticsPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-[#1a1a1a]">
-                      {["Date", "Caption", "Views", "Likes", "Comments", "Shares", ""].map((h) => (
-                        <th
-                          key={h}
-                          className="text-left px-4 py-3 text-[11px] font-medium text-white/30 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          {h}
-                        </th>
-                      ))}
+                      {["Date", "Caption", "Views", "Likes", "Comments", "Shares", ""].map(
+                        (h) => (
+                          <th
+                            key={h}
+                            className="text-left px-4 py-3 text-[11px] font-medium text-white/30 uppercase tracking-wider whitespace-nowrap"
+                          >
+                            {h}
+                          </th>
+                        )
+                      )}
                     </tr>
                   </thead>
                   <tbody>
                     {[...videos]
                       .sort(
                         (a, b) =>
-                          new Date(b.createTimeISO).getTime() - new Date(a.createTimeISO).getTime()
+                          new Date(b.createTimeISO).getTime() -
+                          new Date(a.createTimeISO).getTime()
                       )
                       .map((v, i) => (
                         <tr
@@ -422,10 +493,7 @@ export default function TikTokAnalyticsPage() {
                             {shortDate(v.createTimeISO)}
                           </td>
                           <td className="px-4 py-3 text-white/70 max-w-xs">
-                            <span
-                              className="block truncate"
-                              title={v.text}
-                            >
+                            <span className="block truncate" title={v.text}>
                               {v.text || "—"}
                             </span>
                           </td>
@@ -473,19 +541,6 @@ export default function TikTokAnalyticsPage() {
               </div>
             </div>
           </>
-        )}
-
-        {/* Idle skeleton (before first load) */}
-        {loadState === "idle" && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {[...Array(5)].map((_, i) => (
-                <Skeleton key={i} className="h-20" />
-              ))}
-            </div>
-            <Skeleton className="h-64" />
-            <Skeleton className="h-48" />
-          </div>
         )}
       </div>
     </Shell>

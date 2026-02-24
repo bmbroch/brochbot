@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { tiktokCache } from "@/lib/tiktok-cache";
+import { getCachedData, setCachedData } from "@/lib/tiktok-cache";
 
 export const dynamic = "force-dynamic";
 
+// GET /api/tiktok/status/[runId]?handle=... — checks Apify run status and updates Supabase cache
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ runId: string }> }
 ) {
   const APIFY_KEY = process.env.APIFY_API_KEY;
@@ -13,6 +14,7 @@ export async function GET(
   }
 
   const { runId } = await params;
+  const handle = req.nextUrl.searchParams.get("handle");
 
   try {
     const res = await fetch(
@@ -28,16 +30,17 @@ export async function GET(
     const status: string = json?.data?.status; // RUNNING | SUCCEEDED | FAILED
     const defaultDatasetId: string = json?.data?.defaultDatasetId;
 
-    // Update any matching cache entry
-    Array.from(tiktokCache.entries()).forEach(([handle, entry]) => {
-      if (entry.runId === runId) {
+    // Update Supabase cache if handle is known
+    if (handle) {
+      const cached = await getCachedData(handle);
+      if (cached?.runId === runId) {
         if (status === "SUCCEEDED") {
-          tiktokCache.set(handle, { ...entry, status: "succeeded", datasetId: defaultDatasetId });
+          await setCachedData(handle, { ...cached, status: "succeeded", datasetId: defaultDatasetId });
         } else if (status === "FAILED" || status === "ABORTED" || status === "TIMED-OUT") {
-          tiktokCache.set(handle, { ...entry, status: "failed" });
+          await setCachedData(handle, { ...cached, status: "failed" });
         }
       }
-    });
+    }
 
     return NextResponse.json({ status, defaultDatasetId });
   } catch (err) {

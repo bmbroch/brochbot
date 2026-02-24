@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { tiktokCache } from "@/lib/tiktok-cache";
+import { getCachedData, setCachedData } from "@/lib/tiktok-cache";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/tiktok/run?handle=sell.with.nick — returns cached state
+// GET /api/tiktok/run?handle=... — reads cached state from Supabase
 export async function GET(req: NextRequest) {
   const handle = req.nextUrl.searchParams.get("handle");
   if (!handle) {
     return NextResponse.json({ error: "handle is required" }, { status: 400 });
   }
 
-  const cached = tiktokCache.get(handle);
+  const cached = await getCachedData(handle);
   if (!cached) {
     return NextResponse.json({ status: "idle", data: null, lastFetched: null });
   }
@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
   });
 }
 
+// POST /api/tiktok/run — starts a new Apify scrape (manual refresh only)
 export async function POST(req: NextRequest) {
   const APIFY_KEY = process.env.APIFY_API_KEY;
   if (!APIFY_KEY) {
@@ -42,8 +43,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "handle is required" }, { status: 400 });
   }
 
-  // Check cache — if run already in progress, return existing runId
-  const cached = tiktokCache.get(handle);
+  // If a run is already in progress, return the existing runId
+  const cached = await getCachedData(handle);
   if (cached?.status === "running" && cached.runId) {
     return NextResponse.json({ runId: cached.runId, datasetId: cached.datasetId, status: "running" });
   }
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
     const runId: string = json?.data?.id;
     const datasetId: string = json?.data?.defaultDatasetId;
 
-    tiktokCache.set(handle, { runId, datasetId, status: "running" });
+    await setCachedData(handle, { runId, datasetId, status: "running" });
 
     return NextResponse.json({ runId, datasetId, status: "running" });
   } catch (err) {
