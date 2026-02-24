@@ -53,9 +53,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 14407228,
-    "cost": 5.9806,
-    "durationSec": 4757,
+    "tokens": 17129830,
+    "cost": 6.9305,
+    "durationSec": 5291,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -149,9 +149,9 @@
     "agent": "devin",
     "task": "- `src/lib/instagram-store.ts` \u2014 has `InstagramStoreData` with `posts`, `lastNewPostsSync`, `lastCountsRefresh`",
     "model": "Sonnet",
-    "tokens": 713951,
-    "cost": 0.4977,
-    "durationSec": 176,
+    "tokens": 757052,
+    "cost": 0.5195,
+    "durationSec": 185,
     "status": "success",
     "timestamp": "2026-02-24T08:27:04.019Z"
   },
@@ -202,18 +202,6 @@
     "durationSec": 196,
     "status": "success",
     "timestamp": "2026-02-24T06:01:08.604Z"
-  },
-  {
-    "id": "72f2deeb-9e78-40b7-8f59-da8a3aa90c9c",
-    "label": "devin-tiktok-v2",
-    "agent": "devin",
-    "task": "The page `/tiktok-analytics` already exists. We're replacing the current single-refresh approach with a smarter two-button system + design improvements.",
-    "model": "Sonnet",
-    "tokens": 522215,
-    "cost": 0.4889,
-    "durationSec": 220,
-    "status": "success",
-    "timestamp": "2026-02-24T07:36:09.655Z"
   },
   {
     "id": "7e5e67dd-b622-4bd1-bbcd-862ba7d32c6b",

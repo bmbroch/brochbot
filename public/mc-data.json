@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T08:30:01Z",
+  "lastUpdated": "2026-02-24T08:40:01Z",
   "activities": [
     {
       "id": "s-cfbb16c1",
@@ -8,10 +8,10 @@
       "description": "- `src/lib/instagram-store.ts` \u2014 has `InstagramStoreData` with `posts`, `lastNewPostsSync`, `lastCountsRefresh`",
       "status": "success",
       "date": "2026-02-24T08:27:04.019Z",
-      "tokens": 713951,
-      "cost": 0.4977,
+      "tokens": 757052,
+      "cost": 0.5195,
       "model": "Sonnet",
-      "durationSec": 176
+      "durationSec": 185
     },
     {
       "id": "s-24799fbd",
@@ -38,28 +38,16 @@
       "durationSec": 98
     },
     {
-      "id": "s-72f2deeb",
-      "agent": "devin",
-      "title": "devin-tiktok-v2",
-      "description": "The page `/tiktok-analytics` already exists. We're replacing the current single-refresh approach with a smarter two-button system + design improvements.",
-      "status": "success",
-      "date": "2026-02-24T07:36:09.655Z",
-      "tokens": 522215,
-      "cost": 0.4889,
-      "model": "Sonnet",
-      "durationSec": 220
-    },
-    {
       "id": "s-c82a1e98",
       "agent": "sam",
       "title": "c82a1e98-5dd",
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 14407228,
-      "cost": 5.9806,
+      "tokens": 17129830,
+      "cost": 6.9305,
       "model": "unknown",
-      "durationSec": 4757
+      "durationSec": 5291
     },
     {
       "id": "s-66dde37a",
@@ -1111,7 +1099,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-24T08:27:15Z",
+      "lastActive": "2026-02-24T08:39:02Z",
       "statusText": ""
     }
   },
@@ -1125,7 +1113,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T08:30:01Z"
+      "lastRunAt": "2026-02-24T08:40:01Z"
     },
     {
       "id": "bash-frankie-sync",
