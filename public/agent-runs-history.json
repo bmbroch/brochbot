@@ -2340,6 +2340,30 @@
     "timestamp": "2026-02-24T10:15:48Z"
   },
   {
+    "id": "e6de0f83-a526-4d2f-a842-e2c1eb1964b7",
+    "label": "marco-avatar",
+    "agent": "sam",
+    "task": "Task: Generate a Marco avatar for Mission Control.",
+    "model": "Sonnet",
+    "tokens": 62020,
+    "cost": 0.0885,
+    "durationSec": 30,
+    "status": "success",
+    "timestamp": "2026-02-24T10:17:25.651Z"
+  },
+  {
+    "id": "81b9b199-e8c0-43e8-a75e-24ebf5f25b8a",
+    "label": "81b9b199-e8c",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 20768,
+    "cost": 0.0581,
+    "durationSec": 7,
+    "status": "success",
+    "timestamp": "2026-02-24T10:19:38.513Z"
+  },
+  {
     "id": "sam-daily-2026-02-24",
     "label": "Daily total",
     "agent": "sam",
@@ -2349,6 +2373,6 @@
     "cost": 0.0417,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-02-24T10:15:48Z"
+    "timestamp": "2026-02-24T10:20:02Z"
   }
 ]

@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 29161857,
-    "cost": 22.4715,
-    "durationSec": 86431,
+    "tokens": 31230709,
+    "cost": 25.836,
+    "durationSec": 86682,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -264,6 +264,18 @@
     "timestamp": "2026-02-24T05:30:00.172Z"
   },
   {
+    "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
+    "label": "20309a2a-9ef",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 259872,
+    "cost": 0.2986,
+    "durationSec": 174,
+    "status": "success",
+    "timestamp": "2026-02-24T10:13:18.254Z"
+  },
+  {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
     "label": "b5bca453-08d",
     "agent": "sam",
@@ -274,18 +286,6 @@
     "durationSec": 154,
     "status": "success",
     "timestamp": "2026-02-21T03:00:00.031Z"
-  },
-  {
-    "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
-    "label": "20309a2a-9ef",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Sonnet",
-    "tokens": 231729,
-    "cost": 0.2815,
-    "durationSec": 124,
-    "status": "success",
-    "timestamp": "2026-02-24T10:13:18.254Z"
   },
   {
     "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
@@ -456,6 +456,18 @@
     "timestamp": "2026-02-24T04:00:00.191Z"
   },
   {
+    "id": "e6de0f83-a526-4d2f-a842-e2c1eb1964b7",
+    "label": "marco-avatar",
+    "agent": "sam",
+    "task": "Task: Generate a Marco avatar for Mission Control.",
+    "model": "Sonnet",
+    "tokens": 62020,
+    "cost": 0.0885,
+    "durationSec": 30,
+    "status": "success",
+    "timestamp": "2026-02-24T10:17:25.651Z"
+  },
+  {
     "id": "8bdb35f1-94f1-482e-8c38-40900d9b10af",
     "label": "8bdb35f1-94f",
     "agent": "sam",
@@ -538,5 +550,17 @@
     "durationSec": 34476,
     "status": "success",
     "timestamp": "2026-02-20T07:03:05.484Z"
+  },
+  {
+    "id": "81b9b199-e8c0-43e8-a75e-24ebf5f25b8a",
+    "label": "81b9b199-e8c",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 20768,
+    "cost": 0.0581,
+    "durationSec": 7,
+    "status": "success",
+    "timestamp": "2026-02-24T10:19:38.513Z"
   }
 ]
