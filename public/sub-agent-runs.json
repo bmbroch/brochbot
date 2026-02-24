@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 23959906,
-    "cost": 18.8626,
-    "durationSec": 75742,
+    "tokens": 25726285,
+    "cost": 19.4334,
+    "durationSec": 76321,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -120,6 +120,18 @@
     "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
+    "id": "c82a1e98-5ddc-43a2-80f6-6cfc18f98520",
+    "label": "c82a1e98-5dd",
+    "agent": "sam",
+    "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
+    "model": "unknown",
+    "tokens": 1190436,
+    "cost": 0.8155,
+    "durationSec": 1139,
+    "status": "success",
+    "timestamp": "2026-02-24T07:10:43.159Z"
+  },
+  {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
     "label": "95a02d1a-513",
     "agent": "sam",
@@ -132,16 +144,16 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
-    "id": "c82a1e98-5ddc-43a2-80f6-6cfc18f98520",
-    "label": "c82a1e98-5dd",
-    "agent": "sam",
-    "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
-    "model": "unknown",
-    "tokens": 674249,
-    "cost": 0.5629,
-    "durationSec": 419,
+    "id": "3e1d5990-cdd9-4976-b609-def45cf60313",
+    "label": "devin-tiktok-analytics",
+    "agent": "devin",
+    "task": "Build a new page `/tiktok-analytics` in Mission Control that shows TikTok performance data for our UGC creators \u2014 like a mini Playkit dashboard.",
+    "model": "Sonnet",
+    "tokens": 871515,
+    "cost": 0.6339,
+    "durationSec": 315,
     "status": "success",
-    "timestamp": "2026-02-24T07:10:43.159Z"
+    "timestamp": "2026-02-24T07:17:25.973Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -216,6 +228,18 @@
     "timestamp": "2026-02-24T03:00:00.193Z"
   },
   {
+    "id": "9f4d7855-f205-4f6f-a05d-37f50d1d684f",
+    "label": "devin-tiktok-cache-fix",
+    "agent": "devin",
+    "task": "The current in-memory cache (globalThis) doesn't persist reliably on Vercel serverless \u2014 function instances can be recycled or spun up fresh, causing Apify to be called on every page load.",
+    "model": "Sonnet",
+    "tokens": 426418,
+    "cost": 0.5508,
+    "durationSec": 253,
+    "status": "success",
+    "timestamp": "2026-02-24T07:25:28.687Z"
+  },
+  {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -226,18 +250,6 @@
     "durationSec": 118,
     "status": "success",
     "timestamp": "2026-02-24T05:30:00.172Z"
-  },
-  {
-    "id": "3e1d5990-cdd9-4976-b609-def45cf60313",
-    "label": "devin-tiktok-analytics",
-    "agent": "devin",
-    "task": "Build a new page `/tiktok-analytics` in Mission Control that shows TikTok performance data for our UGC creators \u2014 like a mini Playkit dashboard.",
-    "model": "Sonnet",
-    "tokens": 276787,
-    "cost": 0.3414,
-    "durationSec": 152,
-    "status": "success",
-    "timestamp": "2026-02-24T07:17:25.973Z"
   },
   {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
