@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T05:50:02Z",
+  "lastUpdated": "2026-02-24T06:00:02Z",
   "activities": [
     {
       "id": "s-cdbe948e",
@@ -147,8 +147,8 @@
     },
     {
       "id": "s-8bdb35f1",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "8bdb35f1-94f",
       "description": "Generate a morning analytics report comparing YESTERDAY vs the SAME DAY LAST WEEK.",
       "status": "success",
       "date": "2026-02-22T16:06:45.040Z",
@@ -1029,7 +1029,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T05:50:02Z"
+      "lastRunAt": "2026-02-24T06:00:02Z"
     },
     {
       "id": "bash-frankie-sync",

@@ -361,8 +361,8 @@
   },
   {
     "id": "8bdb35f1-94f1-482e-8c38-40900d9b10af",
-    "label": "Morning Analytics Report",
-    "agent": "dana",
+    "label": "8bdb35f1-94f",
+    "agent": "sam",
     "task": "Generate a morning analytics report comparing YESTERDAY vs the SAME DAY LAST WEEK.",
     "model": "Sonnet",
     "tokens": 50482,
