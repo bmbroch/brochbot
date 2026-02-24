@@ -180,18 +180,6 @@
     "timestamp": "2026-02-24T09:40:33.519Z"
   },
   {
-    "id": "b7355e06-fd2b-4b23-a939-abd6b5287dc3",
-    "label": "devin-ugc-apify-only",
-    "agent": "devin",
-    "task": "Currently the overview stat cards and \"Total Views Over Time\" chart read from `creator-data.json` (Google Sheets). Replace that with aggregated data from Supabase.",
-    "model": "Sonnet",
-    "tokens": 880056,
-    "cost": 0.6627,
-    "durationSec": 244,
-    "status": "success",
-    "timestamp": "2026-02-24T09:00:49.577Z"
-  },
-  {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
     "label": "a50fee35-8a4",
     "agent": "sam",
@@ -226,18 +214,6 @@
     "durationSec": 196,
     "status": "success",
     "timestamp": "2026-02-24T06:01:08.604Z"
-  },
-  {
-    "id": "21b404c0-e1b3-438a-ac09-a9e5166a456f",
-    "label": "devin-ugc-mercury-earnings",
-    "agent": "devin",
-    "task": "Currently the page fetches `/creator-data.json` for earnings. Replace that with `/creator-payouts.json`.",
-    "model": "Sonnet",
-    "tokens": 503826,
-    "cost": 0.7331,
-    "durationSec": 356,
-    "status": "success",
-    "timestamp": "2026-02-24T09:01:35.166Z"
   },
   {
     "id": "b4765783-5ff3-4d52-ab19-6024dc26456b",

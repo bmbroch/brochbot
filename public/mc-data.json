@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T10:00:01Z",
+  "lastUpdated": "2026-02-24T10:10:01Z",
   "activities": [
     {
       "id": "s-d1a844b5",
@@ -48,30 +48,6 @@
       "cost": 0.8758,
       "model": "Sonnet",
       "durationSec": 431
-    },
-    {
-      "id": "s-21b404c0",
-      "agent": "devin",
-      "title": "devin-ugc-mercury-earnings",
-      "description": "Currently the page fetches `/creator-data.json` for earnings. Replace that with `/creator-payouts.json`.",
-      "status": "success",
-      "date": "2026-02-24T09:01:35.166Z",
-      "tokens": 503826,
-      "cost": 0.7331,
-      "model": "Sonnet",
-      "durationSec": 356
-    },
-    {
-      "id": "s-b7355e06",
-      "agent": "devin",
-      "title": "devin-ugc-apify-only",
-      "description": "Currently the overview stat cards and \"Total Views Over Time\" chart read from `creator-data.json` (Google Sheets). Replace that with aggregated data from Supabase.",
-      "status": "success",
-      "date": "2026-02-24T09:00:49.577Z",
-      "tokens": 880056,
-      "cost": 0.6627,
-      "model": "Sonnet",
-      "durationSec": 244
     },
     {
       "id": "s-c82a1e98",
@@ -1149,7 +1125,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-24T10:00:01Z"
+      "lastRunAt": "2026-02-24T10:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -1160,7 +1136,7 @@
       "description": "Frankie pulls all outgoing transactions from Mercury banking (3 accounts) and maps payments to the 7 UGC creators by name. Writes creator-payouts.json with total paid, payment count, and last payment date per creator.",
       "script": "scripts/frankie-creator-sync.sh",
       "log": "ops/frankie-creator-sync.log",
-      "lastRunAt": "2026-02-23T10:00:09Z"
+      "lastRunAt": "2026-02-24T10:00:09Z"
     },
     {
       "id": "bash-mia-sync",
