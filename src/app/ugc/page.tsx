@@ -1146,8 +1146,30 @@ export default function UGCPage() {
             </p>
           </div>
 
-          {/* Right: mode toggle + platform filter */}
+          {/* Right: sync buttons + mode toggle + platform filter */}
           <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+            {/* Sync buttons — always visible */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleRun("new-posts")}
+                disabled={newPostsRunning || refreshRunning}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-[var(--text-muted)] hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40"
+              >
+                {newPostsRunning ? <Loader2 size={13} className="animate-spin" /> : <Search size={13} />}
+                <span>New Posts</span>
+              </button>
+              <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap hidden sm:inline">· {timeAgo(activeSyncTime)}</span>
+              <button
+                onClick={() => handleRun("refresh-counts")}
+                disabled={newPostsRunning || refreshRunning}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-[var(--text-muted)] hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40"
+              >
+                {refreshRunning ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
+                <span>Refresh Counts</span>
+              </button>
+              <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap hidden sm:inline">· {timeAgo(activeRefreshTime)}</span>
+            </div>
+
             {/* Overview / Creator Drill Down tabs */}
             <div className="flex items-center gap-1 p-1 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111]">
               {(["overview", "drilldown"] as const).map((m) => (
@@ -1615,41 +1637,6 @@ export default function UGCPage() {
         {/* ══ DRILL DOWN MODE ══════════════════════════════════════════════════ */}
         {pageMode === "drilldown" && (
           <div>
-            {/* Section header + action buttons */}
-            <div className="flex items-start justify-between mb-5 gap-4 flex-wrap">
-              <h2 className="text-sm font-semibold text-gray-700 dark:text-white/70">Per-Creator Analytics</h2>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleRun("new-posts")}
-                    disabled={newPostsRunning || refreshRunning}
-                    className="flex items-center gap-2 px-3 py-2 sm:py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed min-h-[36px]"
-                  >
-                    {newPostsRunning ? <Loader2 size={13} className="animate-spin" /> : <Search size={13} />}
-                    <span className="hidden sm:inline">{newPostsRunning ? "Syncing..." : "New Posts"}</span>
-                  </button>
-                  <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap">
-                    · synced {timeAgo(activeSyncTime)}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleRun("refresh-counts")}
-                    disabled={newPostsRunning || refreshRunning}
-                    className="flex items-center gap-2 px-3 py-2 sm:py-1.5 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] text-sm text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40 disabled:cursor-not-allowed min-h-[36px]"
-                  >
-                    {refreshRunning ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
-                    <span className="hidden sm:inline">{refreshRunning ? "Refreshing..." : "Refresh Counts"}</span>
-                  </button>
-                  <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap">
-                    · updated {timeAgo(activeRefreshTime)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
             {/* Creator Tabs + Platform Toggle — stacked on mobile, same row on sm+ */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
               <div className="flex overflow-x-auto gap-2 pb-1 -mx-1 px-1 scrollbar-hide">
