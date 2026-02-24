@@ -207,6 +207,7 @@ function CreatorCard({
   syncingHandle,
   onRefresh,
   lastSync,
+  avatarUrl,
 }: {
   creator: { name: string; handle: string | null; igHandle: string | null };
   computedData: ComputedCreator | undefined;
@@ -215,6 +216,7 @@ function CreatorCard({
   syncingHandle: string | null;
   onRefresh: (handle: string) => void;
   lastSync: string | null | undefined;
+  avatarUrl: string | null;
 }) {
   const color = getCreatorColor(creator.name);
   const hasData = computedData && (computedData.posts > 0 || computedData.ttViews > 0 || computedData.igViews > 0);
@@ -228,14 +230,23 @@ function CreatorCard({
         className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-4 flex flex-col gap-3 opacity-50 select-none"
         title="No data yet"
       >
-        <div className="flex items-center justify-between">
-          <span
-            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold"
-            style={{ backgroundColor: `${color}25`, color }}
-          >
-            {creator.name}
-          </span>
-          <span className="text-[11px] text-gray-400 dark:text-white/30">—</span>
+        <div className="flex items-center gap-2 mb-3">
+          {avatarUrl ? (
+            <img
+              src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
+              className="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
+              alt={creator.name}
+            />
+          ) : (
+            <div
+              className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold ring-1 ring-black/10"
+              style={{ background: color }}
+            >
+              {creator.name[0]}
+            </div>
+          )}
+          <span className="font-semibold text-sm text-[var(--text-primary)] truncate">{creator.name}</span>
+          <span className="ml-auto text-xs text-[var(--text-muted)] flex-shrink-0">—</span>
         </div>
         <p className="text-xs text-gray-300 dark:text-white/20 text-center py-2">No data yet</p>
       </div>
@@ -255,18 +266,27 @@ function CreatorCard({
 
   return (
     <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-4 flex flex-col gap-3 hover:border-gray-300 dark:hover:border-[#333] transition-all hover:shadow-sm">
-      {/* Top row: creator name + post count + refresh button */}
+      {/* Top row: avatar + creator name + post count + refresh button */}
       <div className="flex items-center gap-2">
         <button
           onClick={onClick}
           className="flex-1 flex items-center gap-2 min-w-0 text-left"
         >
-          <span
-            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold truncate"
-            style={{ backgroundColor: `${color}25`, color }}
-          >
-            {creator.name}
-          </span>
+          {avatarUrl ? (
+            <img
+              src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
+              className="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
+              alt={creator.name}
+            />
+          ) : (
+            <div
+              className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold ring-1 ring-black/10"
+              style={{ background: color }}
+            >
+              {creator.name[0]}
+            </div>
+          )}
+          <span className="font-semibold text-sm text-gray-900 dark:text-white truncate">{creator.name}</span>
         </button>
         <span className="text-[11px] text-gray-400 dark:text-white/30 whitespace-nowrap flex-shrink-0">
           {posts} posts
@@ -1204,6 +1224,10 @@ export default function UGCPage() {
                   const lastSync = creator.handle
                     ? allData?.tiktok[creator.handle]?.lastNewPostsSync ?? null
                     : null;
+                  const avatarUrl =
+                    (creator.handle ? allData?.tiktok[creator.handle]?.authorMeta?.avatar : null) ||
+                    (creator.igHandle ? allData?.instagram[creator.igHandle]?.igAuthorMeta?.avatar : null) ||
+                    null;
                   return (
                     <CreatorCard
                       key={creator.name}
@@ -1219,6 +1243,7 @@ export default function UGCPage() {
                       syncingHandle={syncingHandle}
                       onRefresh={handleCardRefresh}
                       lastSync={lastSync}
+                      avatarUrl={avatarUrl}
                     />
                   );
                 })}
@@ -1498,6 +1523,11 @@ export default function UGCPage() {
                     <tbody>
                       {sortedTableRows.map((row, i) => {
                         const color = getCreatorColor(row.name);
+                        const rowCreator = TIKTOK_CREATORS.find((c) => c.name === row.name);
+                        const rowAvatarUrl =
+                          (rowCreator?.handle ? allData?.tiktok[rowCreator.handle]?.authorMeta?.avatar : null) ||
+                          (rowCreator?.igHandle ? allData?.instagram[rowCreator.igHandle]?.igAuthorMeta?.avatar : null) ||
+                          null;
                         return (
                           <tr
                             key={row.name}
@@ -1516,12 +1546,22 @@ export default function UGCPage() {
                             ].join(" ")}
                           >
                             {/* Creator — sticky on mobile */}
-                            <td className="sticky left-0 bg-white dark:bg-[#111] z-10 px-4 py-3" style={i % 2 !== 0 ? { backgroundColor: undefined } : {}}>
+                            <td className="sticky left-0 bg-white dark:bg-[#111] z-10 px-4 py-3 whitespace-nowrap">
                               <div className="flex items-center gap-2">
-                                <span
-                                  className="w-2 h-2 rounded-full flex-shrink-0"
-                                  style={{ backgroundColor: color }}
-                                />
+                                {rowAvatarUrl ? (
+                                  <img
+                                    src={`/api/proxy-image?url=${encodeURIComponent(rowAvatarUrl)}`}
+                                    className="w-6 h-6 rounded-full object-cover flex-shrink-0"
+                                    alt={row.name}
+                                  />
+                                ) : (
+                                  <div
+                                    className="w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[10px] font-bold"
+                                    style={{ background: color }}
+                                  >
+                                    {row.name[0]}
+                                  </div>
+                                )}
                                 <span className="font-medium text-gray-900 dark:text-white text-sm whitespace-nowrap">
                                   {row.name}
                                 </span>
