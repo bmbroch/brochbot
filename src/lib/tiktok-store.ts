@@ -42,7 +42,7 @@ export async function getStoreData(handle: string): Promise<TikTokStoreData | nu
   if (!SUPABASE_URL || !SUPABASE_KEY) return null;
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/mc_realtime?key=eq.${encodeURIComponent(storeKey(handle))}&select=value`,
+      `${SUPABASE_URL}/rest/v1/mc_realtime?key=eq.${encodeURIComponent(storeKey(handle))}&select=data`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -53,7 +53,7 @@ export async function getStoreData(handle: string): Promise<TikTokStoreData | nu
     );
     if (!res.ok) return null;
     const rows = await res.json();
-    return rows?.[0]?.value ?? null;
+    return rows?.[0]?.data ?? null;
   } catch {
     return null;
   }
@@ -72,7 +72,7 @@ export async function setStoreData(handle: string, data: TikTokStoreData): Promi
       },
       body: JSON.stringify({
         key: storeKey(handle),
-        value: data,
+        data: data,
         updated_at: new Date().toISOString(),
       }),
     });
