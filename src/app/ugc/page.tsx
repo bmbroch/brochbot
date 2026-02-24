@@ -224,31 +224,38 @@ function CreatorCard({
   const isThisSyncing = !!creator.handle && syncingHandle === creator.handle;
   const isAnotherSyncing = !!syncingHandle && syncingHandle !== creator.handle;
 
+  // No data state — horizontal layout, greyed out
   if (!hasData) {
     return (
       <div
-        className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-4 flex flex-col gap-3 opacity-50 select-none"
+        className="flex items-center gap-4 p-4 rounded-2xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] opacity-50 select-none"
         title="No data yet"
       >
-        <div className="flex items-center gap-2 mb-3">
+        {/* Left: avatar + name */}
+        <div className="flex items-center gap-3 min-w-[140px] flex-shrink-0">
           {avatarUrl ? (
             <img
               src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
-              className="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
+              className="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
               alt={creator.name}
             />
           ) : (
             <div
-              className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold ring-1 ring-black/10"
+              className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-white text-sm font-bold ring-1 ring-black/10"
               style={{ background: color }}
             >
               {creator.name[0]}
             </div>
           )}
-          <span className="font-semibold text-sm text-[var(--text-primary)] truncate">{creator.name}</span>
-          <span className="ml-auto text-xs text-[var(--text-muted)] flex-shrink-0">—</span>
+          <div>
+            <div className="font-semibold text-sm text-gray-900 dark:text-white">{creator.name}</div>
+            <div className="text-xs text-gray-400 dark:text-white/30">— posts</div>
+          </div>
         </div>
-        <p className="text-xs text-gray-300 dark:text-white/20 text-center py-2">No data yet</p>
+        {/* Divider */}
+        <div className="w-px h-10 bg-gray-200 dark:bg-[#333] flex-shrink-0" />
+        {/* No data placeholder */}
+        <div className="flex-1 text-xs text-gray-300 dark:text-white/20">No data yet</div>
       </div>
     );
   }
@@ -265,101 +272,87 @@ function CreatorCard({
   const hasIG = igViews > 0;
 
   return (
-    <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-4 flex flex-col gap-3 hover:border-gray-300 dark:hover:border-[#333] transition-all hover:shadow-sm">
-      {/* Top row: avatar + creator name + post count + refresh button */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={onClick}
-          className="flex-1 flex items-center gap-2 min-w-0 text-left"
-        >
-          {avatarUrl ? (
-            <img
-              src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
-              className="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
-              alt={creator.name}
-            />
-          ) : (
-            <div
-              className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold ring-1 ring-black/10"
-              style={{ background: color }}
-            >
-              {creator.name[0]}
-            </div>
-          )}
-          <span className="font-semibold text-sm text-gray-900 dark:text-white truncate">{creator.name}</span>
-        </button>
-        <span className="text-[11px] text-gray-400 dark:text-white/30 whitespace-nowrap flex-shrink-0">
-          {posts} posts
-        </span>
-        {creator.handle && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!isAnotherSyncing && !isThisSyncing) onRefresh(creator.handle!);
-            }}
-            disabled={isAnotherSyncing || isThisSyncing}
-            title={isAnotherSyncing ? "Another creator is syncing…" : "Sync new posts"}
-            className={[
-              "flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all",
-              isAnotherSyncing ? "opacity-40 cursor-not-allowed" : "",
-              isThisSyncing ? "cursor-default" : "",
-            ].join(" ")}
+    <div className="flex items-center gap-4 p-4 rounded-2xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] hover:border-gray-300 dark:hover:border-[#333] transition-all hover:shadow-sm">
+      {/* Left: avatar + name + post count — clicks to drilldown */}
+      <button onClick={onClick} className="flex items-center gap-3 min-w-[140px] flex-shrink-0 text-left">
+        {avatarUrl ? (
+          <img
+            src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
+            className="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
+            alt={creator.name}
+          />
+        ) : (
+          <div
+            className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-white text-sm font-bold ring-1 ring-black/10"
+            style={{ background: color }}
           >
-            {isThisSyncing ? (
-              <Loader2 size={13} className="animate-spin" />
-            ) : (
-              <RefreshCw size={13} />
-            )}
-          </button>
+            {creator.name[0]}
+          </div>
         )}
-      </div>
+        <div>
+          <div className="font-semibold text-sm text-gray-900 dark:text-white">{creator.name}</div>
+          <div className="text-xs text-gray-400 dark:text-white/30">{posts} posts</div>
+        </div>
+      </button>
 
-      {/* Stats grid — clicking anywhere on the card body goes to drilldown */}
-      <button onClick={onClick} className="flex flex-col gap-3 text-left w-full cursor-pointer">
-        <div className="grid grid-cols-3 gap-1">
-          <div>
-            <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">Total Views</p>
-            <p className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{fmt(totalViews)}</p>
-          </div>
-          <div>
-            <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">Avg/Post</p>
-            <p className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{avgPost > 0 ? fmt(avgPost) : "—"}</p>
-          </div>
-          <div>
-            <p className="text-[9px] text-gray-400 dark:text-white/30 uppercase tracking-wider font-medium mb-0.5">CPM</p>
-            <p className={`text-sm font-bold tabular-nums ${cpm !== null ? cpmColor(cpm) : "text-gray-300 dark:text-white/20"}`}>
-              {cpm !== null ? `$${cpm.toFixed(2)}` : "—"}
-            </p>
+      {/* Divider */}
+      <div className="w-px h-10 bg-gray-200 dark:bg-[#333] flex-shrink-0" />
+
+      {/* Right: stats row — clicks to drilldown, wraps on mobile */}
+      <button onClick={onClick} className="flex items-center gap-6 flex-1 flex-wrap text-left min-w-0">
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium">Total Views</div>
+          <div className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{fmt(totalViews)}</div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium">Avg/Post</div>
+          <div className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{avgPost > 0 ? fmt(avgPost) : "—"}</div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-white/30 font-medium">CPM</div>
+          <div className={`text-sm font-bold tabular-nums ${cpm !== null ? cpmColor(cpm) : "text-gray-300 dark:text-white/20"}`}>
+            {cpm !== null ? `$${cpm.toFixed(2)}` : "—"}
           </div>
         </div>
-
-        {/* Sync timestamp */}
-        {lastSync && (
-          <p className="text-[9px] text-gray-300 dark:text-white/20">
-            synced {timeAgo(lastSync)}
-          </p>
-        )}
-
-        {/* Bottom: platform breakdown */}
-        <div className="flex items-center gap-2 flex-wrap">
+        {/* Platform breakdown — pushed right */}
+        <div className="ml-auto flex items-center gap-3 text-xs text-gray-400 dark:text-white/30">
           {hasTT && (
-            <span className="flex items-center gap-1 text-[10px] text-cyan-600 dark:text-cyan-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0" />
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-cyan-500 inline-block flex-shrink-0" />
               TikTok {fmt(ttViews)}
             </span>
           )}
-          {hasTT && hasIG && <span className="text-gray-300 dark:text-white/20 text-[10px]">·</span>}
           {hasIG && (
-            <span className="flex items-center gap-1 text-[10px] text-pink-600 dark:text-pink-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-pink-500 flex-shrink-0" />
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-pink-500 inline-block flex-shrink-0" />
               IG {fmt(igViews)}
             </span>
           )}
-          {!hasTT && !hasIG && (
-            <span className="text-[10px] text-gray-300 dark:text-white/20">No views yet</span>
-          )}
         </div>
       </button>
+
+      {/* Refresh button */}
+      {creator.handle && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!isAnotherSyncing && !isThisSyncing) onRefresh(creator.handle!);
+          }}
+          disabled={isAnotherSyncing || isThisSyncing}
+          title={isAnotherSyncing ? "Another creator is syncing…" : "Sync new posts"}
+          className={[
+            "flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all",
+            isAnotherSyncing ? "opacity-40 cursor-not-allowed" : "",
+            isThisSyncing ? "cursor-default" : "",
+          ].join(" ")}
+        >
+          {isThisSyncing ? (
+            <Loader2 size={13} className="animate-spin" />
+          ) : (
+            <RefreshCw size={13} />
+          )}
+        </button>
+      )}
     </div>
   );
 }
@@ -1233,7 +1226,7 @@ export default function UGCPage() {
 
             {/* ── Creator Cards ───────────────────────────────────────────── */}
             {overviewLoaded && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-8">
                 {TIKTOK_CREATORS.map((creator) => {
                   const computed = computedCreators.find((c) => c.name === creator.name);
                   const payout = payoutMap[creator.name];
