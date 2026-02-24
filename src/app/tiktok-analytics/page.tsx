@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Shell from "@/components/Shell";
+import { useTheme } from "@/components/ThemeProvider";
 import { TIKTOK_CREATORS } from "@/lib/tiktok-creators";
 import { TikTokStoreData, TikTokVideo } from "@/lib/tiktok-store";
 import {
@@ -101,6 +102,9 @@ function CustomTooltip({
 const POLL_INTERVAL_MS = 5_000;
 
 export default function TikTokAnalyticsPage() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   const [activeHandle, setActiveHandle] = useState<string>("sell.with.nick");
   const [loadState, setLoadState] = useState<LoadState>("loading");
   const [storeData, setStoreData] = useState<TikTokStoreData | null>(null);
@@ -212,6 +216,14 @@ export default function TikTokAnalyticsPage() {
   const totalLikes = videos.reduce((s, v) => s + (v.likes || 0), 0);
   const totalComments = videos.reduce((s, v) => s + (v.comments || 0), 0);
   const avgViews = totalVideos > 0 ? Math.round(totalViews / totalVideos) : 0;
+
+  // Chart colors based on theme
+  const gridColor = isDark ? "#262626" : "#e5e7eb";
+  const tickColor = isDark ? "#71717a" : "#9ca3af";
+  const axisColor = isDark ? "#262626" : "#e5e7eb";
+  const tooltipBg = isDark ? "#1a1a1a" : "#ffffff";
+  const tooltipBorder = isDark ? "#333" : "#e5e7eb";
+  const tooltipText = isDark ? "#ffffff" : "#111827";
 
   // Chart data — last 30 videos sorted oldest→newest
   const chartData = [...videos]
@@ -388,16 +400,16 @@ export default function TikTokAnalyticsPage() {
               ) : (
                 <ResponsiveContainer width="100%" height={240}>
                   <BarChart data={chartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:[stroke:#222]" vertical={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
                     <XAxis
                       dataKey="date"
-                      tick={{ fill: "#9ca3af", fontSize: 10 }}
-                      axisLine={false}
+                      tick={{ fill: tickColor, fontSize: 10 }}
+                      axisLine={{ stroke: axisColor }}
                       tickLine={false}
                     />
                     <YAxis
                       tickFormatter={fmt}
-                      tick={{ fill: "#9ca3af", fontSize: 10 }}
+                      tick={{ fill: tickColor, fontSize: 10 }}
                       axisLine={false}
                       tickLine={false}
                       width={48}
