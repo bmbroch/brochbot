@@ -1133,69 +1133,63 @@ export default function UGCPage() {
     <Shell>
       <div className="min-h-full bg-gray-50 dark:bg-[#0a0a0a] px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 
-        {/* ══ Page Header ══════════════════════════════════════════════════════ */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">UGC Analytics</h1>
-          <p className="text-sm text-gray-400 dark:text-white/40 mt-1">Powered by Apify + Mercury</p>
-          {payoutsLastUpdated && (
-            <p className="text-[11px] text-gray-400 dark:text-white/30 mt-0.5">Payouts synced {timeAgo(payoutsLastUpdated)}</p>
-          )}
-        </div>
+        {/* ── Page Header ─────────────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-6">
+          {/* Left: title + subtitle */}
+          <div className="min-w-0">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">UGC Analytics</h1>
+            <p className="text-sm text-gray-400 dark:text-white/40 mt-0.5">
+              Powered by Apify + Mercury
+              {payoutsLastUpdated && (
+                <span className="text-gray-300 dark:text-white/30"> · Payouts synced {timeAgo(payoutsLastUpdated)}</span>
+              )}
+            </p>
+          </div>
 
-        {/* ══ Mode Toggle ══════════════════════════════════════════════════════ */}
-        <div className="flex items-center gap-2 mb-8">
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-gray-100 dark:bg-[#1a1a1a] border border-gray-200 dark:border-[#222]">
-            <button
-              onClick={() => setPageMode("overview")}
-              className={[
-                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
-                pageMode === "overview"
-                  ? "bg-white dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm border border-gray-200 dark:border-[#333]"
-                  : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
-              ].join(" ")}
-            >
-              <BarChart2 size={14} />
-              Overview
-            </button>
-            <button
-              onClick={() => setPageMode("drilldown")}
-              className={[
-                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
-                pageMode === "drilldown"
-                  ? "bg-white dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm border border-gray-200 dark:border-[#333]"
-                  : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
-              ].join(" ")}
-            >
-              <User size={14} />
-              Creator Drill Down
-            </button>
+          {/* Right: mode toggle + platform filter */}
+          <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+            {/* Overview / Creator Drill Down tabs */}
+            <div className="flex items-center gap-1 p-1 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111]">
+              {(["overview", "drilldown"] as const).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setPageMode(m)}
+                  className={[
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
+                    pageMode === m
+                      ? "bg-gray-100 dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm"
+                      : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
+                  ].join(" ")}
+                >
+                  {m === "overview" ? <BarChart2 size={13} /> : <User size={13} />}
+                  <span>{m === "overview" ? "Overview" : "Creator Drill Down"}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Platform filter */}
+            <div className="flex items-center gap-1 p-1 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111]">
+              {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setOverviewPlatform(p)}
+                  className={[
+                    "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
+                    overviewPlatform === p
+                      ? "bg-gray-100 dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm"
+                      : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
+                  ].join(" ")}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* ══ OVERVIEW MODE ════════════════════════════════════════════════════ */}
         {pageMode === "overview" && (
           <div>
-            {/* Stat cards — platform filter lives inline above them */}
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-              <h2 className="text-sm font-semibold text-gray-700 dark:text-white/70">Overview</h2>
-              <div className="flex items-center gap-1.5">
-                {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setOverviewPlatform(p)}
-                    className={[
-                      "px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer",
-                      overviewPlatform === p
-                        ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
-                        : "border border-gray-300 dark:border-[#333] text-gray-500 dark:text-white/50 hover:border-gray-400 dark:hover:border-[#444]",
-                    ].join(" ")}
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Stat cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
               <StatCard
