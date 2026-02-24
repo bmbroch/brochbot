@@ -5,7 +5,7 @@ import Shell from "@/components/Shell";
 import { useTheme } from "@/components/ThemeProvider";
 import { TIKTOK_CREATORS } from "@/lib/tiktok-creators";
 import { TikTokStoreData, TikTokVideo, TikTokAuthorMeta } from "@/lib/tiktok-store";
-import { InstagramStoreData, InstagramPost } from "@/lib/instagram-store";
+import { InstagramStoreData, InstagramPost, IgAuthorMeta } from "@/lib/instagram-store";
 import {
   BarChart,
   Bar,
@@ -195,6 +195,79 @@ function ProfileHeader({ meta }: { meta: TikTokAuthorMeta }) {
   );
 }
 
+// ─── Instagram Profile Header ──────────────────────────────────────────────────
+
+function IgProfileHeader({ meta }: { meta: IgAuthorMeta }) {
+  const initials = meta.fullName
+    ? meta.fullName.slice(0, 2).toUpperCase()
+    : meta.username
+    ? meta.username.slice(0, 2).toUpperCase()
+    : "?";
+
+  return (
+    <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-6 flex items-center gap-5">
+      {/* Avatar */}
+      {meta.avatar ? (
+        <img
+          src={meta.avatar}
+          alt={meta.fullName || meta.username}
+          className="w-16 h-16 rounded-full object-cover ring-2 ring-white/10 flex-shrink-0"
+        />
+      ) : (
+        <div className="w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-pink-500 to-purple-600 text-white font-bold text-lg ring-2 ring-white/10">
+          {initials}
+        </div>
+      )}
+
+      {/* Info */}
+      <div className="flex flex-col gap-1 min-w-0">
+        {/* Name + verified */}
+        <div className="flex items-center gap-1.5">
+          <span className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+            {meta.fullName || meta.username || "Unknown"}
+          </span>
+          {meta.verified && (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="w-4 h-4 text-blue-500 flex-shrink-0"
+              aria-label="Verified"
+            >
+              <circle cx="12" cy="12" r="12" fill="currentColor" opacity="0.15" />
+              <path
+                d="M7 12.5l3.5 3.5L17 9"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </div>
+
+        {/* Username */}
+        {meta.username && (
+          <p className="text-sm text-gray-400 dark:text-white/40">@{meta.username}</p>
+        )}
+
+        {/* Bio */}
+        {meta.biography && (
+          <p className="text-sm text-gray-500 dark:text-white/50 max-w-md line-clamp-2 leading-snug">
+            {meta.biography}
+          </p>
+        )}
+
+        {/* Stats row */}
+        <p className="text-sm text-gray-400 dark:text-white/40 mt-0.5">
+          {fmt(meta.followersCount)} Followers
+          {" · "}
+          {fmt(meta.postsCount)} Posts
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Platform Toggle ───────────────────────────────────────────────────────────
 
 function PlatformToggle({
@@ -252,7 +325,6 @@ export default function TikTokAnalyticsPage() {
   // Instagram state
   const [igLoadState, setIgLoadState] = useState<LoadState>("loading");
   const [igStoreData, setIgStoreData] = useState<InstagramStoreData | null>(null);
-
   const [error, setError] = useState<string | null>(null);
 
   // Per-button run state
@@ -349,15 +421,17 @@ export default function TikTokAnalyticsPage() {
 
   // Poll a running Apify job (Instagram)
   const startInstagramPolling = useCallback(
-    (runId: string, igHandle: string, mode: ButtonMode) => {
+    (runId: string, igHandle: string, mode: ButtonMode, profileRunId?: string | null, profileDatasetId?: string | null) => {
       stopPolling();
       const setRunState = mode === "new-posts" ? setNewPostsState : setRefreshState;
 
       pollRef.current = setInterval(async () => {
         try {
-          const res = await fetch(
-            `/api/instagram/poll?runId=${encodeURIComponent(runId)}&igHandle=${encodeURIComponent(igHandle)}&mode=${mode}`
-          );
+          let pollUrl = `/api/instagram/poll?runId=${encodeURIComponent(runId)}&igHandle=${encodeURIComponent(igHandle)}&mode=${mode}`;
+          if (profileRunId) pollUrl += `&profileRunId=${encodeURIComponent(profileRunId)}`;
+          if (profileDatasetId) pollUrl += `&profileDatasetId=${encodeURIComponent(profileDatasetId)}`;
+
+          const res = await fetch(pollUrl);
           const json = await res.json();
 
           if (json.status === "DONE") {
@@ -418,7 +492,7 @@ export default function TikTokAnalyticsPage() {
           });
           const json = await res.json();
           if (!res.ok) throw new Error(json.error ?? "Failed to start Instagram run");
-          startInstagramPolling(json.runId, activeIgHandle, mode);
+          startInstagramPolling(json.runId, activeIgHandle, mode, json.profileRunId ?? null, json.profileDatasetId ?? null);
         } catch (err) {
           setRunState("error");
           setError(String(err));
@@ -793,6 +867,11 @@ export default function TikTokAnalyticsPage() {
 
             {activeIgHandle && (
               <>
+                {/* Instagram Profile Header */}
+                {igStoreData?.igAuthorMeta && (
+                  <IgProfileHeader meta={igStoreData.igAuthorMeta} />
+                )}
+
                 {/* Error */}
                 {error && (
                   <div className="rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 p-4 mb-6">

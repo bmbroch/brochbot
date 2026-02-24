@@ -5,11 +5,12 @@ import {
   mapApifyItem,
   mergeNewPosts,
   mergeRefreshCounts,
+  IgAuthorMeta,
 } from "@/lib/instagram-store";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/instagram/poll?runId={runId}&igHandle={igHandle}&mode={mode}
+// GET /api/instagram/poll?runId={runId}&igHandle={igHandle}&mode={mode}[&profileRunId={...}&profileDatasetId={...}]
 export async function GET(req: NextRequest) {
   const APIFY_KEY = process.env.APIFY_API_KEY;
   if (!APIFY_KEY) {
@@ -19,13 +20,15 @@ export async function GET(req: NextRequest) {
   const runId = req.nextUrl.searchParams.get("runId");
   const igHandle = req.nextUrl.searchParams.get("igHandle");
   const mode = req.nextUrl.searchParams.get("mode");
+  const profileRunId = req.nextUrl.searchParams.get("profileRunId");
+  const profileDatasetId = req.nextUrl.searchParams.get("profileDatasetId");
 
   if (!runId || !igHandle || !mode) {
     return NextResponse.json({ error: "runId, igHandle, and mode are required" }, { status: 400 });
   }
 
   try {
-    // Check run status
+    // Check posts run status
     const statusRes = await fetch(
       `https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_KEY}`,
       { cache: "no-store" }
@@ -48,7 +51,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (status === "SUCCEEDED") {
-      // Fetch dataset items
+      // Fetch posts dataset items
       const itemsRes = await fetch(
         `https://api.apify.com/v2/datasets/${datasetId}/items?token=${APIFY_KEY}&limit=200`,
         { cache: "no-store" }
@@ -63,14 +66,60 @@ export async function GET(req: NextRequest) {
         .map(mapApifyItem)
         .filter(Boolean) as NonNullable<ReturnType<typeof mapApifyItem>>[];
 
+      // Resolve profile meta if profileRunId is provided
+      let igAuthorMeta: IgAuthorMeta | undefined;
+
+      if (profileRunId) {
+        try {
+          // Poll profile run status
+          const profileStatusRes = await fetch(
+            `https://api.apify.com/v2/actor-runs/${profileRunId}?token=${APIFY_KEY}`,
+            { cache: "no-store" }
+          );
+
+          if (profileStatusRes.ok) {
+            const profileStatusJson = await profileStatusRes.json();
+            const profileStatus: string = profileStatusJson?.data?.status;
+            const resolvedProfileDatasetId: string =
+              profileDatasetId ?? profileStatusJson?.data?.defaultDatasetId;
+
+            if (profileStatus === "SUCCEEDED" && resolvedProfileDatasetId) {
+              const profileItemsRes = await fetch(
+                `https://api.apify.com/v2/datasets/${resolvedProfileDatasetId}/items?token=${APIFY_KEY}&limit=1`,
+                { cache: "no-store" }
+              );
+
+              if (profileItemsRes.ok) {
+                const profileItems: Record<string, unknown>[] = await profileItemsRes.json();
+                if (profileItems.length > 0) {
+                  const profileItem = profileItems[0];
+                  igAuthorMeta = {
+                    avatar: (profileItem.profilePicUrl as string) ?? "",
+                    fullName: (profileItem.fullName as string) ?? "",
+                    username: (profileItem.username as string) ?? "",
+                    biography: (profileItem.biography as string) ?? "",
+                    followersCount: (profileItem.followersCount as number) ?? 0,
+                    followsCount: (profileItem.followsCount as number) ?? 0,
+                    postsCount: (profileItem.postsCount as number) ?? 0,
+                    verified: (profileItem.verified as boolean) ?? false,
+                  };
+                }
+              }
+            }
+          }
+        } catch {
+          // profile meta is best-effort; don't fail the whole poll
+        }
+      }
+
       // Merge into Supabase
       const existing = await getInstagramStoreData(igHandle);
 
       let updated;
       if (mode === "new-posts") {
-        updated = mergeNewPosts(existing, mapped);
+        updated = mergeNewPosts(existing, mapped, igAuthorMeta);
       } else {
-        updated = mergeRefreshCounts(existing, mapped);
+        updated = mergeRefreshCounts(existing, mapped, igAuthorMeta);
       }
 
       await setInstagramStoreData(igHandle, updated);

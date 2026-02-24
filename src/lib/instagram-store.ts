@@ -1,5 +1,16 @@
 // Instagram Supabase store — mirrors tiktok-store.ts
 
+export interface IgAuthorMeta {
+  avatar: string;        // profilePicUrl
+  fullName: string;
+  username: string;
+  biography: string;
+  followersCount: number;
+  followsCount: number;
+  postsCount: number;
+  verified: boolean;
+}
+
 export interface InstagramPost {
   id: string;
   shortCode: string;
@@ -17,6 +28,7 @@ export interface InstagramStoreData {
   posts: InstagramPost[];
   lastNewPostsSync: string | null;
   lastCountsRefresh: string | null;
+  igAuthorMeta?: IgAuthorMeta;
 }
 
 const SUPABASE_URL = process.env.SUPABASE_CLC_URL!;
@@ -91,7 +103,8 @@ export function mapApifyItem(item: Record<string, unknown>): InstagramPost | nul
 // Merge new-posts results into existing store (add new by id, preserve existing)
 export function mergeNewPosts(
   existing: InstagramStoreData | null,
-  newItems: InstagramPost[]
+  newItems: InstagramPost[],
+  igAuthorMeta?: IgAuthorMeta
 ): InstagramStoreData {
   const store = existing ?? { posts: [], lastNewPostsSync: null, lastCountsRefresh: null };
   const existingIds = new Set(store.posts.map((p) => p.id));
@@ -101,13 +114,15 @@ export function mergeNewPosts(
     ...store,
     posts: [...store.posts, ...added],
     lastNewPostsSync: new Date().toISOString(),
+    igAuthorMeta: igAuthorMeta ?? store.igAuthorMeta,
   };
 }
 
 // Merge refresh-counts results — update views/likes/comments on existing posts
 export function mergeRefreshCounts(
   existing: InstagramStoreData | null,
-  refreshed: InstagramPost[]
+  refreshed: InstagramPost[],
+  igAuthorMeta?: IgAuthorMeta
 ): InstagramStoreData {
   const store = existing ?? { posts: [], lastNewPostsSync: null, lastCountsRefresh: null };
   const refreshMap = new Map(refreshed.map((p) => [p.id, p]));
@@ -127,5 +142,6 @@ export function mergeRefreshCounts(
     ...store,
     posts: updated,
     lastCountsRefresh: new Date().toISOString(),
+    igAuthorMeta: igAuthorMeta ?? store.igAuthorMeta,
   };
 }
