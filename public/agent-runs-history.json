@@ -1978,5 +1978,53 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-23T23:50:01Z"
+  },
+  {
+    "id": "71402d35-8c39-43ce-9d86-a4745d4e7290",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+    "model": "Sonnet",
+    "tokens": 429355,
+    "cost": 0.3746,
+    "durationSec": 179,
+    "status": "success",
+    "timestamp": "2026-02-24T03:00:00.088Z"
+  },
+  {
+    "id": "19c01852-adbb-46be-88cb-5132cdaa265c",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+    "model": "Sonnet",
+    "tokens": 428230,
+    "cost": 0.4263,
+    "durationSec": 179,
+    "status": "success",
+    "timestamp": "2026-02-24T03:00:00.193Z"
+  },
+  {
+    "id": "sam-sync-2026-02-24T03:10:02Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 1052872,
+    "cost": 0.391,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-24T03:10:02Z"
+  },
+  {
+    "id": "sam-daily-2026-02-24",
+    "label": "Daily total",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben total conversation cost today",
+    "model": "Opus",
+    "tokens": 1052872,
+    "cost": 0.391,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-24T03:10:02Z"
   }
 ]
