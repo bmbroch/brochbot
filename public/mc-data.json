@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-25T06:50:01Z",
+  "lastUpdated": "2026-02-25T07:00:01Z",
   "activities": [
+    {
+      "id": "s-3ad8ba02",
+      "agent": "dana",
+      "title": "Morning Analytics Report",
+      "description": "You're Dana \ud83d\udcca, Data Analyst.",
+      "status": "success",
+      "date": "2026-02-25T06:53:49.935Z",
+      "tokens": 195094,
+      "cost": 0.217,
+      "model": "Sonnet",
+      "durationSec": 52
+    },
     {
       "id": "s-9da39ddc",
       "agent": "sam",
@@ -171,8 +183,8 @@
     },
     {
       "id": "s-7e5e67dd",
-      "agent": "mia",
-      "title": "Mia: Weekly UGC Performance Report",
+      "agent": "sam",
+      "title": "7e5e67dd-b62",
       "description": "You're Mia \ud83d\udcf1, Social Media Manager.",
       "status": "success",
       "date": "2026-02-24T06:01:04.825Z",
@@ -183,8 +195,8 @@
     },
     {
       "id": "s-07605915",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "07605915-609",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-02-24T06:00:00.242Z",
@@ -195,8 +207,8 @@
     },
     {
       "id": "s-4d9bc39e",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "4d9bc39e-63c",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-02-24T06:00:00.174Z",
@@ -308,10 +320,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 44690670,
-      "cost": 39.6537,
+      "tokens": 46640553,
+      "cost": 41.0856,
       "model": "Sonnet",
-      "durationSec": 156212
+      "durationSec": 160915
     },
     {
       "id": "s-5423ca5a",
@@ -572,10 +584,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 2022046,
-      "cost": 4.1275,
+      "tokens": 2150103,
+      "cost": 4.3927,
       "model": "Opus",
-      "durationSec": 439312
+      "durationSec": 476788
     },
     {
       "id": "s-aae63345",
@@ -1195,7 +1207,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-24T06:00:00.242Z",
+      "lastActive": "2026-02-25T06:53:49.935Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -1233,7 +1245,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-25T06:50:01Z"
+      "lastRunAt": "2026-02-25T07:00:01Z"
     },
     {
       "id": "bash-frankie-sync",
