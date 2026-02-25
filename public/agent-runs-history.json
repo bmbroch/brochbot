@@ -2052,6 +2052,18 @@
     "timestamp": "2026-02-24T04:00:00.249Z"
   },
   {
+    "id": "cc20e310-3a14-408a-8d05-c62f77a8363d",
+    "label": "cc20e310-3a1",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Sonnet",
+    "tokens": 308644,
+    "cost": 0.2138,
+    "durationSec": 48667,
+    "status": "success",
+    "timestamp": "2026-02-24T04:00:44.410Z"
+  },
+  {
     "id": "ed75b4b7-854b-493a-ad83-09effc5ac255",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -2674,5 +2686,29 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-25T03:50:01Z"
+  },
+  {
+    "id": "5158de6f-4542-422a-841c-84ea95d08017",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 53404,
+    "cost": 0.1094,
+    "durationSec": 74,
+    "status": "success",
+    "timestamp": "2026-02-25T04:00:00.218Z"
+  },
+  {
+    "id": "c65fbc8d-3af6-4963-8840-7a30d4696588",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 74037,
+    "cost": 0.1543,
+    "durationSec": 94,
+    "status": "success",
+    "timestamp": "2026-02-25T04:00:00.309Z"
   }
 ]
