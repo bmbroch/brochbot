@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-02-25T05:30:01Z",
+  "lastUpdated": "2026-02-25T05:40:01Z",
   "activities": [
+    {
+      "id": "s-9da39ddc",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-02-25T05:30:00.183Z",
+      "tokens": 208569,
+      "cost": 0.2046,
+      "model": "Sonnet",
+      "durationSec": 72
+    },
+    {
+      "id": "s-1773cabc",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-02-25T05:30:00.133Z",
+      "tokens": 268672,
+      "cost": 0.2466,
+      "model": "Sonnet",
+      "durationSec": 92
+    },
     {
       "id": "s-c65fbc8d",
       "agent": "miles",
@@ -184,7 +208,7 @@
     {
       "id": "s-cdbe948e",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "cdbe948e-6c9",
       "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
       "status": "success",
       "date": "2026-02-24T05:30:00.172Z",
@@ -196,7 +220,7 @@
     {
       "id": "s-ed75b4b7",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "ed75b4b7-854",
       "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
       "status": "success",
       "date": "2026-02-24T05:30:00.089Z",
@@ -284,10 +308,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 42606882,
-      "cost": 38.1567,
+      "tokens": 44690670,
+      "cost": 39.6537,
       "model": "Sonnet",
-      "durationSec": 123275
+      "durationSec": 156212
     },
     {
       "id": "s-5423ca5a",
@@ -1195,7 +1219,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-25T05:05:46Z",
+      "lastActive": "2026-02-25T05:30:00.183Z",
       "statusText": ""
     }
   },
@@ -1209,7 +1233,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-25T05:30:01Z"
+      "lastRunAt": "2026-02-25T05:40:01Z"
     },
     {
       "id": "bash-frankie-sync",
