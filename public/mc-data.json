@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-25T03:05:32Z",
+  "lastUpdated": "2026-02-25T03:10:01Z",
   "activities": [
     {
       "id": "s-09b79fcd",
@@ -8,10 +8,10 @@
       "description": "**Task: Fix mc-sync.sh \u2014 add cron ID \u2192 owner override map**",
       "status": "success",
       "date": "2026-02-25T03:04:37.989Z",
-      "tokens": 252731,
-      "cost": 0.1966,
+      "tokens": 305232,
+      "cost": 0.2248,
       "model": "Sonnet",
-      "durationSec": 53
+      "durationSec": 73
     },
     {
       "id": "s-5541062c",
@@ -20,10 +20,10 @@
       "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
       "status": "success",
       "date": "2026-02-25T03:00:00.171Z",
-      "tokens": 771350,
-      "cost": 0.6435,
+      "tokens": 823862,
+      "cost": 0.8137,
       "model": "Sonnet",
-      "durationSec": 320
+      "durationSec": 356
     },
     {
       "id": "s-a6f381b0",
@@ -488,10 +488,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:08:33.763Z",
-      "tokens": 1215539,
-      "cost": 1.9808,
+      "tokens": 1270270,
+      "cost": 2.0077,
       "model": "Opus",
-      "durationSec": 460507
+      "durationSec": 460650
     },
     {
       "id": "s-38288c66",
@@ -771,20 +771,6 @@
   ],
   "calendar": [
     {
-      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
-      "title": "Penny Daily Check",
-      "schedule": "0 5 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "penny",
-      "enabled": true,
-      "status": "error (3 consecutive)",
-      "lastStatus": "error",
-      "lastRunAt": "2026-02-24T03:00:00Z",
-      "nextRunAt": "2026-02-25T03:00:00Z",
-      "consecutiveErrors": 3,
-      "description": "Penny's overnight quality sweep \u2014 delegation audit, cron/MC drift check, file hygiene scan, MEMORY.md accuracy. Pre-approved to fix what she finds."
-    },
-    {
       "id": "d5e855bf-4179-4ff2-ba52-10ed9c71e817",
       "title": "Daily GSC Report \u2014 All Products (Miles)",
       "schedule": "0 6 * * *",
@@ -825,6 +811,20 @@
       "nextRunAt": "2026-02-25T06:00:00Z",
       "consecutiveErrors": 0,
       "description": "Dana pulls Datafast metrics for all 3 products \u2014 visitors, revenue, week-over-week trends. 8 AM CAT."
+    },
+    {
+      "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
+      "title": "Penny Daily Check",
+      "schedule": "0 5 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "penny",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-25T03:00:00Z",
+      "nextRunAt": "2026-02-26T03:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Penny's overnight quality sweep \u2014 delegation audit, cron/MC drift check, file hygiene scan, MEMORY.md accuracy. Pre-approved to fix what she finds."
     },
     {
       "id": "6e98d078-5f1f-4ce8-8b61-b5bafde02879",
@@ -1171,7 +1171,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-25T02:50:04Z",
+      "lastActive": "2026-02-25T03:05:50Z",
       "statusText": ""
     }
   },
@@ -1185,7 +1185,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-25T03:05:32Z"
+      "lastRunAt": "2026-02-25T03:10:01Z"
     },
     {
       "id": "bash-frankie-sync",

@@ -161,9 +161,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1215539,
-    "cost": 1.9808,
-    "durationSec": 460507,
+    "tokens": 1270270,
+    "cost": 2.0077,
+    "durationSec": 460650,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
@@ -173,9 +173,9 @@
     "agent": "penny",
     "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
     "model": "Sonnet",
-    "tokens": 771350,
-    "cost": 0.6435,
-    "durationSec": 320,
+    "tokens": 823862,
+    "cost": 0.8137,
+    "durationSec": 356,
     "status": "success",
     "timestamp": "2026-02-25T03:00:00.171Z"
   },
@@ -288,6 +288,18 @@
     "timestamp": "2026-02-24T05:30:00.172Z"
   },
   {
+    "id": "09b79fcd-bb0b-4e08-ba2c-dfb422733dbb",
+    "label": "devin-mc-sync-owner-fix",
+    "agent": "devin",
+    "task": "**Task: Fix mc-sync.sh \u2014 add cron ID \u2192 owner override map**",
+    "model": "Sonnet",
+    "tokens": 305232,
+    "cost": 0.2248,
+    "durationSec": 73,
+    "status": "success",
+    "timestamp": "2026-02-25T03:04:37.989Z"
+  },
+  {
     "id": "b5bca453-08d2-483d-9fca-ec0bb66775c8",
     "label": "b5bca453-08d",
     "agent": "sam",
@@ -298,18 +310,6 @@
     "durationSec": 154,
     "status": "success",
     "timestamp": "2026-02-21T03:00:00.031Z"
-  },
-  {
-    "id": "09b79fcd-bb0b-4e08-ba2c-dfb422733dbb",
-    "label": "devin-mc-sync-owner-fix",
-    "agent": "devin",
-    "task": "**Task: Fix mc-sync.sh \u2014 add cron ID \u2192 owner override map**",
-    "model": "Sonnet",
-    "tokens": 252731,
-    "cost": 0.1966,
-    "durationSec": 53,
-    "status": "success",
-    "timestamp": "2026-02-25T03:04:37.989Z"
   },
   {
     "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
