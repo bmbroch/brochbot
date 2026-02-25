@@ -161,11 +161,23 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 1162050,
-    "cost": 1.7762,
-    "durationSec": 252973,
+    "tokens": 1215539,
+    "cost": 1.9808,
+    "durationSec": 460507,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
+    "id": "5541062c-e449-4522-9556-f6a62ad99f7d",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+    "model": "Sonnet",
+    "tokens": 771350,
+    "cost": 0.6435,
+    "durationSec": 320,
+    "status": "success",
+    "timestamp": "2026-02-25T03:00:00.171Z"
   },
   {
     "id": "a50fee35-8a4e-475d-9edf-e12c4b7c0f95",
@@ -204,6 +216,18 @@
     "timestamp": "2026-02-24T06:01:08.604Z"
   },
   {
+    "id": "a6f381b0-e959-4bfc-ace9-d2ffc7dc57d8",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+    "model": "Sonnet",
+    "tokens": 500199,
+    "cost": 0.4672,
+    "durationSec": 213,
+    "status": "success",
+    "timestamp": "2026-02-25T03:00:00.093Z"
+  },
+  {
     "id": "a8651c84-4492-438c-a04f-aed69e0b33d0",
     "label": "devin-card-refresh",
     "agent": "devin",
@@ -229,8 +253,8 @@
   },
   {
     "id": "71402d35-8c39-43ce-9d86-a4745d4e7290",
-    "label": "Penny Daily Check",
-    "agent": "penny",
+    "label": "71402d35-8c3",
+    "agent": "sam",
     "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
     "model": "Sonnet",
     "tokens": 429355,
@@ -241,8 +265,8 @@
   },
   {
     "id": "19c01852-adbb-46be-88cb-5132cdaa265c",
-    "label": "Penny Daily Check",
-    "agent": "penny",
+    "label": "19c01852-adb",
+    "agent": "sam",
     "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
     "model": "Sonnet",
     "tokens": 428230,
@@ -274,6 +298,18 @@
     "durationSec": 154,
     "status": "success",
     "timestamp": "2026-02-21T03:00:00.031Z"
+  },
+  {
+    "id": "09b79fcd-bb0b-4e08-ba2c-dfb422733dbb",
+    "label": "devin-mc-sync-owner-fix",
+    "agent": "devin",
+    "task": "**Task: Fix mc-sync.sh \u2014 add cron ID \u2192 owner override map**",
+    "model": "Sonnet",
+    "tokens": 252731,
+    "cost": 0.1966,
+    "durationSec": 53,
+    "status": "success",
+    "timestamp": "2026-02-25T03:04:37.989Z"
   },
   {
     "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",

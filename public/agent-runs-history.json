@@ -2626,5 +2626,41 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-25T02:50:02Z"
+  },
+  {
+    "id": "a6f381b0-e959-4bfc-ace9-d2ffc7dc57d8",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+    "model": "Sonnet",
+    "tokens": 500199,
+    "cost": 0.4672,
+    "durationSec": 213,
+    "status": "success",
+    "timestamp": "2026-02-25T03:00:00.093Z"
+  },
+  {
+    "id": "5541062c-e449-4522-9556-f6a62ad99f7d",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+    "model": "Sonnet",
+    "tokens": 771350,
+    "cost": 0.6435,
+    "durationSec": 320,
+    "status": "success",
+    "timestamp": "2026-02-25T03:00:00.171Z"
+  },
+  {
+    "id": "09b79fcd-bb0b-4e08-ba2c-dfb422733dbb",
+    "label": "devin-mc-sync-owner-fix",
+    "agent": "devin",
+    "task": "**Task: Fix mc-sync.sh \u2014 add cron ID \u2192 owner override map**",
+    "model": "Sonnet",
+    "tokens": 252731,
+    "cost": 0.1966,
+    "durationSec": 53,
+    "status": "success",
+    "timestamp": "2026-02-25T03:04:37.989Z"
   }
 ]

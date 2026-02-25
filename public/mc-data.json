@@ -1,6 +1,42 @@
 {
-  "lastUpdated": "2026-02-25T03:00:01Z",
+  "lastUpdated": "2026-02-25T03:05:32Z",
   "activities": [
+    {
+      "id": "s-09b79fcd",
+      "agent": "devin",
+      "title": "devin-mc-sync-owner-fix",
+      "description": "**Task: Fix mc-sync.sh \u2014 add cron ID \u2192 owner override map**",
+      "status": "success",
+      "date": "2026-02-25T03:04:37.989Z",
+      "tokens": 252731,
+      "cost": 0.1966,
+      "model": "Sonnet",
+      "durationSec": 53
+    },
+    {
+      "id": "s-5541062c",
+      "agent": "penny",
+      "title": "Penny Daily Check",
+      "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+      "status": "success",
+      "date": "2026-02-25T03:00:00.171Z",
+      "tokens": 771350,
+      "cost": 0.6435,
+      "model": "Sonnet",
+      "durationSec": 320
+    },
+    {
+      "id": "s-a6f381b0",
+      "agent": "penny",
+      "title": "Penny Daily Check",
+      "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+      "status": "success",
+      "date": "2026-02-25T03:00:00.093Z",
+      "tokens": 500199,
+      "cost": 0.4672,
+      "model": "Sonnet",
+      "durationSec": 213
+    },
     {
       "id": "s-a8651c84",
       "agent": "devin",
@@ -183,8 +219,8 @@
     },
     {
       "id": "s-19c01852",
-      "agent": "penny",
-      "title": "Penny Daily Check",
+      "agent": "sam",
+      "title": "19c01852-adb",
       "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
       "status": "success",
       "date": "2026-02-24T03:00:00.193Z",
@@ -195,8 +231,8 @@
     },
     {
       "id": "s-71402d35",
-      "agent": "penny",
-      "title": "Penny Daily Check",
+      "agent": "sam",
+      "title": "71402d35-8c3",
       "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
       "status": "success",
       "date": "2026-02-24T03:00:00.088Z",
@@ -452,10 +488,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T19:08:33.763Z",
-      "tokens": 1162050,
-      "cost": 1.7762,
+      "tokens": 1215539,
+      "cost": 1.9808,
       "model": "Opus",
-      "durationSec": 252973
+      "durationSec": 460507
     },
     {
       "id": "s-38288c66",
@@ -795,7 +831,7 @@
       "title": "Mia: Weekly UGC Performance Report",
       "schedule": "0 8 * * 2",
       "timezone": "Africa/Windhoek",
-      "owner": "sam",
+      "owner": "mia",
       "enabled": true,
       "status": "ok",
       "lastStatus": "ok",
@@ -1107,7 +1143,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-24T16:30:44.525Z",
+      "lastActive": "2026-02-25T03:04:37.989Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1127,7 +1163,7 @@
       "statusText": "Idle. Needs recurring weekly UGC performance tracking."
     },
     "penny": {
-      "lastActive": "2026-02-24T06:28:03.440Z",
+      "lastActive": "2026-02-25T03:00:00.171Z",
       "statusText": "Active as of today. Owns daily delegation audit (6 PM CAT)."
     },
     "frankie": {
@@ -1149,7 +1185,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-25T03:00:01Z"
+      "lastRunAt": "2026-02-25T03:05:32Z"
     },
     {
       "id": "bash-frankie-sync",
