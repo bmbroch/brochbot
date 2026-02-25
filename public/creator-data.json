@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-25T10:30:02Z",
+  "lastUpdated": "2026-02-25T23:30:01Z",
   "abby": {
     "name": "Abby",
     "startDate": "2026-01-08",
@@ -366,8 +366,8 @@
   "bobby": {
     "name": "Bobby",
     "startDate": "2026-01-30",
-    "ttViews": 22204,
-    "igViews": 57496,
+    "ttViews": 22222,
+    "igViews": 57517,
     "posts": 46,
     "avgPerPost": 1733,
     "earnings": 575.0,
@@ -545,14 +545,14 @@
       {
         "date": "2026-02-10",
         "platform": "tiktok",
-        "views": 842,
+        "views": 860,
         "url": "https://www.tiktok.com/@bobby.salesguy/video/7604923480009690381",
         "title": null
       },
       {
         "date": "2026-02-10",
         "platform": "instagram",
-        "views": 1656,
+        "views": 1677,
         "url": "https://www.instagram.com/reel/DUi9kOqjuBE/",
         "title": null
       },
