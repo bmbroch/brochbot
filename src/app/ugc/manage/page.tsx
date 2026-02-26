@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Shell from "@/components/Shell";
 import {
-  ArrowLeft, Plus, Settings2, Search, Pencil, Check, X,
+  ArrowLeft, Plus, Settings2, Search, Check, X,
   Loader2, ImageIcon, ExternalLink, StopCircle, PlayCircle,
 } from "lucide-react";
 
@@ -250,49 +250,6 @@ function TrackCreatorModal({ onClose, onAdded }: TrackModalProps) {
   );
 }
 
-// ─── Inline Sync Hour Editor ───────────────────────────────────────────────────
-
-function SyncHourEditor({ creatorId, currentHour, onSaved }: { creatorId: string; currentHour: number | null; onSaved: (h: number | null) => void }) {
-  const [editing, setEditing] = useState(false);
-  const [value, setValue] = useState(currentHour ?? 8);
-  const [saving, setSaving] = useState(false);
-
-  const save = async () => {
-    setSaving(true);
-    try {
-      await fetch(`/api/ugc/creators/${creatorId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sync_hour: value }),
-      });
-      onSaved(value);
-      setEditing(false);
-    } finally { setSaving(false); }
-  };
-
-  if (!editing) return (
-    <button onClick={() => setEditing(true)} className="flex items-center gap-1 group text-sm text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white transition-colors">
-      {currentHour !== null ? `${currentHour}:00 UTC` : <span className="text-gray-300 dark:text-white/20">—</span>}
-      {currentHour !== null && <Pencil size={10} className="text-gray-300 dark:text-white/20 group-hover:text-gray-500 dark:group-hover:text-white/50 transition-colors" />}
-    </button>
-  );
-
-  return (
-    <div className="flex items-center gap-1">
-      <select value={value} onChange={(e) => setValue(parseInt(e.target.value))}
-        className="px-2 py-0.5 rounded-lg border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500/40" autoFocus>
-        {Array.from({ length: 24 }, (_, i) => <option key={i} value={i}>{i}:00 UTC</option>)}
-      </select>
-      <button onClick={save} disabled={saving} className="p-1 rounded-lg text-green-500 hover:bg-green-50 dark:hover:bg-green-500/10 transition-all">
-        {saving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
-      </button>
-      <button onClick={() => setEditing(false)} className="p-1 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-all">
-        <X size={12} />
-      </button>
-    </div>
-  );
-}
-
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
 export default function ManageCreatorsPage() {
@@ -424,7 +381,10 @@ export default function ManageCreatorsPage() {
               <Settings2 size={22} className="text-gray-400 dark:text-white/40" />
               Manage Creators
             </h1>
-            <p className="text-sm text-gray-400 dark:text-white/40 mt-0.5">Track who you want, stop tracking when you don&apos;t.</p>
+            <p className="text-sm text-gray-400 dark:text-white/40 mt-0.5">
+              Track who you want, stop tracking when you don&apos;t. Sync schedule in{" "}
+              <Link href="/ugc/settings" className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">Settings</Link>.
+            </p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             {avatarMsg && <span className="text-xs text-gray-400 dark:text-white/40 max-w-[180px] text-right">{avatarMsg}</span>}
@@ -509,14 +469,14 @@ export default function ManageCreatorsPage() {
                       <input type="checkbox" checked={allSelected} onChange={toggleAll}
                         className="rounded border-gray-300 dark:border-[#444] text-blue-600 focus:ring-blue-500/40 cursor-pointer" />
                     </th>
-                    {["Creator", "Platforms", "Health", "Status", "Last Synced", "Sync Hour"].map((h) => (
+                    {["Creator", "Platforms", "Health", "Status", "Last Synced"].map((h) => (
                       <th key={h} className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.length === 0 ? (
-                    <tr><td colSpan={7} className="px-5 py-10 text-center text-sm text-gray-400 dark:text-white/30">No creators match &ldquo;{search}&rdquo;</td></tr>
+                    <tr><td colSpan={6} className="px-5 py-10 text-center text-sm text-gray-400 dark:text-white/30">No creators match &ldquo;{search}&rdquo;</td></tr>
                   ) : filtered.map((creator) => (
                     <tr key={creator.id}
                       className={`border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 transition-colors hover:bg-gray-50/80 dark:hover:bg-white/[0.02] ${selected.has(creator.id) ? "bg-blue-50/50 dark:bg-blue-500/5" : ""}`}>
@@ -603,15 +563,6 @@ export default function ManageCreatorsPage() {
                         <span className="text-xs text-gray-400 dark:text-white/40">{relativeTime(creator.last_synced_at)}</span>
                       </td>
 
-                      {/* Sync hour */}
-                      <td className="px-4 py-3.5 whitespace-nowrap">
-                        {creator.status === "active" ? (
-                          <SyncHourEditor creatorId={creator.id} currentHour={creator.sync_hour}
-                            onSaved={(h) => setCreators((prev) => prev.map((c) => c.id === creator.id ? { ...c, sync_hour: h } : c))} />
-                        ) : (
-                          <span className="text-gray-300 dark:text-white/20 text-sm">—</span>
-                        )}
-                      </td>
                     </tr>
                   ))}
                 </tbody>
