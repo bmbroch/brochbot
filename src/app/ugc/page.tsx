@@ -32,6 +32,7 @@ import {
   ChevronDown,
   Minus,
   Settings,
+  SlidersHorizontal,
 } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -1030,13 +1031,21 @@ export default function UGCPage() {
           {/* Right: mode toggle + platform filter */}
           <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
 
-            {/* Manage button */}
+            {/* Manage + Settings buttons */}
             <Link
               href="/ugc/manage"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all"
             >
               <Settings size={13} />
               <span className="hidden sm:inline">Manage</span>
+            </Link>
+            <Link
+              href="/ugc/settings"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all"
+              title="Settings"
+            >
+              <SlidersHorizontal size={13} />
+              <span className="hidden sm:inline">Settings</span>
             </Link>
 
             {/* Overview / Creator Drill Down tabs */}
