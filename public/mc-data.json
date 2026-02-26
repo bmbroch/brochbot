@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-26T06:30:02Z",
+  "lastUpdated": "2026-02-26T06:34:01Z",
   "activities": [
+    {
+      "id": "s-9153fefa",
+      "agent": "dana",
+      "title": "dana-key-numbers-refresh",
+      "description": "You are Dana \ud83d\udcca, Data Analyst. Pull fresh Key Numbers for all 3 products and update MEMORY.md.",
+      "status": "success",
+      "date": "2026-02-26T06:33:51.132Z",
+      "tokens": 12948,
+      "cost": 0.0506,
+      "model": "Sonnet",
+      "durationSec": 3
+    },
     {
       "id": "s-c5a76f84",
       "agent": "dana",
@@ -891,34 +903,6 @@
   ],
   "calendar": [
     {
-      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
-      "title": "Sam Morning Brief",
-      "schedule": "30 7 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "sam",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-24T05:30:00Z",
-      "nextRunAt": "2026-02-25T05:30:00Z",
-      "consecutiveErrors": 0,
-      "description": "Sam's morning coffee read \u2014 overnight results, costs, priorities. 7:30 AM CAT."
-    },
-    {
-      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
-      "title": "Morning Analytics Report",
-      "schedule": "0 8 * * *",
-      "timezone": "Africa/Windhoek",
-      "owner": "dana",
-      "enabled": true,
-      "status": "ok",
-      "lastStatus": "ok",
-      "lastRunAt": "2026-02-24T06:00:00Z",
-      "nextRunAt": "2026-02-25T06:00:00Z",
-      "consecutiveErrors": 0,
-      "description": "Dana pulls Datafast metrics for all 3 products \u2014 visitors, revenue, week-over-week trends. 8 AM CAT."
-    },
-    {
       "id": "1fce70ba-7037-4e7f-b52a-631638396a0a",
       "title": "Penny Daily Check",
       "schedule": "0 5 * * *",
@@ -927,8 +911,8 @@
       "enabled": true,
       "status": "ok",
       "lastStatus": "ok",
-      "lastRunAt": "2026-02-25T03:00:00Z",
-      "nextRunAt": "2026-02-26T03:00:00Z",
+      "lastRunAt": "2026-02-26T03:00:00Z",
+      "nextRunAt": "2026-02-27T03:00:00Z",
       "consecutiveErrors": 0,
       "description": "Penny's overnight quality sweep \u2014 delegation audit, cron/MC drift check, file hygiene scan, MEMORY.md accuracy. Pre-approved to fix what she finds."
     },
@@ -941,10 +925,38 @@
       "enabled": true,
       "status": "ok",
       "lastStatus": "ok",
-      "lastRunAt": "2026-02-25T04:00:00Z",
-      "nextRunAt": "2026-02-26T04:00:00Z",
+      "lastRunAt": "2026-02-26T04:00:00Z",
+      "nextRunAt": "2026-02-27T04:00:00Z",
       "consecutiveErrors": 0,
       "description": "Miles pulls GSC data for ISK, CLCP, SE \u2014 tracked keywords, clicks, impressions, position trends. Daily 6 AM CAT."
+    },
+    {
+      "id": "7ca362c4-033a-407b-9386-d99e5910a909",
+      "title": "Sam Morning Brief",
+      "schedule": "30 7 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "sam",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-26T05:30:00Z",
+      "nextRunAt": "2026-02-27T05:30:00Z",
+      "consecutiveErrors": 0,
+      "description": "Sam's morning coffee read \u2014 overnight results, costs, priorities. 7:30 AM CAT."
+    },
+    {
+      "id": "f436e186-ac23-4562-a32c-55e4ec7155b7",
+      "title": "Morning Analytics Report",
+      "schedule": "0 8 * * *",
+      "timezone": "Africa/Windhoek",
+      "owner": "dana",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": "2026-02-26T06:00:00Z",
+      "nextRunAt": "2026-02-27T06:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Dana pulls Datafast metrics for all 3 products \u2014 visitors, revenue, week-over-week trends. 8 AM CAT."
     },
     {
       "id": "6e98d078-5f1f-4ce8-8b61-b5bafde02879",
@@ -1267,7 +1279,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-26T06:00:00.137Z",
+      "lastActive": "2026-02-26T06:33:51.132Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -1291,7 +1303,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-26T05:33:18Z",
+      "lastActive": "2026-02-26T06:34:00Z",
       "statusText": ""
     }
   },
@@ -1305,7 +1317,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-26T06:30:02Z"
+      "lastRunAt": "2026-02-26T06:34:01Z"
     },
     {
       "id": "bash-frankie-sync",
