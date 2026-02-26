@@ -5,7 +5,7 @@ import Link from "next/link";
 import Shell from "@/components/Shell";
 import {
   ArrowLeft, Settings, RefreshCw, Users, Check, Loader2,
-  Clock, Database, Zap, ChevronRight,
+  Clock,
 } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -72,9 +72,6 @@ export default function UGCSettingsPage() {
   const [health, setHealth] = useState<HealthSummary | null>(null);
   const [saving, setSaving] = useState<string | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
-  const [syncing, setSyncing] = useState(false);
-  const [syncMsg, setSyncMsg] = useState<string | null>(null);
-
   const fetchSettings = useCallback(async () => {
     const data = await fetch("/api/ugc/settings").then((r) => r.json());
     setSettings(data);
@@ -104,19 +101,6 @@ export default function UGCSettingsPage() {
       setTimeout(() => setSaved(null), 2000);
     } finally {
       setSaving(null);
-    }
-  };
-
-  const handleSyncAll = async () => {
-    setSyncing(true);
-    setSyncMsg(null);
-    try {
-      const data = await fetch("/api/ugc/health?remediate=true").then((r) => r.json());
-      const count = data.remediated?.length ?? 0;
-      setSyncMsg(count > 0 ? `Syncing ${count} creator${count !== 1 ? "s" : ""} — updates in ~5 min` : "All creators are up to date");
-      setTimeout(() => fetchHealth(), 5000);
-    } finally {
-      setSyncing(false);
     }
   };
 
@@ -253,46 +237,6 @@ export default function UGCSettingsPage() {
               </Field>
             </Section>
 
-            {/* Manual sync */}
-            <Section title="Manual Sync" description="Trigger an immediate sync for all active creators.">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                    <Zap size={16} className="text-blue-500" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">Sync all active creators now</p>
-                    <p className="text-xs text-gray-400 dark:text-white/40">
-                      Fetches new posts for all active creators · ~$0.65 · takes 5–10 min
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  {syncMsg && <span className="text-xs text-gray-400 dark:text-white/40 max-w-[180px] text-right">{syncMsg}</span>}
-                  <button onClick={handleSyncAll} disabled={syncing}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium disabled:opacity-50 transition-all flex-shrink-0">
-                    {syncing ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
-                    {syncing ? "Starting…" : "Sync Now"}
-                  </button>
-                </div>
-              </div>
-            </Section>
-
-            {/* Data info */}
-            <Section title="Data Storage" description="Where your creator data lives.">
-              <div className="flex items-center gap-3 py-1">
-                <div className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center flex-shrink-0">
-                  <Database size={15} className="text-gray-400 dark:text-white/40" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">Supabase (CLCP project)</p>
-                  <p className="text-xs text-gray-400 dark:text-white/40">Posts cached in mc_realtime · Sync history in ugc_sync_log · Avatars in Storage</p>
-                </div>
-                <Link href="/ugc/manage" className="flex items-center gap-1 text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
-                  Manage creators <ChevronRight size={12} />
-                </Link>
-              </div>
-            </Section>
 
           </div>
         )}
