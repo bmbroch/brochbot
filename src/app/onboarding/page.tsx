@@ -12,7 +12,7 @@ interface ParsedCreator {
 }
 
 function parseCreatorUrls(text: string): ParsedCreator[] {
-  return text
+  const raw = text
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean)
@@ -25,6 +25,24 @@ function parseCreatorUrls(text: string): ParsedCreator[] {
         return [{ name: igMatch[1], tiktokHandle: null, igHandle: igMatch[1] }];
       return [] as ParsedCreator[];
     });
+
+  // Merge TikTok + Instagram entries with the same handle into one creator
+  // e.g. tiktok.com/@nick + instagram.com/nick → one row with both handles
+  const merged: ParsedCreator[] = [];
+  for (const item of raw) {
+    const handle = (item.tiktokHandle ?? item.igHandle ?? "").toLowerCase();
+    const existing = merged.find((m) =>
+      (m.tiktokHandle?.toLowerCase() === handle) ||
+      (m.igHandle?.toLowerCase() === handle)
+    );
+    if (existing) {
+      if (item.tiktokHandle && !existing.tiktokHandle) existing.tiktokHandle = item.tiktokHandle;
+      if (item.igHandle && !existing.igHandle) existing.igHandle = item.igHandle;
+    } else {
+      merged.push({ ...item });
+    }
+  }
+  return merged;
 }
 
 const Logo = () => (
