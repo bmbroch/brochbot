@@ -168,6 +168,18 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
+    "id": "44a76e25-b50f-497d-a2b3-f86afdffb9a3",
+    "label": "dana-key-numbers-refresh-v2",
+    "agent": "dana",
+    "task": "You are Dana \ud83d\udcca, Data Analyst. Pull fresh Key Numbers for all 3 products and update MEMORY.md. Be fast and direct \u2014 use parallel lookups where possible.",
+    "model": "Sonnet",
+    "tokens": 876388,
+    "cost": 0.6482,
+    "durationSec": 212,
+    "status": "success",
+    "timestamp": "2026-02-26T06:39:14.573Z"
+  },
+  {
     "id": "5541062c-e449-4522-9556-f6a62ad99f7d",
     "label": "5541062c-e44",
     "agent": "sam",
@@ -574,18 +586,6 @@
     "durationSec": 140,
     "status": "success",
     "timestamp": "2026-02-24T10:19:38.513Z"
-  },
-  {
-    "id": "44a76e25-b50f-497d-a2b3-f86afdffb9a3",
-    "label": "dana-key-numbers-refresh-v2",
-    "agent": "dana",
-    "task": "You are Dana \ud83d\udcca, Data Analyst. Pull fresh Key Numbers for all 3 products and update MEMORY.md. Be fast and direct \u2014 use parallel lookups where possible.",
-    "model": "Sonnet",
-    "tokens": 88563,
-    "cost": 0.2613,
-    "durationSec": 46,
-    "status": "success",
-    "timestamp": "2026-02-26T06:39:14.573Z"
   },
   {
     "id": "613db404-e546-4858-8249-074352064b88",
