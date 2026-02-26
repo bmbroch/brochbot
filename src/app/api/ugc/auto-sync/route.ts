@@ -10,14 +10,19 @@ const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
 /**
  * GET /api/ugc/auto-sync
  *
- * Vercel Cron: "0 8 * * *" (8 AM UTC daily)
+ * Vercel Cron: "0 * * * *" (every hour UTC)
  *
  * Flow:
- *   1. Fetch all active creators from ugc_creators
- *   2. For each creator, start TikTok + Instagram Apify runs WITH webhook URLs registered
- *   3. Return immediately — Apify will POST to our webhooks when each run completes
- *   4. Webhooks (/api/tiktok/webhook, /api/instagram/webhook) handle saving data
+ *   1. Determine current UTC hour
+ *   2. Fetch active creators whose sync_hour matches the current hour
+ *   3. For each creator, start TikTok + Instagram Apify runs WITH webhook URLs registered
+ *   4. Return immediately — Apify will POST to our webhooks when each run completes
+ *   5. Webhooks (/api/tiktok/webhook, /api/instagram/webhook) handle saving data
  *      and updating last_synced_at in ugc_creators
+ *
+ * Staggering: each creator (or org) has a sync_hour (0–23 UTC).
+ * This allows multiple customers' creators to be spread across hours
+ * so we never hammer Apify with hundreds of concurrent runs at once.
  *
  * On Mondays: also fires "refresh-counts" runs to update view counts on older posts.
  */
@@ -29,18 +34,19 @@ export async function GET(req: NextRequest) {
   }
 
   const now = new Date();
+  const currentHour = now.getUTCHours();
   const dayOfWeek = now.getUTCDay(); // 0=Sun, 1=Mon
   const isMonday = dayOfWeek === 1;
 
-  // 1. Fetch active creators
+  // 1. Fetch active creators scheduled for this hour
   const creatorsRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/ugc_creators?status=eq.active&select=*`,
+    `${SUPABASE_URL}/rest/v1/ugc_creators?status=eq.active&sync_hour=eq.${currentHour}&select=*`,
     { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
   );
   const creators = await creatorsRes.json();
 
   if (!Array.isArray(creators) || creators.length === 0) {
-    return NextResponse.json({ message: "No active creators", synced: 0 });
+    return NextResponse.json({ message: `No active creators scheduled for hour ${currentHour} UTC`, synced: 0 });
   }
 
   const secretParam = WEBHOOK_SECRET ? `&secret=${encodeURIComponent(WEBHOOK_SECRET)}` : "";
@@ -117,6 +123,7 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({
     message: `Fired ${successCount} Apify runs with webhooks`,
+    hour: currentHour,
     mode: isMonday ? "new-posts + refresh-counts" : "new-posts only",
     creators: creators.length,
     runsStarted: successCount,

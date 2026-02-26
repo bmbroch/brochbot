@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/ugc/auto-sync",
-      "schedule": "0 8 * * *"
+      "schedule": "0 * * * *"
     }
   ]
 }
