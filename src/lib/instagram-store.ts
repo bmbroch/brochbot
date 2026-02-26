@@ -127,6 +127,8 @@ export function mergeRefreshCounts(
   const store = existing ?? { posts: [], lastNewPostsSync: null, lastCountsRefresh: null };
   const refreshMap = new Map(refreshed.map((p) => [p.id, p]));
 
+  const existingIds = new Set(store.posts.map((p) => p.id));
+
   const updated = store.posts.map((p) => {
     const fresh = refreshMap.get(p.id);
     if (!fresh) return p;
@@ -138,9 +140,12 @@ export function mergeRefreshCounts(
     };
   });
 
+  // Also insert any posts from the refresh that aren't already stored
+  const netNew = refreshed.filter((p) => !existingIds.has(p.id));
+
   return {
     ...store,
-    posts: updated,
+    posts: [...updated, ...netNew],
     lastCountsRefresh: new Date().toISOString(),
     igAuthorMeta: igAuthorMeta ?? store.igAuthorMeta,
   };

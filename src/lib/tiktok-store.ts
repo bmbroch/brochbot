@@ -134,6 +134,8 @@ export function mergeRefreshCounts(
   const store = existing ?? { videos: [], lastNewPostsSync: null, lastCountsRefresh: null };
   const refreshMap = new Map(refreshedItems.map((v) => [v.id, v]));
 
+  const existingIds = new Set(store.videos.map((v) => v.id));
+
   const updated = store.videos.map((v) => {
     const fresh = refreshMap.get(v.id);
     if (!fresh) return v;
@@ -147,9 +149,12 @@ export function mergeRefreshCounts(
     };
   });
 
+  // Also insert any posts from the refresh that aren't already stored
+  const netNew = refreshedItems.filter((v) => !existingIds.has(v.id));
+
   return {
     ...store,
-    videos: updated,
+    videos: [...updated, ...netNew],
     lastCountsRefresh: new Date().toISOString(),
   };
 }
