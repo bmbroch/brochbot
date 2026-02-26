@@ -225,7 +225,7 @@ function CreatorCard({
 
   const isThisSyncing = !!creator.handle && syncingHandle === creator.handle;
   const isAnotherSyncing = !!syncingHandle && syncingHandle !== creator.handle;
-  const [imgError, setImgError] = React.useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const Avatar = () =>
     avatarUrl && !imgError ? (
@@ -471,7 +471,7 @@ function IgTooltip({
 
 function ProfileHeader({ meta }: { meta: TikTokAuthorMeta }) {
   const initials = meta.nickName ? meta.nickName.slice(0, 2).toUpperCase() : "?";
-  const [imgError, setImgError] = React.useState(false);
+  const [imgError, setImgError] = useState(false);
   return (
     <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-4 flex items-center gap-5">
       {meta.avatar && !imgError ? (
@@ -517,7 +517,7 @@ function IgProfileHeader({ meta }: { meta: IgAuthorMeta }) {
     : meta.username
     ? meta.username.slice(0, 2).toUpperCase()
     : "?";
-  const [imgError, setImgError] = React.useState(false);
+  const [imgError, setImgError] = useState(false);
   return (
     <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-4 flex items-center gap-5">
       {meta.avatar && !imgError ? (
