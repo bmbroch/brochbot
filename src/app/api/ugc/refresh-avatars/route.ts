@@ -34,13 +34,16 @@ export async function POST(req: NextRequest) {
     // no body = refresh all
   }
 
-  const creators = handles
-    ? TIKTOK_CREATORS.filter((c) => handles!.includes(c.handle))
+  // Only process creators with a TikTok handle
+  const allCreators = handles
+    ? TIKTOK_CREATORS.filter((c) => c.handle && handles!.includes(c.handle))
     : TIKTOK_CREATORS;
+  const creators = allCreators.filter((c): c is typeof c & { handle: string } => c.handle !== null);
 
   const results: Array<{ handle: string; success: boolean; avatarUrl?: string; error?: string }> = [];
 
   for (const creator of creators) {
+    const handle = creator.handle; // guaranteed non-null after filter above
     try {
       // 1. Start a 1-result scrape to get fresh authorMeta
       const runRes = await fetch(
@@ -49,14 +52,14 @@ export async function POST(req: NextRequest) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            profiles: [`https://www.tiktok.com/@${creator.handle}`],
+            profiles: [`https://www.tiktok.com/@${handle}`],
             resultsPerPage: 1,
           }),
         }
       );
 
       if (!runRes.ok) {
-        results.push({ handle: creator.handle, success: false, error: `Apify start failed: ${runRes.status}` });
+        results.push({ handle, success: false, error: `Apify start failed: ${runRes.status}` });
         continue;
       }
 
@@ -65,7 +68,7 @@ export async function POST(req: NextRequest) {
       const datasetId: string = runJson?.data?.defaultDatasetId;
 
       if (!runId) {
-        results.push({ handle: creator.handle, success: false, error: "No runId returned" });
+        results.push({ handle, success: false, error: "No runId returned" });
         continue;
       }
 
@@ -87,7 +90,7 @@ export async function POST(req: NextRequest) {
       }
 
       if (status !== "SUCCEEDED") {
-        results.push({ handle: creator.handle, success: false, error: `Run ended with status: ${status}` });
+        results.push({ handle, success: false, error: `Run ended with status: ${status}` });
         continue;
       }
 
@@ -102,15 +105,15 @@ export async function POST(req: NextRequest) {
       const freshAvatarUrl = rawAuthor?.avatar as string | undefined;
 
       if (!freshAvatarUrl) {
-        results.push({ handle: creator.handle, success: false, error: "No avatar in authorMeta" });
+        results.push({ handle, success: false, error: "No avatar in authorMeta" });
         continue;
       }
 
       // 4. Persist to Supabase Storage
-      const persistedUrl = await persistAvatar(freshAvatarUrl, `tiktok_${creator.handle}`);
+      const persistedUrl = await persistAvatar(freshAvatarUrl, `tiktok_${handle}`);
 
       // 5. Update stored authorMeta in mc_realtime
-      const storeKey = `tiktok_videos_${creator.handle}`;
+      const storeKey = `tiktok_videos_${handle}`;
       const existingRes = await fetch(
         `${SUPABASE_URL}/rest/v1/mc_realtime?key=eq.${encodeURIComponent(storeKey)}&select=data`,
         { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }, cache: "no-store" }
@@ -155,7 +158,7 @@ export async function POST(req: NextRequest) {
       }
 
       results.push({
-        handle: creator.handle,
+        handle,
         success: true,
         avatarUrl: persistedUrl,
       });
@@ -163,7 +166,7 @@ export async function POST(req: NextRequest) {
       // Small delay between creators to avoid rate limits
       await new Promise((r) => setTimeout(r, 1000));
     } catch (err) {
-      results.push({ handle: creator.handle, success: false, error: String(err) });
+      results.push({ handle, success: false, error: String(err) });
     }
   }
 
