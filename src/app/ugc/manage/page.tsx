@@ -475,7 +475,7 @@ export default function ManageCreatorsPage() {
             <button
               onClick={handleRefreshAvatars}
               disabled={refreshingAvatars}
-              title="Re-scrape fresh avatar URLs and persist to Supabase Storage"
+              title="Refresh creator profile photos"
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 dark:border-[#333] text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#444] text-sm transition-all disabled:opacity-50"
             >
               {refreshingAvatars ? <Loader2 size={14} className="animate-spin" /> : <ImageIcon size={14} />}
