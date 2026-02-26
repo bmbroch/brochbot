@@ -19,6 +19,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import Link from "next/link";
 import {
   Search,
   RefreshCw,
@@ -31,6 +32,7 @@ import {
   ChevronUp,
   ChevronDown,
   Minus,
+  Settings,
 } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -639,7 +641,51 @@ export default function UGCPage() {
 
   const pollRef = useRef<NodeJS.Timeout | null>(null);
 
-  const activeCreator = TIKTOK_CREATORS.find((c) => c.handle === activeHandle);
+  // ── DB-backed creator list ─────────────────────────────────────────────────
+  const [dbCreators, setDbCreators] = useState<Array<{
+    id: string;
+    name: string;
+    tiktok_handle: string | null;
+    ig_handle: string | null;
+    status: "active" | "monitoring" | "archived";
+    sync_hour: number | null;
+  }> | null>(null);
+
+  useEffect(() => {
+    fetch("/api/ugc/creators")
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (Array.isArray(data)) setDbCreators(data);
+      })
+      .catch(() => {/* fall back to hardcoded */});
+  }, []);
+
+  // Build effective creator list: DB (non-archived) → fallback to hardcoded
+  const effectiveCreators = useMemo(() => {
+    if (dbCreators === null) return TIKTOK_CREATORS; // still loading
+    if (dbCreators.length === 0) return TIKTOK_CREATORS; // empty / table not ready
+    return dbCreators
+      .filter((c) => c.status !== "archived")
+      .map((c) => ({
+        name: c.name,
+        handle: c.tiktok_handle,
+        igHandle: c.ig_handle,
+        status: c.status,
+      }));
+  }, [dbCreators]);
+
+  // Map of name → status for drilldown badges
+  const creatorStatusMap = useMemo<Record<string, "active" | "monitoring">>(() => {
+    const map: Record<string, "active" | "monitoring"> = {};
+    for (const c of effectiveCreators) {
+      if ("status" in c && (c.status === "active" || c.status === "monitoring")) {
+        map[c.name] = c.status as "active" | "monitoring";
+      }
+    }
+    return map;
+  }, [effectiveCreators]);
+
+  const activeCreator = effectiveCreators.find((c) => c.handle === activeHandle);
   const activeIgHandle = activeCreator?.igHandle ?? null;
 
   // ── Load overview data ─────────────────────────────────────────────────────
@@ -665,7 +711,7 @@ export default function UGCPage() {
   // ── Compute per-creator analytics ─────────────────────────────────────────
   const computedCreators = useMemo<ComputedCreator[]>(() => {
     if (!allData) return [];
-    return TIKTOK_CREATORS.filter((c) => c.handle).map((c) => {
+    return effectiveCreators.filter((c) => c.handle).map((c) => {
       const ttVideos = allData.tiktok[c.handle!]?.videos ?? [];
       const igPosts = allData.instagram[c.igHandle ?? ""]?.posts ?? [];
       const ttViews = ttVideos.reduce((s, v) => s + (v.views || 0), 0);
@@ -688,7 +734,7 @@ export default function UGCPage() {
       ];
       return { name: c.name, ttViews, igViews, posts: ttVideos.length + igPosts.length, posts_detail };
     });
-  }, [allData]);
+  }, [allData, effectiveCreators]);
 
   const allCreators = computedCreators;
   const overviewLoaded = allData !== null && payouts !== null;
@@ -791,10 +837,10 @@ export default function UGCPage() {
           : allViews;
       const avgPost = c.posts > 0 ? Math.round(totalViews / c.posts) : 0;
       const cpm = allViews > 0 && earnings > 0 ? (earnings / allViews) * 1000 : null;
-      const handle = TIKTOK_CREATORS.find((tc) => tc.name === c.name)?.handle ?? null;
+      const handle = effectiveCreators.find((tc) => tc.name === c.name)?.handle ?? null;
       return { name: c.name, handle, posts: c.posts, ttViews: c.ttViews, igViews: c.igViews, totalViews, avgPost, earnings, cpm };
     });
-  }, [computedCreators, payoutMap, overviewPlatform]);
+  }, [computedCreators, payoutMap, overviewPlatform, effectiveCreators]);
 
   const sortedTableRows = useMemo<TableRow[]>(() => {
     return [...tableRows].sort((a, b) => {
@@ -1146,6 +1192,14 @@ export default function UGCPage() {
 
           {/* Right: sync buttons + mode toggle + platform filter */}
           <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+            {/* Manage button */}
+            <Link
+              href="/ugc/manage"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all"
+            >
+              <Settings size={13} />
+              <span className="hidden sm:inline">Manage</span>
+            </Link>
             {/* Sync buttons — always visible */}
             <div className="flex items-center gap-2">
               <button
@@ -1232,7 +1286,7 @@ export default function UGCPage() {
             {/* ── Creator Cards ───────────────────────────────────────────── */}
             {overviewLoaded && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-8">
-                {TIKTOK_CREATORS.map((creator) => {
+                {effectiveCreators.map((creator) => {
                   const computed = computedCreators.find((c) => c.name === creator.name);
                   const payout = payoutMap[creator.name];
                   const lastSync = creator.handle
@@ -1537,7 +1591,7 @@ export default function UGCPage() {
                     <tbody>
                       {sortedTableRows.map((row, i) => {
                         const color = getCreatorColor(row.name);
-                        const rowCreator = TIKTOK_CREATORS.find((c) => c.name === row.name);
+                        const rowCreator = effectiveCreators.find((c) => c.name === row.name);
                         const rowAvatarUrl =
                           (rowCreator?.handle ? allData?.tiktok[rowCreator.handle]?.authorMeta?.avatar : null) ||
                           (rowCreator?.igHandle ? allData?.instagram[rowCreator.igHandle]?.igAuthorMeta?.avatar : null) ||
@@ -1638,16 +1692,17 @@ export default function UGCPage() {
             {/* Creator Tabs + Platform Toggle — stacked on mobile, same row on sm+ */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
               <div className="flex overflow-x-auto gap-2 pb-1 -mx-1 px-1 scrollbar-hide">
-                {TIKTOK_CREATORS.map((creator) => {
+                {effectiveCreators.map((creator) => {
                   const active = creator.handle === activeHandle;
                   const disabled = !creator.handle;
+                  const status = creatorStatusMap[creator.name];
                   return (
                     <button
                       key={creator.name}
                       onClick={() => { if (creator.handle && !disabled) setActiveHandle(creator.handle); }}
                       disabled={disabled}
                       className={[
-                        "flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all border",
+                        "flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all border",
                         active
                           ? "bg-blue-600/20 border-blue-500/40 text-blue-500 dark:text-blue-400"
                           : disabled
@@ -1655,6 +1710,13 @@ export default function UGCPage() {
                           : "bg-white dark:bg-[#111] border-gray-200 dark:border-[#222] text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333]",
                       ].join(" ")}
                     >
+                      {status && (
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                            status === "active" ? "bg-green-500" : "bg-yellow-500"
+                          }`}
+                        />
+                      )}
                       {creator.name}
                       {disabled && <span className="ml-2 text-[10px] text-gray-300 dark:text-white/20 font-normal">soon</span>}
                     </button>
