@@ -24,6 +24,18 @@
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
   {
+    "id": "c82a1e98-5ddc-43a2-80f6-6cfc18f98520",
+    "label": "c82a1e98-5dd",
+    "agent": "sam",
+    "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
+    "model": "unknown",
+    "tokens": 64271202,
+    "cost": 37.8357,
+    "durationSec": 231479,
+    "status": "success",
+    "timestamp": "2026-02-24T07:10:43.159Z"
+  },
+  {
     "id": "b60fa6af-d612-4a92-b751-12b7852aac24",
     "label": "b60fa6af-d61",
     "agent": "sam",
@@ -34,18 +46,6 @@
     "durationSec": 233320,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
-  },
-  {
-    "id": "c82a1e98-5ddc-43a2-80f6-6cfc18f98520",
-    "label": "c82a1e98-5dd",
-    "agent": "sam",
-    "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
-    "model": "unknown",
-    "tokens": 60335203,
-    "cost": 36.4143,
-    "durationSec": 230947,
-    "status": "success",
-    "timestamp": "2026-02-24T07:10:43.159Z"
   },
   {
     "id": "a9017c33-0928-4c94-a9a7-8468f27d92fc",
