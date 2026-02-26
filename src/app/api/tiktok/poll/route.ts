@@ -6,48 +6,9 @@ import {
   mergeNewPosts,
   mergeRefreshCounts,
 } from "@/lib/tiktok-store";
+import { persistAvatar } from "@/lib/avatar-persist";
 
 export const dynamic = "force-dynamic";
-
-// NOTE: Requires Supabase Storage bucket "ugc-assets" with public read access.
-// To create: Dashboard → Storage → New bucket → name: ugc-assets → Public: ON
-async function persistAvatar(avatarUrl: string, handle: string): Promise<string> {
-  try {
-    // Fetch the image while the signed URL is still fresh
-    const imgRes = await fetch(avatarUrl, {
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1)" },
-    });
-    if (!imgRes.ok) return avatarUrl; // fallback to original if fetch fails
-
-    const buffer = await imgRes.arrayBuffer();
-    const contentType = imgRes.headers.get("content-type") || "image/jpeg";
-    const ext = contentType.includes("png") ? "png" : "jpg";
-    const fileName = `avatars/tiktok_${handle}.${ext}`;
-
-    // Upload to Supabase Storage bucket "ugc-assets"
-    const uploadRes = await fetch(
-      `${process.env.SUPABASE_CLC_URL}/storage/v1/object/ugc-assets/${fileName}`,
-      {
-        method: "POST",
-        headers: {
-          apikey: process.env.SUPABASE_CLC_KEY!,
-          Authorization: `Bearer ${process.env.SUPABASE_CLC_KEY}`,
-          "Content-Type": contentType,
-          "x-upsert": "true",
-        },
-        body: buffer,
-      }
-    );
-
-    if (uploadRes.ok) {
-      // Return the permanent public URL
-      return `${process.env.SUPABASE_CLC_URL}/storage/v1/object/public/ugc-assets/${fileName}`;
-    }
-    return avatarUrl; // fallback
-  } catch {
-    return avatarUrl; // fallback
-  }
-}
 
 // GET /api/tiktok/poll?runId={runId}&handle={handle}&mode={mode}
 export async function GET(req: NextRequest) {
@@ -134,7 +95,7 @@ export async function GET(req: NextRequest) {
       } else if (authorMeta) {
         // First fetch: persist the avatar to Supabase Storage so it never expires
         if (authorMeta.avatar) {
-          const persistedAvatar = await persistAvatar(authorMeta.avatar, handle);
+          const persistedAvatar = await persistAvatar(authorMeta.avatar, `tiktok_${handle}`);
           authorMeta = { ...authorMeta, avatar: persistedAvatar };
         }
         updated = { ...updated, authorMeta };

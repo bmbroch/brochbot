@@ -16,7 +16,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { handle, mode, firstFetch } = body as { handle?: string; mode?: string; firstFetch?: boolean };
+  const { handle, mode, firstFetch, webhookUrl } = body as {
+    handle?: string;
+    mode?: string;
+    firstFetch?: boolean;
+    webhookUrl?: string; // if provided, Apify will POST to this URL on completion
+  };
   if (!handle) return NextResponse.json({ error: "handle is required" }, { status: 400 });
   if (mode !== "new-posts" && mode !== "refresh-counts") {
     return NextResponse.json({ error: "mode must be new-posts or refresh-counts" }, { status: 400 });
@@ -33,6 +38,16 @@ export async function POST(req: NextRequest) {
   };
   if (!firstFetch) {
     apifyInput.scrapeLastNDays = isNewPosts ? 7 : 60;
+  }
+
+  // Register webhook if URL provided (used by auto-sync cron)
+  if (webhookUrl) {
+    apifyInput.webhooks = [
+      {
+        eventTypes: ["ACTOR.RUN.SUCCEEDED"],
+        requestUrl: webhookUrl,
+      },
+    ];
   }
 
   try {

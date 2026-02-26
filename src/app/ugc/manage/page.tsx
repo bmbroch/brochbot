@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Shell from "@/components/Shell";
-import { ArrowLeft, Plus, Settings2, Search, Trash2, Pencil, Check, X, Loader2 } from "lucide-react";
+import { ArrowLeft, Plus, Settings2, Search, Trash2, Pencil, Check, X, Loader2, ImageIcon } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -359,6 +359,8 @@ export default function ManageCreatorsPage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<UGCCreator | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [refreshingAvatars, setRefreshingAvatars] = useState(false);
+  const [avatarRefreshResult, setAvatarRefreshResult] = useState<string | null>(null);
 
   // Fetch creators on mount
   const fetchCreators = useCallback(async () => {
@@ -421,6 +423,21 @@ export default function ManageCreatorsPage() {
     setCreators((prev) => [...prev, creator]);
   };
 
+  // Refresh avatars
+  const handleRefreshAvatars = async () => {
+    setRefreshingAvatars(true);
+    setAvatarRefreshResult(null);
+    try {
+      const res = await fetch("/api/ugc/refresh-avatars", { method: "POST" });
+      const data = await res.json();
+      setAvatarRefreshResult(data.message ?? "Done");
+    } catch {
+      setAvatarRefreshResult("Failed — check console");
+    } finally {
+      setRefreshingAvatars(false);
+    }
+  };
+
   // Filter
   const filtered = creators.filter(
     (c) =>
@@ -451,13 +468,27 @@ export default function ManageCreatorsPage() {
               Manage which creators to track and their sync schedules.
             </p>
           </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-all flex-shrink-0"
-          >
-            <Plus size={15} />
-            Add Creator
-          </button>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {avatarRefreshResult && (
+              <span className="text-xs text-gray-400 dark:text-white/40">{avatarRefreshResult}</span>
+            )}
+            <button
+              onClick={handleRefreshAvatars}
+              disabled={refreshingAvatars}
+              title="Re-scrape fresh avatar URLs and persist to Supabase Storage"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 dark:border-[#333] text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#444] text-sm transition-all disabled:opacity-50"
+            >
+              {refreshingAvatars ? <Loader2 size={14} className="animate-spin" /> : <ImageIcon size={14} />}
+              <span className="hidden sm:inline">Refresh Avatars</span>
+            </button>
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-all"
+            >
+              <Plus size={15} />
+              Add Creator
+            </button>
+          </div>
         </div>
 
         {/* Search */}

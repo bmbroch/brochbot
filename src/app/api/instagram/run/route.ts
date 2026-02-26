@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { igHandle, mode, firstFetch } = body;
+  const { igHandle, mode, firstFetch, webhookUrl } = body as typeof body & { webhookUrl?: string };
   if (!igHandle) return NextResponse.json({ error: "igHandle is required" }, { status: 400 });
   if (mode !== "new-posts" && mode !== "refresh-counts") {
     return NextResponse.json({ error: "mode must be new-posts or refresh-counts" }, { status: 400 });
@@ -24,16 +24,24 @@ export async function POST(req: NextRequest) {
 
   const resultsLimit = firstFetch ? 100 : mode === "new-posts" ? 20 : 50;
 
-  const postsInput = {
+  // Build webhook array if URL provided (used by auto-sync cron)
+  const webhooks = webhookUrl
+    ? [{ eventTypes: ["ACTOR.RUN.SUCCEEDED"], requestUrl: webhookUrl }]
+    : undefined;
+
+  const postsInput: Record<string, unknown> = {
     directUrls: [`https://www.instagram.com/${igHandle}/`],
     resultsType: "posts",
     resultsLimit,
+    ...(webhooks ? { webhooks } : {}),
   };
 
-  const profileInput = {
+  const profileInput: Record<string, unknown> = {
     directUrls: [`https://www.instagram.com/${igHandle}/`],
     resultsType: "details",
     resultsLimit: 1,
+    // Profile run uses same webhook URL — the handler detects it's a profile run by the data shape
+    ...(webhooks ? { webhooks } : {}),
   };
 
   try {

@@ -7,48 +7,9 @@ import {
   mergeRefreshCounts,
   IgAuthorMeta,
 } from "@/lib/instagram-store";
+import { persistAvatar } from "@/lib/avatar-persist";
 
 export const dynamic = "force-dynamic";
-
-// NOTE: Requires Supabase Storage bucket "ugc-assets" with public read access.
-// To create: Dashboard → Storage → New bucket → name: ugc-assets → Public: ON
-async function persistAvatar(avatarUrl: string, igHandle: string): Promise<string> {
-  try {
-    // Fetch the image while the signed URL is still fresh
-    const imgRes = await fetch(avatarUrl, {
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1)" },
-    });
-    if (!imgRes.ok) return avatarUrl; // fallback to original if fetch fails
-
-    const buffer = await imgRes.arrayBuffer();
-    const contentType = imgRes.headers.get("content-type") || "image/jpeg";
-    const ext = contentType.includes("png") ? "png" : "jpg";
-    const fileName = `avatars/instagram_${igHandle}.${ext}`;
-
-    // Upload to Supabase Storage bucket "ugc-assets"
-    const uploadRes = await fetch(
-      `${process.env.SUPABASE_CLC_URL}/storage/v1/object/ugc-assets/${fileName}`,
-      {
-        method: "POST",
-        headers: {
-          apikey: process.env.SUPABASE_CLC_KEY!,
-          Authorization: `Bearer ${process.env.SUPABASE_CLC_KEY}`,
-          "Content-Type": contentType,
-          "x-upsert": "true",
-        },
-        body: buffer,
-      }
-    );
-
-    if (uploadRes.ok) {
-      // Return the permanent public URL
-      return `${process.env.SUPABASE_CLC_URL}/storage/v1/object/public/ugc-assets/${fileName}`;
-    }
-    return avatarUrl; // fallback
-  } catch {
-    return avatarUrl; // fallback
-  }
-}
 
 // GET /api/instagram/poll?runId={runId}&igHandle={igHandle}&mode={mode}[&profileRunId={...}&profileDatasetId={...}]
 export async function GET(req: NextRequest) {
@@ -157,7 +118,7 @@ export async function GET(req: NextRequest) {
 
       // On first fetch (no existing meta), persist the avatar to Supabase Storage
       if (!existing?.igAuthorMeta && igAuthorMeta?.avatar) {
-        const persistedAvatar = await persistAvatar(igAuthorMeta.avatar, igHandle);
+        const persistedAvatar = await persistAvatar(igAuthorMeta.avatar, `instagram_${igHandle}`);
         igAuthorMeta = { ...igAuthorMeta, avatar: persistedAvatar };
       }
 
