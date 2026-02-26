@@ -31,7 +31,10 @@ export async function GET() {
   }
 }
 
-// POST /api/ugc/creators — insert new creator
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://brochbot.com";
+const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
+
+// POST /api/ugc/creators — insert new creator + auto-trigger first fetch
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -60,7 +63,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: text }, { status: res.status });
     }
     const data = await res.json();
-    return NextResponse.json(Array.isArray(data) ? data[0] : data, { status: 201 });
+    const created = Array.isArray(data) ? data[0] : data;
+
+    // Auto-trigger first fetch (fire-and-forget via webhooks)
+    const secretParam = WEBHOOK_SECRET ? `&secret=${encodeURIComponent(WEBHOOK_SECRET)}` : "";
+
+    if (created.tiktok_handle) {
+      const ttWebhook = `${BASE_URL}/api/tiktok/webhook?handle=${encodeURIComponent(created.tiktok_handle)}&mode=new-posts&creatorId=${created.id}${secretParam}`;
+      fetch(`${BASE_URL}/api/tiktok/run`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ handle: created.tiktok_handle, mode: "new-posts", firstFetch: true, webhookUrl: ttWebhook }),
+      }).catch(() => {});
+    }
+
+    if (created.ig_handle) {
+      const igWebhook = `${BASE_URL}/api/instagram/webhook?igHandle=${encodeURIComponent(created.ig_handle)}&mode=new-posts&creatorId=${created.id}${secretParam}`;
+      fetch(`${BASE_URL}/api/instagram/run`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ igHandle: created.ig_handle, mode: "new-posts", firstFetch: true, webhookUrl: igWebhook }),
+      }).catch(() => {});
+    }
+
+    return NextResponse.json(created, { status: 201 });
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
