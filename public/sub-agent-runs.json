@@ -120,6 +120,18 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
+    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
+    "label": "b88a363c-216",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 1604300,
+    "cost": 2.8156,
+    "durationSec": 551198,
+    "status": "success",
+    "timestamp": "2026-02-19T18:55:11.223Z"
+  },
+  {
     "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
     "label": "20309a2a-9ef",
     "agent": "sam",
@@ -142,18 +154,6 @@
     "durationSec": 250,
     "status": "success",
     "timestamp": "2026-02-24T09:24:08.663Z"
-  },
-  {
-    "id": "b88a363c-216f-4c95-9664-952cf42aa182",
-    "label": "b88a363c-216",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 1485568,
-    "cost": 2.6357,
-    "durationSec": 464785,
-    "status": "success",
-    "timestamp": "2026-02-19T18:55:11.223Z"
   },
   {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
@@ -492,6 +492,18 @@
     "timestamp": "2026-02-23T04:00:00.031Z"
   },
   {
+    "id": "bcd7fed5-bfb9-4273-9793-b49e6968c8c1",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 101869,
+    "cost": 0.1517,
+    "durationSec": 93,
+    "status": "success",
+    "timestamp": "2026-02-26T04:00:00.275Z"
+  },
+  {
     "id": "7af296ce-c8ac-495b-bfb4-59066238c23a",
     "label": "7af296ce-c8a",
     "agent": "sam",
@@ -529,8 +541,8 @@
   },
   {
     "id": "c65fbc8d-3af6-4963-8840-7a30d4696588",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "c65fbc8d-3af",
+    "agent": "sam",
     "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
     "model": "Sonnet",
     "tokens": 74037,
@@ -577,8 +589,8 @@
   },
   {
     "id": "5158de6f-4542-422a-841c-84ea95d08017",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "5158de6f-454",
+    "agent": "sam",
     "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
     "model": "Sonnet",
     "tokens": 53404,
