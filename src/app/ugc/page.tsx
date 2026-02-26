@@ -225,13 +225,15 @@ function CreatorCard({
 
   const isThisSyncing = !!creator.handle && syncingHandle === creator.handle;
   const isAnotherSyncing = !!syncingHandle && syncingHandle !== creator.handle;
+  const [imgError, setImgError] = React.useState(false);
 
   const Avatar = () =>
-    avatarUrl ? (
+    avatarUrl && !imgError ? (
       <img
         src={`/api/proxy-image?url=${encodeURIComponent(avatarUrl)}`}
         className="w-9 h-9 rounded-full object-cover flex-shrink-0 ring-1 ring-black/10"
         alt={creator.name}
+        onError={() => setImgError(true)}
       />
     ) : (
       <div
@@ -469,13 +471,15 @@ function IgTooltip({
 
 function ProfileHeader({ meta }: { meta: TikTokAuthorMeta }) {
   const initials = meta.nickName ? meta.nickName.slice(0, 2).toUpperCase() : "?";
+  const [imgError, setImgError] = React.useState(false);
   return (
     <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-4 flex items-center gap-5">
-      {meta.avatar ? (
+      {meta.avatar && !imgError ? (
         <img
           src={`/api/proxy-image?url=${encodeURIComponent(meta.avatar)}`}
           alt={meta.nickName}
           className="w-16 h-16 rounded-full object-cover ring-2 ring-white/10 flex-shrink-0"
+          onError={() => setImgError(true)}
         />
       ) : (
         <div className="w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-pink-500 to-blue-500 text-white font-bold text-lg ring-2 ring-white/10">
@@ -513,12 +517,14 @@ function IgProfileHeader({ meta }: { meta: IgAuthorMeta }) {
     : meta.username
     ? meta.username.slice(0, 2).toUpperCase()
     : "?";
+  const [imgError, setImgError] = React.useState(false);
   return (
     <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] p-5 mb-4 flex items-center gap-5">
-      {meta.avatar ? (
+      {meta.avatar && !imgError ? (
         <img
           src={`/api/proxy-image?url=${encodeURIComponent(meta.avatar)}`}
           alt={meta.fullName || meta.username}
+          onError={() => setImgError(true)}
           className="w-16 h-16 rounded-full object-cover ring-2 ring-white/10 flex-shrink-0"
         />
       ) : (
@@ -1621,6 +1627,7 @@ export default function UGCPage() {
                                     src={`/api/proxy-image?url=${encodeURIComponent(rowAvatarUrl)}`}
                                     className="w-6 h-6 rounded-full object-cover flex-shrink-0"
                                     alt={row.name}
+                                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                                   />
                                 ) : (
                                   <div
