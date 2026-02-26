@@ -430,9 +430,10 @@ export default function ManageCreatorsPage() {
     try {
       const res = await fetch("/api/ugc/refresh-avatars", { method: "POST" });
       const data = await res.json();
-      setAvatarRefreshResult(data.message ?? "Done");
+      // Fire-and-forget — photos update async via webhook, safe to navigate away
+      setAvatarRefreshResult(data.message ?? "Refreshing… photos will update in ~1 min");
     } catch {
-      setAvatarRefreshResult("Failed — check console");
+      setAvatarRefreshResult("Something went wrong");
     } finally {
       setRefreshingAvatars(false);
     }

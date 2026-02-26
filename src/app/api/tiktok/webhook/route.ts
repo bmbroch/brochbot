@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
   const handle = req.nextUrl.searchParams.get("handle");
   const mode = req.nextUrl.searchParams.get("mode");
   const creatorId = req.nextUrl.searchParams.get("creatorId");
+  const forceAvatarRefresh = req.nextUrl.searchParams.get("forceAvatarRefresh") === "true";
 
   if (!handle || !mode) {
     return NextResponse.json({ error: "handle and mode are required query params" }, { status: 400 });
@@ -106,8 +107,15 @@ export async function POST(req: NextRequest) {
       updated = mergeRefreshCounts(existing, mapped);
     }
 
-    // Prefer stored authorMeta — only persist on first fetch
-    if (existing?.authorMeta) {
+    // Avatar persistence:
+    // - forceAvatarRefresh=true → always re-persist (used by refresh-avatars endpoint)
+    // - first fetch (no existing authorMeta) → persist
+    // - routine sync → keep stored authorMeta (don't overwrite with expiring CDN URL)
+    if (forceAvatarRefresh && authorMeta?.avatar) {
+      const persistedAvatar = await persistAvatar(authorMeta.avatar, `tiktok_${handle}`);
+      authorMeta = { ...authorMeta, avatar: persistedAvatar };
+      updated = { ...updated, authorMeta };
+    } else if (existing?.authorMeta) {
       updated = { ...updated, authorMeta: existing.authorMeta };
     } else if (authorMeta?.avatar) {
       const persistedAvatar = await persistAvatar(authorMeta.avatar, `tiktok_${handle}`);
