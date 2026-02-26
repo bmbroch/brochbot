@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Shell from "@/components/Shell";
 import { useTheme } from "@/components/ThemeProvider";
 import { creatorColors } from "@/lib/data-provider";
@@ -22,7 +22,6 @@ import {
 import Link from "next/link";
 import {
   Search,
-  RefreshCw,
   ExternalLink,
   Loader2,
   Music,
@@ -38,8 +37,6 @@ import {
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
 type LoadState = "loading" | "idle" | "done" | "error";
-type ButtonMode = "new-posts" | "refresh-counts";
-type RunState = "idle" | "running" | "done" | "error";
 type Platform = "tiktok" | "instagram";
 type DateRange = "7D" | "30D" | "90D" | "All";
 type OverviewPlatform = "All" | "TikTok" | "Instagram";
@@ -206,8 +203,6 @@ function CreatorCard({
   computedData,
   payout,
   onClick,
-  syncingHandle,
-  onRefresh,
   lastSync,
   avatarUrl,
 }: {
@@ -215,16 +210,11 @@ function CreatorCard({
   computedData: ComputedCreator | undefined;
   payout: CreatorPayout | undefined;
   onClick: () => void;
-  syncingHandle: string | null;
-  onRefresh: (handle: string) => void;
   lastSync: string | null | undefined;
   avatarUrl: string | null;
 }) {
   const color = getCreatorColor(creator.name);
   const hasData = computedData && (computedData.posts > 0 || computedData.ttViews > 0 || computedData.igViews > 0);
-
-  const isThisSyncing = !!creator.handle && syncingHandle === creator.handle;
-  const isAnotherSyncing = !!syncingHandle && syncingHandle !== creator.handle;
   const [imgError, setImgError] = useState(false);
 
   const Avatar = () =>
@@ -244,29 +234,6 @@ function CreatorCard({
       </div>
     );
 
-  const RefreshBtn = () =>
-    creator.handle ? (
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          if (!isAnotherSyncing && !isThisSyncing) onRefresh(creator.handle!);
-        }}
-        disabled={isAnotherSyncing || isThisSyncing}
-        title={isAnotherSyncing ? "Another creator is syncing…" : "Sync new posts"}
-        className={[
-          "flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all",
-          isAnotherSyncing ? "opacity-40 cursor-not-allowed" : "",
-          isThisSyncing ? "cursor-default" : "",
-        ].join(" ")}
-      >
-        {isThisSyncing ? (
-          <Loader2 size={13} className="animate-spin" />
-        ) : (
-          <RefreshCw size={13} />
-        )}
-      </button>
-    ) : null;
-
   // ── No data state — same card shape, greyed out ───────────────────────────
   if (!hasData) {
     return (
@@ -278,7 +245,6 @@ function CreatorCard({
             <div className="font-semibold text-sm text-gray-900 dark:text-white truncate">{creator.name}</div>
             <div className="text-xs text-gray-400 dark:text-white/30">— posts</div>
           </div>
-          <RefreshBtn />
         </div>
 
         {/* Stats grid */}
@@ -293,7 +259,7 @@ function CreatorCard({
 
         {/* Platform row */}
         <div className="text-xs text-gray-300 dark:text-white/20">
-          No data — click ↻ to sync
+          No data yet — syncs automatically each morning
         </div>
       </div>
     );
@@ -316,14 +282,13 @@ function CreatorCard({
       onClick={onClick}
       className="rounded-2xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] p-4 cursor-pointer hover:border-gray-300 dark:hover:border-[#333] hover:shadow-sm transition-all"
     >
-      {/* Header row: avatar + name/posts + refresh */}
+      {/* Header row: avatar + name/posts */}
       <div className="flex items-center gap-3 mb-3">
         <Avatar />
         <div className="flex-1 min-w-0">
           <div className="font-semibold text-sm text-gray-900 dark:text-white truncate">{creator.name}</div>
           <div className="text-xs text-gray-400 dark:text-white/30">{posts} posts</div>
         </div>
-        <RefreshBtn />
       </div>
 
       {/* Stats: 3-col grid */}
@@ -602,8 +567,6 @@ function SortIcon({ col, active, dir }: { col: string; active: boolean; dir: "as
 
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
-const POLL_INTERVAL_MS = 5_000;
-
 export default function UGCPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -619,7 +582,6 @@ export default function UGCPage() {
   const [dateRange, setDateRange] = useState<DateRange>("All");
   const [overviewPlatform, setOverviewPlatform] = useState<OverviewPlatform>("All");
   const [groupBy, setGroupBy] = useState<GroupBy>("week");
-  const [syncingHandle, setSyncingHandle] = useState<string | null>(null);
 
   // ── Table sort ────────────────────────────────────────────────────────────
   const [sortCol, setSortCol] = useState<SortCol>("totalViews");
@@ -645,10 +607,6 @@ export default function UGCPage() {
   const [igLoadState, setIgLoadState] = useState<LoadState>("loading");
   const [igStoreData, setIgStoreData] = useState<InstagramStoreData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [newPostsState, setNewPostsState] = useState<RunState>("idle");
-  const [refreshState, setRefreshState] = useState<RunState>("idle");
-
-  const pollRef = useRef<NodeJS.Timeout | null>(null);
 
   // ── DB-backed creator list ─────────────────────────────────────────────────
   const [dbCreators, setDbCreators] = useState<Array<{
@@ -710,6 +668,18 @@ export default function UGCPage() {
       })
       .catch((err) => console.error("Failed to load overview data", err));
   }, []);
+
+  // ── Most recent sync time across all creators ──────────────────────────────
+  const lastSyncedAt = useMemo(() => {
+    if (!allData) return null;
+    let latest: string | null = null;
+    for (const d of Object.values(allData.tiktok)) {
+      if (d.lastNewPostsSync) {
+        if (!latest || d.lastNewPostsSync > latest) latest = d.lastNewPostsSync;
+      }
+    }
+    return latest;
+  }, [allData]);
 
   // ── Build payoutMap ────────────────────────────────────────────────────────
   const payoutMap = useMemo<Record<string, CreatorPayout>>(() => {
@@ -897,54 +867,6 @@ export default function UGCPage() {
     setIsolatedCreator((prev) => (prev === name ? null : name));
   };
 
-  // ── Card-level refresh ─────────────────────────────────────────────────────
-  const pollCardUntilDone = useCallback((runId: string, handle: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      const timer = setInterval(async () => {
-        try {
-          const res = await fetch(
-            `/api/tiktok/poll?runId=${encodeURIComponent(runId)}&handle=${encodeURIComponent(handle)}&mode=new-posts`
-          );
-          const json = await res.json();
-          if (json.status === "DONE") {
-            clearInterval(timer);
-            resolve();
-          } else if (json.status === "FAILED") {
-            clearInterval(timer);
-            reject(new Error("Apify run failed"));
-          }
-        } catch {
-          // transient — keep polling
-        }
-      }, POLL_INTERVAL_MS);
-    });
-  }, []);
-
-  const handleCardRefresh = useCallback(
-    async (handle: string) => {
-      if (syncingHandle) return;
-      setSyncingHandle(handle);
-      try {
-        const res = await fetch("/api/tiktok/run", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ handle, mode: "new-posts", firstFetch: false }),
-        });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.error ?? "Failed to start run");
-        await pollCardUntilDone(json.runId, handle);
-        // Re-fetch allCreatorData so card stats update immediately
-        const updated = await fetch("/api/tiktok/all-data");
-        setAllData(await updated.json());
-      } catch (err) {
-        console.error("Card refresh failed:", err);
-      } finally {
-        setSyncingHandle(null);
-      }
-    },
-    [syncingHandle, pollCardUntilDone]
-  );
-
   // ── Earnings row for active creator ────────────────────────────────────────
   const earningsRow = useMemo(() => {
     if (!payouts || !activeCreator) return null;
@@ -960,16 +882,8 @@ export default function UGCPage() {
   }, [payouts, payoutMap, computedCreators, activeCreator]);
 
   // ── Apify / Supabase loading ────────────────────────────────────────────────
-  const stopPolling = useCallback(() => {
-    if (pollRef.current) {
-      clearInterval(pollRef.current);
-      pollRef.current = null;
-    }
-  }, []);
-
   const loadTikTokData = useCallback(
     async (handle: string) => {
-      stopPolling();
       setStoreData(null);
       setError(null);
       setLoadState("loading");
@@ -984,12 +898,11 @@ export default function UGCPage() {
         setLoadState("error");
       }
     },
-    [stopPolling]
+    []
   );
 
   const loadInstagramData = useCallback(
     async (igHandle: string) => {
-      stopPolling();
       setIgStoreData(null);
       setError(null);
       setIgLoadState("loading");
@@ -1004,108 +917,10 @@ export default function UGCPage() {
         setIgLoadState("error");
       }
     },
-    [stopPolling]
-  );
-
-  const startTikTokPolling = useCallback(
-    (runId: string, handle: string, mode: ButtonMode) => {
-      stopPolling();
-      const setRunState = mode === "new-posts" ? setNewPostsState : setRefreshState;
-      pollRef.current = setInterval(async () => {
-        try {
-          const res = await fetch(
-            `/api/tiktok/poll?runId=${encodeURIComponent(runId)}&handle=${encodeURIComponent(handle)}&mode=${mode}`
-          );
-          const json = await res.json();
-          if (json.status === "DONE") {
-            stopPolling();
-            setRunState("done");
-            if (json.data) { setStoreData(json.data); setLoadState("done"); }
-          } else if (json.status === "FAILED") {
-            stopPolling();
-            setRunState("error");
-            setError("Apify run failed. Try again.");
-          }
-        } catch { /* transient */ }
-      }, POLL_INTERVAL_MS);
-    },
-    [stopPolling]
-  );
-
-  const startInstagramPolling = useCallback(
-    (runId: string, igHandle: string, mode: ButtonMode, profileRunId?: string | null, profileDatasetId?: string | null) => {
-      stopPolling();
-      const setRunState = mode === "new-posts" ? setNewPostsState : setRefreshState;
-      pollRef.current = setInterval(async () => {
-        try {
-          let pollUrl = `/api/instagram/poll?runId=${encodeURIComponent(runId)}&igHandle=${encodeURIComponent(igHandle)}&mode=${mode}`;
-          if (profileRunId) pollUrl += `&profileRunId=${encodeURIComponent(profileRunId)}`;
-          if (profileDatasetId) pollUrl += `&profileDatasetId=${encodeURIComponent(profileDatasetId)}`;
-          const res = await fetch(pollUrl);
-          const json = await res.json();
-          if (json.status === "DONE") {
-            stopPolling();
-            setRunState("done");
-            if (json.data) { setIgStoreData(json.data); setIgLoadState("done"); }
-          } else if (json.status === "FAILED") {
-            stopPolling();
-            setRunState("error");
-            setError("Apify run failed. Try again.");
-          }
-        } catch { /* transient */ }
-      }, POLL_INTERVAL_MS);
-    },
-    [stopPolling]
-  );
-
-  const handleRun = useCallback(
-    async (mode: ButtonMode) => {
-      const setRunState = mode === "new-posts" ? setNewPostsState : setRefreshState;
-      setRunState("running");
-      setError(null);
-      if (platform === "tiktok") {
-        const firstFetch = !storeData || storeData.videos.length === 0;
-        try {
-          const res = await fetch("/api/tiktok/run", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ handle: activeHandle, mode, firstFetch }),
-          });
-          const json = await res.json();
-          if (!res.ok) throw new Error(json.error ?? "Failed to start run");
-          startTikTokPolling(json.runId, activeHandle, mode);
-        } catch (err) {
-          setRunState("error");
-          setError(String(err));
-        }
-      } else {
-        if (!activeIgHandle) {
-          setRunState("error");
-          setError("No Instagram handle configured for this creator.");
-          return;
-        }
-        const firstFetch = !igStoreData || igStoreData.posts.length === 0;
-        try {
-          const res = await fetch("/api/instagram/run", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ igHandle: activeIgHandle, mode, firstFetch }),
-          });
-          const json = await res.json();
-          if (!res.ok) throw new Error(json.error ?? "Failed to start Instagram run");
-          startInstagramPolling(json.runId, activeIgHandle, mode, json.profileRunId ?? null, json.profileDatasetId ?? null);
-        } catch (err) {
-          setRunState("error");
-          setError(String(err));
-        }
-      }
-    },
-    [platform, activeHandle, activeIgHandle, storeData, igStoreData, startTikTokPolling, startInstagramPolling]
+    []
   );
 
   useEffect(() => {
-    setNewPostsState("idle");
-    setRefreshState("idle");
     setError(null);
     loadTikTokData(activeHandle);
     if (activeIgHandle) {
@@ -1114,16 +929,11 @@ export default function UGCPage() {
       setIgStoreData(null);
       setIgLoadState("idle");
     }
-    return () => stopPolling();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeHandle]);
 
   useEffect(() => {
-    setNewPostsState("idle");
-    setRefreshState("idle");
     setError(null);
-    stopPolling();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [platform]);
 
   // ── Derived: TikTok ───────────────────────────────────────────────────────
@@ -1176,8 +986,6 @@ export default function UGCPage() {
 
   // ── Shared ────────────────────────────────────────────────────────────────
   const activeLoadState = platform === "tiktok" ? loadState : igLoadState;
-  const activeSyncTime = platform === "tiktok" ? storeData?.lastNewPostsSync ?? null : igStoreData?.lastNewPostsSync ?? null;
-  const activeRefreshTime = platform === "tiktok" ? storeData?.lastCountsRefresh ?? null : igStoreData?.lastCountsRefresh ?? null;
 
   const gridColor = isDark ? "#262626" : "#e5e7eb";
   const tickColor = isDark ? "#71717a" : "#9ca3af";
@@ -1187,9 +995,6 @@ export default function UGCPage() {
   const tooltipStyle = isDark
     ? { contentStyle: { backgroundColor: "#1a1a1a", border: "1px solid #333", borderRadius: 8, fontSize: 12 }, labelStyle: { color: "#a1a1aa" }, itemStyle: { color: "#e4e4e7" } }
     : { contentStyle: { backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }, labelStyle: { color: "#6b7280" }, itemStyle: { color: "#374151" } };
-
-  const newPostsRunning = newPostsState === "running";
-  const refreshRunning = refreshState === "running";
 
   const showTT = overviewPlatform !== "Instagram";
   const showIG = overviewPlatform !== "TikTok";
@@ -1213,14 +1018,18 @@ export default function UGCPage() {
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">UGC Analytics</h1>
             <p className="text-sm text-gray-400 dark:text-white/40 mt-0.5">
               Powered by Apify + Mercury
+              {lastSyncedAt && (
+                <span className="text-gray-300 dark:text-white/30"> · Last synced {timeAgo(lastSyncedAt)}</span>
+              )}
               {payoutsLastUpdated && (
                 <span className="text-gray-300 dark:text-white/30"> · Payouts synced {timeAgo(payoutsLastUpdated)}</span>
               )}
             </p>
           </div>
 
-          {/* Right: sync buttons + mode toggle + platform filter */}
+          {/* Right: mode toggle + platform filter */}
           <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+
             {/* Manage button */}
             <Link
               href="/ugc/manage"
@@ -1229,27 +1038,6 @@ export default function UGCPage() {
               <Settings size={13} />
               <span className="hidden sm:inline">Manage</span>
             </Link>
-            {/* Sync buttons — always visible */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleRun("new-posts")}
-                disabled={newPostsRunning || refreshRunning}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-[var(--text-muted)] hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40"
-              >
-                {newPostsRunning ? <Loader2 size={13} className="animate-spin" /> : <Search size={13} />}
-                <span>New Posts</span>
-              </button>
-              <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap hidden sm:inline">· {timeAgo(activeSyncTime)}</span>
-              <button
-                onClick={() => handleRun("refresh-counts")}
-                disabled={newPostsRunning || refreshRunning}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-[var(--text-muted)] hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all disabled:opacity-40"
-              >
-                {refreshRunning ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
-                <span>Refresh Counts</span>
-              </button>
-              <span className="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap hidden sm:inline">· {timeAgo(activeRefreshTime)}</span>
-            </div>
 
             {/* Overview / Creator Drill Down tabs */}
             <div className="flex items-center gap-1 p-1 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111]">
@@ -1337,8 +1125,6 @@ export default function UGCPage() {
                           setPageMode("drilldown");
                         }
                       }}
-                      syncingHandle={syncingHandle}
-                      onRefresh={handleCardRefresh}
                       lastSync={lastSync}
                       avatarUrl={avatarUrl}
                     />
@@ -1814,16 +1600,8 @@ export default function UGCPage() {
                     </div>
                     <div className="text-center">
                       <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No data yet for {activeCreator?.name ?? activeHandle}</p>
-                      <p className="text-gray-400 dark:text-white/30 text-sm">Click &quot;New Posts&quot; to fetch their TikTok videos.</p>
+                      <p className="text-gray-400 dark:text-white/30 text-sm">Data syncs automatically each morning at 8 AM UTC.</p>
                     </div>
-                    <button
-                      onClick={() => handleRun("new-posts")}
-                      disabled={newPostsRunning}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600/10 border border-blue-500/30 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-600/20 hover:border-blue-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                    >
-                      {newPostsRunning ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
-                      {newPostsRunning ? "Syncing..." : `Fetch ${activeCreator?.name ?? activeHandle}&apos;s videos`}
-                    </button>
                   </div>
                 )}
                 {(activeLoadState === "done" || (activeLoadState !== "loading" && activeLoadState !== "idle" && videos.length > 0)) && (
@@ -1935,16 +1713,8 @@ export default function UGCPage() {
                         </div>
                         <div className="text-center">
                           <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No Instagram data yet for {activeCreator?.name ?? activeHandle}</p>
-                          <p className="text-gray-400 dark:text-white/30 text-sm">Click &quot;New Posts&quot; to fetch their Instagram posts.</p>
+                          <p className="text-gray-400 dark:text-white/30 text-sm">Data syncs automatically each morning at 8 AM UTC.</p>
                         </div>
-                        <button
-                          onClick={() => handleRun("new-posts")}
-                          disabled={newPostsRunning}
-                          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600/10 border border-blue-500/30 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-600/20 hover:border-blue-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                        >
-                          {newPostsRunning ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
-                          {newPostsRunning ? "Syncing..." : `Fetch ${activeCreator?.name ?? activeHandle}&apos;s Instagram posts`}
-                        </button>
                       </div>
                     )}
                     {(igLoadState === "done" || (igLoadState !== "loading" && igLoadState !== "idle" && posts.length > 0)) && (

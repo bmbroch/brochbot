@@ -3,13 +3,20 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 // GET /api/proxy-image?url=<encoded_url>
-// Proxies external images (Instagram/TikTok CDN) to bypass hotlink protection
+// Proxies external images (Instagram/TikTok CDN) to bypass hotlink protection.
+// Supabase Storage URLs are passed through directly (they're already public).
 export async function GET(req: NextRequest) {
   const url = req.nextUrl.searchParams.get("url");
   if (!url) return new NextResponse("Missing url", { status: 400 });
 
   try {
     const decoded = decodeURIComponent(url);
+
+    // Supabase Storage URLs are permanently public — redirect directly, no proxy needed
+    if (decoded.includes("supabase.co/storage")) {
+      return NextResponse.redirect(decoded);
+    }
+
     const res = await fetch(decoded, {
       headers: {
         "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1)",
