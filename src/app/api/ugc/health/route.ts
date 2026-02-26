@@ -115,23 +115,30 @@ export async function GET(req: NextRequest) {
     const healthStatus = computeHealth(c.status, lastSyncedAt, issues);
 
     // Auto-remediate: fire new-posts for stale/critical active creators
+    // Must await — Vercel kills unawaited fetches when the response is returned
     if (remediate && c.status === "active" && (healthStatus === "stale" || healthStatus === "critical" || healthStatus === "never")) {
+      const remediatePromises: Promise<unknown>[] = [];
       if (c.tiktok_handle) {
         const ttWebhook = `${BASE_URL}/api/tiktok/webhook?handle=${encodeURIComponent(c.tiktok_handle)}&mode=new-posts&creatorId=${c.id}${secretParam}`;
-        fetch(`${BASE_URL}/api/tiktok/run`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ handle: c.tiktok_handle, mode: "new-posts", firstFetch: !ttLog, webhookUrl: ttWebhook }),
-        }).catch(() => {});
+        remediatePromises.push(
+          fetch(`${BASE_URL}/api/tiktok/run`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ handle: c.tiktok_handle, mode: "new-posts", firstFetch: !ttLog, webhookUrl: ttWebhook }),
+          }).catch(() => {})
+        );
       }
       if (c.ig_handle) {
         const igWebhook = `${BASE_URL}/api/instagram/webhook?igHandle=${encodeURIComponent(c.ig_handle)}&mode=new-posts&creatorId=${c.id}${secretParam}`;
-        fetch(`${BASE_URL}/api/instagram/run`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ igHandle: c.ig_handle, mode: "new-posts", firstFetch: !igLog, webhookUrl: igWebhook }),
-        }).catch(() => {});
+        remediatePromises.push(
+          fetch(`${BASE_URL}/api/instagram/run`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ igHandle: c.ig_handle, mode: "new-posts", firstFetch: !igLog, webhookUrl: igWebhook }),
+          }).catch(() => {})
+        );
       }
+      await Promise.all(remediatePromises);
       remediated.push(c.name);
     }
 
