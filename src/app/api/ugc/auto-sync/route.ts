@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 
 const SUPABASE_URL = process.env.SUPABASE_CLC_URL!;
 const SUPABASE_KEY = process.env.SUPABASE_CLC_KEY!;
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://brochbot.com";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://www.brochbot.com";
 const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
 
 /**

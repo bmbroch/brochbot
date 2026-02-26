@@ -31,7 +31,7 @@ export async function GET() {
   }
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://brochbot.com";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://www.brochbot.com";
 const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
 
 // POST /api/ugc/creators — insert new creator + auto-trigger first fetch

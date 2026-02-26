@@ -4,7 +4,7 @@ import { TIKTOK_CREATORS } from "@/lib/tiktok-creators";
 export const dynamic = "force-dynamic";
 
 const APIFY_KEY = process.env.APIFY_API_KEY!;
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://brochbot.com";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://www.brochbot.com";
 const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
 
 /**
