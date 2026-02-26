@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       // Fire posts run and profile run in parallel
       const [postsRes, profileRes] = await Promise.all([
         fetch(
-          `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}`,
+          `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
           }
         ),
         fetch(
-          `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}`,
+          `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
     } else {
       // Non-firstFetch: posts run only
       const res = await fetch(
-        `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}`,
+        `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

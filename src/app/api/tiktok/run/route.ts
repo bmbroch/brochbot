@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://api.apify.com/v2/acts/clockworks~tiktok-scraper/runs?token=${APIFY_KEY}`,
+      `https://api.apify.com/v2/acts/clockworks~tiktok-scraper/runs?token=${APIFY_KEY}&memory=512`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
