@@ -88,11 +88,11 @@ export async function GET(req: NextRequest) {
         updated = mergeRefreshCounts(existing, mapped);
       }
 
-      // Attach authorMeta if we got it (prefer fresh over stored)
-      if (authorMeta) {
-        updated = { ...updated, authorMeta };
-      } else if (existing?.authorMeta) {
+      // Prefer stored authorMeta — only set on first fetch, don't overwrite on routine syncs
+      if (existing?.authorMeta) {
         updated = { ...updated, authorMeta: existing.authorMeta };
+      } else if (authorMeta) {
+        updated = { ...updated, authorMeta };
       }
 
       await setStoreData(handle, updated);
