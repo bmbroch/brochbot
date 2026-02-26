@@ -19,6 +19,10 @@ interface ApifyWebhookPayload {
   eventType: string;
   eventData: {
     actorRunId: string;
+    defaultDatasetId?: string; // NOT present in real Apify payloads — use resource instead
+  };
+  resource?: {
+    id: string;
     defaultDatasetId: string;
   };
 }
@@ -63,7 +67,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, skipped: true });
   }
 
-  const datasetId = body.eventData?.defaultDatasetId;
+  // Apify puts defaultDatasetId in resource (not eventData) in real webhook calls
+  const datasetId = body.resource?.defaultDatasetId || body.eventData?.defaultDatasetId;
   if (!datasetId) {
     return NextResponse.json({ error: "Missing defaultDatasetId in payload" }, { status: 400 });
   }
@@ -151,7 +156,7 @@ export async function POST(req: NextRequest) {
       status: "succeeded",
       posts_processed: mapped.length,
       total_posts: updated.videos.length,
-      run_id: body.eventData?.actorRunId,
+      run_id: body.resource?.id || body.eventData?.actorRunId,
     });
 
     return NextResponse.json({
