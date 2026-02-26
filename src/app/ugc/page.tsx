@@ -631,6 +631,9 @@ export default function UGCPage() {
   // ── Log scale toggle ───────────────────────────────────────────────────────
   const [logScale, setLogScale] = useState(false);
 
+  // ── Chart mode toggle (daily / cumulative) ─────────────────────────────────
+  const [chartMode, setChartMode] = useState<"daily" | "cumulative">("daily");
+
   // ── Platform comparison mode ───────────────────────────────────────────────
   const [platformCompMode, setPlatformCompMode] = useState<"absolute" | "perPost">("absolute");
 
@@ -803,6 +806,26 @@ export default function UGCPage() {
       return point;
     });
   }, [allCreators, isolatedCreator, cutoff, overviewPlatform, groupBy]);
+
+  // ── Cumulative transform ───────────────────────────────────────────────────
+  const displayLineChartData = useMemo(() => {
+    if (chartMode !== "cumulative") return lineChartData;
+    const creatorNames = allCreators
+      .filter((c) => isolatedCreator === null || isolatedCreator === c.name)
+      .map((c) => c.name);
+    const runningTotals: Record<string, number> = {};
+    creatorNames.forEach((name) => (runningTotals[name] = 0));
+    return lineChartData.map((point) => {
+      const newPoint = { ...point };
+      creatorNames.forEach((name) => {
+        if (typeof newPoint[name] === "number") {
+          runningTotals[name] += newPoint[name] as number;
+          newPoint[name] = runningTotals[name];
+        }
+      });
+      return newPoint;
+    });
+  }, [lineChartData, chartMode, allCreators, isolatedCreator]);
 
   // ── Bar chart data ─────────────────────────────────────────────────────────
   const barData = useMemo(
@@ -1172,7 +1195,7 @@ export default function UGCPage() {
   const showIG = overviewPlatform !== "TikTok";
 
   // ── X-axis tick interval for line chart ───────────────────────────────────
-  const xAxisInterval = Math.max(0, Math.ceil(lineChartData.length / 8) - 1);
+  const xAxisInterval = Math.max(0, Math.ceil(displayLineChartData.length / 8) - 1);
 
   // ── Visible creators in the line chart ───────────────────────────────────
   const visibleCreators = allCreators.filter(
@@ -1397,6 +1420,24 @@ export default function UGCPage() {
                         </button>
                       ))}
                     </div>
+                    <div className="w-px h-4 bg-gray-200 dark:bg-[#333]" />
+                    {/* Daily / Cumulative toggle */}
+                    <div className="flex items-center gap-1">
+                      {(["daily", "cumulative"] as const).map((m) => (
+                        <button
+                          key={m}
+                          onClick={() => setChartMode(m)}
+                          className={[
+                            "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer capitalize",
+                            chartMode === m
+                              ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
+                              : "border border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444] hover:text-gray-600 dark:hover:text-white/60",
+                          ].join(" ")}
+                        >
+                          {m === "daily" ? "Daily" : "Cumulative"}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -1440,7 +1481,7 @@ export default function UGCPage() {
                 </div>
 
                 {/* Chart */}
-                {lineChartData.length === 0 ? (
+                {displayLineChartData.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-16 gap-2">
                     <p className="text-gray-400 dark:text-white/30 text-sm font-medium">No posts in this period</p>
                     <p className="text-gray-300 dark:text-white/20 text-xs">
@@ -1450,7 +1491,7 @@ export default function UGCPage() {
                 ) : (
                   <div className="h-[200px] sm:h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={lineChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                    <LineChart data={displayLineChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                       <CartesianGrid
                         strokeDasharray="3 3"
                         stroke={isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}
