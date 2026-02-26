@@ -7,6 +7,7 @@ import {
   mergeRefreshCounts,
 } from "@/lib/tiktok-store";
 import { persistAvatar } from "@/lib/avatar-persist";
+import { writeSyncLog } from "@/lib/sync-log";
 
 export const dynamic = "force-dynamic";
 
@@ -140,6 +141,18 @@ export async function POST(req: NextRequest) {
         }
       );
     }
+
+    // Log the sync event
+    await writeSyncLog({
+      creator_id: creatorId,
+      handle,
+      platform: "tiktok",
+      mode: forceAvatarRefresh ? "avatar-refresh" : (mode as "new-posts" | "refresh-counts"),
+      status: "succeeded",
+      posts_processed: mapped.length,
+      total_posts: updated.videos.length,
+      run_id: body.eventData?.actorRunId,
+    });
 
     return NextResponse.json({
       ok: true,

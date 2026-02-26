@@ -8,6 +8,7 @@ import {
   IgAuthorMeta,
 } from "@/lib/instagram-store";
 import { persistAvatar } from "@/lib/avatar-persist";
+import { writeSyncLog } from "@/lib/sync-log";
 
 export const dynamic = "force-dynamic";
 
@@ -138,6 +139,18 @@ export async function POST(req: NextRequest) {
         }
       );
     }
+
+    // Log the sync event
+    await writeSyncLog({
+      creator_id: creatorId,
+      handle: igHandle,
+      platform: "instagram",
+      mode: mode as "new-posts" | "refresh-counts",
+      status: "succeeded",
+      posts_processed: mapped.length,
+      total_posts: updated.posts.length,
+      run_id: body.eventData?.actorRunId,
+    });
 
     return NextResponse.json({
       ok: true,

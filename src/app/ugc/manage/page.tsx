@@ -304,17 +304,26 @@ export default function ManageCreatorsPage() {
   const [bulkActing, setBulkActing] = useState(false);
   const [refreshingAvatars, setRefreshingAvatars] = useState(false);
   const [avatarMsg, setAvatarMsg] = useState<string | null>(null);
+  const [health, setHealth] = useState<Record<string, { health: string; issues: string[] }>>({});
+  const [syncingId, setSyncingId] = useState<string | null>(null);
 
   const fetchCreators = useCallback(async () => {
     try {
-      const res = await fetch("/api/ugc/creators");
-      if (res.ok) setCreators(Array.isArray(await res.json()) ? await res.json().catch(() => []) : []);
       const data = await fetch("/api/ugc/creators").then((r) => r.json());
       setCreators(Array.isArray(data) ? data : []);
     } catch { } finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { fetchCreators(); }, [fetchCreators]);
+  const fetchHealth = useCallback(async () => {
+    try {
+      const data = await fetch("/api/ugc/health").then((r) => r.json());
+      const map: Record<string, { health: string; issues: string[] }> = {};
+      for (const c of data.creators ?? []) map[c.id] = { health: c.health, issues: c.issues };
+      setHealth(map);
+    } catch { }
+  }, []);
+
+  useEffect(() => { fetchCreators(); fetchHealth(); }, [fetchCreators, fetchHealth]);
 
   // ── Selection ──────────────────────────────────────────────────────────────
 
@@ -365,6 +374,17 @@ export default function ManageCreatorsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus, sync_hour: syncHour }),
     }).catch(() => fetchCreators());
+  };
+
+  // ── Sync now (single creator) ──────────────────────────────────────────────
+
+  const handleSyncNow = async (creator: UGCCreator) => {
+    if (syncingId) return;
+    setSyncingId(creator.id);
+    try {
+      await fetch(`/api/ugc/health?remediate=true&creator=${creator.id}`);
+      setTimeout(() => fetchHealth(), 3000); // re-check health after a beat
+    } finally { setSyncingId(null); }
   };
 
   // ── Refresh avatars ────────────────────────────────────────────────────────
@@ -428,6 +448,43 @@ export default function ManageCreatorsPage() {
             className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-gray-900 dark:text-white text-sm placeholder:text-gray-300 dark:placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/40 transition-all" />
         </div>
 
+        {/* Health Summary */}
+        {Object.keys(health).length > 0 && (() => {
+          const vals = Object.values(health);
+          const counts = {
+            healthy: vals.filter((v) => v.health === "healthy").length,
+            stale: vals.filter((v) => v.health === "stale").length,
+            critical: vals.filter((v) => v.health === "critical" || v.health === "never").length,
+          };
+          return (
+            <div className="flex items-center gap-4 mb-4 px-1">
+              {counts.healthy > 0 && (
+                <span className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400">
+                  <span className="w-2 h-2 rounded-full bg-green-500" />{counts.healthy} healthy
+                </span>
+              )}
+              {counts.stale > 0 && (
+                <span className="flex items-center gap-1.5 text-xs text-yellow-600 dark:text-yellow-400">
+                  <span className="w-2 h-2 rounded-full bg-yellow-500" />{counts.stale} stale
+                </span>
+              )}
+              {counts.critical > 0 && (
+                <span className="flex items-center gap-1.5 text-xs text-red-500 dark:text-red-400">
+                  <span className="w-2 h-2 rounded-full bg-red-500" />{counts.critical} need attention
+                </span>
+              )}
+              {(counts.stale > 0 || counts.critical > 0) && (
+                <button
+                  onClick={async () => { await fetch("/api/ugc/health?remediate=true"); fetchHealth(); }}
+                  className="text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+                >
+                  Sync all stale →
+                </button>
+              )}
+            </div>
+          );
+        })()}
+
         {/* Table */}
         <div className="rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] overflow-hidden">
           {loading ? (
@@ -452,14 +509,14 @@ export default function ManageCreatorsPage() {
                       <input type="checkbox" checked={allSelected} onChange={toggleAll}
                         className="rounded border-gray-300 dark:border-[#444] text-blue-600 focus:ring-blue-500/40 cursor-pointer" />
                     </th>
-                    {["Creator", "Platforms", "Status", "Last Synced", "Sync Hour"].map((h) => (
+                    {["Creator", "Platforms", "Health", "Status", "Last Synced", "Sync Hour"].map((h) => (
                       <th key={h} className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.length === 0 ? (
-                    <tr><td colSpan={6} className="px-5 py-10 text-center text-sm text-gray-400 dark:text-white/30">No creators match &ldquo;{search}&rdquo;</td></tr>
+                    <tr><td colSpan={7} className="px-5 py-10 text-center text-sm text-gray-400 dark:text-white/30">No creators match &ldquo;{search}&rdquo;</td></tr>
                   ) : filtered.map((creator) => (
                     <tr key={creator.id}
                       className={`border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 transition-colors hover:bg-gray-50/80 dark:hover:bg-white/[0.02] ${selected.has(creator.id) ? "bg-blue-50/50 dark:bg-blue-500/5" : ""}`}>
@@ -498,6 +555,39 @@ export default function ManageCreatorsPage() {
                             <span className="text-gray-300 dark:text-white/20 text-xs">No platforms</span>
                           )}
                         </div>
+                      </td>
+
+                      {/* Health */}
+                      <td className="px-4 py-3.5 whitespace-nowrap">
+                        {(() => {
+                          const h = health[creator.id];
+                          if (!h) return <span className="text-gray-300 dark:text-white/20 text-xs">—</span>;
+                          const cfg = {
+                            healthy: { dot: "bg-green-500", label: "Healthy", text: "text-green-600 dark:text-green-400" },
+                            stale:   { dot: "bg-yellow-500", label: "Stale", text: "text-yellow-600 dark:text-yellow-400" },
+                            critical:{ dot: "bg-red-500", label: "Critical", text: "text-red-500 dark:text-red-400" },
+                            never:   { dot: "bg-red-500", label: "Never synced", text: "text-red-500 dark:text-red-400" },
+                            inactive:{ dot: "bg-gray-300", label: "Inactive", text: "text-gray-400 dark:text-white/30" },
+                          }[h.health] ?? { dot: "bg-gray-300", label: h.health, text: "text-gray-400" };
+                          return (
+                            <div className="flex items-center gap-2">
+                              <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${cfg.text}`} title={h.issues.join(" · ") || undefined}>
+                                <span className={`w-2 h-2 rounded-full ${cfg.dot}`} />
+                                {cfg.label}
+                              </span>
+                              {(h.health === "stale" || h.health === "critical" || h.health === "never") && creator.status === "active" && (
+                                <button
+                                  onClick={() => handleSyncNow(creator)}
+                                  disabled={syncingId === creator.id}
+                                  title="Sync now"
+                                  className="text-[10px] text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors disabled:opacity-40"
+                                >
+                                  {syncingId === creator.id ? <Loader2 size={10} className="animate-spin" /> : "↻ Sync"}
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </td>
 
                       {/* Status */}
