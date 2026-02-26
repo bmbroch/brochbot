@@ -609,6 +609,22 @@ export default function UGCPage() {
   const [igStoreData, setIgStoreData] = useState<InstagramStoreData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // ── Organizations ─────────────────────────────────────────────────────────
+  const [orgs, setOrgs] = useState<Array<{ id: string; name: string; slug: string }>>([]);
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/ugc/orgs")
+      .then((r) => r.ok ? r.json() : [])
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setOrgs(data);
+          setSelectedOrgId((prev) => prev ?? data[0].id);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // ── DB-backed creator list ─────────────────────────────────────────────────
   const [dbCreators, setDbCreators] = useState<Array<{
     id: string;
@@ -620,13 +636,14 @@ export default function UGCPage() {
   }> | null>(null);
 
   useEffect(() => {
-    fetch("/api/ugc/creators")
+    if (!selectedOrgId) return;
+    fetch(`/api/ugc/creators?org_id=${selectedOrgId}`)
       .then((r) => r.ok ? r.json() : null)
       .then((data) => {
         if (Array.isArray(data)) setDbCreators(data);
       })
       .catch(() => {/* fall back to hardcoded */});
-  }, []);
+  }, [selectedOrgId]);
 
   // Build effective creator list: DB (non-archived) → fallback to hardcoded
   const effectiveCreators = useMemo(() => {
@@ -1030,6 +1047,26 @@ export default function UGCPage() {
 
           {/* Right: mode toggle + platform filter */}
           <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+
+            {/* Org switcher — only show if multiple orgs */}
+            {orgs.length > 1 && (
+              <div className="flex items-center gap-1 p-1 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111]">
+                {orgs.map((org) => (
+                  <button
+                    key={org.id}
+                    onClick={() => { setSelectedOrgId(org.id); setDbCreators(null); }}
+                    className={[
+                      "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
+                      selectedOrgId === org.id
+                        ? "bg-gray-100 dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm"
+                        : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
+                    ].join(" ")}
+                  >
+                    {org.name}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Manage + Settings buttons */}
             <Link

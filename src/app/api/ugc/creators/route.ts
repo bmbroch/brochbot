@@ -13,11 +13,13 @@ function sbHeaders() {
   };
 }
 
-// GET /api/ugc/creators — list all creators
-export async function GET() {
+// GET /api/ugc/creators?org_id=X — list creators (optionally filtered by org)
+export async function GET(req: NextRequest) {
   try {
+    const orgId = req.nextUrl.searchParams.get("org_id");
+    const filter = orgId ? `&org_id=eq.${orgId}` : "";
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/ugc_creators?order=created_at.asc`,
+      `${SUPABASE_URL}/rest/v1/ugc_creators?order=created_at.asc${filter}`,
       { headers: sbHeaders() }
     );
     if (!res.ok) {
@@ -38,7 +40,7 @@ const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, tiktok_handle, ig_handle, status, sync_hour } = body;
+    const { name, tiktok_handle, ig_handle, status, sync_hour, org_id } = body;
 
     if (!name) {
       return NextResponse.json({ error: "name is required" }, { status: 400 });
@@ -50,6 +52,7 @@ export async function POST(req: NextRequest) {
       ig_handle: ig_handle || null,
       status: status || "active",
       sync_hour: status === "active" ? (sync_hour ?? 8) : null,
+      org_id: org_id || null,
     };
 
     const res = await fetch(`${SUPABASE_URL}/rest/v1/ugc_creators`, {

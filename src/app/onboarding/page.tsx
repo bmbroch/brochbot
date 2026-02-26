@@ -75,6 +75,7 @@ export default function OnboardingPage() {
   // State machine
   const [step, setStep] = useState<Step>("org");
   const [orgName, setOrgName] = useState("");
+  const [orgId, setOrgId] = useState<string | null>(null);
   const [creatorsText, setCreatorsText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -92,7 +93,7 @@ export default function OnboardingPage() {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("/api/ugc/org", {
+      const res = await fetch("/api/ugc/orgs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: orgName.trim() }),
@@ -103,6 +104,7 @@ export default function OnboardingPage() {
         setLoading(false);
         return;
       }
+      setOrgId(data.id ?? null);
       setLoading(false);
       setStep("creators");
     } catch {
@@ -119,7 +121,7 @@ export default function OnboardingPage() {
     setLoading(true);
 
     try {
-      const results = await Promise.all(
+      await Promise.all(
         parsedCreators.map((c) =>
           fetch("/api/ugc/creators", {
             method: "POST",
@@ -130,23 +132,11 @@ export default function OnboardingPage() {
               ig_handle: c.igHandle,
               status: "active",
               sync_hour: 8,
+              org_id: orgId,
             }),
           })
         )
       );
-
-      // If any 404s, fall back to saving as pending in mc_realtime
-      const anyFailed = results.some((r) => r.status === 404);
-      if (anyFailed) {
-        await fetch("/api/mc-realtime", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            key: "ugc_pending_creators",
-            value: JSON.stringify(parsedCreators),
-          }),
-        });
-      }
 
       router.push("/ugc");
     } catch {
