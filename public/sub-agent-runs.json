@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 47171510,
-    "cost": 42.1709,
-    "durationSec": 161676,
+    "tokens": 47296137,
+    "cost": 42.6394,
+    "durationSec": 242216,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -313,7 +313,7 @@
   },
   {
     "id": "1773cabc-0654-443c-8c24-8c36badf8d5f",
-    "label": "Sam Morning Brief",
+    "label": "1773cabc-065",
     "agent": "sam",
     "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
     "model": "Sonnet",
@@ -334,6 +334,18 @@
     "durationSec": 154,
     "status": "success",
     "timestamp": "2026-02-21T03:00:00.031Z"
+  },
+  {
+    "id": "e1c20350-6da3-471b-8db5-36ddf1e5c71a",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 246853,
+    "cost": 0.2764,
+    "durationSec": 127,
+    "status": "success",
+    "timestamp": "2026-02-26T05:30:00.110Z"
   },
   {
     "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
@@ -361,7 +373,7 @@
   },
   {
     "id": "9da39ddc-a395-4be9-9d5d-1bb78d6891a9",
-    "label": "Sam Morning Brief",
+    "label": "9da39ddc-a39",
     "agent": "sam",
     "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
     "model": "Sonnet",

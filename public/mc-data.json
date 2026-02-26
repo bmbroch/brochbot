@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-26T05:30:02Z",
+  "lastUpdated": "2026-02-26T05:40:01Z",
   "activities": [
+    {
+      "id": "s-e1c20350",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-02-26T05:30:00.110Z",
+      "tokens": 246853,
+      "cost": 0.2764,
+      "model": "Sonnet",
+      "durationSec": 127
+    },
     {
       "id": "s-bcd7fed5",
       "agent": "miles",
@@ -40,7 +52,7 @@
     {
       "id": "s-9da39ddc",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "9da39ddc-a39",
       "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
       "status": "success",
       "date": "2026-02-25T05:30:00.183Z",
@@ -52,7 +64,7 @@
     {
       "id": "s-1773cabc",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "1773cabc-065",
       "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
       "status": "success",
       "date": "2026-02-25T05:30:00.133Z",
@@ -356,10 +368,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 47171510,
-      "cost": 42.1709,
+      "tokens": 47296137,
+      "cost": 42.6394,
       "model": "Sonnet",
-      "durationSec": 161676
+      "durationSec": 242216
     },
     {
       "id": "s-5423ca5a",
@@ -1267,7 +1279,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-26T04:33:36Z",
+      "lastActive": "2026-02-26T05:33:18Z",
       "statusText": ""
     }
   },
@@ -1281,7 +1293,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-26T05:30:02Z"
+      "lastRunAt": "2026-02-26T05:40:01Z"
     },
     {
       "id": "bash-frankie-sync",
