@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 
   // Verify webhook secret
   const secret = req.nextUrl.searchParams.get("secret");
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET;
   if (WEBHOOK_SECRET && secret !== WEBHOOK_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

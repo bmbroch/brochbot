@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 const SUPABASE_URL = process.env.SUPABASE_CLC_URL!;
 const SUPABASE_KEY = process.env.SUPABASE_CLC_KEY!;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://brochbot.com";
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || "";
+const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
 
 /**
  * GET /api/ugc/auto-sync
