@@ -17,7 +17,11 @@ async function getStoredPostUrls(tiktokHandle: string | null, igHandle: string |
     if (res.ok) {
       const rows = await res.json();
       const videos = rows?.[0]?.data?.videos ?? [];
-      ttUrls.push(...videos.map((v: { url: string }) => v.url).filter(Boolean));
+      // Sort newest first, take top 100
+      const sorted = [...videos].sort((a, b) =>
+        new Date(b.postedAt ?? 0).getTime() - new Date(a.postedAt ?? 0).getTime()
+      );
+      ttUrls.push(...sorted.slice(0, 100).map((v: { url: string }) => v.url).filter(Boolean));
     }
   }
 
@@ -26,7 +30,11 @@ async function getStoredPostUrls(tiktokHandle: string | null, igHandle: string |
     if (res.ok) {
       const rows = await res.json();
       const posts = rows?.[0]?.data?.posts ?? [];
-      igUrls.push(...posts.map((p: { url: string }) => p.url).filter(Boolean));
+      // Sort newest first, take top 100
+      const sorted = [...posts].sort((a, b) =>
+        new Date(b.postedAt ?? 0).getTime() - new Date(a.postedAt ?? 0).getTime()
+      );
+      igUrls.push(...sorted.slice(0, 100).map((p: { url: string }) => p.url).filter(Boolean));
     }
   }
 
