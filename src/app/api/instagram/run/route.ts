@@ -98,17 +98,18 @@ export async function POST(req: NextRequest) {
       }
 
       return NextResponse.json({ runId, datasetId, profileRunId, profileDatasetId });
-    } else if (mode === "refresh-counts" && postUrls && postUrls.length > 0) {
-      // URL-based refresh: pass specific post URLs directly (cheaper, no profile crawl)
-      const urlInput: Record<string, unknown> = {
-        directUrls: postUrls.slice(0, 100),
-        resultsType: "posts",
-        resultsLimit: postUrls.slice(0, 100).length,
-      };
+    } else if (mode === "refresh-counts") {
+      // Use cheap profile scraper — returns latestPosts with current metrics for $0.0023/run
+      const profileScraperInput = { usernames: [igHandle] };
+      const profileWebhookUrl = webhookUrl
+        ? webhookUrl.includes("?")
+          ? `${webhookUrl}&scraperType=profile`
+          : `${webhookUrl}?scraperType=profile`
+        : undefined;
 
       const res = await fetch(
-        `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
-        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(urlInput) }
+        `https://api.apify.com/v2/acts/apify~instagram-profile-scraper/runs?token=${APIFY_KEY}&memory=256`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(profileScraperInput) }
       );
 
       if (!res.ok) {
@@ -120,7 +121,7 @@ export async function POST(req: NextRequest) {
       const runId: string = json?.data?.id;
       const datasetId: string = json?.data?.defaultDatasetId;
 
-      if (webhookUrl && runId) await registerWebhook(runId, webhookUrl);
+      if (profileWebhookUrl && runId) await registerWebhook(runId, profileWebhookUrl);
 
       return NextResponse.json({ runId, datasetId });
     } else {
