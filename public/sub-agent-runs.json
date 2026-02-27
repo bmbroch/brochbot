@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 123478199,
-    "cost": 67.304,
-    "durationSec": 305494,
+    "tokens": 124740272,
+    "cost": 67.791,
+    "durationSec": 308907,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -310,6 +310,18 @@
     "durationSec": 179,
     "status": "success",
     "timestamp": "2026-02-24T03:00:00.193Z"
+  },
+  {
+    "id": "4fba5fe5-ed9e-42d3-a092-e89cb2d01154",
+    "label": "devin-viralytics-extraction",
+    "agent": "devin",
+    "task": "cd /home/ubuntu/.openclaw/workspace",
+    "model": "Sonnet",
+    "tokens": 356994,
+    "cost": 0.3473,
+    "durationSec": 57,
+    "status": "success",
+    "timestamp": "2026-02-27T20:59:03.677Z"
   },
   {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
