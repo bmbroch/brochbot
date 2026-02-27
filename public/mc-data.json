@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T21:10:02Z",
+  "lastUpdated": "2026-02-27T21:20:01Z",
   "activities": [
     {
       "id": "s-ed99afbf",
@@ -8,10 +8,10 @@
       "description": "A Notion/Linear-style org switcher in the sidebar. When you click the org name at the top of the sidebar, a dropdown popover opens showing:",
       "status": "success",
       "date": "2026-02-27T21:07:53.814Z",
-      "tokens": 137633,
-      "cost": 0.249,
+      "tokens": 236659,
+      "cost": 0.2968,
       "model": "Sonnet",
-      "durationSec": 103
+      "durationSec": 157
     },
     {
       "id": "s-4fba5fe5",
@@ -308,10 +308,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 125899713,
-      "cost": 68.2328,
+      "tokens": 128537675,
+      "cost": 69.7749,
       "model": "unknown",
-      "durationSec": 309435
+      "durationSec": 310027
     },
     {
       "id": "s-66dde37a",
@@ -1403,7 +1403,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T21:10:02Z"
+      "lastRunAt": "2026-02-27T21:20:01Z"
     },
     {
       "id": "bash-frankie-sync",

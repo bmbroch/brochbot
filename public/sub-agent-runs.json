@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 125899713,
-    "cost": 68.2328,
-    "durationSec": 309435,
+    "tokens": 128537675,
+    "cost": 69.7749,
+    "durationSec": 310027,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -408,6 +408,18 @@
     "timestamp": "2026-02-26T05:30:00.110Z"
   },
   {
+    "id": "ed99afbf-e936-49fb-8384-71595d84a343",
+    "label": "devin-viralytics-org-switcher",
+    "agent": "devin",
+    "task": "A Notion/Linear-style org switcher in the sidebar. When you click the org name at the top of the sidebar, a dropdown popover opens showing:",
+    "model": "Sonnet",
+    "tokens": 236659,
+    "cost": 0.2968,
+    "durationSec": 157,
+    "status": "success",
+    "timestamp": "2026-02-27T21:07:53.814Z"
+  },
+  {
     "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
     "label": "76d58d6e-9ff",
     "agent": "sam",
@@ -550,18 +562,6 @@
     "durationSec": 93,
     "status": "success",
     "timestamp": "2026-02-20T04:00:00.087Z"
-  },
-  {
-    "id": "ed99afbf-e936-49fb-8384-71595d84a343",
-    "label": "devin-viralytics-org-switcher",
-    "agent": "devin",
-    "task": "A Notion/Linear-style org switcher in the sidebar. When you click the org name at the top of the sidebar, a dropdown popover opens showing:",
-    "model": "Sonnet",
-    "tokens": 137633,
-    "cost": 0.249,
-    "durationSec": 103,
-    "status": "success",
-    "timestamp": "2026-02-27T21:07:53.814Z"
   },
   {
     "id": "53178b2d-2376-4960-a237-110c9ac2db1e",
