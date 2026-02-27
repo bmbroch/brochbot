@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 116051719,
-    "cost": 63.1467,
-    "durationSec": 281948,
+    "tokens": 117675534,
+    "cost": 64.3148,
+    "durationSec": 282471,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -168,6 +168,18 @@
     "timestamp": "2026-02-24T09:24:08.663Z"
   },
   {
+    "id": "c7c5ead4-6e68-4042-a1b0-2a785d8896a9",
+    "label": "devin-type4-ig-header-tz",
+    "agent": "devin",
+    "task": "**File: `src/app/ugc/manage/page.tsx`**",
+    "model": "Sonnet",
+    "tokens": 1134283,
+    "cost": 0.7023,
+    "durationSec": 220,
+    "status": "success",
+    "timestamp": "2026-02-27T13:34:37.016Z"
+  },
+  {
     "id": "616f65de-da7b-48b0-af8c-808ae0fe8982",
     "label": "devin-daily-sync-fix",
     "agent": "devin",
@@ -322,6 +334,18 @@
     "durationSec": 179,
     "status": "success",
     "timestamp": "2026-02-24T03:00:00.193Z"
+  },
+  {
+    "id": "1d175d74-b374-4eb4-a00d-ffa1a667d170",
+    "label": "devin-cost-report",
+    "agent": "devin",
+    "task": "`GET /api/ugc/cost-report` \u2014 pulls actual Apify run costs from the last 24h via sync logs, builds a summary, sends it to Telegram.",
+    "model": "Sonnet",
+    "tokens": 385795,
+    "cost": 0.3225,
+    "durationSec": 82,
+    "status": "success",
+    "timestamp": "2026-02-27T13:37:58.001Z"
   },
   {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
