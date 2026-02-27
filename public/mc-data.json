@@ -1,18 +1,6 @@
 {
-  "lastUpdated": "2026-02-27T22:00:02Z",
+  "lastUpdated": "2026-02-27T22:10:02Z",
   "activities": [
-    {
-      "id": "s-ed99afbf",
-      "agent": "devin",
-      "title": "devin-viralytics-org-switcher",
-      "description": "A Notion/Linear-style org switcher in the sidebar. When you click the org name at the top of the sidebar, a dropdown popover opens showing:",
-      "status": "success",
-      "date": "2026-02-27T21:07:53.814Z",
-      "tokens": 236659,
-      "cost": 0.2968,
-      "model": "Sonnet",
-      "durationSec": 157
-    },
     {
       "id": "s-acd636de",
       "agent": "dana",
@@ -1391,7 +1379,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T22:00:02Z"
+      "lastRunAt": "2026-02-27T22:10:02Z"
     },
     {
       "id": "bash-frankie-sync",

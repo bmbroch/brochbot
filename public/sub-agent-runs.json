@@ -396,18 +396,6 @@
     "timestamp": "2026-02-26T05:30:00.110Z"
   },
   {
-    "id": "ed99afbf-e936-49fb-8384-71595d84a343",
-    "label": "devin-viralytics-org-switcher",
-    "agent": "devin",
-    "task": "A Notion/Linear-style org switcher in the sidebar. When you click the org name at the top of the sidebar, a dropdown popover opens showing:",
-    "model": "Sonnet",
-    "tokens": 236659,
-    "cost": 0.2968,
-    "durationSec": 157,
-    "status": "success",
-    "timestamp": "2026-02-27T21:07:53.814Z"
-  },
-  {
     "id": "76d58d6e-9fff-4b63-8d2d-3cef8915abbf",
     "label": "76d58d6e-9ff",
     "agent": "sam",
