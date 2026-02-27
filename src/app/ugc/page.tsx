@@ -1021,6 +1021,18 @@ export default function UGCPage() {
     setError(null);
   }, [overviewPlatform]);
 
+  // Auto-switch platform when entering/leaving drilldown
+  useEffect(() => {
+    if (pageMode === "drilldown" && overviewPlatform === "All") {
+      // "All" doesn't exist in drilldown — default to TikTok if creator has it, else Instagram
+      setOverviewPlatform(activeCreator?.handle ? "TikTok" : "Instagram");
+    } else if (pageMode === "overview") {
+      // Reset to "All" when returning to overview
+      setOverviewPlatform("All");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageMode]);
+
   // Auto-switch to Instagram for IG-only creators (no TikTok handle)
   useEffect(() => {
     if (activeCreator && !activeCreator.handle && overviewPlatform !== "Instagram") {
@@ -1174,10 +1186,11 @@ export default function UGCPage() {
             {/* Platform filter */}
             <div className="flex items-center gap-1 p-1 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111]">
               {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => {
-                // In drilldown mode, hide platforms the active creator doesn't have
-                if (pageMode === "drilldown" && activeCreator) {
-                  if (p === "TikTok" && !activeCreator.handle) return null;
-                  if (p === "Instagram" && !activeCreator.igHandle) return null;
+                // In drilldown mode, hide "All" and any platform the active creator doesn't have
+                if (pageMode === "drilldown") {
+                  if (p === "All") return null;
+                  if (p === "TikTok" && !activeCreator?.handle) return null;
+                  if (p === "Instagram" && !activeCreator?.igHandle) return null;
                 }
                 return (
                   <button
@@ -1719,8 +1732,8 @@ export default function UGCPage() {
             )}
 
             {/* ── TikTok Content ──────────────────────────────────────────── */}
-            {/* Show if TikTok selected (incl. no-handle empty state), or All+creator has TikTok */}
-            {(overviewPlatform === "TikTok" || (overviewPlatform === "All" && !!activeCreator?.handle)) && (
+            {/* Show if TikTok selected (incl. no-handle empty state) */}
+            {overviewPlatform === "TikTok" && (
               <>
                 {!activeCreator?.handle && (
                   <div className="flex flex-col items-center justify-center py-32 gap-5">
@@ -1836,8 +1849,8 @@ export default function UGCPage() {
             )}
 
             {/* ── Instagram Content ───────────────────────────────────────── */}
-            {/* Show if Instagram selected (incl. no-handle empty state), or All+creator has IG */}
-            {(overviewPlatform === "Instagram" || (overviewPlatform === "All" && !!activeCreator?.igHandle)) && (
+            {/* Show if Instagram selected (incl. no-handle empty state) */}
+            {overviewPlatform === "Instagram" && (
               <>
                 {!activeIgHandle && (
                   <div className="flex flex-col items-center justify-center py-32 gap-4">
