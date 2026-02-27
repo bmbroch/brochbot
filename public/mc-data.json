@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T11:20:01Z",
+  "lastUpdated": "2026-02-27T11:30:01Z",
   "activities": [
     {
       "id": "s-cabf48bc",
@@ -48,18 +48,6 @@
       "cost": 1.189,
       "model": "Sonnet",
       "durationSec": 346
-    },
-    {
-      "id": "s-d10fdccd",
-      "agent": "devin",
-      "title": "devin-drilldown-click-fix",
-      "description": "**Problem:** Clicking an IG-only creator card (no TikTok handle) does nothing \u2014 the onClick handler guards with `if (creator.handle)` so it silently bails. Three places need fixing.",
-      "status": "success",
-      "date": "2026-02-27T10:20:18.075Z",
-      "tokens": 769156,
-      "cost": 0.5002,
-      "model": "Sonnet",
-      "durationSec": 216
     },
     {
       "id": "s-acd636de",
@@ -344,10 +332,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 107175956,
-      "cost": 58.9205,
+      "tokens": 109792086,
+      "cost": 59.9718,
       "model": "unknown",
-      "durationSec": 274088
+      "durationSec": 274752
     },
     {
       "id": "s-66dde37a",
@@ -1411,7 +1399,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-27T10:30:33Z",
+      "lastActive": "2026-02-27T11:29:42Z",
       "statusText": ""
     }
   },
@@ -1425,7 +1413,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T11:20:01Z"
+      "lastRunAt": "2026-02-27T11:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
