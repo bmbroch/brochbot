@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T12:10:02Z",
+  "lastUpdated": "2026-02-27T12:20:02Z",
   "activities": [
     {
       "id": "s-085c8982",
@@ -308,10 +308,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 113963758,
-      "cost": 61.6267,
+      "tokens": 114084508,
+      "cost": 61.8242,
       "model": "unknown",
-      "durationSec": 276653
+      "durationSec": 277496
     },
     {
       "id": "s-66dde37a",
@@ -464,10 +464,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 50494277,
-      "cost": 48.5782,
+      "tokens": 50639534,
+      "cost": 49.1002,
       "model": "Sonnet",
-      "durationSec": 328558
+      "durationSec": 352603
     },
     {
       "id": "s-5423ca5a",
@@ -1389,7 +1389,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T12:10:01Z"
+      "lastRunAt": "2026-02-27T12:20:01Z"
     },
     {
       "id": "bash-frankie-sync",
