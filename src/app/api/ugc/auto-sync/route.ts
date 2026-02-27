@@ -24,7 +24,8 @@ const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
  * This allows multiple customers' creators to be spread across hours
  * so we never hammer Apify with hundreds of concurrent runs at once.
  *
- * On Mondays: also fires "refresh-counts" runs to update view counts on older posts.
+ * Runs new-posts every day with a 30-day window — captures both new posts
+ * AND updated view counts on recent posts in one shot.
  */
 export async function GET(req: NextRequest) {
   // Verify Vercel Cron auth
@@ -35,8 +36,6 @@ export async function GET(req: NextRequest) {
 
   const now = new Date();
   const currentHour = now.getUTCHours();
-  const dayOfWeek = now.getUTCDay(); // 0=Sun, 1=Mon
-  const isMonday = dayOfWeek === 1;
 
   // 1. Fetch active creators scheduled for this hour
   const creatorsRes = await fetch(
@@ -55,64 +54,59 @@ export async function GET(req: NextRequest) {
   // 2. Fire all runs with webhooks — parallel per creator
   await Promise.all(
     creators.map(async (creator: { id: string; name: string; tiktok_handle?: string; ig_handle?: string }) => {
-      const modesForCreator: Array<{ mode: "new-posts" | "refresh-counts" }> = [
-        { mode: "new-posts" },
-        ...(isMonday ? [{ mode: "refresh-counts" as const }] : []),
-      ];
+      const mode = "new-posts";
 
-      for (const { mode } of modesForCreator) {
-        // TikTok
-        if (creator.tiktok_handle) {
-          const ttWebhookUrl =
-            `${BASE_URL}/api/tiktok/webhook` +
-            `?handle=${encodeURIComponent(creator.tiktok_handle)}` +
-            `&mode=${mode}` +
-            `&creatorId=${creator.id}` +
-            secretParam;
+      // TikTok
+      if (creator.tiktok_handle) {
+        const ttWebhookUrl =
+          `${BASE_URL}/api/tiktok/webhook` +
+          `?handle=${encodeURIComponent(creator.tiktok_handle)}` +
+          `&mode=${mode}` +
+          `&creatorId=${creator.id}` +
+          secretParam;
 
-          try {
-            const runRes = await fetch(`${BASE_URL}/api/tiktok/run`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                handle: creator.tiktok_handle,
-                mode,
-                firstFetch: false,
-                webhookUrl: ttWebhookUrl,
-              }),
-            });
-            const { runId, error } = await runRes.json();
-            runsStarted.push({ creator: creator.name, platform: "tiktok", mode, runId, error });
-          } catch (err) {
-            runsStarted.push({ creator: creator.name, platform: "tiktok", mode, error: String(err) });
-          }
+        try {
+          const runRes = await fetch(`${BASE_URL}/api/tiktok/run`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              handle: creator.tiktok_handle,
+              mode,
+              firstFetch: false,
+              webhookUrl: ttWebhookUrl,
+            }),
+          });
+          const { runId, error } = await runRes.json();
+          runsStarted.push({ creator: creator.name, platform: "tiktok", mode, runId, error });
+        } catch (err) {
+          runsStarted.push({ creator: creator.name, platform: "tiktok", mode, error: String(err) });
         }
+      }
 
-        // Instagram
-        if (creator.ig_handle) {
-          const igWebhookUrl =
-            `${BASE_URL}/api/instagram/webhook` +
-            `?igHandle=${encodeURIComponent(creator.ig_handle)}` +
-            `&mode=${mode}` +
-            `&creatorId=${creator.id}` +
-            secretParam;
+      // Instagram
+      if (creator.ig_handle) {
+        const igWebhookUrl =
+          `${BASE_URL}/api/instagram/webhook` +
+          `?igHandle=${encodeURIComponent(creator.ig_handle)}` +
+          `&mode=${mode}` +
+          `&creatorId=${creator.id}` +
+          secretParam;
 
-          try {
-            const runRes = await fetch(`${BASE_URL}/api/instagram/run`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                igHandle: creator.ig_handle,
-                mode,
-                firstFetch: false,
-                webhookUrl: igWebhookUrl,
-              }),
-            });
-            const { runId, error } = await runRes.json();
-            runsStarted.push({ creator: creator.name, platform: "instagram", mode, runId, error });
-          } catch (err) {
-            runsStarted.push({ creator: creator.name, platform: "instagram", mode, error: String(err) });
-          }
+        try {
+          const runRes = await fetch(`${BASE_URL}/api/instagram/run`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              igHandle: creator.ig_handle,
+              mode,
+              firstFetch: false,
+              webhookUrl: igWebhookUrl,
+            }),
+          });
+          const { runId, error } = await runRes.json();
+          runsStarted.push({ creator: creator.name, platform: "instagram", mode, runId, error });
+        } catch (err) {
+          runsStarted.push({ creator: creator.name, platform: "instagram", mode, error: String(err) });
         }
       }
     })
@@ -124,7 +118,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     message: `Fired ${successCount} Apify runs with webhooks`,
     hour: currentHour,
-    mode: isMonday ? "new-posts + refresh-counts" : "new-posts only",
+    mode: "new-posts",
     creators: creators.length,
     runsStarted: successCount,
     errors: errorCount,

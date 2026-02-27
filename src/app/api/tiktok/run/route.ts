@@ -34,10 +34,10 @@ export async function POST(req: NextRequest) {
   // Refresh counts: last 60 days to update view numbers
   const apifyInput: Record<string, unknown> = {
     profiles: [`https://www.tiktok.com/@${handle}`],
-    resultsPerPage: firstFetch ? 100 : isNewPosts ? 20 : 50,
+    resultsPerPage: firstFetch ? 100 : isNewPosts ? 30 : 50,
   };
   if (!firstFetch) {
-    apifyInput.scrapeLastNDays = isNewPosts ? 7 : 60;
+    apifyInput.scrapeLastNDays = isNewPosts ? 30 : 60;
   }
 
   try {

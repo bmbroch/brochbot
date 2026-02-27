@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "mode must be new-posts or refresh-counts" }, { status: 400 });
   }
 
-  const resultsLimit = firstFetch ? 100 : mode === "new-posts" ? 20 : 50;
+  const resultsLimit = firstFetch ? 100 : mode === "new-posts" ? 30 : 50;
 
   // Helper: register webhook via Apify Webhooks API after run starts
   // Uses correct endpoint: POST /v2/webhooks with condition: { actorRunId } filter
