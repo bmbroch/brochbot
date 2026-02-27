@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T10:50:01Z",
+  "lastUpdated": "2026-02-27T11:00:01Z",
   "activities": [
     {
       "id": "s-202f11b8",
@@ -8,10 +8,10 @@
       "description": "**File: `src/app/api/tiktok/all-data/route.ts`**",
       "status": "success",
       "date": "2026-02-27T10:49:56.802Z",
-      "tokens": 13500,
-      "cost": 0.0332,
+      "tokens": 152814,
+      "cost": 0.1705,
       "model": "Sonnet",
-      "durationSec": 2
+      "durationSec": 107
     },
     {
       "id": "s-a61e9fc7",
@@ -356,10 +356,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 103841070,
-      "cost": 57.4622,
+      "tokens": 104362052,
+      "cost": 57.7056,
       "model": "unknown",
-      "durationSec": 272353
+      "durationSec": 272900
     },
     {
       "id": "s-66dde37a",
@@ -1437,7 +1437,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T10:50:01Z"
+      "lastRunAt": "2026-02-27T11:00:01Z"
     },
     {
       "id": "bash-frankie-sync",
