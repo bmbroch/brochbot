@@ -55,7 +55,7 @@
     "model": "Sonnet",
     "tokens": 50494277,
     "cost": 48.5782,
-    "durationSec": 324641,
+    "durationSec": 328558,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -348,6 +348,18 @@
     "timestamp": "2026-02-24T04:00:44.410Z"
   },
   {
+    "id": "c178666e-8d97-4d6e-9ebf-5f3a69e220cf",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 272415,
+    "cost": 0.2395,
+    "durationSec": 90,
+    "status": "success",
+    "timestamp": "2026-02-27T05:30:00.051Z"
+  },
+  {
     "id": "1773cabc-0654-443c-8c24-8c36badf8d5f",
     "label": "1773cabc-065",
     "agent": "sam",
@@ -373,7 +385,7 @@
   },
   {
     "id": "e1c20350-6da3-471b-8db5-36ddf1e5c71a",
-    "label": "Sam Morning Brief",
+    "label": "e1c20350-6da",
     "agent": "sam",
     "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
     "model": "Sonnet",

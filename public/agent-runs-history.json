@@ -3010,5 +3010,17 @@
     "durationSec": 70,
     "status": "success",
     "timestamp": "2026-02-27T04:00:00.090Z"
+  },
+  {
+    "id": "c178666e-8d97-4d6e-9ebf-5f3a69e220cf",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 272415,
+    "cost": 0.2395,
+    "durationSec": 90,
+    "status": "success",
+    "timestamp": "2026-02-27T05:30:00.051Z"
   }
 ]
