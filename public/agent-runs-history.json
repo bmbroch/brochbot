@@ -3274,5 +3274,17 @@
     "durationSec": 114,
     "status": "success",
     "timestamp": "2026-02-27T11:33:40.280Z"
+  },
+  {
+    "id": "085c8982-a972-4f3a-adfa-a673bcf39aba",
+    "label": "devin-type3-view-refresh",
+    "agent": "devin",
+    "task": "`mergeNewPosts` only INSERTS new posts \u2014 it never updates views/likes/comments on posts already stored. So a post saved 2 weeks ago will show stale view counts forever. We need a daily pass that fetch",
+    "model": "Sonnet",
+    "tokens": 292918,
+    "cost": 0.2608,
+    "durationSec": 129,
+    "status": "success",
+    "timestamp": "2026-02-27T11:46:39.169Z"
   }
 ]
