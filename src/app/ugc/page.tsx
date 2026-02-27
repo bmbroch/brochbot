@@ -710,10 +710,14 @@ export default function UGCPage() {
   const activeIgHandle = activeCreator?.igHandle ?? null;
 
   // ── Load overview data ─────────────────────────────────────────────────────
+  const lastFetchRef = useRef<number>(0);
+
   const fetchAllData = useCallback(() => {
+    lastFetchRef.current = Date.now();
+    const orgParam = selectedOrgId ? `?org_id=${selectedOrgId}` : "";
     Promise.all([
       fetch("/creator-payouts.json").then((r) => r.json()),
-      fetch("/api/tiktok/all-data").then((r) => r.json()),
+      fetch(`/api/tiktok/all-data${orgParam}`).then((r) => r.json()),
     ])
       .then(([payoutsJson, allDataJson]) => {
         setPayouts(payoutsJson.payouts ?? []);
@@ -721,22 +725,27 @@ export default function UGCPage() {
         setAllData(allDataJson);
       })
       .catch((err) => console.error("Failed to load overview data", err));
-  }, []);
+  }, [selectedOrgId]);
 
   useEffect(() => {
     fetchAllData();
   }, [fetchAllData]);
 
   // Re-fetch when the page becomes visible (e.g. user returns from /ugc/manage)
+  // Throttled to at most once per 60 seconds
   useEffect(() => {
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
-        fetchAllData();
-        if (selectedOrgId) {
-          fetch(`/api/ugc/creators?org_id=${selectedOrgId}`)
-            .then((r) => r.ok ? r.json() : null)
-            .then((data) => { if (Array.isArray(data)) setDbCreators(data); })
-            .catch(() => {});
+        const now = Date.now();
+        if (now - lastFetchRef.current > 60_000) {
+          lastFetchRef.current = now;
+          fetchAllData();
+          if (selectedOrgId) {
+            fetch(`/api/ugc/creators?org_id=${selectedOrgId}`)
+              .then((r) => r.ok ? r.json() : null)
+              .then((data) => { if (Array.isArray(data)) setDbCreators(data); })
+              .catch(() => {});
+          }
         }
       }
     };
