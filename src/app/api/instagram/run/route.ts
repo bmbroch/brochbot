@@ -25,23 +25,31 @@ export async function POST(req: NextRequest) {
   const resultsLimit = firstFetch ? 100 : mode === "new-posts" ? 20 : 50;
 
   // Build webhook array if URL provided (used by auto-sync cron)
-  const webhooks = webhookUrl
-    ? [{ eventTypes: ["ACTOR.RUN.SUCCEEDED"], requestUrl: webhookUrl }]
-    : undefined;
+  // Helper: register webhook via Apify Webhooks API after run starts
+  async function registerWebhook(runId: string, url: string) {
+    await fetch(
+      `https://api.apify.com/v2/actor-runs/${runId}/webhooks?token=${APIFY_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventTypes: ["ACTOR.RUN.SUCCEEDED", "ACTOR.RUN.FAILED"],
+          requestUrl: url,
+        }),
+      }
+    ).catch(() => {}); // best-effort — sync-check cron is backstop
+  }
 
   const postsInput: Record<string, unknown> = {
     directUrls: [`https://www.instagram.com/${igHandle}/`],
     resultsType: "posts",
     resultsLimit,
-    ...(webhooks ? { webhooks } : {}),
   };
 
   const profileInput: Record<string, unknown> = {
     directUrls: [`https://www.instagram.com/${igHandle}/`],
     resultsType: "details",
     resultsLimit: 1,
-    // Profile run uses same webhook URL — the handler detects it's a profile run by the data shape
-    ...(webhooks ? { webhooks } : {}),
   };
 
   try {
@@ -50,19 +58,11 @@ export async function POST(req: NextRequest) {
       const [postsRes, profileRes] = await Promise.all([
         fetch(
           `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(postsInput),
-          }
+          { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(postsInput) }
         ),
         fetch(
           `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(profileInput),
-          }
+          { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(profileInput) }
         ),
       ]);
 
@@ -83,16 +83,20 @@ export async function POST(req: NextRequest) {
       const profileRunId: string = profileJson?.data?.id;
       const profileDatasetId: string = profileJson?.data?.defaultDatasetId;
 
+      // Register webhooks via Apify Webhooks API
+      if (webhookUrl) {
+        await Promise.all([
+          registerWebhook(runId, webhookUrl),
+          registerWebhook(profileRunId, webhookUrl),
+        ]);
+      }
+
       return NextResponse.json({ runId, datasetId, profileRunId, profileDatasetId });
     } else {
       // Non-firstFetch: posts run only
       const res = await fetch(
         `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(postsInput),
-        }
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(postsInput) }
       );
 
       if (!res.ok) {
@@ -103,6 +107,9 @@ export async function POST(req: NextRequest) {
       const json = await res.json();
       const runId: string = json?.data?.id;
       const datasetId: string = json?.data?.defaultDatasetId;
+
+      // Register webhook via Apify Webhooks API
+      if (webhookUrl && runId) await registerWebhook(runId, webhookUrl);
 
       return NextResponse.json({ runId, datasetId });
     }
