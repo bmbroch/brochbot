@@ -3358,5 +3358,29 @@
     "durationSec": 69,
     "status": "success",
     "timestamp": "2026-02-27T19:13:34.414Z"
+  },
+  {
+    "id": "sam-sync-2026-02-27T20:00:02Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 24125,
+    "cost": 0.0708,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-27T20:00:02Z"
+  },
+  {
+    "id": "sam-daily-2026-02-27",
+    "label": "Daily total",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben total conversation cost today",
+    "model": "Opus",
+    "tokens": 24125,
+    "cost": 0.0708,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-02-27T20:00:02Z"
   }
 ]
