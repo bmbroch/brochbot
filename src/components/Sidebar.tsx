@@ -163,9 +163,8 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
                       localStorage.setItem("ugc_org_id", org.id);
                       setOrgDropdownOpen(false);
                       if (pathname.startsWith("/ugc")) {
-                        // Stay on current page, just update org_id param
-                        const basePath = pathname.split("?")[0];
-                        router.push(`${basePath}?org_id=${org.id}`);
+                        // Always return to /ugc overview when switching org
+                        router.push(`/ugc?org_id=${org.id}`);
                       }
                     }}
                     className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-[var(--bg-hover)] ${

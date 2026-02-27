@@ -639,6 +639,7 @@ export default function UGCPage() {
     if (urlOrgId && orgsRef.current.some((o) => o.id === urlOrgId) && urlOrgId !== selectedOrgId) {
       setSelectedOrgId(urlOrgId);
       setDbCreators(null);
+      setPageMode("overview"); // reset to overview on org switch
       localStorage.setItem("ugc_org_id", urlOrgId);
     }
   }); // intentionally no deps — runs on every render to catch URL changes
