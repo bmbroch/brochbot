@@ -1035,9 +1035,10 @@ export default function UGCPage() {
           <div className="min-w-0">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">UGC Analytics</h1>
             <p className="text-sm text-gray-400 dark:text-white/40 mt-0.5">
-              Powered by Apify + Mercury
-              {lastSyncedAt && (
-                <span className="text-gray-300 dark:text-white/30"> · Last synced {timeAgo(lastSyncedAt)}</span>
+              {lastSyncedAt ? (
+                <span>Last synced {timeAgo(lastSyncedAt)}</span>
+              ) : (
+                <span>Track your creators&apos; performance</span>
               )}
               {payoutsLastUpdated && (
                 <span className="text-gray-300 dark:text-white/30"> · Payouts synced {timeAgo(payoutsLastUpdated)}</span>
