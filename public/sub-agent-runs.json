@@ -312,18 +312,6 @@
     "timestamp": "2026-02-24T03:00:00.193Z"
   },
   {
-    "id": "651dc030-e502-4089-8ffa-a6383a18e31a",
-    "label": "devin-free-scraper-switch",
-    "agent": "devin",
-    "task": "**File: `src/app/api/tiktok/run/route.ts`**",
-    "model": "Sonnet",
-    "tokens": 350897,
-    "cost": 0.2625,
-    "durationSec": 114,
-    "status": "success",
-    "timestamp": "2026-02-27T11:33:40.280Z"
-  },
-  {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
     "label": "cdbe948e-6c9",
     "agent": "sam",

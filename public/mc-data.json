@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T12:30:02Z",
+  "lastUpdated": "2026-02-27T12:40:02Z",
   "activities": [
     {
       "id": "s-f5dd413d",
@@ -24,18 +24,6 @@
       "cost": 0.2608,
       "model": "Sonnet",
       "durationSec": 129
-    },
-    {
-      "id": "s-651dc030",
-      "agent": "devin",
-      "title": "devin-free-scraper-switch",
-      "description": "**File: `src/app/api/tiktok/run/route.ts`**",
-      "status": "success",
-      "date": "2026-02-27T11:33:40.280Z",
-      "tokens": 350897,
-      "cost": 0.2625,
-      "model": "Sonnet",
-      "durationSec": 114
     },
     {
       "id": "s-acd636de",
@@ -1401,7 +1389,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T12:30:01Z"
+      "lastRunAt": "2026-02-27T12:40:02Z"
     },
     {
       "id": "bash-frankie-sync",
