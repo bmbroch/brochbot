@@ -279,7 +279,7 @@ function ManageCreatorsPage() {
   const [bulkActing, setBulkActing] = useState(false);
   const [refreshingAvatars, setRefreshingAvatars] = useState(false);
   const [avatarMsg, setAvatarMsg] = useState<string | null>(null);
-  const [health, setHealth] = useState<Record<string, { health: string; issues: string[] }>>({});
+  const [health, setHealth] = useState<Record<string, { health: string; issues: string[]; ttPosts: number; igPosts: number }>>({});
   const [syncingId, setSyncingId] = useState<string | null>(null);
   const [orgId, setOrgId] = useState<string | null>(null);
   const [orgIdReady, setOrgIdReady] = useState(false);
@@ -332,8 +332,8 @@ function ManageCreatorsPage() {
   const fetchHealth = useCallback(async () => {
     try {
       const data = await fetch(`/api/ugc/health${orgId ? `?org_id=${orgId}` : ""}`).then((r) => r.json());
-      const map: Record<string, { health: string; issues: string[] }> = {};
-      for (const c of data.creators ?? []) map[c.id] = { health: c.health, issues: c.issues };
+      const map: Record<string, { health: string; issues: string[]; ttPosts: number; igPosts: number }> = {};
+      for (const c of data.creators ?? []) map[c.id] = { health: c.health, issues: c.issues, ttPosts: c.ttPosts ?? 0, igPosts: c.igPosts ?? 0 };
       setHealth(map);
     } catch { }
   }, [orgId]);
@@ -589,14 +589,14 @@ function ManageCreatorsPage() {
                       <input type="checkbox" checked={allSelected} onChange={toggleAll}
                         className="rounded border-gray-300 dark:border-[#444] text-blue-600 focus:ring-blue-500/40 cursor-pointer" />
                     </th>
-                    {["Creator", "Platforms", "Health", "Status", "Last Synced"].map((h) => (
+                    {["Creator", "Platforms", "Posts", "Health", "Status", "Last Synced"].map((h) => (
                       <th key={h} className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.length === 0 ? (
-                    <tr><td colSpan={6} className="px-5 py-10 text-center text-sm text-gray-400 dark:text-white/30">No creators match &ldquo;{search}&rdquo;</td></tr>
+                    <tr><td colSpan={7} className="px-5 py-10 text-center text-sm text-gray-400 dark:text-white/30">No creators match &ldquo;{search}&rdquo;</td></tr>
                   ) : filtered.map((creator) => (
                     <tr key={creator.id}
                       className={`border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 transition-colors hover:bg-gray-50/80 dark:hover:bg-white/[0.02] ${selected.has(creator.id) ? "bg-blue-50/50 dark:bg-blue-500/5" : ""}`}>
@@ -635,6 +635,26 @@ function ManageCreatorsPage() {
                             <span className="text-gray-300 dark:text-white/20 text-xs">No platforms</span>
                           )}
                         </div>
+                      </td>
+
+                      {/* Posts tracked */}
+                      <td className="px-4 py-3.5 whitespace-nowrap">
+                        {(() => {
+                          const h = health[creator.id];
+                          if (!h) return <span className="text-gray-300 dark:text-white/20 text-xs">—</span>;
+                          const total = (h.ttPosts ?? 0) + (h.igPosts ?? 0);
+                          if (total === 0) return <span className="text-gray-300 dark:text-white/20 text-xs">—</span>;
+                          return (
+                            <span className="text-xs text-gray-600 dark:text-white/60 font-medium">
+                              {total.toLocaleString()}
+                              {h.ttPosts > 0 && h.igPosts > 0 && (
+                                <span className="ml-1 text-gray-400 dark:text-white/30 font-normal">
+                                  ({h.ttPosts.toLocaleString()} TT · {h.igPosts.toLocaleString()} IG)
+                                </span>
+                              )}
+                            </span>
+                          );
+                        })()}
                       </td>
 
                       {/* Health */}

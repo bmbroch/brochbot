@@ -1141,7 +1141,7 @@ export default function UGCPage() {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all"
             >
               <Settings size={13} />
-              <span className="hidden sm:inline">Manage</span>
+              <span className="hidden sm:inline">Manage Creators</span>
             </Link>
             <Link
               href={`/ugc/settings?org_id=${selectedOrgId}`}
