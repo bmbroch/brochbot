@@ -997,9 +997,16 @@ export default function UGCPage() {
   useEffect(() => {
     // Don't load data for empty handle or handles not in current org
     if (!activeHandle) return;
-    if (!effectiveCreators.some((c) => c.handle === activeHandle || c.igHandle === activeHandle)) return;
+    const matchedCreator = effectiveCreators.find((c) => c.handle === activeHandle || c.igHandle === activeHandle);
+    if (!matchedCreator) return;
     setError(null);
-    loadTikTokData(activeHandle);
+    // Only load TikTok data if this creator has a TikTok handle
+    if (matchedCreator.handle) {
+      loadTikTokData(matchedCreator.handle);
+    } else {
+      setStoreData(null);
+      setLoadState("idle");
+    }
     if (activeIgHandle) {
       loadInstagramData(activeIgHandle);
     } else {
@@ -1012,6 +1019,13 @@ export default function UGCPage() {
   useEffect(() => {
     setError(null);
   }, [platform]);
+
+  // Auto-switch to Instagram tab for IG-only creators (no TikTok handle)
+  useEffect(() => {
+    if (activeCreator && !activeCreator.handle && platform === "tiktok") {
+      setPlatform("instagram");
+    }
+  }, [activeCreator, platform]);
 
   // ── Derived: TikTok ───────────────────────────────────────────────────────
   const videos = storeData?.videos ?? [];
@@ -1206,8 +1220,9 @@ export default function UGCPage() {
                       computedData={computed}
                       payout={payout}
                       onClick={() => {
-                        if (creator.handle) {
-                          setActiveHandle(creator.handle);
+                        const key = creator.handle ?? creator.igHandle ?? null;
+                        if (key) {
+                          setActiveHandle(key);
                           setPageMode("drilldown");
                         }
                       }}
@@ -1519,14 +1534,15 @@ export default function UGCPage() {
                           <tr
                             key={row.name}
                             onClick={() => {
-                              if (row.handle) {
-                                setActiveHandle(row.handle);
+                              const key = row.handle ?? rowCreator?.igHandle ?? null;
+                              if (key) {
+                                setActiveHandle(key);
                                 setPageMode("drilldown");
                               }
                             }}
                             className={[
                               "border-b border-gray-50 dark:border-[#1a1a1a] last:border-0 transition-colors",
-                              row.handle
+                              (row.handle || rowCreator?.igHandle)
                                 ? "cursor-pointer hover:bg-gray-50 dark:hover:bg-white/[0.03]"
                                 : "opacity-50",
                               i % 2 === 0 ? "" : "bg-gray-50/50 dark:bg-white/[0.01]",
@@ -1613,13 +1629,13 @@ export default function UGCPage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
               <div className="flex overflow-x-auto gap-2 pb-1 -mx-1 px-1 scrollbar-hide">
                 {effectiveCreators.map((creator) => {
-                  const active = creator.handle === activeHandle;
-                  const disabled = !creator.handle;
+                  const active = creator.handle === activeHandle || creator.igHandle === activeHandle;
+                  const disabled = !creator.handle && !creator.igHandle;
                   const status = creatorStatusMap[creator.name];
                   return (
                     <button
                       key={creator.name}
-                      onClick={() => { if (creator.handle && !disabled) setActiveHandle(creator.handle); }}
+                      onClick={() => { const key = creator.handle ?? creator.igHandle ?? null; if (key && !disabled) setActiveHandle(key); }}
                       disabled={disabled}
                       className={[
                         "flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all border",
@@ -1667,19 +1683,30 @@ export default function UGCPage() {
             {/* ── TikTok Content ──────────────────────────────────────────── */}
             {platform === "tiktok" && (
               <>
-                {storeData?.authorMeta && <ProfileHeader meta={storeData.authorMeta} />}
-                {error && (
+                {!activeCreator?.handle && (
+                  <div className="flex flex-col items-center justify-center py-32 gap-5">
+                    <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] flex items-center justify-center text-2xl">
+                      🎵
+                    </div>
+                    <div className="text-center">
+                      <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No TikTok account</p>
+                      <p className="text-gray-400 dark:text-white/30 text-sm">{activeCreator?.name ?? "This creator"} is Instagram-only.</p>
+                    </div>
+                  </div>
+                )}
+                {activeCreator?.handle && storeData?.authorMeta && <ProfileHeader meta={storeData.authorMeta} />}
+                {activeCreator?.handle && error && (
                   <div className="rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 p-4 mb-6">
                     <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
                   </div>
                 )}
-                {activeLoadState === "loading" && (
+                {activeCreator?.handle && activeLoadState === "loading" && (
                   <div className="flex items-center justify-center py-32 gap-3">
                     <Loader2 size={20} className="animate-spin text-blue-500" />
                     <span className="text-sm text-gray-400 dark:text-white/40">Loading cached data...</span>
                   </div>
                 )}
-                {activeLoadState === "idle" && (
+                {activeCreator?.handle && activeLoadState === "idle" && (
                   <div className="flex flex-col items-center justify-center py-32 gap-5">
                     <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] flex items-center justify-center">
                       <Search size={22} className="text-gray-300 dark:text-white/20" />
@@ -1690,7 +1717,7 @@ export default function UGCPage() {
                     </div>
                   </div>
                 )}
-                {(activeLoadState === "done" || (activeLoadState !== "loading" && activeLoadState !== "idle" && videos.length > 0)) && (
+                {activeCreator?.handle && (activeLoadState === "done" || (activeLoadState !== "loading" && activeLoadState !== "idle" && videos.length > 0)) && (
                   <>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
                       <StatCard icon="📹" label="Total Videos" value={totalVideos} />
