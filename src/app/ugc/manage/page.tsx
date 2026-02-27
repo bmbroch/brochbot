@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Shell from "@/components/Shell";
 import {
   ArrowLeft, Plus, Settings2, Search, Check, X,
-  Loader2, ImageIcon, ExternalLink, StopCircle, PlayCircle,
+  Loader2, ImageIcon, ExternalLink, StopCircle, PlayCircle, Building2,
 } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -277,6 +277,8 @@ function ManageCreatorsPage() {
   const [health, setHealth] = useState<Record<string, { health: string; issues: string[] }>>({});
   const [syncingId, setSyncingId] = useState<string | null>(null);
   const [orgId, setOrgId] = useState<string | null>(null);
+  const [orgIdReady, setOrgIdReady] = useState(false);
+  const [orgName, setOrgName] = useState<string | null>(null);
 
   // Fetch orgs on mount to get default orgId
   useEffect(() => {
@@ -284,9 +286,22 @@ function ManageCreatorsPage() {
       .then((r) => r.json())
       .then((data) => {
         const orgs = Array.isArray(data) ? data : [];
-        if (orgs.length > 0 && !orgId) setOrgId(orgs[0].id);
+        if (orgs.length === 0) {
+          setOrgIdReady(true);
+          return;
+        }
+        // Only set the fallback if URL param hasn't already resolved orgId
+        setOrgId((prev) => {
+          const id = prev ?? orgs[0].id;
+          const match = orgs.find((o: { id: string; name: string }) => o.id === id) ?? orgs[0];
+          if (match) {
+            setOrgName(match.name);
+          }
+          setOrgIdReady(true);
+          return id;
+        });
       })
-      .catch(() => {});
+      .catch(() => { setOrgIdReady(true); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchCreators = useCallback(async () => {
@@ -305,7 +320,11 @@ function ManageCreatorsPage() {
     } catch { }
   }, [orgId]);
 
-  useEffect(() => { fetchCreators(); fetchHealth(); }, [fetchCreators, fetchHealth]);
+  useEffect(() => {
+    if (!orgIdReady) return;
+    fetchCreators();
+    fetchHealth();
+  }, [fetchCreators, fetchHealth, orgIdReady]);
 
   // ── Selection ──────────────────────────────────────────────────────────────
 
@@ -395,7 +414,7 @@ function ManageCreatorsPage() {
   return (
     <Shell>
       <Suspense fallback={null}>
-        <OrgIdReader onOrgId={setOrgId} />
+        <OrgIdReader onOrgId={(id) => { setOrgId(id); setOrgIdReady(true); }} />
       </Suspense>
       <div className="min-h-full bg-gray-50 dark:bg-[#0a0a0a] px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pb-24">
 
@@ -413,6 +432,11 @@ function ManageCreatorsPage() {
               Track who you want, stop tracking when you don&apos;t. Sync schedule in{" "}
               <Link href="/ugc/settings" className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">Settings</Link>.
             </p>
+            {orgName && (
+              <span className="inline-flex items-center gap-1 text-xs text-gray-400 dark:text-white/30 mt-1">
+                <Building2 size={11} /> {orgName}
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             {avatarMsg && <span className="text-xs text-gray-400 dark:text-white/40 max-w-[180px] text-right">{avatarMsg}</span>}
@@ -463,7 +487,7 @@ function ManageCreatorsPage() {
               )}
               {(counts.stale > 0 || counts.critical > 0) && (
                 <button
-                  onClick={async () => { await fetch("/api/ugc/health?remediate=true"); fetchHealth(); }}
+                  onClick={async () => { await fetch(`/api/ugc/health?remediate=true${orgId ? `&org_id=${orgId}` : ""}`); fetchHealth(); }}
                   className="text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
                 >
                   Sync all stale →
