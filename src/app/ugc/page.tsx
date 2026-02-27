@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import Shell from "@/components/Shell";
 import { useTheme } from "@/components/ThemeProvider";
 import { creatorColors } from "@/lib/data-provider";
@@ -612,6 +612,7 @@ export default function UGCPage() {
   // ── Organizations ─────────────────────────────────────────────────────────
   const [orgs, setOrgs] = useState<Array<{ id: string; name: string; slug: string }>>([]);
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
+  const orgsRef = useRef<Array<{ id: string; name: string; slug: string }>>([]);
 
   useEffect(() => {
     fetch("/api/ugc/orgs")
@@ -619,11 +620,28 @@ export default function UGCPage() {
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
           setOrgs(data);
-          setSelectedOrgId((prev) => prev ?? data[0].id);
+          orgsRef.current = data;
+          // Prefer ?org_id= from URL, then localStorage, then first org
+          const urlOrgId = new URLSearchParams(window.location.search).get("org_id");
+          const lsOrgId = localStorage.getItem("ugc_org_id");
+          const resolved = [urlOrgId, lsOrgId].find((id) => id && data.some((o: {id: string}) => o.id === id)) ?? data[0].id;
+          setSelectedOrgId(resolved);
+          localStorage.setItem("ugc_org_id", resolved);
         }
       })
       .catch(() => {});
   }, []);
+
+  // Sync selectedOrgId when URL ?org_id= changes (e.g. sidebar navigation)
+  useEffect(() => {
+    if (orgsRef.current.length === 0) return;
+    const urlOrgId = new URLSearchParams(window.location.search).get("org_id");
+    if (urlOrgId && orgsRef.current.some((o) => o.id === urlOrgId) && urlOrgId !== selectedOrgId) {
+      setSelectedOrgId(urlOrgId);
+      setDbCreators(null);
+      localStorage.setItem("ugc_org_id", urlOrgId);
+    }
+  }); // intentionally no deps — runs on every render to catch URL changes
 
   // ── DB-backed creator list ─────────────────────────────────────────────────
   const [dbCreators, setDbCreators] = useState<Array<{
