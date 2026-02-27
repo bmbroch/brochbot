@@ -40,17 +40,8 @@ export async function POST(req: NextRequest) {
     apifyInput.scrapeLastNDays = isNewPosts ? 7 : 60;
   }
 
-  // Register webhook if URL provided (used by auto-sync cron)
-  if (webhookUrl) {
-    apifyInput.webhooks = [
-      {
-        eventTypes: ["ACTOR.RUN.SUCCEEDED"],
-        requestUrl: webhookUrl,
-      },
-    ];
-  }
-
   try {
+    // Start the Apify run (no inline webhooks — registered separately below)
     const res = await fetch(
       `https://api.apify.com/v2/acts/clockworks~tiktok-scraper/runs?token=${APIFY_KEY}&memory=512`,
       {
@@ -68,6 +59,21 @@ export async function POST(req: NextRequest) {
     const json = await res.json();
     const runId: string = json?.data?.id;
     const datasetId: string = json?.data?.defaultDatasetId;
+
+    // Register webhook via Apify Webhooks API (more reliable than inline input webhooks)
+    if (webhookUrl && runId) {
+      await fetch(
+        `https://api.apify.com/v2/actor-runs/${runId}/webhooks?token=${APIFY_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            eventTypes: ["ACTOR.RUN.SUCCEEDED", "ACTOR.RUN.FAILED"],
+            requestUrl: webhookUrl,
+          }),
+        }
+      ).catch(() => {}); // best-effort — sync-check cron is backstop
+    }
 
     return NextResponse.json({ runId, datasetId });
   } catch (err) {
