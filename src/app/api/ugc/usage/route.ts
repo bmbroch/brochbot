@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
   const orgRows = await orgRes.json();
   const settings = orgRows?.[0]?.settings ?? {};
   const plan: string = settings?.plan ?? "basic";
-  const planLimit = PLAN_LIMITS[plan] ?? PLAN_LIMITS.basic;
+  const planLimit = settings?.planLimit ?? PLAN_LIMITS[plan] ?? PLAN_LIMITS.basic;
 
   // 2. Fetch all non-archived creators for this org (just need their IDs)
   const creatorsRes = await fetch(
