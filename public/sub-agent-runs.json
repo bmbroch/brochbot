@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 117675534,
-    "cost": 64.3148,
-    "durationSec": 282471,
+    "tokens": 118027540,
+    "cost": 64.4531,
+    "durationSec": 282905,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -192,6 +192,18 @@
     "timestamp": "2026-02-27T13:23:03.659Z"
   },
   {
+    "id": "1d175d74-b374-4eb4-a00d-ffa1a667d170",
+    "label": "devin-cost-report",
+    "agent": "devin",
+    "task": "`GET /api/ugc/cost-report` \u2014 pulls actual Apify run costs from the last 24h via sync logs, builds a summary, sends it to Telegram.",
+    "model": "Sonnet",
+    "tokens": 870733,
+    "cost": 0.5905,
+    "durationSec": 235,
+    "status": "success",
+    "timestamp": "2026-02-27T13:37:58.001Z"
+  },
+  {
     "id": "5541062c-e449-4522-9556-f6a62ad99f7d",
     "label": "5541062c-e44",
     "agent": "sam",
@@ -336,18 +348,6 @@
     "timestamp": "2026-02-24T03:00:00.193Z"
   },
   {
-    "id": "1d175d74-b374-4eb4-a00d-ffa1a667d170",
-    "label": "devin-cost-report",
-    "agent": "devin",
-    "task": "`GET /api/ugc/cost-report` \u2014 pulls actual Apify run costs from the last 24h via sync logs, builds a summary, sends it to Telegram.",
-    "model": "Sonnet",
-    "tokens": 385795,
-    "cost": 0.3225,
-    "durationSec": 82,
-    "status": "success",
-    "timestamp": "2026-02-27T13:37:58.001Z"
-  },
-  {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
     "label": "cdbe948e-6c9",
     "agent": "sam",
@@ -418,6 +418,18 @@
     "durationSec": 154,
     "status": "success",
     "timestamp": "2026-02-21T03:00:00.031Z"
+  },
+  {
+    "id": "5586cec3-ab4d-4a4f-b545-d19ac3d439d0",
+    "label": "devin-cost-report-breakdown",
+    "agent": "devin",
+    "task": "The route already aggregates costs per creator+platform. Now also group them by org and platform for the projected monthly section.",
+    "model": "Sonnet",
+    "tokens": 250757,
+    "cost": 0.2103,
+    "durationSec": 108,
+    "status": "success",
+    "timestamp": "2026-02-27T13:43:58.833Z"
   },
   {
     "id": "e1c20350-6da3-471b-8db5-36ddf1e5c71a",

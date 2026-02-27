@@ -3334,5 +3334,17 @@
     "durationSec": 82,
     "status": "success",
     "timestamp": "2026-02-27T13:37:58.001Z"
+  },
+  {
+    "id": "5586cec3-ab4d-4a4f-b545-d19ac3d439d0",
+    "label": "devin-cost-report-breakdown",
+    "agent": "devin",
+    "task": "The route already aggregates costs per creator+platform. Now also group them by org and platform for the projected monthly section.",
+    "model": "Sonnet",
+    "tokens": 250757,
+    "cost": 0.2103,
+    "durationSec": 108,
+    "status": "success",
+    "timestamp": "2026-02-27T13:43:58.833Z"
   }
 ]
