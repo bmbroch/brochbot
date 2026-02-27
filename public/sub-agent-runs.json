@@ -600,18 +600,6 @@
     "timestamp": "2026-02-26T04:00:00.275Z"
   },
   {
-    "id": "7a8a66ae-8725-4ac6-9b9f-95cd4dd90aaa",
-    "label": "devin-sort-refresh-urls",
-    "agent": "devin",
-    "task": "In the `getStoredPostUrls` function, before returning the URL arrays, sort posts by date descending and take only the 100 most recent. This ensures daily metric refreshes cover the newest 100 posts \u2014 ",
-    "model": "Sonnet",
-    "tokens": 99703,
-    "cost": 0.117,
-    "durationSec": 69,
-    "status": "success",
-    "timestamp": "2026-02-27T19:13:34.414Z"
-  },
-  {
     "id": "7af296ce-c8ac-495b-bfb4-59066238c23a",
     "label": "7af296ce-c8a",
     "agent": "sam",
