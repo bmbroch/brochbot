@@ -62,6 +62,24 @@ export async function PATCH(req: NextRequest) {
     const patch = await req.json();
     const updated = { ...current, ...patch };
     await writeSettings(updated);
+
+    // Propagate new sync hour to all active creators
+    if (patch.defaultSyncHour !== undefined && patch.defaultSyncHour !== current.defaultSyncHour) {
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/ugc_creators?status=eq.active`,
+        {
+          method: "PATCH",
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json",
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify({ sync_hour: updated.defaultSyncHour }),
+        }
+      );
+    }
+
     return NextResponse.json(updated);
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
