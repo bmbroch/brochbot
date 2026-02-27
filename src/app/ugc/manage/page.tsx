@@ -283,6 +283,7 @@ function ManageCreatorsPage() {
   const [orgId, setOrgId] = useState<string | null>(null);
   const [orgIdReady, setOrgIdReady] = useState(false);
   const [orgName, setOrgName] = useState<string | null>(null);
+  const [usage, setUsage] = useState<{ totalPosts: number; planLimit: number; plan: string } | null>(null);
 
   // Ref populated by OrgIdReader before the orgs fetch completes (from URL ?org_id param)
   const orgIdFromUrlRef = useRef<string | null>(null);
@@ -330,11 +331,20 @@ function ManageCreatorsPage() {
     } catch { }
   }, [orgId]);
 
+  const fetchUsage = useCallback(async () => {
+    if (!orgId) return;
+    try {
+      const data = await fetch(`/api/ugc/usage?org_id=${orgId}`).then((r) => r.json());
+      if (data && typeof data.totalPosts === "number") setUsage(data);
+    } catch { }
+  }, [orgId]);
+
   useEffect(() => {
     if (!orgIdReady) return;
     fetchCreators();
     fetchHealth();
-  }, [fetchCreators, fetchHealth, orgIdReady]);
+    fetchUsage();
+  }, [fetchCreators, fetchHealth, fetchUsage, orgIdReady]);
 
   // ── Selection ──────────────────────────────────────────────────────────────
 
@@ -462,6 +472,31 @@ function ManageCreatorsPage() {
             </button>
           </div>
         </div>
+
+        {/* Usage bar */}
+        {(() => {
+          const pct = usage ? Math.round((usage.totalPosts / usage.planLimit) * 100) : 0;
+          return usage ? (
+            <div className="mb-4 px-4 py-3 rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-white/70">
+                  Tracked Videos
+                </span>
+                <span className="text-xs text-gray-400 dark:text-white/40 capitalize">
+                  {usage.plan} plan · {usage.totalPosts.toLocaleString()} / {usage.planLimit.toLocaleString()}
+                </span>
+              </div>
+              <div className="w-full h-1.5 rounded-full bg-gray-100 dark:bg-[#222] overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all ${
+                    pct >= 90 ? "bg-red-500" : pct >= 70 ? "bg-yellow-500" : "bg-blue-500"
+                  }`}
+                  style={{ width: `${Math.min(pct, 100)}%` }}
+                />
+              </div>
+            </div>
+          ) : null;
+        })()}
 
         {/* Search */}
         <div className="relative mb-4 max-w-sm">

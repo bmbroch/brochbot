@@ -18,6 +18,7 @@ interface UGCSettings {
   videosPerCreator: number;
   refreshFrequency: "daily" | "twice_daily";
   orgName: string;
+  plan?: string;
 }
 
 // ─── Timezone list ─────────────────────────────────────────────────────────────
@@ -361,6 +362,20 @@ function UGCSettingsContent() {
             <Section title="Organization" description="Your workspace details.">
               <Field label="Organization Name">
                 <OrgNameEditor name={settings.orgName} onSave={(name) => save("orgName", { orgName: name })} />
+              </Field>
+              <Field label="Plan" hint="Controls max tracked videos">
+                <div className="flex items-center gap-3">
+                  <select
+                    value={settings.plan ?? "basic"}
+                    onChange={(e) => save("plan", { plan: e.target.value })}
+                    className="px-3 py-2 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all">
+                    <option value="basic">Basic — 500 videos</option>
+                    <option value="growth">Growth — 2,000 videos</option>
+                    <option value="pro">Pro — 10,000 videos</option>
+                  </select>
+                  {saving === "plan" && <Loader2 size={14} className="animate-spin text-gray-400" />}
+                  {saved === "plan" && <span className="flex items-center gap-1 text-xs text-green-500"><Check size={12} /> Saved</span>}
+                </div>
               </Field>
             </Section>
 

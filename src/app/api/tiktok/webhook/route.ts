@@ -131,8 +131,9 @@ export async function POST(req: NextRequest) {
 
     await setStoreData(handle, updated);
 
-    // Update last_synced_at in ugc_creators if we have a creatorId
+    // Update last_synced_at and total_posts in ugc_creators if we have a creatorId
     if (creatorId && SUPABASE_URL && SUPABASE_KEY) {
+      const totalPosts = updated.videos.length;
       await fetch(
         `${SUPABASE_URL}/rest/v1/ugc_creators?id=eq.${creatorId}`,
         {
@@ -141,8 +142,9 @@ export async function POST(req: NextRequest) {
             apikey: SUPABASE_KEY,
             Authorization: `Bearer ${SUPABASE_KEY}`,
             "Content-Type": "application/json",
+            Prefer: "return=minimal",
           },
-          body: JSON.stringify({ last_synced_at: new Date().toISOString() }),
+          body: JSON.stringify({ last_synced_at: new Date().toISOString(), total_posts: totalPosts }),
         }
       );
     }
