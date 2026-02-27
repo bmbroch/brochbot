@@ -2808,6 +2808,18 @@
     "timestamp": "2026-02-26T04:00:00.275Z"
   },
   {
+    "id": "3c4acd5c-1927-4039-b05f-a8adcc95af11",
+    "label": "3c4acd5c-192",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Sonnet",
+    "tokens": 540578,
+    "cost": 0.5099,
+    "durationSec": 82354,
+    "status": "success",
+    "timestamp": "2026-02-26T04:33:12.997Z"
+  },
+  {
     "id": "e1c20350-6da3-471b-8db5-36ddf1e5c71a",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -2998,17 +3010,5 @@
     "durationSec": 70,
     "status": "success",
     "timestamp": "2026-02-27T04:00:00.090Z"
-  },
-  {
-    "id": "sam-daily-2026-02-27",
-    "label": "Daily total",
-    "agent": "sam",
-    "task": "Sam \u2194 Ben total conversation cost today",
-    "model": "Opus",
-    "tokens": 69431,
-    "cost": 0.1291,
-    "durationSec": 0,
-    "status": "success",
-    "timestamp": "2026-02-27T04:20:02Z"
   }
 ]
