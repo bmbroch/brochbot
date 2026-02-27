@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 114341326,
-    "cost": 61.9795,
-    "durationSec": 278162,
+    "tokens": 114623130,
+    "cost": 62.1573,
+    "durationSec": 279476,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -358,18 +358,6 @@
     "durationSec": 48667,
     "status": "success",
     "timestamp": "2026-02-24T04:00:44.410Z"
-  },
-  {
-    "id": "085c8982-a972-4f3a-adfa-a673bcf39aba",
-    "label": "devin-type3-view-refresh",
-    "agent": "devin",
-    "task": "`mergeNewPosts` only INSERTS new posts \u2014 it never updates views/likes/comments on posts already stored. So a post saved 2 weeks ago will show stale view counts forever. We need a daily pass that fetch",
-    "model": "Sonnet",
-    "tokens": 292918,
-    "cost": 0.2608,
-    "durationSec": 129,
-    "status": "success",
-    "timestamp": "2026-02-27T11:46:39.169Z"
   },
   {
     "id": "c178666e-8d97-4d6e-9ebf-5f3a69e220cf",
