@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-27T12:20:02Z",
+  "lastUpdated": "2026-02-27T12:30:02Z",
   "activities": [
+    {
+      "id": "s-f5dd413d",
+      "agent": "devin",
+      "title": "devin-ig-profile-refresh",
+      "description": "Currently `refresh-counts` for Instagram uses `apify/instagram-scraper` with `directUrls` (~$0.0184/run). We want to replace it with `apify/instagram-profile-scraper` which costs $0.0023/run and retur",
+      "status": "success",
+      "date": "2026-02-27T12:21:54.588Z",
+      "tokens": 309079,
+      "cost": 0.2608,
+      "model": "Sonnet",
+      "durationSec": 131
+    },
     {
       "id": "s-085c8982",
       "agent": "devin",
@@ -308,10 +320,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 114084508,
-      "cost": 61.8242,
+      "tokens": 114341326,
+      "cost": 61.9795,
       "model": "unknown",
-      "durationSec": 277496
+      "durationSec": 278162
     },
     {
       "id": "s-66dde37a",
@@ -1347,7 +1359,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-27T11:46:39.169Z",
+      "lastActive": "2026-02-27T12:21:54.588Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1389,7 +1401,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T12:20:01Z"
+      "lastRunAt": "2026-02-27T12:30:01Z"
     },
     {
       "id": "bash-frankie-sync",

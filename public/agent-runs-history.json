@@ -3286,5 +3286,17 @@
     "durationSec": 129,
     "status": "success",
     "timestamp": "2026-02-27T11:46:39.169Z"
+  },
+  {
+    "id": "f5dd413d-7c3d-4917-af2d-69c245fc4b16",
+    "label": "devin-ig-profile-refresh",
+    "agent": "devin",
+    "task": "Currently `refresh-counts` for Instagram uses `apify/instagram-scraper` with `directUrls` (~$0.0184/run). We want to replace it with `apify/instagram-profile-scraper` which costs $0.0023/run and retur",
+    "model": "Sonnet",
+    "tokens": 309079,
+    "cost": 0.2608,
+    "durationSec": 131,
+    "status": "success",
+    "timestamp": "2026-02-27T12:21:54.588Z"
   }
 ]
