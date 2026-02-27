@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T12:00:02Z",
+  "lastUpdated": "2026-02-27T12:10:02Z",
   "activities": [
     {
       "id": "s-085c8982",
@@ -24,18 +24,6 @@
       "cost": 0.2625,
       "model": "Sonnet",
       "durationSec": 114
-    },
-    {
-      "id": "s-cabf48bc",
-      "agent": "devin",
-      "title": "devin-simplify-autosync",
-      "description": "**The change:** Remove the Monday-only `refresh-counts` special case. Just run `new-posts` every day with a 30-day window \u2014 that captures both new posts AND updated view counts on recent posts in one ",
-      "status": "success",
-      "date": "2026-02-27T11:01:02.963Z",
-      "tokens": 178659,
-      "cost": 0.1608,
-      "model": "Sonnet",
-      "durationSec": 88
     },
     {
       "id": "s-acd636de",
@@ -320,10 +308,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 113602109,
-      "cost": 61.4608,
+      "tokens": 113963758,
+      "cost": 61.6267,
       "model": "unknown",
-      "durationSec": 275886
+      "durationSec": 276653
     },
     {
       "id": "s-66dde37a",
@@ -1401,7 +1389,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T12:00:02Z"
+      "lastRunAt": "2026-02-27T12:10:01Z"
     },
     {
       "id": "bash-frankie-sync",

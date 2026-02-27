@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 113602109,
-    "cost": 61.4608,
-    "durationSec": 275886,
+    "tokens": 113963758,
+    "cost": 61.6267,
+    "durationSec": 276653,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -502,18 +502,6 @@
     "durationSec": 61,
     "status": "success",
     "timestamp": "2026-02-26T06:00:00.137Z"
-  },
-  {
-    "id": "cabf48bc-6bce-4878-8404-b648da7bacfe",
-    "label": "devin-simplify-autosync",
-    "agent": "devin",
-    "task": "**The change:** Remove the Monday-only `refresh-counts` special case. Just run `new-posts` every day with a 30-day window \u2014 that captures both new posts AND updated view counts on recent posts in one ",
-    "model": "Sonnet",
-    "tokens": 178659,
-    "cost": 0.1608,
-    "durationSec": 88,
-    "status": "success",
-    "timestamp": "2026-02-27T11:01:02.963Z"
   },
   {
     "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",
