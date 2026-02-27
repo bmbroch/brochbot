@@ -49,7 +49,6 @@ export async function POST(req: NextRequest) {
   const igHandle = req.nextUrl.searchParams.get("igHandle");
   const mode = req.nextUrl.searchParams.get("mode");
   const creatorId = req.nextUrl.searchParams.get("creatorId");
-  const scraperType = req.nextUrl.searchParams.get("scraperType"); // 'profile' or null
 
   if (!igHandle || !mode) {
     return NextResponse.json({ error: "igHandle and mode are required query params" }, { status: 400 });
@@ -82,67 +81,6 @@ export async function POST(req: NextRequest) {
     }
 
     const rawItems: Record<string, unknown>[] = await itemsRes.json();
-
-    // Profile scraper branch (apify/instagram-profile-scraper) — scraperType=profile
-    if (scraperType === "profile") {
-      // Profile scraper returns ONE item per username, with latestPosts array inside
-      const profile = rawItems[0];
-      const latestPosts = (profile?.latestPosts as Record<string, unknown>[]) ?? [];
-
-      const mappedPosts = latestPosts.map((p: Record<string, unknown>) => ({
-        id: p.id as string,
-        url: p.url as string,
-        shortCode: p.shortCode as string,
-        type: p.type as string,
-        caption: (p.caption as string) ?? "",
-        postedAt: (p.timestamp as string) ?? (p.postedAt as string) ?? new Date().toISOString(),
-        views: (p.videoViewCount as number) ?? 0,
-        likes: (p.likesCount as number) ?? 0,
-        comments: (p.commentsCount as number) ?? 0,
-        thumbnail: (p.displayUrl as string) ?? "",
-      }));
-
-      const existing = await getInstagramStoreData(igHandle);
-      const updated = mergeRefreshCounts(existing, mappedPosts);
-
-      await setInstagramStoreData(igHandle, updated);
-
-      if (creatorId && SUPABASE_URL && SUPABASE_KEY) {
-        const totalPosts = updated.posts.length;
-        await fetch(
-          `${SUPABASE_URL}/rest/v1/ugc_creators?id=eq.${creatorId}`,
-          {
-            method: "PATCH",
-            headers: {
-              apikey: SUPABASE_KEY,
-              Authorization: `Bearer ${SUPABASE_KEY}`,
-              "Content-Type": "application/json",
-              Prefer: "return=minimal",
-            },
-            body: JSON.stringify({ last_synced_at: new Date().toISOString(), total_posts: totalPosts }),
-          }
-        );
-      }
-
-      await writeSyncLog({
-        creator_id: creatorId,
-        handle: igHandle,
-        platform: "instagram",
-        mode: "refresh-counts",
-        status: "succeeded",
-        posts_processed: mappedPosts.length,
-        total_posts: updated.posts.length,
-        run_id: body.resource?.id || body.eventData?.actorRunId,
-      });
-
-      return NextResponse.json({
-        ok: true,
-        igHandle,
-        mode: "refresh-counts",
-        postsProcessed: mappedPosts.length,
-        totalPosts: updated.posts.length,
-      });
-    }
 
     // Detect if this is a profile-details run (resultsType: "details")
     const isProfileRun =

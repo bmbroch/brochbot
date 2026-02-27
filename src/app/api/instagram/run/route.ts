@@ -22,12 +22,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "mode must be new-posts or refresh-counts" }, { status: 400 });
   }
 
-  // For new-posts mode, scale results by how many days we're scanning
-  // 1 day → 5 results, 7 days → 15 results, 30 days → 30 results
-  const resultsLimit = firstFetch ? 100 : mode === "new-posts"
-    ? Math.max(5, Math.min(30, Math.ceil((smartDays ?? 30) / 1)))
-    : 50;
-
   // Helper: register webhook via Apify Webhooks API after run starts
   // Uses correct endpoint: POST /v2/webhooks with condition: { actorRunId } filter
   async function registerWebhook(runId: string, url: string) {
@@ -46,12 +40,6 @@ export async function POST(req: NextRequest) {
     ).catch(() => {}); // best-effort — sync-check cron is backstop
   }
 
-  const postsInput: Record<string, unknown> = {
-    directUrls: [`https://www.instagram.com/${igHandle}/`],
-    resultsType: "posts",
-    resultsLimit,
-  };
-
   const profileInput: Record<string, unknown> = {
     directUrls: [`https://www.instagram.com/${igHandle}/`],
     resultsType: "details",
@@ -61,6 +49,12 @@ export async function POST(req: NextRequest) {
   try {
     if (firstFetch) {
       // Fire posts run and profile run in parallel
+      const postsInput: Record<string, unknown> = {
+        directUrls: [`https://www.instagram.com/${igHandle}/`],
+        resultsType: "posts",
+        resultsLimit: 100,
+      };
+
       const [postsRes, profileRes] = await Promise.all([
         fetch(
           `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
@@ -98,18 +92,18 @@ export async function POST(req: NextRequest) {
       }
 
       return NextResponse.json({ runId, datasetId, profileRunId, profileDatasetId });
-    } else if (mode === "refresh-counts") {
-      // Use cheap profile scraper — returns latestPosts with current metrics for $0.0023/run
-      const profileScraperInput = { usernames: [igHandle] };
-      const profileWebhookUrl = webhookUrl
-        ? webhookUrl.includes("?")
-          ? `${webhookUrl}&scraperType=profile`
-          : `${webhookUrl}?scraperType=profile`
-        : undefined;
+    } else if (mode === "refresh-counts" && postUrls && postUrls.length > 0) {
+      // URL-based refresh: pass specific post URLs directly to apify~instagram-scraper
+      // directUrls hits each post individually — no profile crawl, no 12-post cap
+      const refreshInput: Record<string, unknown> = {
+        directUrls: postUrls.slice(0, 100),
+        resultsType: "posts",
+        resultsLimit: postUrls.length,
+      };
 
       const res = await fetch(
-        `https://api.apify.com/v2/acts/apify~instagram-profile-scraper/runs?token=${APIFY_KEY}&memory=256`,
-        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(profileScraperInput) }
+        `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(refreshInput) }
       );
 
       if (!res.ok) {
@@ -121,11 +115,22 @@ export async function POST(req: NextRequest) {
       const runId: string = json?.data?.id;
       const datasetId: string = json?.data?.defaultDatasetId;
 
-      if (profileWebhookUrl && runId) await registerWebhook(runId, profileWebhookUrl);
+      if (webhookUrl && runId) await registerWebhook(runId, webhookUrl);
 
       return NextResponse.json({ runId, datasetId });
     } else {
-      // Non-firstFetch: posts run only
+      // Non-firstFetch new-posts: scale results by how many days we're scanning
+      // 1 day → 5 results, 7 days → 15 results, 30 days → 30 results
+      const resultsLimit = firstFetch ? 100 : mode === "new-posts"
+        ? Math.max(5, Math.min(30, Math.ceil((smartDays ?? 30) / 1)))
+        : 50;
+
+      const postsInput: Record<string, unknown> = {
+        directUrls: [`https://www.instagram.com/${igHandle}/`],
+        resultsType: "posts",
+        resultsLimit,
+      };
+
       const res = await fetch(
         `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
         { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(postsInput) }

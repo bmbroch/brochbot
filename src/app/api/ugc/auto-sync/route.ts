@@ -41,7 +41,9 @@ async function getStoredPostUrls(tiktokHandle: string | null, igHandle: string |
  * Flow:
  *   1. Determine current UTC hour
  *   2. Fetch active creators whose sync_hour matches the current hour
- *   3. For each creator, start TikTok + Instagram Apify runs WITH webhook URLs registered
+ *   3. For each creator, fire TWO runs per platform with webhook URLs:
+ *      - new-posts: catches new content since last sync (smart window, mergeNewPosts)
+ *      - refresh-counts: updates views/likes/comments on ALL stored posts via direct URLs
  *   4. Return immediately — Apify will POST to our webhooks when each run completes
  *   5. Webhooks (/api/tiktok/webhook, /api/instagram/webhook) handle saving data
  *      and updating last_synced_at in ugc_creators
@@ -49,9 +51,6 @@ async function getStoredPostUrls(tiktokHandle: string | null, igHandle: string |
  * Staggering: each creator (or org) has a sync_hour (0–23 UTC).
  * This allows multiple customers' creators to be spread across hours
  * so we never hammer Apify with hundreds of concurrent runs at once.
- *
- * Runs new-posts every day with a 30-day window — captures both new posts
- * AND updated view counts on recent posts in one shot.
  */
 function daysSinceSync(lastSyncedAt: string | null): number {
   if (!lastSyncedAt) return 30; // never synced — use full window
@@ -87,15 +86,16 @@ export async function GET(req: NextRequest) {
   // 2. Fire all runs with webhooks — parallel per creator
   await Promise.all(
     creators.map(async (creator: { id: string; name: string; tiktok_handle?: string; ig_handle?: string; last_synced_at?: string | null }) => {
-      const mode = "new-posts";
       const smartDays = daysSinceSync(creator.last_synced_at ?? null);
 
-      // TikTok
+      // ── Run 1: new-posts — catch new content since last sync ──
+
+      // TikTok new-posts
       if (creator.tiktok_handle) {
         const ttWebhookUrl =
           `${BASE_URL}/api/tiktok/webhook` +
           `?handle=${encodeURIComponent(creator.tiktok_handle)}` +
-          `&mode=${mode}` +
+          `&mode=new-posts` +
           `&creatorId=${creator.id}` +
           secretParam;
 
@@ -105,25 +105,25 @@ export async function GET(req: NextRequest) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               handle: creator.tiktok_handle,
-              mode,
+              mode: "new-posts",
               firstFetch: false,
               smartDays,
               webhookUrl: ttWebhookUrl,
             }),
           });
           const { runId, error } = await runRes.json();
-          runsStarted.push({ creator: creator.name, platform: "tiktok", mode, runId, error });
+          runsStarted.push({ creator: creator.name, platform: "tiktok", mode: "new-posts", runId, error });
         } catch (err) {
-          runsStarted.push({ creator: creator.name, platform: "tiktok", mode, error: String(err) });
+          runsStarted.push({ creator: creator.name, platform: "tiktok", mode: "new-posts", error: String(err) });
         }
       }
 
-      // Instagram
+      // Instagram new-posts
       if (creator.ig_handle) {
         const igWebhookUrl =
           `${BASE_URL}/api/instagram/webhook` +
           `?igHandle=${encodeURIComponent(creator.ig_handle)}` +
-          `&mode=${mode}` +
+          `&mode=new-posts` +
           `&creatorId=${creator.id}` +
           secretParam;
 
@@ -133,23 +133,23 @@ export async function GET(req: NextRequest) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               igHandle: creator.ig_handle,
-              mode,
+              mode: "new-posts",
               firstFetch: false,
               smartDays,
               webhookUrl: igWebhookUrl,
             }),
           });
           const { runId, error } = await runRes.json();
-          runsStarted.push({ creator: creator.name, platform: "instagram", mode, runId, error });
+          runsStarted.push({ creator: creator.name, platform: "instagram", mode: "new-posts", runId, error });
         } catch (err) {
-          runsStarted.push({ creator: creator.name, platform: "instagram", mode, error: String(err) });
+          runsStarted.push({ creator: creator.name, platform: "instagram", mode: "new-posts", error: String(err) });
         }
       }
 
-      // Fire refresh-counts runs (URL-based, daily view count update)
+      // ── Run 2: refresh-counts — update metrics on ALL stored posts via direct URLs ──
       const { ttUrls, igUrls } = await getStoredPostUrls(creator.tiktok_handle ?? null, creator.ig_handle ?? null);
 
-      // TikTok refresh-counts (URL-based)
+      // TikTok refresh-counts (URL-based — postURLs hits specific posts directly)
       if (creator.tiktok_handle && ttUrls.length > 0) {
         const ttRefreshWebhook =
           `${BASE_URL}/api/tiktok/webhook` +
@@ -164,7 +164,7 @@ export async function GET(req: NextRequest) {
         }).catch(() => {});
       }
 
-      // Instagram refresh-counts (URL-based)
+      // Instagram refresh-counts (URL-based — directUrls hits specific post URLs directly)
       if (creator.ig_handle && igUrls.length > 0) {
         const igRefreshWebhook =
           `${BASE_URL}/api/instagram/webhook` +
@@ -187,7 +187,6 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     message: `Fired ${successCount} Apify runs with webhooks`,
     hour: currentHour,
-    mode: "new-posts",
     creators: creators.length,
     runsStarted: successCount,
     errors: errorCount,
