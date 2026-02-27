@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-27T10:40:02Z",
+  "lastUpdated": "2026-02-27T10:50:01Z",
   "activities": [
+    {
+      "id": "s-202f11b8",
+      "agent": "devin",
+      "title": "devin-perf-fixes-1-2",
+      "description": "**File: `src/app/api/tiktok/all-data/route.ts`**",
+      "status": "success",
+      "date": "2026-02-27T10:49:56.802Z",
+      "tokens": 13500,
+      "cost": 0.0332,
+      "model": "Sonnet",
+      "durationSec": 2
+    },
     {
       "id": "s-a61e9fc7",
       "agent": "devin",
@@ -60,30 +72,6 @@
       "cost": 0.1164,
       "model": "Sonnet",
       "durationSec": 70
-    },
-    {
-      "id": "s-01149d4d",
-      "agent": "sam",
-      "title": "01149d4d-5f8",
-      "description": "`src/app/ugc/page.tsx` has a hardcoded fallback:",
-      "status": "success",
-      "date": "2026-02-27T09:43:28.618Z",
-      "tokens": 446800,
-      "cost": 0.3053,
-      "model": "Sonnet",
-      "durationSec": 77
-    },
-    {
-      "id": "s-13f6fa27",
-      "agent": "sam",
-      "title": "13f6fa27-aa2",
-      "description": "File: `src/app/ugc/page.tsx`",
-      "status": "success",
-      "date": "2026-02-27T09:39:57.122Z",
-      "tokens": 360559,
-      "cost": 0.2896,
-      "model": "Sonnet",
-      "durationSec": 84
     },
     {
       "id": "s-acd636de",
@@ -368,10 +356,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 102793352,
-      "cost": 57.0306,
+      "tokens": 103841070,
+      "cost": 57.4622,
       "model": "unknown",
-      "durationSec": 271759
+      "durationSec": 272353
     },
     {
       "id": "s-66dde37a",
@@ -1407,7 +1395,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-27T10:37:53.035Z",
+      "lastActive": "2026-02-27T10:49:56.802Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1449,7 +1437,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T10:40:02Z"
+      "lastRunAt": "2026-02-27T10:50:01Z"
     },
     {
       "id": "bash-frankie-sync",
