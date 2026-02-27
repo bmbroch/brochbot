@@ -16,12 +16,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { handle, mode, firstFetch, webhookUrl, smartDays } = body as {
+  const { handle, mode, firstFetch, webhookUrl, smartDays, postUrls } = body as {
     handle?: string;
     mode?: string;
     firstFetch?: boolean;
     webhookUrl?: string; // if provided, Apify will POST to this URL on completion
     smartDays?: number;
+    postUrls?: string[];
   };
   if (!handle) return NextResponse.json({ error: "handle is required" }, { status: 400 });
   if (mode !== "new-posts" && mode !== "refresh-counts") {
@@ -30,15 +31,21 @@ export async function POST(req: NextRequest) {
 
   const isNewPosts = mode === "new-posts";
 
-  // First fetch: grab full history (no day limit, max results)
-  // New posts: last 7 days only (cheap, incremental)
-  // Refresh counts: last 60 days to update view numbers
-  const apifyInput: Record<string, unknown> = {
-    profiles: [`https://www.tiktok.com/@${handle}`],
-    resultsPerPage: firstFetch ? 100 : isNewPosts ? 30 : 50,
-  };
-  if (!firstFetch) {
-    apifyInput.scrapeLastNDays = isNewPosts ? (smartDays ?? 30) : 60;
+  // Build apifyInput based on mode:
+  // - refresh-counts + postUrls: URL-based (cheaper, no profile crawl)
+  // - everything else: profile-based
+  const apifyInput: Record<string, unknown> = {};
+
+  if (mode === "refresh-counts" && postUrls && postUrls.length > 0) {
+    // URL-based: pass specific post URLs directly (cheaper, no profile crawl)
+    apifyInput.postURLs = postUrls.slice(0, 100); // cap at 100 URLs per run
+  } else {
+    // Profile-based fallback
+    apifyInput.profiles = [`https://www.tiktok.com/@${handle}`];
+    apifyInput.resultsPerPage = firstFetch ? 100 : isNewPosts ? 30 : 50;
+    if (!firstFetch) {
+      apifyInput.scrapeLastNDays = isNewPosts ? (smartDays ?? 30) : 60;
+    }
   }
 
   try {

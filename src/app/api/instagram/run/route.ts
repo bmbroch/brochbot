@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { igHandle, mode, firstFetch, webhookUrl, smartDays } = body as typeof body & { webhookUrl?: string; smartDays?: number };
+  const { igHandle, mode, firstFetch, webhookUrl, smartDays, postUrls } = body as typeof body & { webhookUrl?: string; smartDays?: number; postUrls?: string[] };
   if (!igHandle) return NextResponse.json({ error: "igHandle is required" }, { status: 400 });
   if (mode !== "new-posts" && mode !== "refresh-counts") {
     return NextResponse.json({ error: "mode must be new-posts or refresh-counts" }, { status: 400 });
@@ -98,6 +98,31 @@ export async function POST(req: NextRequest) {
       }
 
       return NextResponse.json({ runId, datasetId, profileRunId, profileDatasetId });
+    } else if (mode === "refresh-counts" && postUrls && postUrls.length > 0) {
+      // URL-based refresh: pass specific post URLs directly (cheaper, no profile crawl)
+      const urlInput: Record<string, unknown> = {
+        directUrls: postUrls.slice(0, 100),
+        resultsType: "posts",
+        resultsLimit: postUrls.slice(0, 100).length,
+      };
+
+      const res = await fetch(
+        `https://api.apify.com/v2/acts/apify~instagram-scraper/runs?token=${APIFY_KEY}&memory=256`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(urlInput) }
+      );
+
+      if (!res.ok) {
+        const text = await res.text();
+        return NextResponse.json({ error: `Apify error: ${res.status} ${text}` }, { status: 502 });
+      }
+
+      const json = await res.json();
+      const runId: string = json?.data?.id;
+      const datasetId: string = json?.data?.defaultDatasetId;
+
+      if (webhookUrl && runId) await registerWebhook(runId, webhookUrl);
+
+      return NextResponse.json({ runId, datasetId });
     } else {
       // Non-firstFetch: posts run only
       const res = await fetch(

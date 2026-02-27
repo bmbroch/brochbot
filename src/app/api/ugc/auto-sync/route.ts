@@ -7,6 +7,32 @@ const SUPABASE_KEY = process.env.SUPABASE_CLC_KEY!;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://www.brochbot.com";
 const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
 
+async function getStoredPostUrls(tiktokHandle: string | null, igHandle: string | null): Promise<{ ttUrls: string[]; igUrls: string[] }> {
+  const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
+  const ttUrls: string[] = [];
+  const igUrls: string[] = [];
+
+  if (tiktokHandle) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/mc_realtime?key=eq.tiktok_videos_${encodeURIComponent(tiktokHandle)}&select=data`, { headers });
+    if (res.ok) {
+      const rows = await res.json();
+      const videos = rows?.[0]?.data?.videos ?? [];
+      ttUrls.push(...videos.map((v: { url: string }) => v.url).filter(Boolean));
+    }
+  }
+
+  if (igHandle) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/mc_realtime?key=eq.instagram_posts_${encodeURIComponent(igHandle)}&select=data`, { headers });
+    if (res.ok) {
+      const rows = await res.json();
+      const posts = rows?.[0]?.data?.posts ?? [];
+      igUrls.push(...posts.map((p: { url: string }) => p.url).filter(Boolean));
+    }
+  }
+
+  return { ttUrls, igUrls };
+}
+
 /**
  * GET /api/ugc/auto-sync
  *
@@ -118,6 +144,39 @@ export async function GET(req: NextRequest) {
         } catch (err) {
           runsStarted.push({ creator: creator.name, platform: "instagram", mode, error: String(err) });
         }
+      }
+
+      // Fire refresh-counts runs (URL-based, daily view count update)
+      const { ttUrls, igUrls } = await getStoredPostUrls(creator.tiktok_handle ?? null, creator.ig_handle ?? null);
+
+      // TikTok refresh-counts (URL-based)
+      if (creator.tiktok_handle && ttUrls.length > 0) {
+        const ttRefreshWebhook =
+          `${BASE_URL}/api/tiktok/webhook` +
+          `?handle=${encodeURIComponent(creator.tiktok_handle)}` +
+          `&mode=refresh-counts` +
+          `&creatorId=${creator.id}` +
+          secretParam;
+        fetch(`${BASE_URL}/api/tiktok/run`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ handle: creator.tiktok_handle, mode: "refresh-counts", postUrls: ttUrls, webhookUrl: ttRefreshWebhook }),
+        }).catch(() => {});
+      }
+
+      // Instagram refresh-counts (URL-based)
+      if (creator.ig_handle && igUrls.length > 0) {
+        const igRefreshWebhook =
+          `${BASE_URL}/api/instagram/webhook` +
+          `?igHandle=${encodeURIComponent(creator.ig_handle)}` +
+          `&mode=refresh-counts` +
+          `&creatorId=${creator.id}` +
+          secretParam;
+        fetch(`${BASE_URL}/api/instagram/run`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ igHandle: creator.ig_handle, mode: "refresh-counts", postUrls: igUrls, webhookUrl: igRefreshWebhook }),
+        }).catch(() => {});
       }
     })
   );
