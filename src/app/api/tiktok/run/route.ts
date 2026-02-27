@@ -60,16 +60,18 @@ export async function POST(req: NextRequest) {
     const runId: string = json?.data?.id;
     const datasetId: string = json?.data?.defaultDatasetId;
 
-    // Register webhook via Apify Webhooks API (more reliable than inline input webhooks)
+    // Register webhook via Apify Webhooks API (correct endpoint: POST /v2/webhooks with condition filter)
     if (webhookUrl && runId) {
       await fetch(
-        `https://api.apify.com/v2/actor-runs/${runId}/webhooks?token=${APIFY_KEY}`,
+        `https://api.apify.com/v2/webhooks?token=${APIFY_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             eventTypes: ["ACTOR.RUN.SUCCEEDED", "ACTOR.RUN.FAILED"],
+            condition: { actorRunId: runId },
             requestUrl: webhookUrl,
+            isAdHoc: true,
           }),
         }
       ).catch(() => {}); // best-effort — sync-check cron is backstop

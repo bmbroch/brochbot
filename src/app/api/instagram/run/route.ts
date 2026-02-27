@@ -24,17 +24,19 @@ export async function POST(req: NextRequest) {
 
   const resultsLimit = firstFetch ? 100 : mode === "new-posts" ? 20 : 50;
 
-  // Build webhook array if URL provided (used by auto-sync cron)
   // Helper: register webhook via Apify Webhooks API after run starts
+  // Uses correct endpoint: POST /v2/webhooks with condition: { actorRunId } filter
   async function registerWebhook(runId: string, url: string) {
     await fetch(
-      `https://api.apify.com/v2/actor-runs/${runId}/webhooks?token=${APIFY_KEY}`,
+      `https://api.apify.com/v2/webhooks?token=${APIFY_KEY}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           eventTypes: ["ACTOR.RUN.SUCCEEDED", "ACTOR.RUN.FAILED"],
+          condition: { actorRunId: runId },
           requestUrl: url,
+          isAdHoc: true,
         }),
       }
     ).catch(() => {}); // best-effort — sync-check cron is backstop
