@@ -685,8 +685,9 @@ export default function UGCPage() {
   // When org changes and new creators load, auto-select the first one
   useEffect(() => {
     if (!activeHandle && effectiveCreators.length > 0) {
-      const first = effectiveCreators.find((c) => c.handle) ?? effectiveCreators[0];
-      if (first?.handle) setActiveHandle(first.handle);
+      const first = effectiveCreators[0];
+      const firstKey = first?.handle ?? first?.igHandle ?? null;
+      if (firstKey) setActiveHandle(firstKey);
     }
   }, [effectiveCreators, activeHandle]);
 
@@ -702,7 +703,9 @@ export default function UGCPage() {
     return map;
   }, [effectiveCreators]);
 
-  const activeCreator = effectiveCreators.find((c) => c.handle === activeHandle);
+  const activeCreator = effectiveCreators.find(
+    (c) => c.handle === activeHandle || c.igHandle === activeHandle
+  );
   const activeIgHandle = activeCreator?.igHandle ?? null;
 
   // ── Load overview data ─────────────────────────────────────────────────────
@@ -761,8 +764,8 @@ export default function UGCPage() {
   // ── Compute per-creator analytics ─────────────────────────────────────────
   const computedCreators = useMemo<ComputedCreator[]>(() => {
     if (!allData) return [];
-    return effectiveCreators.filter((c) => c.handle).map((c) => {
-      const ttVideos = allData.tiktok[c.handle!]?.videos ?? [];
+    return effectiveCreators.filter((c) => c.handle || c.igHandle).map((c) => {
+      const ttVideos = c.handle ? (allData.tiktok[c.handle]?.videos ?? []) : [];
       const igPosts = allData.instagram[c.igHandle ?? ""]?.posts ?? [];
       const ttViews = ttVideos.reduce((s, v) => s + (v.views || 0), 0);
       const igViews = igPosts.reduce((s, p) => s + (p.views || 0), 0);
@@ -994,7 +997,7 @@ export default function UGCPage() {
   useEffect(() => {
     // Don't load data for empty handle or handles not in current org
     if (!activeHandle) return;
-    if (!effectiveCreators.some((c) => c.handle === activeHandle)) return;
+    if (!effectiveCreators.some((c) => c.handle === activeHandle || c.igHandle === activeHandle)) return;
     setError(null);
     loadTikTokData(activeHandle);
     if (activeIgHandle) {
