@@ -65,10 +65,11 @@ function computeHealth(status: string, lastSyncedAt: string | null, issues: stri
 export async function GET(req: NextRequest) {
   const remediate = req.nextUrl.searchParams.get("remediate") === "true";
   const filterCreator = req.nextUrl.searchParams.get("creator");
+  const orgId = req.nextUrl.searchParams.get("org_id");
 
   // 1. Fetch all creators
   const creatorsRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/ugc_creators?order=name.asc${filterCreator ? `&id=eq.${filterCreator}` : ""}`,
+    `${SUPABASE_URL}/rest/v1/ugc_creators?order=name.asc${filterCreator ? `&id=eq.${filterCreator}` : ""}${orgId ? `&org_id=eq.${orgId}` : ""}`,
     { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }, cache: "no-store" }
   );
   const creators = await creatorsRes.json();

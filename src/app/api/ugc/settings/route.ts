@@ -24,6 +24,8 @@ export interface UGCSettings {
   orgName: string;
 }
 
+// ─── Global fallback (mc_realtime key) ────────────────────────────────────────
+
 async function readSettings(): Promise<UGCSettings> {
   try {
     const res = await fetch(
@@ -50,16 +52,111 @@ async function writeSettings(settings: UGCSettings): Promise<void> {
   });
 }
 
-// GET /api/ugc/settings
-export async function GET() {
+// ─── Org-scoped settings (organizations.settings JSONB) ───────────────────────
+
+async function readOrgSettings(orgId: string): Promise<UGCSettings & { _orgRow?: Record<string, unknown> }> {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/organizations?id=eq.${orgId}&select=id,name,slug,sync_hour,settings`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }, cache: "no-store" }
+    );
+    const rows = await res.json();
+    const org = rows?.[0];
+    if (!org) return { ...DEFAULT_SETTINGS };
+    const merged: UGCSettings & { _orgRow?: Record<string, unknown> } = {
+      ...DEFAULT_SETTINGS,
+      orgName: org.name ?? DEFAULT_SETTINGS.orgName,
+      defaultSyncHour: org.sync_hour ?? DEFAULT_SETTINGS.defaultSyncHour,
+      ...(org.settings ?? {}),
+      _orgRow: org,
+    };
+    return merged;
+  } catch {
+    return { ...DEFAULT_SETTINGS };
+  }
+}
+
+async function writeOrgSettings(
+  orgId: string,
+  patch: Partial<UGCSettings>,
+  currentSettings: Record<string, unknown>
+): Promise<void> {
+  // Strip non-settings fields before storing in JSONB
+  const { orgName: _orgName, defaultSyncHour: _syncHour, ...settingsPatch } = patch as Record<string, unknown>;
+
+  // Merge new settings into existing JSONB (excluding top-level org fields)
+  const newSettings = { ...currentSettings, ...settingsPatch };
+
+  // Build org row updates
+  const orgUpdate: Record<string, unknown> = { settings: newSettings };
+  if (patch.defaultSyncHour !== undefined) orgUpdate.sync_hour = patch.defaultSyncHour;
+  if (patch.orgName !== undefined) orgUpdate.name = patch.orgName;
+
+  await fetch(`${SUPABASE_URL}/rest/v1/organizations?id=eq.${orgId}`, {
+    method: "PATCH",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify(orgUpdate),
+  });
+}
+
+// GET /api/ugc/settings[?org_id=X]
+export async function GET(req: NextRequest) {
+  const orgId = req.nextUrl.searchParams.get("org_id");
+  if (orgId) {
+    const settings = await readOrgSettings(orgId);
+    // Strip internal _orgRow before returning
+    const { _orgRow: _, ...out } = settings;
+    return NextResponse.json(out);
+  }
   return NextResponse.json(await readSettings());
 }
 
-// PATCH /api/ugc/settings — partial update
+// PATCH /api/ugc/settings[?org_id=X] — partial update
 export async function PATCH(req: NextRequest) {
+  const orgId = req.nextUrl.searchParams.get("org_id");
+
   try {
-    const current = await readSettings();
     const patch = await req.json();
+
+    if (orgId) {
+      // Org-scoped path
+      const current = await readOrgSettings(orgId);
+      const { _orgRow, ...currentClean } = current;
+      const orgRow = (_orgRow ?? {}) as Record<string, unknown>;
+      const existingSettings = (orgRow.settings ?? {}) as Record<string, unknown>;
+
+      await writeOrgSettings(orgId, patch, existingSettings);
+
+      // Propagate new sync hour to all active creators in this org
+      if (patch.defaultSyncHour !== undefined && patch.defaultSyncHour !== currentClean.defaultSyncHour) {
+        await fetch(
+          `${SUPABASE_URL}/rest/v1/ugc_creators?status=eq.active&org_id=eq.${orgId}`,
+          {
+            method: "PATCH",
+            headers: {
+              apikey: SUPABASE_KEY,
+              Authorization: `Bearer ${SUPABASE_KEY}`,
+              "Content-Type": "application/json",
+              Prefer: "return=minimal",
+            },
+            body: JSON.stringify({ sync_hour: patch.defaultSyncHour }),
+          }
+        );
+      }
+
+      // Re-read and return fresh merged settings
+      const updated = await readOrgSettings(orgId);
+      const { _orgRow: _2, ...updatedClean } = updated;
+      return NextResponse.json(updatedClean);
+    }
+
+    // Global fallback path
+    const current = await readSettings();
     const updated = { ...current, ...patch };
     await writeSettings(updated);
 

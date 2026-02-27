@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import Shell from "@/components/Shell";
 import {
   ArrowLeft, Settings, RefreshCw, Users, Check, Loader2,
@@ -113,14 +114,32 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
-export default function UGCSettingsPage() {
+function UGCSettingsContent() {
+  const searchParams = useSearchParams();
   const [tab, setTab] = useState<"refresh" | "team">("refresh");
   const [settings, setSettings] = useState<UGCSettings | null>(null);
   const [health, setHealth] = useState<HealthSummary | null>(null);
   const [saving, setSaving] = useState<string | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
+  const [orgId, setOrgId] = useState<string | null>(searchParams.get("org_id"));
+
+  // On mount, if no org_id in URL, fetch orgs and default to first
+  useEffect(() => {
+    if (!orgId) {
+      fetch("/api/ugc/orgs")
+        .then((r) => r.json())
+        .then((data) => {
+          const orgs = Array.isArray(data) ? data : [];
+          if (orgs.length > 0) setOrgId(orgs[0].id);
+        })
+        .catch(() => {});
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const settingsUrl = (path: string) => `${path}${orgId ? `?org_id=${orgId}` : ""}`;
+
   const fetchSettings = useCallback(async () => {
-    const data = await fetch("/api/ugc/settings").then((r) => r.json());
+    const data = await fetch(settingsUrl("/api/ugc/settings")).then((r) => r.json());
 
     // On first load: if timezone is still the server default ("UTC"), auto-detect
     // the browser's local timezone and seed 8 AM in that timezone
@@ -133,7 +152,7 @@ export default function UGCSettingsPage() {
         const patched = { ...data, syncTimeLocal: 8, syncTimezone: detected, defaultSyncHour: utc };
         setSettings(patched);
         // Persist silently
-        fetch("/api/ugc/settings", {
+        fetch(settingsUrl("/api/ugc/settings"), {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ syncTimeLocal: 8, syncTimezone: detected, defaultSyncHour: utc }),
@@ -143,12 +162,12 @@ export default function UGCSettingsPage() {
     }
 
     setSettings(data);
-  }, []);
+  }, [orgId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchHealth = useCallback(async () => {
-    const data = await fetch("/api/ugc/health").then((r) => r.json());
+    const data = await fetch(settingsUrl("/api/ugc/health")).then((r) => r.json());
     setHealth(data.summary);
-  }, []);
+  }, [orgId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     fetchSettings();
@@ -159,7 +178,7 @@ export default function UGCSettingsPage() {
     if (!settings) return;
     setSaving(field);
     try {
-      const updated = await fetch("/api/ugc/settings", {
+      const updated = await fetch(settingsUrl("/api/ugc/settings"), {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(patch),
@@ -372,6 +391,14 @@ export default function UGCSettingsPage() {
         )}
       </div>
     </Shell>
+  );
+}
+
+export default function UGCSettingsPage() {
+  return (
+    <Suspense fallback={null}>
+      <UGCSettingsContent />
+    </Suspense>
   );
 }
 

@@ -291,19 +291,19 @@ function ManageCreatorsPage() {
 
   const fetchCreators = useCallback(async () => {
     try {
-      const data = await fetch("/api/ugc/creators").then((r) => r.json());
+      const data = await fetch(`/api/ugc/creators${orgId ? `?org_id=${orgId}` : ""}`).then((r) => r.json());
       setCreators(Array.isArray(data) ? data : []);
     } catch { } finally { setLoading(false); }
-  }, []);
+  }, [orgId]);
 
   const fetchHealth = useCallback(async () => {
     try {
-      const data = await fetch("/api/ugc/health").then((r) => r.json());
+      const data = await fetch(`/api/ugc/health${orgId ? `?org_id=${orgId}` : ""}`).then((r) => r.json());
       const map: Record<string, { health: string; issues: string[] }> = {};
       for (const c of data.creators ?? []) map[c.id] = { health: c.health, issues: c.issues };
       setHealth(map);
     } catch { }
-  }, []);
+  }, [orgId]);
 
   useEffect(() => { fetchCreators(); fetchHealth(); }, [fetchCreators, fetchHealth]);
 
