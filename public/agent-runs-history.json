@@ -3130,5 +3130,17 @@
     "durationSec": 33,
     "status": "success",
     "timestamp": "2026-02-27T08:49:12.693Z"
+  },
+  {
+    "id": "92f44523-cefa-4844-99bb-1bfeef72fcbe",
+    "label": "92f44523-cef",
+    "agent": "sam",
+    "task": "When switching org in the sidebar, the code does `router.push('/ugc?org_id=X')` regardless of where you are. If you're on `/ugc/manage` or `/ugc/settings`, you get kicked back to `/ugc`.",
+    "model": "Sonnet",
+    "tokens": 178688,
+    "cost": 0.1499,
+    "durationSec": 78,
+    "status": "success",
+    "timestamp": "2026-02-27T09:01:10.172Z"
   }
 ]

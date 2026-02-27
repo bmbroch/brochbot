@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-27T09:00:02Z",
+  "lastUpdated": "2026-02-27T09:10:02Z",
   "activities": [
+    {
+      "id": "s-92f44523",
+      "agent": "sam",
+      "title": "92f44523-cef",
+      "description": "When switching org in the sidebar, the code does `router.push('/ugc?org_id=X')` regardless of where you are. If you're on `/ugc/manage` or `/ugc/settings`, you get kicked back to `/ugc`.",
+      "status": "success",
+      "date": "2026-02-27T09:01:10.172Z",
+      "tokens": 178688,
+      "cost": 0.1499,
+      "model": "Sonnet",
+      "durationSec": 78
+    },
     {
       "id": "s-a250cc8b",
       "agent": "sam",
@@ -380,10 +392,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 84532981,
-      "cost": 47.2806,
+      "tokens": 87451725,
+      "cost": 48.3659,
       "model": "unknown",
-      "durationSec": 265664
+      "durationSec": 266193
     },
     {
       "id": "s-66dde37a",
@@ -1447,7 +1459,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-27T08:49:12.693Z",
+      "lastActive": "2026-02-27T09:06:51Z",
       "statusText": ""
     }
   },
@@ -1461,7 +1473,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T09:00:02Z"
+      "lastRunAt": "2026-02-27T09:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
