@@ -1055,6 +1055,20 @@
       "nextRunAt": "2026-03-03T06:00:00Z",
       "consecutiveErrors": 0,
       "description": "Mia analyzes creator performance \u2014 views, posts, CPM, trends. Tuesdays 8 AM CAT."
+    },
+    {
+      "id": "8f25738f-69e7-445e-b54e-536455f7bc73",
+      "title": "Devin: UGC Daily Cost Report",
+      "schedule": "0 13 * * *",
+      "timezone": "UTC",
+      "owner": "devin",
+      "enabled": true,
+      "status": "ok",
+      "lastStatus": "ok",
+      "lastRunAt": null,
+      "nextRunAt": "2026-02-28T13:00:00Z",
+      "consecutiveErrors": 0,
+      "description": "Pulls Apify run costs from last 24h, aggregates new posts + metrics updated per creator+platform, sends report to Devin Telegram group. Daily 1 PM UTC (3 PM Namibia)."
     }
   ],
   "decisions": [
