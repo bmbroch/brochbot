@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 78431799,
-    "cost": 44.3798,
-    "durationSec": 263327,
+    "tokens": 79866202,
+    "cost": 45.0177,
+    "durationSec": 263859,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -132,6 +132,18 @@
     "timestamp": "2026-02-24T10:13:18.254Z"
   },
   {
+    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
+    "label": "95a02d1a-513",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 1671052,
+    "cost": 2.6403,
+    "durationSec": 652780,
+    "status": "success",
+    "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
     "label": "b88a363c-216",
     "agent": "sam",
@@ -154,18 +166,6 @@
     "durationSec": 250,
     "status": "success",
     "timestamp": "2026-02-24T09:24:08.663Z"
-  },
-  {
-    "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
-    "label": "95a02d1a-513",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 1521143,
-    "cost": 2.5853,
-    "durationSec": 650379,
-    "status": "success",
-    "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
     "id": "5541062c-e449-4522-9556-f6a62ad99f7d",
@@ -432,6 +432,18 @@
     "timestamp": "2026-02-24T05:30:00.089Z"
   },
   {
+    "id": "c4fdf947-b226-449d-b26a-a0db9d4bacd0",
+    "label": "dana-key-numbers-refresh",
+    "agent": "dana",
+    "task": "",
+    "model": "Sonnet",
+    "tokens": 211278,
+    "cost": 0.2489,
+    "durationSec": 155,
+    "status": "success",
+    "timestamp": "2026-02-27T08:25:38.124Z"
+  },
+  {
     "id": "9da39ddc-a395-4be9-9d5d-1bb78d6891a9",
     "label": "9da39ddc-a39",
     "agent": "sam",
@@ -670,6 +682,18 @@
     "durationSec": 38,
     "status": "success",
     "timestamp": "2026-02-21T06:00:00.033Z"
+  },
+  {
+    "id": "0adadc14-b5bc-4dc0-bb13-9d4036d0ea32",
+    "label": "0adadc14-b5b",
+    "agent": "sam",
+    "task": "**The bug:**",
+    "model": "Sonnet",
+    "tokens": 72480,
+    "cost": 0.0719,
+    "durationSec": 54,
+    "status": "success",
+    "timestamp": "2026-02-27T08:23:49.818Z"
   },
   {
     "id": "e9ec5412-ee22-4140-9ba2-858ec7d7da0f",
