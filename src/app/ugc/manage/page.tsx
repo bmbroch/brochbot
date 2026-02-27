@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Shell from "@/components/Shell";
@@ -253,13 +253,17 @@ function TrackCreatorModal({ onClose, onAdded, orgId }: TrackModalProps) {
 }
 
 // ─── OrgId Reader (reads searchParams inside Suspense) ─────────────────────────
+// Only captures the URL param into a ref — no state calls here.
+// The orgs fetch effect is the single place that sets orgIdReady=true.
 
-function OrgIdReader({ onOrgId }: { onOrgId: (id: string) => void }) {
+function OrgIdReader({ orgIdRef }: { orgIdRef: React.MutableRefObject<string | null> }) {
   const searchParams = useSearchParams();
   useEffect(() => {
     const id = searchParams.get("org_id");
-    if (id) onOrgId(id);
-  }, [searchParams, onOrgId]);
+    if (id) {
+      orgIdRef.current = id;
+    }
+  }, [searchParams, orgIdRef]);
   return null;
 }
 
@@ -280,7 +284,12 @@ function ManageCreatorsPage() {
   const [orgIdReady, setOrgIdReady] = useState(false);
   const [orgName, setOrgName] = useState<string | null>(null);
 
-  // Fetch orgs on mount to get default orgId
+  // Ref populated by OrgIdReader before the orgs fetch completes (from URL ?org_id param)
+  const orgIdFromUrlRef = useRef<string | null>(null);
+
+  // Fetch orgs on mount. This is the ONLY place that sets orgIdReady=true.
+  // OrgIdReader writes the URL param into orgIdFromUrlRef synchronously before
+  // this async fetch resolves, so we can safely read it here to resolve the org.
   useEffect(() => {
     fetch("/api/ugc/orgs")
       .then((r) => r.json())
@@ -290,16 +299,17 @@ function ManageCreatorsPage() {
           setOrgIdReady(true);
           return;
         }
-        // Only set the fallback if URL param hasn't already resolved orgId
-        setOrgId((prev) => {
-          const id = prev ?? orgs[0].id;
-          const match = orgs.find((o: { id: string; name: string }) => o.id === id) ?? orgs[0];
-          if (match) {
-            setOrgName(match.name);
-          }
-          setOrgIdReady(true);
-          return id;
-        });
+        // Priority: URL param (via ref) → localStorage → first org
+        const resolved =
+          orgIdFromUrlRef.current ||
+          localStorage.getItem("ugc_org_id") ||
+          orgs[0].id;
+        // Validate that the resolved id is actually in the orgs list
+        const match = orgs.find((o: { id: string; name: string }) => o.id === resolved) ?? orgs[0];
+        // Set all three states together — React 18 auto-batches these in async callbacks
+        setOrgId(match.id);
+        setOrgName(match.name);
+        setOrgIdReady(true);
       })
       .catch(() => { setOrgIdReady(true); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -414,7 +424,7 @@ function ManageCreatorsPage() {
   return (
     <Shell>
       <Suspense fallback={null}>
-        <OrgIdReader onOrgId={(id) => { setOrgId(id); setOrgIdReady(true); }} />
+        <OrgIdReader orgIdRef={orgIdFromUrlRef} />
       </Suspense>
       <div className="min-h-full bg-gray-50 dark:bg-[#0a0a0a] px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pb-24">
 
