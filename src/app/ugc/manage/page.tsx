@@ -372,7 +372,7 @@ function ManageCreatorsPage() {
     if (bulkActing || selected.size === 0) return;
     setBulkActing(true);
     const ids = Array.from(selected);
-    const syncHour = newStatus === "active" ? 8 : null;
+    const syncHour = newStatus === "active" ? defaultSyncHour : null;
 
     // Optimistic
     setCreators((prev) => prev.map((c) => selected.has(c.id) ? { ...c, status: newStatus, sync_hour: syncHour } : c));
@@ -395,13 +395,29 @@ function ManageCreatorsPage() {
   const handleStatusToggle = async (creator: UGCCreator) => {
     const STATUS_CYCLE: CreatorStatus[] = ["active", "monitoring", "archived"];
     const newStatus = STATUS_CYCLE[(STATUS_CYCLE.indexOf(creator.status) + 1) % STATUS_CYCLE.length];
-    const syncHour = newStatus === "active" ? (creator.sync_hour ?? 8) : null;
+    const syncHour = newStatus === "active" ? defaultSyncHour : null;
     setCreators((prev) => prev.map((c) => c.id === creator.id ? { ...c, status: newStatus, sync_hour: syncHour } : c));
     await fetch(`/api/ugc/creators/${creator.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus, sync_hour: syncHour }),
     }).catch(() => fetchCreators());
+    if (newStatus === "active") {
+      if (creator.tiktok_handle) {
+        fetch("/api/tiktok/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ handle: creator.tiktok_handle, mode: "new-posts" }),
+        }).catch(() => {});
+      }
+      if (creator.ig_handle) {
+        fetch("/api/instagram/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ igHandle: creator.ig_handle, mode: "new-posts" }),
+        }).catch(() => {});
+      }
+    }
   };
 
   // ── Sync now (single creator) ──────────────────────────────────────────────
