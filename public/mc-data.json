@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-27T19:10:01Z",
+  "lastUpdated": "2026-02-27T19:20:02Z",
   "activities": [
+    {
+      "id": "s-7a8a66ae",
+      "agent": "devin",
+      "title": "devin-sort-refresh-urls",
+      "description": "In the `getStoredPostUrls` function, before returning the URL arrays, sort posts by date descending and take only the 100 most recent. This ensures daily metric refreshes cover the newest 100 posts \u2014 ",
+      "status": "success",
+      "date": "2026-02-27T19:13:34.414Z",
+      "tokens": 99703,
+      "cost": 0.117,
+      "model": "Sonnet",
+      "durationSec": 69
+    },
     {
       "id": "s-acd636de",
       "agent": "dana",
@@ -284,10 +296,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 121682756,
-      "cost": 66.64,
+      "tokens": 121970295,
+      "cost": 66.754,
       "model": "unknown",
-      "durationSec": 302086
+      "durationSec": 302641
     },
     {
       "id": "s-66dde37a",
@@ -1337,7 +1349,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-27T13:43:58.833Z",
+      "lastActive": "2026-02-27T19:13:34.414Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1379,7 +1391,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T19:10:01Z"
+      "lastRunAt": "2026-02-27T19:20:01Z"
     },
     {
       "id": "bash-frankie-sync",
