@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import Shell from "@/components/Shell";
 import { useTheme } from "@/components/ThemeProvider";
 import { creatorColors } from "@/lib/data-provider";
-import { TIKTOK_CREATORS } from "@/lib/tiktok-creators";
 import { TikTokStoreData, TikTokVideo, TikTokAuthorMeta } from "@/lib/tiktok-store";
 import { InstagramStoreData, InstagramPost, IgAuthorMeta } from "@/lib/instagram-store";
 import {
@@ -601,7 +600,7 @@ export default function UGCPage() {
   const [platformCompMode, setPlatformCompMode] = useState<"absolute" | "perPost">("absolute");
 
   // ── Per-creator state ──────────────────────────────────────────────────────
-  const [activeHandle, setActiveHandle] = useState<string>("sell.with.nick");
+  const [activeHandle, setActiveHandle] = useState<string>("");
   const [platform, setPlatform] = useState<Platform>("tiktok");
   const [loadState, setLoadState] = useState<LoadState>("loading");
   const [storeData, setStoreData] = useState<TikTokStoreData | null>(null);
@@ -671,8 +670,8 @@ export default function UGCPage() {
 
   // Build effective creator list: DB (non-archived) → fallback to hardcoded
   const effectiveCreators = useMemo(() => {
-    if (dbCreators === null) return TIKTOK_CREATORS; // still loading
-    if (dbCreators.length === 0) return TIKTOK_CREATORS; // empty / table not ready
+    if (dbCreators === null) return []; // loading — show nothing yet
+    if (dbCreators.length === 0) return []; // empty org
     return dbCreators
       .filter((c) => c.status !== "archived")
       .map((c) => ({
