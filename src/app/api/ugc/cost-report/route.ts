@@ -70,12 +70,19 @@ interface SyncLogRow {
 interface CreatorPlatformEntry {
   handle: string;
   platform: string;
+  orgId: string | null;
+  orgName: string | null;
   newPosts: number;           // posts_processed from new-posts row
   updated: number;            // posts_processed from refresh-counts row
   cost: number;               // summed usageTotalUsd
   costUnknown: boolean;       // true if any run_id lookup failed
   succeeded: number;          // count of succeeded rows
   failed: number;             // count of failed rows
+}
+
+interface CreatorOrgInfo {
+  orgId: string | null;
+  orgName: string | null;
 }
 
 /**
@@ -94,6 +101,36 @@ export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
   if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // ── 0. Fetch active creators with org info ───────────────────────────────
+  const creatorOrgMap = new Map<string, CreatorOrgInfo>();
+  try {
+    const creatorsRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/ugc_creators?status=eq.active&select=id,org_id,organizations(name)`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+        },
+        cache: "no-store",
+      }
+    );
+    if (creatorsRes.ok) {
+      const creators: Array<{
+        id: string;
+        org_id: string | null;
+        organizations: { name: string } | null;
+      }> = await creatorsRes.json();
+      for (const c of creators) {
+        creatorOrgMap.set(c.id, {
+          orgId: c.org_id ?? null,
+          orgName: c.organizations?.name ?? null,
+        });
+      }
+    }
+  } catch {
+    // non-fatal — org breakdown just won't show org names
   }
 
   // ── 1. Fetch sync log rows from last 24h ──────────────────────────────────
@@ -138,9 +175,12 @@ export async function GET(req: NextRequest) {
     const key = `${row.handle}::${row.platform}`;
 
     if (!entryMap.has(key)) {
+      const orgInfo = row.creator_id ? creatorOrgMap.get(row.creator_id) : undefined;
       entryMap.set(key, {
         handle: row.handle,
         platform: platformLabel,
+        orgId: orgInfo?.orgId ?? null,
+        orgName: orgInfo?.orgName ?? null,
         newPosts: 0,
         updated: 0,
         cost: 0,
@@ -197,6 +237,59 @@ export async function GET(req: NextRequest) {
 
   const failedEntries = entries.filter((e) => e.failed > 0);
 
+  // ── 4b. Build projected monthly breakdown by org+platform ────────────────
+  // Map: orgId → { orgName, platforms: Map<platformLabel, cost> }
+  interface OrgBreakdown {
+    orgName: string;
+    platforms: Map<string, number>; // "TikTok" | "Instagram" → projected cost
+  }
+  const orgBreakdownMap = new Map<string, OrgBreakdown>();
+
+  for (const entry of entries) {
+    const orgKey = entry.orgId ?? "__unknown__";
+    const orgName = entry.orgName ?? "Unknown";
+    const platformFull = entry.platform === "TT" ? "TikTok" : "Instagram";
+    const projCost = entry.cost * 30;
+
+    if (!orgBreakdownMap.has(orgKey)) {
+      orgBreakdownMap.set(orgKey, { orgName, platforms: new Map() });
+    }
+    const org = orgBreakdownMap.get(orgKey)!;
+    org.platforms.set(platformFull, (org.platforms.get(platformFull) ?? 0) + projCost);
+  }
+
+  // Build projected monthly section text
+  const platformOrder = ["TikTok", "Instagram"];
+
+  const projLines: string[] = ["📈 Projected Monthly (today × 30)"];
+  let grandTotal = 0;
+
+  // Sort orgs alphabetically by name
+  const sortedOrgs = Array.from(orgBreakdownMap.entries()).sort((a, b) =>
+    a[1].orgName.localeCompare(b[1].orgName)
+  );
+
+  for (const [, org] of sortedOrgs) {
+    projLines.push("");
+    projLines.push(`  ${org.orgName}`);
+    let subtotal = 0;
+
+    // Always show all known platforms in order (0.00 if absent)
+    for (const plat of platformOrder) {
+      const cost = org.platforms.get(plat) ?? 0;
+      subtotal += cost;
+      const platPad = `${plat}:`.padEnd(12, " ");
+      projLines.push(`    ${platPad} $${cost.toFixed(2)}`);
+    }
+    grandTotal += subtotal;
+    projLines.push(`    Subtotal:    $${subtotal.toFixed(2)}`);
+  }
+
+  projLines.push("");
+  projLines.push(`  Grand Total: $${grandTotal.toFixed(2)}`);
+
+  const projectedSection = projLines.join("\n");
+
   // ── 5. Format report ──────────────────────────────────────────────────────
   const today = new Date();
   const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -247,7 +340,9 @@ export async function GET(req: NextRequest) {
     "",
     `<pre>${headerLine}\n${tableLines.join("\n")}</pre>`,
     `💰 Total today: $${totalCost.toFixed(2)}`,
-    `📈 Projected monthly: $${projectedMonthly.toFixed(2)}`,
+    "",
+    projectedSection,
+    "",
     `🆕 New posts today: ${totalNewPosts}`,
     `🔄 Metrics updated: ${totalUpdated} posts`,
     "",
