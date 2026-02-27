@@ -601,7 +601,8 @@ export default function UGCPage() {
 
   // ── Per-creator state ──────────────────────────────────────────────────────
   const [activeHandle, setActiveHandle] = useState<string>("");
-  const [platform, setPlatform] = useState<Platform>("tiktok");
+  // platform is derived from overviewPlatform — "All" defaults to tiktok for load state
+  const platform: Platform = overviewPlatform === "Instagram" ? "instagram" : "tiktok";
   const [loadState, setLoadState] = useState<LoadState>("loading");
   const [storeData, setStoreData] = useState<TikTokStoreData | null>(null);
   const [igLoadState, setIgLoadState] = useState<LoadState>("loading");
@@ -1018,14 +1019,14 @@ export default function UGCPage() {
 
   useEffect(() => {
     setError(null);
-  }, [platform]);
+  }, [overviewPlatform]);
 
-  // Auto-switch to Instagram tab for IG-only creators (no TikTok handle)
+  // Auto-switch to Instagram for IG-only creators (no TikTok handle)
   useEffect(() => {
-    if (activeCreator && !activeCreator.handle && platform === "tiktok") {
-      setPlatform("instagram");
+    if (activeCreator && !activeCreator.handle && overviewPlatform !== "Instagram") {
+      setOverviewPlatform("Instagram");
     }
-  }, [activeCreator, platform]);
+  }, [activeCreator, overviewPlatform]);
 
   // ── Derived: TikTok ───────────────────────────────────────────────────────
   const videos = storeData?.videos ?? [];
@@ -1076,7 +1077,19 @@ export default function UGCPage() {
   );
 
   // ── Shared ────────────────────────────────────────────────────────────────
-  const activeLoadState = platform === "tiktok" ? loadState : igLoadState;
+  // When "All", show loading if either is loading, else done if either done
+  const activeLoadState: LoadState =
+    overviewPlatform === "All"
+      ? loadState === "loading" || igLoadState === "loading"
+        ? "loading"
+        : loadState === "done" || igLoadState === "done"
+        ? "done"
+        : loadState === "error" || igLoadState === "error"
+        ? "error"
+        : "idle"
+      : platform === "tiktok"
+      ? loadState
+      : igLoadState;
 
   const gridColor = isDark ? "#262626" : "#e5e7eb";
   const tickColor = isDark ? "#71717a" : "#9ca3af";
@@ -1160,20 +1173,37 @@ export default function UGCPage() {
 
             {/* Platform filter */}
             <div className="flex items-center gap-1 p-1 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111]">
-              {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setOverviewPlatform(p)}
-                  className={[
-                    "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
-                    overviewPlatform === p
-                      ? "bg-gray-100 dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm"
-                      : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
-                  ].join(" ")}
-                >
-                  {p}
-                </button>
-              ))}
+              {(["All", "TikTok", "Instagram"] as OverviewPlatform[]).map((p) => {
+                // In drilldown mode, hide platforms the active creator doesn't have
+                if (pageMode === "drilldown" && activeCreator) {
+                  if (p === "TikTok" && !activeCreator.handle) return null;
+                  if (p === "Instagram" && !activeCreator.igHandle) return null;
+                }
+                return (
+                  <button
+                    key={p}
+                    onClick={() => setOverviewPlatform(p)}
+                    className={[
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
+                      overviewPlatform === p
+                        ? "bg-gray-100 dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm"
+                        : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
+                    ].join(" ")}
+                  >
+                    {p === "TikTok" && (
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor">
+                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+                      </svg>
+                    )}
+                    {p === "Instagram" && (
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                      </svg>
+                    )}
+                    {p}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -1261,12 +1291,22 @@ export default function UGCPage() {
                           key={p}
                           onClick={() => setOverviewPlatform(p)}
                           className={[
-                            "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer",
+                            "flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer",
                             overviewPlatform === p
                               ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
                               : "border border-gray-200 dark:border-[#333] text-gray-400 dark:text-white/40 hover:border-gray-400 dark:hover:border-[#444] hover:text-gray-600 dark:hover:text-white/60",
                           ].join(" ")}
                         >
+                          {p === "TikTok" && (
+                            <svg viewBox="0 0 24 24" className="w-3 h-3" fill="currentColor">
+                              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+                            </svg>
+                          )}
+                          {p === "Instagram" && (
+                            <svg viewBox="0 0 24 24" className="w-3 h-3" fill="currentColor">
+                              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                            </svg>
+                          )}
                           {p}
                         </button>
                       ))}
@@ -1659,9 +1699,7 @@ export default function UGCPage() {
                   );
                 })}
               </div>
-              <div className="flex-shrink-0">
-                <PlatformToggle platform={platform} onChange={setPlatform} />
-              </div>
+              {/* Platform selector unified into top navbar */}
             </div>
 
             {/* Earnings Row */}
@@ -1681,7 +1719,8 @@ export default function UGCPage() {
             )}
 
             {/* ── TikTok Content ──────────────────────────────────────────── */}
-            {platform === "tiktok" && (
+            {/* Show if TikTok selected (incl. no-handle empty state), or All+creator has TikTok */}
+            {(overviewPlatform === "TikTok" || (overviewPlatform === "All" && !!activeCreator?.handle)) && (
               <>
                 {!activeCreator?.handle && (
                   <div className="flex flex-col items-center justify-center py-32 gap-5">
@@ -1797,7 +1836,8 @@ export default function UGCPage() {
             )}
 
             {/* ── Instagram Content ───────────────────────────────────────── */}
-            {platform === "instagram" && (
+            {/* Show if Instagram selected (incl. no-handle empty state), or All+creator has IG */}
+            {(overviewPlatform === "Instagram" || (overviewPlatform === "All" && !!activeCreator?.igHandle)) && (
               <>
                 {!activeIgHandle && (
                   <div className="flex flex-col items-center justify-center py-32 gap-4">
