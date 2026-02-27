@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 114844253,
-    "cost": 62.2896,
-    "durationSec": 281062,
+    "tokens": 116051719,
+    "cost": 63.1467,
+    "durationSec": 281948,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -166,6 +166,18 @@
     "durationSec": 250,
     "status": "success",
     "timestamp": "2026-02-24T09:24:08.663Z"
+  },
+  {
+    "id": "616f65de-da7b-48b0-af8c-808ae0fe8982",
+    "label": "devin-daily-sync-fix",
+    "agent": "devin",
+    "task": "One daily run per creator per platform. That run fetches ALL posts (up to 100) and updates views/likes/comments on every single one. No shortcuts, no 12-post caps.",
+    "model": "Sonnet",
+    "tokens": 1041386,
+    "cost": 0.8857,
+    "durationSec": 324,
+    "status": "success",
+    "timestamp": "2026-02-27T13:23:03.659Z"
   },
   {
     "id": "5541062c-e449-4522-9556-f6a62ad99f7d",
@@ -334,18 +346,6 @@
     "durationSec": 212210,
     "status": "success",
     "timestamp": "2026-02-24T10:19:38.513Z"
-  },
-  {
-    "id": "f5dd413d-7c3d-4917-af2d-69c245fc4b16",
-    "label": "devin-ig-profile-refresh",
-    "agent": "devin",
-    "task": "Currently `refresh-counts` for Instagram uses `apify/instagram-scraper` with `directUrls` (~$0.0184/run). We want to replace it with `apify/instagram-profile-scraper` which costs $0.0023/run and retur",
-    "model": "Sonnet",
-    "tokens": 309079,
-    "cost": 0.2608,
-    "durationSec": 131,
-    "status": "success",
-    "timestamp": "2026-02-27T12:21:54.588Z"
   },
   {
     "id": "cc20e310-3a14-408a-8d05-c62f77a8363d",

@@ -1,17 +1,17 @@
 {
-  "lastUpdated": "2026-02-27T13:20:01Z",
+  "lastUpdated": "2026-02-27T13:30:01Z",
   "activities": [
     {
-      "id": "s-f5dd413d",
+      "id": "s-616f65de",
       "agent": "devin",
-      "title": "devin-ig-profile-refresh",
-      "description": "Currently `refresh-counts` for Instagram uses `apify/instagram-scraper` with `directUrls` (~$0.0184/run). We want to replace it with `apify/instagram-profile-scraper` which costs $0.0023/run and retur",
+      "title": "devin-daily-sync-fix",
+      "description": "One daily run per creator per platform. That run fetches ALL posts (up to 100) and updates views/likes/comments on every single one. No shortcuts, no 12-post caps.",
       "status": "success",
-      "date": "2026-02-27T12:21:54.588Z",
-      "tokens": 309079,
-      "cost": 0.2608,
+      "date": "2026-02-27T13:23:03.659Z",
+      "tokens": 1041386,
+      "cost": 0.8857,
       "model": "Sonnet",
-      "durationSec": 131
+      "durationSec": 324
     },
     {
       "id": "s-acd636de",
@@ -296,10 +296,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 114844253,
-      "cost": 62.2896,
+      "tokens": 116051719,
+      "cost": 63.1467,
       "model": "unknown",
-      "durationSec": 281062
+      "durationSec": 281948
     },
     {
       "id": "s-66dde37a",
@@ -1335,7 +1335,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-27T12:21:54.588Z",
+      "lastActive": "2026-02-27T13:23:03.659Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1377,7 +1377,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T13:20:01Z"
+      "lastRunAt": "2026-02-27T13:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
