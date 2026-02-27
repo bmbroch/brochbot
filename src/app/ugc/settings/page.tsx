@@ -121,6 +121,27 @@ export default function UGCSettingsPage() {
   const [saved, setSaved] = useState<string | null>(null);
   const fetchSettings = useCallback(async () => {
     const data = await fetch("/api/ugc/settings").then((r) => r.json());
+
+    // On first load: if timezone is still the server default ("UTC"), auto-detect
+    // the browser's local timezone and seed 8 AM in that timezone
+    if (data.syncTimezone === "UTC" || !data.syncTimezone) {
+      const detected = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      // Only apply if the detected timezone is in our supported list
+      const supported = TIMEZONES.find((t) => t.value === detected);
+      if (supported && detected !== "UTC") {
+        const utc = localToUTC(8, detected);
+        const patched = { ...data, syncTimeLocal: 8, syncTimezone: detected, defaultSyncHour: utc };
+        setSettings(patched);
+        // Persist silently
+        fetch("/api/ugc/settings", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ syncTimeLocal: 8, syncTimezone: detected, defaultSyncHour: utc }),
+        }).catch(() => {});
+        return;
+      }
+    }
+
     setSettings(data);
   }, []);
 
