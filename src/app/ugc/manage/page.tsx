@@ -100,9 +100,10 @@ interface TrackModalProps {
   onClose: () => void;
   onAdded: (creators: UGCCreator[]) => void;
   orgId: string | null;
+  defaultSyncHour?: number;
 }
 
-function TrackCreatorModal({ onClose, onAdded, orgId }: TrackModalProps) {
+function TrackCreatorModal({ onClose, onAdded, orgId, defaultSyncHour = 8 }: TrackModalProps) {
   const [bulk, setBulk] = useState(false);
   const [singleUrl, setSingleUrl] = useState("");
   const [bulkText, setBulkText] = useState("");
@@ -150,7 +151,7 @@ function TrackCreatorModal({ onClose, onAdded, orgId }: TrackModalProps) {
         const res = await fetch("/api/ugc/creators", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...data, status: "active", sync_hour: 8, org_id: orgId }),
+          body: JSON.stringify({ ...data, status: "active", sync_hour: defaultSyncHour, org_id: orgId }),
         });
         if (!res.ok) {
           const j = await res.json();
@@ -283,6 +284,7 @@ function ManageCreatorsPage() {
   const [orgId, setOrgId] = useState<string | null>(null);
   const [orgIdReady, setOrgIdReady] = useState(false);
   const [orgName, setOrgName] = useState<string | null>(null);
+  const [defaultSyncHour, setDefaultSyncHour] = useState<number>(8);
   const [usage, setUsage] = useState<{ totalPosts: number; planLimit: number; plan: string } | null>(null);
 
   // Ref populated by OrgIdReader before the orgs fetch completes (from URL ?org_id param)
@@ -311,6 +313,11 @@ function ManageCreatorsPage() {
         setOrgId(match.id);
         setOrgName(match.name);
         setOrgIdReady(true);
+        // Fetch org's current sync hour so new creators get the right default
+        fetch(`/api/ugc/settings?org_id=${match.id}`)
+          .then((r) => r.json())
+          .then((s) => { if (typeof s?.defaultSyncHour === "number") setDefaultSyncHour(s.defaultSyncHour); })
+          .catch(() => {});
       })
       .catch(() => { setOrgIdReady(true); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -707,6 +714,7 @@ function ManageCreatorsPage() {
             setShowTrackModal(false);
           }}
           orgId={orgId}
+          defaultSyncHour={defaultSyncHour}
         />
       )}
     </Shell>
