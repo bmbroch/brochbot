@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-27T06:00:02Z",
+  "lastUpdated": "2026-02-27T06:10:02Z",
   "activities": [
+    {
+      "id": "s-acd636de",
+      "agent": "dana",
+      "title": "Morning Analytics Report",
+      "description": "You're Dana \ud83d\udcca, Data Analyst.",
+      "status": "success",
+      "date": "2026-02-27T06:00:00.116Z",
+      "tokens": 159621,
+      "cost": 0.1438,
+      "model": "Sonnet",
+      "durationSec": 53
+    },
     {
       "id": "s-c178666e",
       "agent": "sam",
@@ -39,8 +51,8 @@
     },
     {
       "id": "s-c5a76f84",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "c5a76f84-f19",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-02-26T06:00:00.137Z",
@@ -695,7 +707,7 @@
       "tokens": 2281286,
       "cost": 4.6358,
       "model": "Opus",
-      "durationSec": 559968
+      "durationSec": 646339
     },
     {
       "id": "s-aae63345",
@@ -1315,7 +1327,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-26T06:39:14.573Z",
+      "lastActive": "2026-02-27T06:00:00.116Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -1353,7 +1365,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T06:00:01Z"
+      "lastRunAt": "2026-02-27T06:10:02Z"
     },
     {
       "id": "bash-frankie-sync",
