@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-02-27T08:10:02Z",
+  "lastUpdated": "2026-02-27T08:20:01Z",
   "activities": [
+    {
+      "id": "s-dd9a3219",
+      "agent": "sam",
+      "title": "dd9a3219-73e",
+      "description": "**Root cause confirmed:** `POST /v2/actor-runs/{runId}/webhooks` returns 404 \u2014 that endpoint doesn't exist in the Apify API. The correct endpoint is `POST /v2/webhooks` with a `condition: { actorRunId",
+      "status": "success",
+      "date": "2026-02-27T08:16:47.949Z",
+      "tokens": 158992,
+      "cost": 0.1739,
+      "model": "Sonnet",
+      "durationSec": 102
+    },
+    {
+      "id": "s-641901ac",
+      "agent": "sam",
+      "title": "641901ac-a73",
+      "description": "**Fix: pass org_id when creating new creators from the manage page**",
+      "status": "success",
+      "date": "2026-02-27T08:14:31.706Z",
+      "tokens": 424581,
+      "cost": 0.312,
+      "model": "Sonnet",
+      "durationSec": 110
+    },
     {
       "id": "s-acd636de",
       "agent": "dana",
@@ -284,10 +308,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 77123656,
-      "cost": 43.6478,
+      "tokens": 78431799,
+      "cost": 44.3798,
       "model": "unknown",
-      "durationSec": 262453
+      "durationSec": 263327
     },
     {
       "id": "s-66dde37a",
@@ -1351,7 +1375,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-27T07:25:38Z",
+      "lastActive": "2026-02-27T08:16:47.949Z",
       "statusText": ""
     }
   },
@@ -1365,7 +1389,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T08:10:01Z"
+      "lastRunAt": "2026-02-27T08:20:01Z"
     },
     {
       "id": "bash-frankie-sync",

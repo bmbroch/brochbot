@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 77123656,
-    "cost": 43.6478,
-    "durationSec": 262453,
+    "tokens": 78431799,
+    "cost": 44.3798,
+    "durationSec": 263327,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -312,6 +312,18 @@
     "timestamp": "2026-02-24T03:00:00.193Z"
   },
   {
+    "id": "641901ac-a73b-438b-8805-ac1ea24cdebe",
+    "label": "641901ac-a73",
+    "agent": "sam",
+    "task": "**Fix: pass org_id when creating new creators from the manage page**",
+    "model": "Sonnet",
+    "tokens": 424581,
+    "cost": 0.312,
+    "durationSec": 110,
+    "status": "success",
+    "timestamp": "2026-02-27T08:14:31.706Z"
+  },
+  {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
     "label": "cdbe948e-6c9",
     "agent": "sam",
@@ -514,6 +526,18 @@
     "durationSec": 53,
     "status": "success",
     "timestamp": "2026-02-27T06:00:00.116Z"
+  },
+  {
+    "id": "dd9a3219-73e9-4d4d-b380-8d624c1e8962",
+    "label": "dd9a3219-73e",
+    "agent": "sam",
+    "task": "**Root cause confirmed:** `POST /v2/actor-runs/{runId}/webhooks` returns 404 \u2014 that endpoint doesn't exist in the Apify API. The correct endpoint is `POST /v2/webhooks` with a `condition: { actorRunId",
+    "model": "Sonnet",
+    "tokens": 158992,
+    "cost": 0.1739,
+    "durationSec": 102,
+    "status": "success",
+    "timestamp": "2026-02-27T08:16:47.949Z"
   },
   {
     "id": "07605915-6095-4d89-88b7-70950b8ca53f",
