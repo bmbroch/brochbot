@@ -4,6 +4,10 @@
     {
       "path": "/api/ugc/auto-sync",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/ugc/sync-check",
+      "schedule": "30 * * * *"
     }
   ]
 }
