@@ -260,7 +260,7 @@ function CreatorCard({
 
         {/* Platform row */}
         <div className="text-xs text-gray-300 dark:text-white/20">
-          No data yet — syncs automatically each morning
+          No data yet — first sync usually takes a few minutes.
         </div>
       </div>
     );
@@ -707,7 +707,7 @@ export default function UGCPage() {
   const activeIgHandle = activeCreator?.igHandle ?? null;
 
   // ── Load overview data ─────────────────────────────────────────────────────
-  useEffect(() => {
+  const fetchAllData = useCallback(() => {
     Promise.all([
       fetch("/creator-payouts.json").then((r) => r.json()),
       fetch("/api/tiktok/all-data").then((r) => r.json()),
@@ -719,6 +719,27 @@ export default function UGCPage() {
       })
       .catch((err) => console.error("Failed to load overview data", err));
   }, []);
+
+  useEffect(() => {
+    fetchAllData();
+  }, [fetchAllData]);
+
+  // Re-fetch when the page becomes visible (e.g. user returns from /ugc/manage)
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        fetchAllData();
+        if (selectedOrgId) {
+          fetch(`/api/ugc/creators?org_id=${selectedOrgId}`)
+            .then((r) => r.ok ? r.json() : null)
+            .then((data) => { if (Array.isArray(data)) setDbCreators(data); })
+            .catch(() => {});
+        }
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, [selectedOrgId, fetchAllData]);
 
   // ── Most recent sync time across all creators ──────────────────────────────
   const lastSyncedAt = useMemo(() => {
@@ -1663,7 +1684,7 @@ export default function UGCPage() {
                     </div>
                     <div className="text-center">
                       <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No data yet for {activeCreator?.name ?? activeHandle}</p>
-                      <p className="text-gray-400 dark:text-white/30 text-sm">Data syncs automatically each morning at 8 AM UTC.</p>
+                      <p className="text-gray-400 dark:text-white/30 text-sm">No data yet — first sync usually takes a few minutes.</p>
                     </div>
                   </div>
                 )}
@@ -1776,7 +1797,7 @@ export default function UGCPage() {
                         </div>
                         <div className="text-center">
                           <p className="text-gray-600 dark:text-white/60 text-sm font-medium mb-1">No Instagram data yet for {activeCreator?.name ?? activeHandle}</p>
-                          <p className="text-gray-400 dark:text-white/30 text-sm">Data syncs automatically each morning at 8 AM UTC.</p>
+                          <p className="text-gray-400 dark:text-white/30 text-sm">No data yet — first sync usually takes a few minutes.</p>
                         </div>
                       </div>
                     )}
