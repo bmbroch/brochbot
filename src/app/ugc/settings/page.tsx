@@ -5,16 +5,63 @@ import Link from "next/link";
 import Shell from "@/components/Shell";
 import {
   ArrowLeft, Settings, RefreshCw, Users, Check, Loader2,
-  Clock,
+  Clock, Globe,
 } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
 interface UGCSettings {
-  defaultSyncHour: number;
+  defaultSyncHour: number;      // 0–23 UTC (computed)
+  syncTimeLocal: number;        // 0–23 in selected timezone
+  syncTimezone: string;         // IANA timezone string
   videosPerCreator: number;
   refreshFrequency: "daily" | "twice_daily";
   orgName: string;
+}
+
+// ─── Timezone list ─────────────────────────────────────────────────────────────
+const TIMEZONES = [
+  { value: "UTC",                    label: "UTC" },
+  { value: "America/New_York",       label: "US Eastern (ET)" },
+  { value: "America/Chicago",        label: "US Central (CT)" },
+  { value: "America/Denver",         label: "US Mountain (MT)" },
+  { value: "America/Los_Angeles",    label: "US Pacific (PT)" },
+  { value: "America/Anchorage",      label: "Alaska (AKT)" },
+  { value: "Pacific/Honolulu",       label: "Hawaii (HT)" },
+  { value: "America/Toronto",        label: "Canada Eastern" },
+  { value: "America/Vancouver",      label: "Canada Pacific" },
+  { value: "America/Sao_Paulo",      label: "Brazil (BRT)" },
+  { value: "Europe/London",          label: "London (GMT/BST)" },
+  { value: "Europe/Paris",           label: "Paris / Berlin (CET)" },
+  { value: "Europe/Istanbul",        label: "Istanbul (TRT)" },
+  { value: "Africa/Windhoek",        label: "Namibia / CAT" },
+  { value: "Africa/Johannesburg",    label: "South Africa (SAST)" },
+  { value: "Africa/Nairobi",         label: "East Africa (EAT)" },
+  { value: "Asia/Dubai",             label: "Dubai (GST)" },
+  { value: "Asia/Kolkata",           label: "India (IST)" },
+  { value: "Asia/Singapore",         label: "Singapore (SGT)" },
+  { value: "Asia/Tokyo",             label: "Japan (JST)" },
+  { value: "Asia/Seoul",             label: "Korea (KST)" },
+  { value: "Australia/Sydney",       label: "Sydney (AEST)" },
+  { value: "Pacific/Auckland",       label: "New Zealand (NZT)" },
+];
+
+// Convert local hour in a timezone to UTC hour
+function localToUTC(localHour: number, timezone: string): number {
+  const now = new Date();
+  // Get current UTC offset by comparing UTC hour to local hour in the timezone
+  const localStr = new Intl.DateTimeFormat("en-US", { timeZone: timezone, hour: "numeric", hour12: false }).format(now);
+  const tzHour = parseInt(localStr) % 24;
+  const utcOffset = now.getUTCHours() - tzHour;
+  return ((localHour + utcOffset) + 24) % 24;
+}
+
+// Format hour as 12h with AM/PM
+function formatHour(h: number): string {
+  if (h === 0) return "12:00 AM";
+  if (h < 12) return `${h}:00 AM`;
+  if (h === 12) return "12:00 PM";
+  return `${h - 12}:00 PM`;
 }
 
 interface HealthSummary {
@@ -27,10 +74,10 @@ interface HealthSummary {
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 
-function nextCronRun(syncHour: number): string {
+function nextCronRun(utcHour: number): string {
   const now = new Date();
   const next = new Date();
-  next.setUTCHours(syncHour, 0, 0, 0);
+  next.setUTCHours(utcHour, 0, 0, 0);
   if (next <= now) next.setUTCDate(next.getUTCDate() + 1);
   const diffH = Math.round((next.getTime() - now.getTime()) / 3600000);
   if (diffH < 1) return "in less than an hour";
@@ -205,17 +252,42 @@ export default function UGCSettingsPage() {
                 </div>
               </Field>
 
-              <Field label="Default Sync Hour" hint="UTC hour for daily sync">
-                <div className="flex items-center gap-3">
-                  <select value={settings.defaultSyncHour}
-                    onChange={(e) => save("defaultSyncHour", { defaultSyncHour: parseInt(e.target.value) })}
+              <Field label="Sync Time" hint="Local time for daily data refresh">
+                <div className="flex flex-wrap items-center gap-3">
+                  {/* Hour picker */}
+                  <select
+                    value={settings.syncTimeLocal ?? settings.defaultSyncHour}
+                    onChange={(e) => {
+                      const local = parseInt(e.target.value);
+                      const utc = localToUTC(local, settings.syncTimezone ?? "UTC");
+                      save("syncTimeLocal", { syncTimeLocal: local, defaultSyncHour: utc });
+                    }}
                     className="px-3 py-2 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all">
                     {Array.from({ length: 24 }, (_, i) => (
-                      <option key={i} value={i}>{i}:00 UTC{i === 8 ? " (default)" : ""}</option>
+                      <option key={i} value={i}>{formatHour(i)}</option>
                     ))}
                   </select>
-                  {saving === "defaultSyncHour" && <Loader2 size={14} className="animate-spin text-gray-400" />}
-                  {saved === "defaultSyncHour" && <span className="flex items-center gap-1 text-xs text-green-500"><Check size={12} /> Saved</span>}
+
+                  {/* Timezone picker */}
+                  <div className="flex items-center gap-1.5">
+                    <Globe size={13} className="text-gray-400 dark:text-white/30 flex-shrink-0" />
+                    <select
+                      value={settings.syncTimezone ?? "UTC"}
+                      onChange={(e) => {
+                        const tz = e.target.value;
+                        const local = settings.syncTimeLocal ?? settings.defaultSyncHour;
+                        const utc = localToUTC(local, tz);
+                        save("syncTimezone", { syncTimezone: tz, defaultSyncHour: utc });
+                      }}
+                      className="px-3 py-2 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all">
+                      {TIMEZONES.map((tz) => (
+                        <option key={tz.value} value={tz.value}>{tz.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {(saving === "syncTimeLocal" || saving === "syncTimezone") && <Loader2 size={14} className="animate-spin text-gray-400" />}
+                  {(saved === "syncTimeLocal" || saved === "syncTimezone") && <span className="flex items-center gap-1 text-xs text-green-500"><Check size={12} /> Saved</span>}
                   <span className="text-xs text-gray-400 dark:text-white/40 flex items-center gap-1">
                     <Clock size={11} /> Next run {nextCronRun(settings.defaultSyncHour)}
                   </span>

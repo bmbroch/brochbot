@@ -8,13 +8,17 @@ const STORE_KEY = "ugc_settings";
 
 const DEFAULT_SETTINGS: UGCSettings = {
   defaultSyncHour: 8,
+  syncTimeLocal: 8,
+  syncTimezone: "UTC",
   videosPerCreator: 100,
   refreshFrequency: "daily",
   orgName: "My Workspace",
 };
 
 export interface UGCSettings {
-  defaultSyncHour: number;      // 0–23 UTC
+  defaultSyncHour: number;      // 0–23 UTC (computed from syncTimeLocal + syncTimezone)
+  syncTimeLocal: number;        // 0–23 in the selected timezone (display value)
+  syncTimezone: string;         // IANA timezone string e.g. "America/New_York"
   videosPerCreator: number;     // max videos to track per creator
   refreshFrequency: "daily" | "twice_daily";
   orgName: string;
