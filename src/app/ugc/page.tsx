@@ -1070,7 +1070,7 @@ export default function UGCPage() {
 
             {/* Manage + Settings buttons */}
             <Link
-              href="/ugc/manage"
+              href={"/ugc/manage?org_id=" + selectedOrgId}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111] text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#333] transition-all"
             >
               <Settings size={13} />

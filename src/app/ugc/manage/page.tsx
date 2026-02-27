@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import Shell from "@/components/Shell";
 import {
   ArrowLeft, Plus, Settings2, Search, Check, X,
@@ -98,9 +99,10 @@ function relativeTime(iso: string | null): string {
 interface TrackModalProps {
   onClose: () => void;
   onAdded: (creators: UGCCreator[]) => void;
+  orgId: string | null;
 }
 
-function TrackCreatorModal({ onClose, onAdded }: TrackModalProps) {
+function TrackCreatorModal({ onClose, onAdded, orgId }: TrackModalProps) {
   const [bulk, setBulk] = useState(false);
   const [singleUrl, setSingleUrl] = useState("");
   const [bulkText, setBulkText] = useState("");
@@ -148,7 +150,7 @@ function TrackCreatorModal({ onClose, onAdded }: TrackModalProps) {
         const res = await fetch("/api/ugc/creators", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...data, status: "active", sync_hour: 8 }),
+          body: JSON.stringify({ ...data, status: "active", sync_hour: 8, org_id: orgId }),
         });
         if (!res.ok) {
           const j = await res.json();
@@ -250,9 +252,20 @@ function TrackCreatorModal({ onClose, onAdded }: TrackModalProps) {
   );
 }
 
+// ─── OrgId Reader (reads searchParams inside Suspense) ─────────────────────────
+
+function OrgIdReader({ onOrgId }: { onOrgId: (id: string) => void }) {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const id = searchParams.get("org_id");
+    if (id) onOrgId(id);
+  }, [searchParams, onOrgId]);
+  return null;
+}
+
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
-export default function ManageCreatorsPage() {
+function ManageCreatorsPage() {
   const [creators, setCreators] = useState<UGCCreator[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -263,6 +276,18 @@ export default function ManageCreatorsPage() {
   const [avatarMsg, setAvatarMsg] = useState<string | null>(null);
   const [health, setHealth] = useState<Record<string, { health: string; issues: string[] }>>({});
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const [orgId, setOrgId] = useState<string | null>(null);
+
+  // Fetch orgs on mount to get default orgId
+  useEffect(() => {
+    fetch("/api/ugc/orgs")
+      .then((r) => r.json())
+      .then((data) => {
+        const orgs = Array.isArray(data) ? data : [];
+        if (orgs.length > 0 && !orgId) setOrgId(orgs[0].id);
+      })
+      .catch(() => {});
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchCreators = useCallback(async () => {
     try {
@@ -369,6 +394,9 @@ export default function ManageCreatorsPage() {
 
   return (
     <Shell>
+      <Suspense fallback={null}>
+        <OrgIdReader onOrgId={setOrgId} />
+      </Suspense>
       <div className="min-h-full bg-gray-50 dark:bg-[#0a0a0a] px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pb-24">
 
         {/* Header */}
@@ -609,8 +637,11 @@ export default function ManageCreatorsPage() {
             setCreators((prev) => [...prev, ...newCreators]);
             setShowTrackModal(false);
           }}
+          orgId={orgId}
         />
       )}
     </Shell>
   );
 }
+
+export default ManageCreatorsPage;
