@@ -640,9 +640,14 @@ export default function UGCPage() {
       setSelectedOrgId(urlOrgId);
       setDbCreators(null);
       setPageMode("overview"); // reset to overview on org switch
+      // Clear active creator so no cross-org data leaks into the drilldown
+      setActiveHandle("");
+      setStoreData(null);
+      setIgStoreData(null);
       localStorage.setItem("ugc_org_id", urlOrgId);
     }
   }); // intentionally no deps — runs on every render to catch URL changes
+
 
   // ── DB-backed creator list ─────────────────────────────────────────────────
   const [dbCreators, setDbCreators] = useState<Array<{
@@ -677,6 +682,15 @@ export default function UGCPage() {
         status: c.status,
       }));
   }, [dbCreators]);
+
+  // When org changes and new creators load, auto-select the first one
+  useEffect(() => {
+    if (!activeHandle && effectiveCreators.length > 0) {
+      const first = effectiveCreators.find((c) => c.handle) ?? effectiveCreators[0];
+      if (first?.handle) setActiveHandle(first.handle);
+    }
+  }, [effectiveCreators, activeHandle]);
+
 
   // Map of name → status for drilldown badges
   const creatorStatusMap = useMemo<Record<string, "active" | "monitoring">>(() => {
@@ -958,6 +972,9 @@ export default function UGCPage() {
   );
 
   useEffect(() => {
+    // Don't load data for empty handle or handles not in current org
+    if (!activeHandle) return;
+    if (!effectiveCreators.some((c) => c.handle === activeHandle)) return;
     setError(null);
     loadTikTokData(activeHandle);
     if (activeIgHandle) {
