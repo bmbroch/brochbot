@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T14:30:02Z",
+  "lastUpdated": "2026-02-27T14:40:01Z",
   "activities": [
     {
       "id": "s-5586cec3",
@@ -12,30 +12,6 @@
       "cost": 0.2103,
       "model": "Sonnet",
       "durationSec": 108
-    },
-    {
-      "id": "s-1d175d74",
-      "agent": "devin",
-      "title": "devin-cost-report",
-      "description": "`GET /api/ugc/cost-report` \u2014 pulls actual Apify run costs from the last 24h via sync logs, builds a summary, sends it to Telegram.",
-      "status": "success",
-      "date": "2026-02-27T13:37:58.001Z",
-      "tokens": 870733,
-      "cost": 0.5905,
-      "model": "Sonnet",
-      "durationSec": 235
-    },
-    {
-      "id": "s-c7c5ead4",
-      "agent": "devin",
-      "title": "devin-type4-ig-header-tz",
-      "description": "**File: `src/app/ugc/manage/page.tsx`**",
-      "status": "success",
-      "date": "2026-02-27T13:34:37.016Z",
-      "tokens": 1134283,
-      "cost": 0.7023,
-      "model": "Sonnet",
-      "durationSec": 220
     },
     {
       "id": "s-acd636de",
@@ -1415,7 +1391,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T14:30:02Z"
+      "lastRunAt": "2026-02-27T14:40:01Z"
     },
     {
       "id": "bash-frankie-sync",
