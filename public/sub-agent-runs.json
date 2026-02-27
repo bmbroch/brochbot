@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 99667688,
-    "cost": 55.6068,
-    "durationSec": 269950,
+    "tokens": 100351236,
+    "cost": 55.9503,
+    "durationSec": 270554,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -514,6 +514,18 @@
     "durationSec": 61,
     "status": "success",
     "timestamp": "2026-02-26T06:00:00.137Z"
+  },
+  {
+    "id": "6e04a5c0-d081-42da-8e17-ab121d0ad668",
+    "label": "devin-ig-only-fix",
+    "agent": "devin",
+    "task": "**Root Cause:** The entire creator analytics pipeline assumes every creator has a TikTok handle. Creators with only an Instagram handle (no `tiktok_handle`) are silently excluded from stats, the overv",
+    "model": "Sonnet",
+    "tokens": 174438,
+    "cost": 0.1267,
+    "durationSec": 69,
+    "status": "success",
+    "timestamp": "2026-02-27T10:15:52.175Z"
   },
   {
     "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",

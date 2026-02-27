@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-27T10:10:01Z",
+  "lastUpdated": "2026-02-27T10:20:02Z",
   "activities": [
+    {
+      "id": "s-6e04a5c0",
+      "agent": "devin",
+      "title": "devin-ig-only-fix",
+      "description": "**Root Cause:** The entire creator analytics pipeline assumes every creator has a TikTok handle. Creators with only an Instagram handle (no `tiktok_handle`) are silently excluded from stats, the overv",
+      "status": "success",
+      "date": "2026-02-27T10:15:52.175Z",
+      "tokens": 174438,
+      "cost": 0.1267,
+      "model": "Sonnet",
+      "durationSec": 69
+    },
     {
       "id": "s-721919f6",
       "agent": "devin",
@@ -332,10 +344,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 99667688,
-      "cost": 55.6068,
+      "tokens": 100351236,
+      "cost": 55.9503,
       "model": "unknown",
-      "durationSec": 269950
+      "durationSec": 270554
     },
     {
       "id": "s-66dde37a",
@@ -1371,7 +1383,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-27T10:04:35.273Z",
+      "lastActive": "2026-02-27T10:15:52.175Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1413,7 +1425,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T10:10:01Z"
+      "lastRunAt": "2026-02-27T10:20:01Z"
     },
     {
       "id": "bash-frankie-sync",
