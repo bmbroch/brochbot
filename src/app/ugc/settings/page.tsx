@@ -48,6 +48,19 @@ const TIMEZONES = [
   { value: "Pacific/Auckland",       label: "New Zealand (NZT)" },
 ];
 
+// Get short timezone abbreviation (e.g. "CAT", "EST", "PST")
+function getTZAbbr(timezone: string): string {
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: timezone,
+      timeZoneName: "short",
+    }).formatToParts(new Date());
+    return parts.find((p) => p.type === "timeZoneName")?.value ?? timezone;
+  } catch {
+    return timezone;
+  }
+}
+
 // Convert local hour in a timezone to UTC hour
 function localToUTC(localHour: number, timezone: string): number {
   const now = new Date();
@@ -329,10 +342,17 @@ function UGCSettingsContent() {
 
                   {(saving === "syncTimeLocal" || saving === "syncTimezone") && <Loader2 size={14} className="animate-spin text-gray-400" />}
                   {(saved === "syncTimeLocal" || saved === "syncTimezone") && <span className="flex items-center gap-1 text-xs text-green-500"><Check size={12} /> Saved</span>}
-                  <span className="text-xs text-gray-400 dark:text-white/40 flex items-center gap-1">
-                    <Clock size={11} /> Next run {nextCronRun(settings.defaultSyncHour)}
-                  </span>
                 </div>
+                {/* Current setting summary: "2:00 PM CAT (12:00 UTC)" */}
+                <p className="text-xs text-gray-400 dark:text-white/40 mt-2 flex items-center gap-1">
+                  <Clock size={11} />
+                  <span>
+                    {formatHour(settings.syncTimeLocal ?? settings.defaultSyncHour)}{" "}
+                    {getTZAbbr(settings.syncTimezone ?? "UTC")}{" "}
+                    ({formatHour(settings.defaultSyncHour)} UTC)
+                    {" · "}Next run {nextCronRun(settings.defaultSyncHour)}
+                  </span>
+                </p>
               </Field>
 
               <Field label="Videos Per Creator" hint="Max videos tracked at one time">

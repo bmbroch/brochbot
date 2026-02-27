@@ -7,6 +7,7 @@ import Shell from "@/components/Shell";
 import {
   ArrowLeft, Plus, Settings2, Search, Check, X,
   Loader2, ImageIcon, ExternalLink, StopCircle, PlayCircle, Building2,
+  RotateCw,
 } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -281,6 +282,7 @@ function ManageCreatorsPage() {
   const [avatarMsg, setAvatarMsg] = useState<string | null>(null);
   const [health, setHealth] = useState<Record<string, { health: string; issues: string[]; ttPosts: number; igPosts: number }>>({});
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const [resyncingId, setResyncingId] = useState<string | null>(null);
   const [orgId, setOrgId] = useState<string | null>(null);
   const [orgIdReady, setOrgIdReady] = useState(false);
   const [orgName, setOrgName] = useState<string | null>(null);
@@ -429,6 +431,30 @@ function ManageCreatorsPage() {
       await fetch(`/api/ugc/health?remediate=true&creator=${creator.id}`);
       setTimeout(() => fetchHealth(), 3000); // re-check health after a beat
     } finally { setSyncingId(null); }
+  };
+
+  // ── Force Re-sync (Type 4) ─────────────────────────────────────────────────
+
+  const handleForceResync = async (creator: UGCCreator) => {
+    if (!confirm(`Force full re-sync for ${creator.name}? This will re-scrape all posts.`)) return;
+    setResyncingId(creator.id);
+    try {
+      const res = await fetch("/api/ugc/force-resync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          creatorId: creator.id,
+          tiktokHandle: creator.tiktok_handle ?? undefined,
+          igHandle: creator.ig_handle ?? undefined,
+        }),
+      });
+      if (!res.ok) throw new Error("Server error");
+      alert(`Re-sync started for ${creator.name}. Data will update in ~2 minutes.`);
+    } catch {
+      alert("Failed to start re-sync. Please try again.");
+    } finally {
+      setResyncingId(null);
+    }
   };
 
   // ── Refresh avatars ────────────────────────────────────────────────────────
@@ -589,7 +615,7 @@ function ManageCreatorsPage() {
                       <input type="checkbox" checked={allSelected} onChange={toggleAll}
                         className="rounded border-gray-300 dark:border-[#444] text-blue-600 focus:ring-blue-500/40 cursor-pointer" />
                     </th>
-                    {["Creator", "Platforms", "Posts", "Health", "Status", "Last Synced"].map((h) => (
+                    {["Creator", "Platforms", "Posts", "Health", "Status", "Last Synced", ""].map((h) => (
                       <th key={h} className="text-left px-4 py-3 text-[11px] font-medium text-gray-400 dark:text-white/30 uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
@@ -701,6 +727,21 @@ function ManageCreatorsPage() {
                       {/* Last synced */}
                       <td className="px-4 py-3.5 whitespace-nowrap">
                         <span className="text-xs text-gray-400 dark:text-white/40">{relativeTime(creator.last_synced_at)}</span>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-3 py-3.5 whitespace-nowrap">
+                        <button
+                          onClick={() => handleForceResync(creator)}
+                          disabled={resyncingId === creator.id}
+                          title="Force full re-sync"
+                          className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors disabled:opacity-40"
+                        >
+                          {resyncingId === creator.id
+                            ? <Loader2 size={14} className="animate-spin" />
+                            : <RotateCw size={14} />
+                          }
+                        </button>
                       </td>
 
                     </tr>
