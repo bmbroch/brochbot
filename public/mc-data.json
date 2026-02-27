@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T09:20:01Z",
+  "lastUpdated": "2026-02-27T09:30:02Z",
   "activities": [
     {
       "id": "s-92f44523",
@@ -60,30 +60,6 @@
       "cost": 0.5015,
       "model": "Sonnet",
       "durationSec": 184
-    },
-    {
-      "id": "s-c4fdf947",
-      "agent": "dana",
-      "title": "dana-key-numbers-refresh",
-      "description": "",
-      "status": "success",
-      "date": "2026-02-27T08:25:38.124Z",
-      "tokens": 211278,
-      "cost": 0.2489,
-      "model": "Sonnet",
-      "durationSec": 155
-    },
-    {
-      "id": "s-0adadc14",
-      "agent": "sam",
-      "title": "0adadc14-b5b",
-      "description": "**The bug:**",
-      "status": "success",
-      "date": "2026-02-27T08:23:49.818Z",
-      "tokens": 72480,
-      "cost": 0.0719,
-      "model": "Sonnet",
-      "durationSec": 54
     },
     {
       "id": "s-acd636de",
@@ -368,10 +344,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 88721120,
-      "cost": 48.8591,
+      "tokens": 93404717,
+      "cost": 51.4598,
       "model": "unknown",
-      "durationSec": 266708
+      "durationSec": 267391
     },
     {
       "id": "s-66dde37a",
@@ -1449,7 +1425,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-27T09:20:01Z"
+      "lastRunAt": "2026-02-27T09:30:02Z"
     },
     {
       "id": "bash-frankie-sync",
