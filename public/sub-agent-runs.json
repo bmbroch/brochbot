@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 104362052,
-    "cost": 57.7056,
-    "durationSec": 272900,
+    "tokens": 105274596,
+    "cost": 58.1114,
+    "durationSec": 273392,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -516,6 +516,18 @@
     "timestamp": "2026-02-26T06:00:00.137Z"
   },
   {
+    "id": "cabf48bc-6bce-4878-8404-b648da7bacfe",
+    "label": "devin-simplify-autosync",
+    "agent": "devin",
+    "task": "**The change:** Remove the Monday-only `refresh-counts` special case. Just run `new-posts` every day with a 30-day window \u2014 that captures both new posts AND updated view counts on recent posts in one ",
+    "model": "Sonnet",
+    "tokens": 178659,
+    "cost": 0.1608,
+    "durationSec": 88,
+    "status": "success",
+    "timestamp": "2026-02-27T11:01:02.963Z"
+  },
+  {
     "id": "6e04a5c0-d081-42da-8e17-ab121d0ad668",
     "label": "devin-ig-only-fix",
     "agent": "devin",
@@ -598,18 +610,6 @@
     "durationSec": 93,
     "status": "success",
     "timestamp": "2026-02-20T04:00:00.087Z"
-  },
-  {
-    "id": "721919f6-d29e-45a3-abd8-5c485772da7d",
-    "label": "devin-sync-hour-fix",
-    "agent": "devin",
-    "task": "**Context:** When a creator's status is cycled to \"active\" via the inline toggle, two things need to work:",
-    "model": "Sonnet",
-    "tokens": 141954,
-    "cost": 0.1164,
-    "durationSec": 70,
-    "status": "success",
-    "timestamp": "2026-02-27T10:04:35.273Z"
   },
   {
     "id": "53178b2d-2376-4960-a237-110c9ac2db1e",
