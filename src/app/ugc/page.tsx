@@ -1049,26 +1049,6 @@ export default function UGCPage() {
           {/* Right: mode toggle + platform filter */}
           <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
 
-            {/* Org switcher — only show if multiple orgs */}
-            {orgs.length > 1 && (
-              <div className="flex items-center gap-1 p-1 rounded-xl border border-gray-200 dark:border-[#222] bg-white dark:bg-[#111]">
-                {orgs.map((org) => (
-                  <button
-                    key={org.id}
-                    onClick={() => { setSelectedOrgId(org.id); setDbCreators(null); }}
-                    className={[
-                      "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
-                      selectedOrgId === org.id
-                        ? "bg-gray-100 dark:bg-[#2a2a2a] text-gray-900 dark:text-white shadow-sm"
-                        : "text-gray-500 dark:text-white/50 hover:text-gray-800 dark:hover:text-white/80",
-                    ].join(" ")}
-                  >
-                    {org.name}
-                  </button>
-                ))}
-              </div>
-            )}
-
             {/* Manage + Settings buttons */}
             <Link
               href={"/ugc/manage?org_id=" + selectedOrgId}

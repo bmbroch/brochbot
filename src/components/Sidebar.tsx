@@ -66,9 +66,13 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
           : data?.orgs ?? [];
         if (list.length === 0) return;
         setOrgs(list);
+        // Prefer org_id from URL, then localStorage, then first org
+        const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+        const urlOrgId = urlParams?.get("org_id");
         const stored = localStorage.getItem("ugc_org_id");
-        const match = list.find((o) => o.id === stored);
-        const id = match ? match.id : list[0].id;
+        const urlMatch = list.find((o) => o.id === urlOrgId);
+        const storedMatch = list.find((o) => o.id === stored);
+        const id = urlMatch ? urlMatch.id : storedMatch ? storedMatch.id : list[0].id;
         setSelectedOrgId(id);
         localStorage.setItem("ugc_org_id", id);
       })
@@ -76,6 +80,18 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
         // best-effort — silently ignore
       });
   }, []);
+
+  // Sync sidebar selection to current page's org_id
+  useEffect(() => {
+    if (typeof window !== "undefined" && orgs.length > 0) {
+      const params = new URLSearchParams(window.location.search);
+      const urlOrgId = params.get("org_id");
+      if (urlOrgId && orgs.some((o) => o.id === urlOrgId)) {
+        setSelectedOrgId(urlOrgId);
+        localStorage.setItem("ugc_org_id", urlOrgId);
+      }
+    }
+  }, [pathname, orgs]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -147,7 +163,9 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
                       localStorage.setItem("ugc_org_id", org.id);
                       setOrgDropdownOpen(false);
                       if (pathname.startsWith("/ugc")) {
-                        router.push(`/ugc?org_id=${org.id}`);
+                        // Stay on current page, just update org_id param
+                        const basePath = pathname.split("?")[0];
+                        router.push(`${basePath}?org_id=${org.id}`);
                       }
                     }}
                     className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-[var(--bg-hover)] ${
