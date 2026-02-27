@@ -9,20 +9,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "APIFY_API_KEY not configured" }, { status: 500 });
   }
 
-  let body: { igHandle?: string; mode?: string; firstFetch?: boolean };
+  let body: { igHandle?: string; mode?: string; firstFetch?: boolean; smartDays?: number };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { igHandle, mode, firstFetch, webhookUrl } = body as typeof body & { webhookUrl?: string };
+  const { igHandle, mode, firstFetch, webhookUrl, smartDays } = body as typeof body & { webhookUrl?: string; smartDays?: number };
   if (!igHandle) return NextResponse.json({ error: "igHandle is required" }, { status: 400 });
   if (mode !== "new-posts" && mode !== "refresh-counts") {
     return NextResponse.json({ error: "mode must be new-posts or refresh-counts" }, { status: 400 });
   }
 
-  const resultsLimit = firstFetch ? 100 : mode === "new-posts" ? 30 : 50;
+  // For new-posts mode, scale results by how many days we're scanning
+  // 1 day → 5 results, 7 days → 15 results, 30 days → 30 results
+  const resultsLimit = firstFetch ? 100 : mode === "new-posts"
+    ? Math.max(5, Math.min(30, Math.ceil((smartDays ?? 30) / 1)))
+    : 50;
 
   // Helper: register webhook via Apify Webhooks API after run starts
   // Uses correct endpoint: POST /v2/webhooks with condition: { actorRunId } filter

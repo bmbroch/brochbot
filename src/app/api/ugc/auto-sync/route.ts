@@ -27,6 +27,13 @@ const WEBHOOK_SECRET = process.env.APIFY_WEBHOOK_SECRET || "";
  * Runs new-posts every day with a 30-day window — captures both new posts
  * AND updated view counts on recent posts in one shot.
  */
+function daysSinceSync(lastSyncedAt: string | null): number {
+  if (!lastSyncedAt) return 30; // never synced — use full window
+  const hours = (Date.now() - new Date(lastSyncedAt).getTime()) / 3600000;
+  const days = Math.ceil(hours / 24);
+  return Math.min(30, Math.max(1, days)); // clamp 1–30
+}
+
 export async function GET(req: NextRequest) {
   // Verify Vercel Cron auth
   const authHeader = req.headers.get("authorization");
@@ -53,8 +60,9 @@ export async function GET(req: NextRequest) {
 
   // 2. Fire all runs with webhooks — parallel per creator
   await Promise.all(
-    creators.map(async (creator: { id: string; name: string; tiktok_handle?: string; ig_handle?: string }) => {
+    creators.map(async (creator: { id: string; name: string; tiktok_handle?: string; ig_handle?: string; last_synced_at?: string | null }) => {
       const mode = "new-posts";
+      const smartDays = daysSinceSync(creator.last_synced_at ?? null);
 
       // TikTok
       if (creator.tiktok_handle) {
@@ -73,6 +81,7 @@ export async function GET(req: NextRequest) {
               handle: creator.tiktok_handle,
               mode,
               firstFetch: false,
+              smartDays,
               webhookUrl: ttWebhookUrl,
             }),
           });
@@ -100,6 +109,7 @@ export async function GET(req: NextRequest) {
               igHandle: creator.ig_handle,
               mode,
               firstFetch: false,
+              smartDays,
               webhookUrl: igWebhookUrl,
             }),
           });

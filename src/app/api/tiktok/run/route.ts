@@ -16,11 +16,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { handle, mode, firstFetch, webhookUrl } = body as {
+  const { handle, mode, firstFetch, webhookUrl, smartDays } = body as {
     handle?: string;
     mode?: string;
     firstFetch?: boolean;
     webhookUrl?: string; // if provided, Apify will POST to this URL on completion
+    smartDays?: number;
   };
   if (!handle) return NextResponse.json({ error: "handle is required" }, { status: 400 });
   if (mode !== "new-posts" && mode !== "refresh-counts") {
@@ -37,13 +38,13 @@ export async function POST(req: NextRequest) {
     resultsPerPage: firstFetch ? 100 : isNewPosts ? 30 : 50,
   };
   if (!firstFetch) {
-    apifyInput.scrapeLastNDays = isNewPosts ? 30 : 60;
+    apifyInput.scrapeLastNDays = isNewPosts ? (smartDays ?? 30) : 60;
   }
 
   try {
     // Start the Apify run (no inline webhooks — registered separately below)
     const res = await fetch(
-      `https://api.apify.com/v2/acts/clockworks~tiktok-scraper/runs?token=${APIFY_KEY}&memory=512`,
+      `https://api.apify.com/v2/acts/clockworks~free-tiktok-scraper/runs?token=${APIFY_KEY}&memory=512`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

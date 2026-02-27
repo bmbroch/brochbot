@@ -93,14 +93,14 @@ export function mapApifyItem(item: Record<string, unknown>): TikTokVideo | null 
 
   return {
     id,
-    caption: (item.text as string) ?? "",
-    postedAt: (item.createTimeISO as string) ?? new Date().toISOString(),
-    views: (item.playCount as number) ?? 0,
-    likes: (item.diggCount as number) ?? 0,
-    comments: (item.commentCount as number) ?? 0,
-    shares: (item.shareCount as number) ?? 0,
+    caption: ((item.text ?? item.caption) as string) ?? "",
+    postedAt: ((item.createTimeISO ?? item.postedAt ?? item.createTime) as string) ?? new Date().toISOString(),
+    views: ((item.playCount ?? item.views) as number) ?? 0,
+    likes: ((item.diggCount ?? item.likes) as number) ?? 0,
+    comments: ((item.commentCount ?? item.comments) as number) ?? 0,
+    shares: ((item.shareCount ?? item.shares) as number) ?? 0,
     saves: (item.collectCount as number) ?? 0,
-    url: (item.webVideoUrl as string) ?? "",
+    url: ((item.webVideoUrl ?? item.videoUrl ?? item.url) as string) ?? "",
   };
 }
 
