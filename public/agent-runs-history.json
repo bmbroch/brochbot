@@ -3514,17 +3514,5 @@
     "durationSec": 0,
     "status": "success",
     "timestamp": "2026-02-28T12:00:01Z"
-  },
-  {
-    "id": "sam-daily-2026-02-28",
-    "label": "Daily total",
-    "agent": "sam",
-    "task": "Sam \u2194 Ben total conversation cost today",
-    "model": "Opus",
-    "tokens": 22649,
-    "cost": 0.0634,
-    "durationSec": 0,
-    "status": "success",
-    "timestamp": "2026-02-28T12:00:01Z"
   }
 ]
