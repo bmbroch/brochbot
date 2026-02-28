@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 150517932,
-    "cost": 81.6106,
-    "durationSec": 375986,
+    "tokens": 150676812,
+    "cost": 81.9446,
+    "durationSec": 382149,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
