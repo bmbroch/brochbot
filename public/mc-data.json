@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-28T05:50:01Z",
+  "lastUpdated": "2026-02-28T06:00:02Z",
   "activities": [
+    {
+      "id": "s-537c5e8a",
+      "agent": "dana",
+      "title": "dana-isk-bug-investigation",
+      "description": "A user (shankar4sap@gmail.com) left a 1-star review saying: \"Yesterday my sidekick did not work for Applexus interview. AI was not generating answers.\"",
+      "status": "success",
+      "date": "2026-02-28T05:56:39.262Z",
+      "tokens": 394127,
+      "cost": 0.4349,
+      "model": "Sonnet",
+      "durationSec": 152
+    },
     {
       "id": "s-378c4072",
       "agent": "sam",
@@ -332,10 +344,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 137441501,
-      "cost": 74.6308,
+      "tokens": 138505753,
+      "cost": 75.03,
       "model": "unknown",
-      "durationSec": 340658
+      "durationSec": 341350
     },
     {
       "id": "s-66dde37a",
@@ -752,10 +764,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 2281286,
-      "cost": 4.6358,
+      "tokens": 2402250,
+      "cost": 4.8713,
       "model": "Opus",
-      "durationSec": 646339
+      "durationSec": 732649
     },
     {
       "id": "s-aae63345",
@@ -1389,7 +1401,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-27T08:25:38.124Z",
+      "lastActive": "2026-02-28T05:56:39.262Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -1427,7 +1439,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-28T05:50:01Z"
+      "lastRunAt": "2026-02-28T06:00:01Z"
     },
     {
       "id": "bash-frankie-sync",
