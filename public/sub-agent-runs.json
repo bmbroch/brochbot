@@ -144,18 +144,6 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
-    "id": "38c0c09e-f5c1-4b14-97b1-a761cf433bfb",
-    "label": "devin-pricing-calculator",
-    "agent": "devin",
-    "task": "/home/ubuntu/.openclaw/workspace/viralytics",
-    "model": "Sonnet",
-    "tokens": 1617324,
-    "cost": 1.0659,
-    "durationSec": 602,
-    "status": "success",
-    "timestamp": "2026-02-28T20:31:48.875Z"
-  },
-  {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
     "label": "b88a363c-216",
     "agent": "sam",
