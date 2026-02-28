@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 161331810,
-    "cost": 87.4202,
-    "durationSec": 394087,
+    "tokens": 162010811,
+    "cost": 87.7027,
+    "durationSec": 394632,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -156,6 +156,18 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
+    "id": "38c0c09e-f5c1-4b14-97b1-a761cf433bfb",
+    "label": "devin-pricing-calculator",
+    "agent": "devin",
+    "task": "/home/ubuntu/.openclaw/workspace/viralytics",
+    "model": "Sonnet",
+    "tokens": 1617324,
+    "cost": 1.0659,
+    "durationSec": 602,
+    "status": "success",
+    "timestamp": "2026-02-28T20:31:48.875Z"
+  },
+  {
     "id": "b88a363c-216f-4c95-9664-952cf42aa182",
     "label": "b88a363c-216",
     "agent": "sam",
@@ -178,18 +190,6 @@
     "durationSec": 250,
     "status": "success",
     "timestamp": "2026-02-24T09:24:08.663Z"
-  },
-  {
-    "id": "38c0c09e-f5c1-4b14-97b1-a761cf433bfb",
-    "label": "devin-pricing-calculator",
-    "agent": "devin",
-    "task": "/home/ubuntu/.openclaw/workspace/viralytics",
-    "model": "Sonnet",
-    "tokens": 1265871,
-    "cost": 0.9046,
-    "durationSec": 493,
-    "status": "success",
-    "timestamp": "2026-02-28T20:31:48.875Z"
   },
   {
     "id": "283eaf27-f9b2-4183-b82d-3bde37215265",
