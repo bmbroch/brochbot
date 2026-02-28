@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-28T06:00:02Z",
+  "lastUpdated": "2026-02-28T06:10:01Z",
   "activities": [
+    {
+      "id": "s-19101597",
+      "agent": "dana",
+      "title": "Morning Analytics Report",
+      "description": "You're Dana \ud83d\udcca, Data Analyst.",
+      "status": "success",
+      "date": "2026-02-28T06:00:00.257Z",
+      "tokens": 135482,
+      "cost": 0.1319,
+      "model": "Sonnet",
+      "durationSec": 48
+    },
     {
       "id": "s-537c5e8a",
       "agent": "dana",
@@ -51,8 +63,8 @@
     },
     {
       "id": "s-acd636de",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "acd636de-bd9",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-02-27T06:00:00.116Z",
@@ -344,10 +356,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 138505753,
-      "cost": 75.03,
+      "tokens": 140502449,
+      "cost": 75.8094,
       "model": "unknown",
-      "durationSec": 341350
+      "durationSec": 341831
     },
     {
       "id": "s-66dde37a",
@@ -764,10 +776,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 2402250,
-      "cost": 4.8713,
+      "tokens": 2527809,
+      "cost": 4.9267,
       "model": "Opus",
-      "durationSec": 732649
+      "durationSec": 733040
     },
     {
       "id": "s-aae63345",
@@ -1401,7 +1413,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-02-28T05:56:39.262Z",
+      "lastActive": "2026-02-28T06:00:00.257Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -1425,7 +1437,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-02-28T05:34:03Z",
+      "lastActive": "2026-02-28T06:03:03Z",
       "statusText": ""
     }
   },
@@ -1439,7 +1451,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-28T06:00:01Z"
+      "lastRunAt": "2026-02-28T06:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
