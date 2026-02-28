@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-02-28T20:00:02Z",
+  "lastUpdated": "2026-02-28T20:10:01Z",
   "activities": [
+    {
+      "id": "s-7fd5b149",
+      "agent": "devin",
+      "title": "devin-pricing-fix",
+      "description": "The post count (\"800 POSTS TRACKED / MONTH\") is currently a tiny label above the giant price number. Ben wants it to be much more prominent \u2014 it's the key thing the user is buying.",
+      "status": "success",
+      "date": "2026-02-28T20:06:56.868Z",
+      "tokens": 171003,
+      "cost": 0.1577,
+      "model": "Sonnet",
+      "durationSec": 105
+    },
     {
       "id": "s-2f59011c",
       "agent": "devin",
@@ -8,10 +20,10 @@
       "description": "- Base: 300 posts/month = $50/mo",
       "status": "success",
       "date": "2026-02-28T19:56:13.204Z",
-      "tokens": 1089527,
-      "cost": 0.8312,
+      "tokens": 1802006,
+      "cost": 1.1237,
       "model": "Sonnet",
-      "durationSec": 228
+      "durationSec": 378
     },
     {
       "id": "s-19101597",
@@ -356,10 +368,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 159222392,
-      "cost": 86.6191,
+      "tokens": 159536934,
+      "cost": 86.7442,
       "model": "unknown",
-      "durationSec": 391602
+      "durationSec": 392279
     },
     {
       "id": "s-66dde37a",
@@ -500,10 +512,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:40:05.669Z",
-      "tokens": 12678901,
-      "cost": 10.8346,
+      "tokens": 13870736,
+      "cost": 12.1433,
       "model": "Sonnet",
-      "durationSec": 331355
+      "durationSec": 466107
     },
     {
       "id": "s-a9017c33",
@@ -1395,7 +1407,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-02-28T19:56:13.204Z",
+      "lastActive": "2026-02-28T20:06:56.868Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1437,7 +1449,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-28T20:00:02Z"
+      "lastRunAt": "2026-02-28T20:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
