@@ -180,18 +180,6 @@
     "timestamp": "2026-02-28T03:00:00.203Z"
   },
   {
-    "id": "562ca388-8f10-4338-89db-20af9775e827",
-    "label": "devin-viralytics-auth",
-    "agent": "devin",
-    "task": "Two-step UI (client component):",
-    "model": "Sonnet",
-    "tokens": 951883,
-    "cost": 0.8517,
-    "durationSec": 338,
-    "status": "success",
-    "timestamp": "2026-02-28T15:21:23.673Z"
-  },
-  {
     "id": "5541062c-e449-4522-9556-f6a62ad99f7d",
     "label": "5541062c-e44",
     "agent": "sam",
