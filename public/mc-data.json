@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T20:50:02Z",
+  "lastUpdated": "2026-02-28T21:00:02Z",
   "activities": [
     {
       "id": "s-38c0c09e",
@@ -24,18 +24,6 @@
       "cost": 0.1577,
       "model": "Sonnet",
       "durationSec": 105
-    },
-    {
-      "id": "s-2f59011c",
-      "agent": "devin",
-      "title": "devin-slider-pricing",
-      "description": "- Base: 300 posts/month = $50/mo",
-      "status": "success",
-      "date": "2026-02-28T19:56:13.204Z",
-      "tokens": 1802006,
-      "cost": 1.1237,
-      "model": "Sonnet",
-      "durationSec": 378
     },
     {
       "id": "s-19101597",
@@ -1461,7 +1449,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-02-28T20:50:02Z"
+      "lastRunAt": "2026-02-28T21:00:02Z"
     },
     {
       "id": "bash-frankie-sync",

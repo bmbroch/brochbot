@@ -120,18 +120,6 @@
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
   {
-    "id": "2f59011c-6076-438b-bab8-8a1c58b1f3ac",
-    "label": "devin-slider-pricing",
-    "agent": "devin",
-    "task": "- Base: 300 posts/month = $50/mo",
-    "model": "Sonnet",
-    "tokens": 1802006,
-    "cost": 1.1237,
-    "durationSec": 378,
-    "status": "success",
-    "timestamp": "2026-02-28T19:56:13.204Z"
-  },
-  {
     "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
     "label": "20309a2a-9ef",
     "agent": "sam",
