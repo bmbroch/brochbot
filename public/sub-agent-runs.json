@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 140802740,
-    "cost": 75.9139,
-    "durationSec": 343491,
+    "tokens": 142373593,
+    "cost": 76.5369,
+    "durationSec": 344543,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -334,18 +334,6 @@
     "durationSec": 179,
     "status": "success",
     "timestamp": "2026-02-24T03:00:00.193Z"
-  },
-  {
-    "id": "537c5e8a-bc7c-4536-845f-d6f09d901ca5",
-    "label": "dana-isk-bug-investigation",
-    "agent": "dana",
-    "task": "A user (shankar4sap@gmail.com) left a 1-star review saying: \"Yesterday my sidekick did not work for Applexus interview. AI was not generating answers.\"",
-    "model": "Sonnet",
-    "tokens": 394127,
-    "cost": 0.4349,
-    "durationSec": 152,
-    "status": "success",
-    "timestamp": "2026-02-28T05:56:39.262Z"
   },
   {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
