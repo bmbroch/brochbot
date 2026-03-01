@@ -115,7 +115,7 @@
     "model": "Opus",
     "tokens": 2527809,
     "cost": 4.9267,
-    "durationSec": 733040,
+    "durationSec": 819153,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
@@ -540,6 +540,18 @@
     "timestamp": "2026-02-26T06:00:00.137Z"
   },
   {
+    "id": "8d536858-8ff4-4f5f-9997-80d94008f8e3",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 173808,
+    "cost": 0.1492,
+    "durationSec": 63,
+    "status": "success",
+    "timestamp": "2026-03-01T06:00:00.105Z"
+  },
+  {
     "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",
     "label": "fd10a07f-55e",
     "agent": "sam",
@@ -613,8 +625,8 @@
   },
   {
     "id": "19101597-49cc-4cda-bcbc-58c52b1c6715",
-    "label": "Morning Analytics Report",
-    "agent": "dana",
+    "label": "19101597-49c",
+    "agent": "sam",
     "task": "You're Dana \ud83d\udcca, Data Analyst.",
     "model": "Sonnet",
     "tokens": 135482,
