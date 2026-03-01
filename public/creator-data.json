@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-01T10:30:01Z",
+  "lastUpdated": "2026-03-01T23:30:01Z",
   "abby": {
     "name": "Abby",
     "startDate": "2026-01-08",
@@ -2581,10 +2581,10 @@
   "nick": {
     "name": "Nick",
     "startDate": "2025-12-23",
-    "ttViews": 2868782,
-    "igViews": 153689,
+    "ttViews": 2870282,
+    "igViews": 153704,
     "posts": 88,
-    "avgPerPost": 34346,
+    "avgPerPost": 34363,
     "earnings": 3440.0,
     "paymentCount": 28,
     "lastPaidAt": "2026-02-27",
@@ -2676,14 +2676,14 @@
       {
         "date": "2026-02-14",
         "platform": "tiktok",
-        "views": 152000,
+        "views": 153500,
         "url": "https://www.tiktok.com/@sell.with.nick/video/7606494501758045471",
         "title": null
       },
       {
         "date": "2026-02-14",
         "platform": "instagram",
-        "views": 2784,
+        "views": 2799,
         "url": "https://www.instagram.com/reel/DUt4mUSDVGV/",
         "title": null
       },
@@ -3392,9 +3392,9 @@
     "name": "Sophie",
     "startDate": "2026-02-12",
     "ttViews": 2180,
-    "igViews": 115694,
+    "igViews": 144194,
     "posts": 16,
-    "avgPerPost": 7367,
+    "avgPerPost": 9148,
     "earnings": 165.0,
     "paymentCount": 3,
     "lastPaidAt": "2026-02-27",
@@ -3493,7 +3493,7 @@
       {
         "date": "2026-02-14",
         "platform": "instagram",
-        "views": 30000,
+        "views": 58500,
         "url": "https://www.instagram.com/reel/DUsfRFEjLZz/",
         "title": null
       },
