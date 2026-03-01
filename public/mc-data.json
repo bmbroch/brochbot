@@ -1,18 +1,6 @@
 {
-  "lastUpdated": "2026-03-01T11:50:02Z",
+  "lastUpdated": "2026-03-01T12:00:01Z",
   "activities": [
-    {
-      "id": "s-fd5892e8",
-      "agent": "devin",
-      "title": "devin-coral-pulse-brand",
-      "description": "**Brand name:** Viralytics",
-      "status": "success",
-      "date": "2026-03-01T10:59:03.230Z",
-      "tokens": 4854225,
-      "cost": 2.2658,
-      "model": "Sonnet",
-      "durationSec": 465
-    },
     {
       "id": "s-8d536858",
       "agent": "dana",
@@ -1497,7 +1485,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-01T11:50:02Z"
+      "lastRunAt": "2026-03-01T12:00:01Z"
     },
     {
       "id": "bash-frankie-sync",

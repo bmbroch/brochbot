@@ -84,18 +84,6 @@
     "timestamp": "2026-02-20T08:15:42.760Z"
   },
   {
-    "id": "fd5892e8-01f5-4a2a-ab35-a5d0043f9cfd",
-    "label": "devin-coral-pulse-brand",
-    "agent": "devin",
-    "task": "**Brand name:** Viralytics",
-    "model": "Sonnet",
-    "tokens": 4854225,
-    "cost": 2.2658,
-    "durationSec": 465,
-    "status": "success",
-    "timestamp": "2026-03-01T10:59:03.230Z"
-  },
-  {
     "id": "e9dbf3b1-d271-4019-b56f-85d45329fd99",
     "label": "e9dbf3b1-d27",
     "agent": "sam",
