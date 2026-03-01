@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 164595920,
-    "cost": 88.9888,
-    "durationSec": 445758,
+    "tokens": 165515681,
+    "cost": 89.3594,
+    "durationSec": 446166,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -82,6 +82,18 @@
     "durationSec": 8303,
     "status": "success",
     "timestamp": "2026-02-20T08:15:42.760Z"
+  },
+  {
+    "id": "fd5892e8-01f5-4a2a-ab35-a5d0043f9cfd",
+    "label": "devin-coral-pulse-brand",
+    "agent": "devin",
+    "task": "**Brand name:** Viralytics",
+    "model": "Sonnet",
+    "tokens": 4854225,
+    "cost": 2.2658,
+    "durationSec": 465,
+    "status": "success",
+    "timestamp": "2026-03-01T10:59:03.230Z"
   },
   {
     "id": "e9dbf3b1-d271-4019-b56f-85d45329fd99",
@@ -490,18 +502,6 @@
     "durationSec": 72,
     "status": "success",
     "timestamp": "2026-02-25T05:30:00.183Z"
-  },
-  {
-    "id": "fd5892e8-01f5-4a2a-ab35-a5d0043f9cfd",
-    "label": "devin-coral-pulse-brand",
-    "agent": "devin",
-    "task": "**Brand name:** Viralytics",
-    "model": "Sonnet",
-    "tokens": 198479,
-    "cost": 0.3295,
-    "durationSec": 19,
-    "status": "success",
-    "timestamp": "2026-03-01T10:59:03.230Z"
   },
   {
     "id": "200e6c60-5761-4b88-ae20-8d52dee8fb52",
