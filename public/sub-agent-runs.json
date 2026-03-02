@@ -55,7 +55,7 @@
     "model": "Sonnet",
     "tokens": 54385724,
     "cost": 56.9249,
-    "durationSec": 593011,
+    "durationSec": 594008,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -77,9 +77,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 8858275,
-    "cost": 30.6154,
-    "durationSec": 859390,
+    "tokens": 9592253,
+    "cost": 30.8722,
+    "durationSec": 860554,
     "status": "success",
     "timestamp": "2026-02-20T08:15:42.760Z"
   },
