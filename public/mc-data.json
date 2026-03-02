@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-03-02T06:00:03Z",
+  "lastUpdated": "2026-03-02T06:10:01Z",
   "activities": [
+    {
+      "id": "s-ad1b8db3",
+      "agent": "dana",
+      "title": "Morning Analytics Report",
+      "description": "You're Dana \ud83d\udcca, Data Analyst.",
+      "status": "success",
+      "date": "2026-03-02T06:00:00.117Z",
+      "tokens": 157932,
+      "cost": 0.1372,
+      "model": "Sonnet",
+      "durationSec": 53
+    },
     {
       "id": "s-581a2e00",
       "agent": "sam",
@@ -39,8 +51,8 @@
     },
     {
       "id": "s-8d536858",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "8d536858-8ff",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-03-01T06:00:00.105Z",
@@ -875,7 +887,7 @@
       "tokens": 2527809,
       "cost": 4.9267,
       "model": "Opus",
-      "durationSec": 819153
+      "durationSec": 905540
     },
     {
       "id": "s-aae63345",
@@ -1495,7 +1507,7 @@
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-03-01T06:00:00.105Z",
+      "lastActive": "2026-03-02T06:00:00.117Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
@@ -1519,7 +1531,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-03-02T05:30:00.122Z",
+      "lastActive": "2026-03-02T06:01:02Z",
       "statusText": ""
     }
   },
@@ -1533,7 +1545,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T06:00:03Z"
+      "lastRunAt": "2026-03-02T06:10:01Z"
     },
     {
       "id": "bash-frankie-sync",
