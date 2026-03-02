@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const BEN_MSG =
-  "hey sam im making a 10 minute ppt presentation on openclaw and how im using it. should be super basic and i can include screenshots from brochbot.com and other places. I want to emphasize what it is and how its different from chatgpt. how to get setup with some easy directions like hostinger etc and also how you power it...based on a claude subscription or with a chinese model thats much cheaper but a little stupider. Any chance you'd be able to edit a google slide if i gave you access?";
+  "hey sam im making a 10 minute ppt presentation on openclaw and how im using it. should be super basic and i can include screenshots from brochbot.com and other places. I want to emphasize what it is and how its different from chatgpt. how to get setup with some easy directions like hostinger etc and also how you power it...based on a claude subscription or with a chinese model thats much cheaper but a little stupider. Any chance you can create a webpage for a slide deck?";
 
 const SAM_MSG = "Yeah — let me take a look and I'll build it out. Give me a few minutes.";
 
