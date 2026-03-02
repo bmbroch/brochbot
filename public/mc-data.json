@@ -1,30 +1,6 @@
 {
-  "lastUpdated": "2026-03-02T15:30:02Z",
+  "lastUpdated": "2026-03-02T15:40:01Z",
   "activities": [
-    {
-      "id": "s-61c23ecd",
-      "agent": "devin",
-      "title": "devin-mobile-nomiddleware",
-      "description": "Vercel's Edge Middleware is currently degraded globally \u2014 every deploy fails because middleware deploys globally including the broken Dubai region. The fix: delete the middleware and move auth checkin",
-      "status": "success",
-      "date": "2026-03-02T14:39:35.827Z",
-      "tokens": 145651,
-      "cost": 0.2665,
-      "model": "Sonnet",
-      "durationSec": 31
-    },
-    {
-      "id": "s-cfae5b93",
-      "agent": "devin",
-      "title": "devin-mobile-responsive",
-      "description": "Both pages must look just as good on mobile (375px) as on desktop. Not \"functional\" \u2014 genuinely polished. Think iPhone 15 Pro viewport.",
-      "status": "success",
-      "date": "2026-03-02T14:36:17.181Z",
-      "tokens": 13638,
-      "cost": 0.0333,
-      "model": "Sonnet",
-      "durationSec": 26
-    },
     {
       "id": "s-ad1b8db3",
       "agent": "dana",
@@ -1569,7 +1545,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T15:30:01Z"
+      "lastRunAt": "2026-03-02T15:40:01Z"
     },
     {
       "id": "bash-frankie-sync",
