@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 182459346,
-    "cost": 97.6562,
-    "durationSec": 544155,
+    "tokens": 182614129,
+    "cost": 97.7328,
+    "durationSec": 544212,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -432,18 +432,6 @@
     "timestamp": "2026-02-24T04:00:44.410Z"
   },
   {
-    "id": "d35ef9d8-7132-499c-9d75-83eac1f5c2db",
-    "label": "devin-lp-v2",
-    "agent": "devin",
-    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-    "model": "Sonnet",
-    "tokens": 272973,
-    "cost": 0.402,
-    "durationSec": 265,
-    "status": "success",
-    "timestamp": "2026-03-02T13:26:17.477Z"
-  },
-  {
     "id": "c178666e-8d97-4d6e-9ebf-5f3a69e220cf",
     "label": "c178666e-8d9",
     "agent": "sam",
@@ -826,18 +814,6 @@
     "durationSec": 51,
     "status": "success",
     "timestamp": "2026-02-21T05:30:00.029Z"
-  },
-  {
-    "id": "21178d0d-d58a-4759-82cb-be56c05198a2",
-    "label": "devin-logo-concepts",
-    "agent": "devin",
-    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-    "model": "Sonnet",
-    "tokens": 74619,
-    "cost": 0.2521,
-    "durationSec": 126,
-    "status": "success",
-    "timestamp": "2026-03-02T13:28:35.066Z"
   },
   {
     "id": "c65fbc8d-3af6-4963-8840-7a30d4696588",

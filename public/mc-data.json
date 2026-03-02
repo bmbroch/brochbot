@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T14:20:02Z",
+  "lastUpdated": "2026-03-02T14:30:02Z",
   "activities": [
     {
       "id": "s-5aaf79d9",
@@ -48,30 +48,6 @@
       "cost": 0.2626,
       "model": "Sonnet",
       "durationSec": 106
-    },
-    {
-      "id": "s-21178d0d",
-      "agent": "devin",
-      "title": "devin-logo-concepts",
-      "description": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-      "status": "success",
-      "date": "2026-03-02T13:28:35.066Z",
-      "tokens": 74619,
-      "cost": 0.2521,
-      "model": "Sonnet",
-      "durationSec": 126
-    },
-    {
-      "id": "s-d35ef9d8",
-      "agent": "devin",
-      "title": "devin-lp-v2",
-      "description": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-      "status": "success",
-      "date": "2026-03-02T13:26:17.477Z",
-      "tokens": 272973,
-      "cost": 0.402,
-      "model": "Sonnet",
-      "durationSec": 265
     },
     {
       "id": "s-ad1b8db3",
@@ -536,10 +512,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 182459346,
-      "cost": 97.6562,
+      "tokens": 182614129,
+      "cost": 97.7328,
       "model": "unknown",
-      "durationSec": 544155
+      "durationSec": 544212
     },
     {
       "id": "s-66dde37a",
@@ -1617,7 +1593,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T14:20:01Z"
+      "lastRunAt": "2026-03-02T14:30:01Z"
     },
     {
       "id": "bash-frankie-sync",
