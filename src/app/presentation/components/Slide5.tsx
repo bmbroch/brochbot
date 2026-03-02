@@ -1,136 +1,204 @@
 "use client";
 
-const CORAL = "#FF5A5F";
+import { useEffect, useState } from "react";
 
-const SPOTLIGHTS = [
-  {
-    emoji: "🛠️",
-    name: "Devin",
-    role: "Web Developer",
-    avatar: "/avatars/dev.png",
-    color: "#f59e0b",
-    tagline: "Builds & ships the product",
-    bullets: [
-      "I describe what I want in Telegram",
-      "He codes it, pushes to GitHub",
-      "Vercel deploys automatically",
-    ],
-    update: "Done ✅ Built the UGC analytics dashboard. Pushed to main — live at brochbot.com",
-    updateTime: "2:14 AM",
-  },
-  {
-    emoji: "🚀",
-    name: "Miles",
-    role: "GTM Lead",
-    avatar: "/avatars/miles.png",
-    color: "#10b981",
-    tagline: "Organic SEO & keyword strategy",
-    bullets: [
-      "Daily Google Search Console report",
-      "Tracks trends across all 3 products",
-      "Surfaces new keyword opportunities",
-    ],
-    update: "📊 GSC Report — ISK impressions +12% WoW. New opportunity: 'cover letter for career change' (2.4K/mo, low competition)",
-    updateTime: "8:01 AM",
-  },
-  {
-    emoji: "📣",
-    name: "Marco",
-    role: "Paid Ads",
-    avatar: "/avatars/marco.png",
-    color: "#8b5cf6",
-    tagline: "Instagram & Google Ads",
-    bullets: [
-      "Plugged into Meta Ads API directly",
-      "Builds audiences from Supabase data",
-      "No ad agency. No account manager.",
-    ],
-    update: "✅ ISK Trial Win-Back live — $15/day, 3 audiences. CTR 3.2%, CPM $8.40.",
-    updateTime: "11:30 AM",
-  },
-];
+interface Agent {
+  id: string;
+  name: string;
+  emoji: string;
+  avatar: string;
+  role: string;
+  color: string;
+  description?: string;
+  isAgent?: boolean;
+}
 
-export default function Slide5() {
+interface AgentRun {
+  id: string;
+  label: string;
+  agent: string;
+  status: string;
+  timestamp: string;
+  durationSec?: number;
+  cost?: number;
+  tokens?: number;
+}
+
+function timeAgo(ts: string) {
+  const diff = Date.now() - new Date(ts).getTime();
+  const min = Math.floor(diff / 60000);
+  const hr = Math.floor(min / 60);
+  const day = Math.floor(hr / 24);
+  if (day > 0) return `${day}d ago`;
+  if (hr > 0) return `${hr}h ago`;
+  if (min > 0) return `${min}m ago`;
+  return "just now";
+}
+
+function AgentModal({
+  agent,
+  onClose,
+}: {
+  agent: Agent;
+  onClose: () => void;
+}) {
+  const [runs, setRuns] = useState<AgentRun[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/presentation/agent-activity?agent=${agent.id}`)
+      .then((r) => r.json())
+      .then((d) => {
+        setRuns(d.runs || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [agent.id]);
+
   return (
-    <div className="flex flex-col items-center justify-center h-full px-8 py-8 gap-6">
-      {/* Heading */}
-      <div className="text-center">
-        <h2 className="text-5xl font-bold tracking-tight text-gray-900">
-          Agents in action
-        </h2>
-        <p className="mt-2 text-xl text-gray-500 font-medium">
-          Real work, every day. No micromanaging.
-        </p>
-      </div>
-
-      {/* Cards */}
-      <div className="flex gap-5 w-full max-w-5xl">
-        {SPOTLIGHTS.map((agent) => (
-          <div
-            key={agent.name}
-            className="flex-1 flex flex-col rounded-2xl overflow-hidden bg-white shadow-md"
-            style={{ border: `1.5px solid #f1f5f9`, borderTop: `4px solid ${agent.color}` }}
-          >
-            {/* Header */}
-            <div className="flex items-center gap-3 px-5 pt-5 pb-4">
-              <img
-                src={agent.avatar}
-                alt={agent.name}
-                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-              />
-              <div>
-                <div className="font-bold text-gray-900 text-lg leading-tight">
-                  {agent.emoji} {agent.name}
-                </div>
-                <div
-                  className="text-xs font-semibold mt-0.5"
-                  style={{ color: agent.color }}
-                >
-                  {agent.tagline}
-                </div>
-              </div>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.55)" }}
+      onClick={onClose}
+    >
+      <div
+        className="rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden"
+        style={{ background: "#ffffff", maxHeight: "80vh" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div
+          className="flex items-center gap-4 px-6 py-5"
+          style={{ borderBottom: "1px solid #f1f5f9" }}
+        >
+          <img
+            src={agent.avatar}
+            alt={agent.name}
+            className="w-12 h-12 rounded-full object-cover"
+          />
+          <div className="flex-1">
+            <div className="font-bold text-gray-900 text-lg">
+              {agent.emoji} {agent.name}
             </div>
+            <div className="text-sm text-gray-500">{agent.role}</div>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
 
-            {/* Bullets */}
-            <div
-              className="flex flex-col gap-2 px-5 pb-4"
-              style={{ borderBottom: "1px solid #f1f5f9" }}
-            >
-              {agent.bullets.map((b, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                    style={{ background: agent.color }}
+        {/* Description */}
+        {agent.description && (
+          <div className="px-6 py-3 text-sm text-gray-600 border-b border-gray-100">
+            {agent.description}
+          </div>
+        )}
+
+        {/* Activity */}
+        <div className="px-6 py-4 overflow-y-auto" style={{ maxHeight: "46vh" }}>
+          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            Recent Activity (14 days)
+          </div>
+          {loading ? (
+            <div className="text-sm text-gray-400">Loading…</div>
+          ) : runs.length === 0 ? (
+            <div className="text-sm text-gray-400">No recent activity.</div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {runs.map((r) => (
+                <div
+                  key={r.id}
+                  className="flex items-start gap-3 py-2"
+                  style={{ borderBottom: "1px solid #f1f5f9" }}
+                >
+                  <div
+                    className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
+                    style={{
+                      background:
+                        r.status === "success" ? "#22c55e" : "#ef4444",
+                    }}
                   />
-                  <span className="text-sm text-gray-700">{b}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm text-gray-800 font-medium truncate">
+                      {r.label}
+                    </div>
+                    <div className="text-xs text-gray-400 mt-0.5">
+                      {timeAgo(r.timestamp)}
+                      {r.durationSec ? ` · ${r.durationSec}s` : ""}
+                      {r.cost ? ` · $${r.cost.toFixed(4)}` : ""}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-            {/* Telegram update */}
-            <div className="px-4 py-4 flex flex-col gap-2" style={{ background: "#0e1621" }}>
-              <div className="flex items-center gap-1.5">
-                <svg viewBox="0 0 24 24" fill="#4da6d9" width={12} height={12}>
-                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.247l-2.04 9.608c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.903.613z"/>
-                </svg>
-                <span className="text-xs font-semibold" style={{ color: "#6b8a9e" }}>
-                  Latest message
-                </span>
-                <span className="ml-auto text-xs" style={{ color: "#4a6272" }}>
-                  {agent.updateTime}
-                </span>
+export default function Slide2() {
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [selected, setSelected] = useState<Agent | null>(null);
+
+  useEffect(() => {
+    fetch("/team.json")
+      .then((r) => r.json())
+      .then((data: Agent[]) => setAgents(data.filter((a) => a.isAgent)));
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center justify-center h-full px-8 py-10 gap-8">
+      {/* Heading */}
+      <div className="text-center">
+        <h2 className="text-5xl font-bold tracking-tight text-gray-900">
+          Meet the team
+        </h2>
+        <p className="mt-2 text-xl text-gray-500 font-medium">
+          10 agents. Each owns a job.
+        </p>
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-5 gap-4 w-full max-w-4xl">
+        {agents.map((agent) => (
+          <button
+            key={agent.id}
+            onClick={() => setSelected(agent)}
+            className="flex flex-col items-center gap-2 p-4 rounded-2xl border border-gray-200 bg-white hover:shadow-lg hover:border-gray-300 transition-all duration-200 group cursor-pointer"
+          >
+            <div className="relative">
+              <img
+                src={agent.avatar}
+                alt={agent.name}
+                className="w-14 h-14 rounded-full object-cover ring-2 ring-white shadow"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = `data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'><rect fill='${encodeURIComponent(agent.color || "#ccc")}' width='56' height='56' rx='28'/><text x='50%' y='54%' text-anchor='middle' dominant-baseline='middle' font-size='24'>${encodeURIComponent(agent.emoji)}</text></svg>`;
+                }}
+              />
+            </div>
+            <div className="text-center">
+              <div className="font-semibold text-gray-900 text-sm leading-tight">
+                {agent.emoji} {agent.name}
               </div>
-              <div
-                className="text-xs leading-relaxed rounded-xl rounded-tl-sm px-3 py-2.5"
-                style={{ background: "#182533", color: "#d4e6f1" }}
-              >
-                {agent.update}
+              <div className="text-xs text-gray-500 mt-0.5 leading-snug">
+                {agent.role}
               </div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
+
+      <p className="text-xs text-gray-400">Click any agent to see their recent activity</p>
+
+      {selected && (
+        <AgentModal agent={selected} onClose={() => setSelected(null)} />
+      )}
     </div>
   );
 }
