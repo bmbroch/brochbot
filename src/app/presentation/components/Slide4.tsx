@@ -2,55 +2,82 @@
 
 const CORAL = "#FF5A5F";
 
-export default function Slide4() {
+const CARDS = [
+  {
+    icon: "🖥️",
+    title: "VPS Server",
+    subtitle: "Hostinger or DigitalOcean",
+    price: "$6/mo",
+  },
+  {
+    icon: "🤖",
+    title: "Claude Max",
+    subtitle: "Best AI reasoning",
+    price: "Usage-based",
+  },
+  {
+    icon: "🐾",
+    title: "OpenClaw",
+    subtitle: "The glue layer",
+    price: "Free",
+  },
+];
+
+export default function Slide3() {
   return (
     <div className="flex flex-col items-center justify-center h-full px-8 py-12 gap-10">
       {/* Heading */}
-      <div className="text-center max-w-2xl">
+      <div className="text-center">
         <h2 className="text-5xl font-bold tracking-tight text-gray-900">
-          Want to build yours?
+          How I set it up
         </h2>
-        <p className="mt-3 text-xl text-gray-500 font-medium">
-          I&apos;m walking through the full setup live on Skillshare.
-        </p>
       </div>
 
-      {/* Event block */}
-      <div className="bg-white border border-gray-200 rounded-2xl px-10 py-8 shadow-sm flex flex-col items-center gap-4 w-full max-w-md">
-        <div className="text-5xl">📅</div>
-        <div className="text-center">
-          <div className="font-bold text-gray-900 text-2xl">
-            Wednesday &middot; 11:00 AM
+      {/* Cards */}
+      <div className="flex gap-6 w-full max-w-3xl">
+        {CARDS.map((card, i) => (
+          <div
+            key={i}
+            className="flex-1 flex flex-col items-start gap-3 bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="text-4xl">{card.icon}</div>
+            <div>
+              <div className="font-bold text-gray-900 text-xl">{card.title}</div>
+              <div className="text-gray-500 text-sm mt-1">{card.subtitle}</div>
+            </div>
+            <div
+              className="mt-auto text-2xl font-bold"
+              style={{ color: CORAL }}
+            >
+              {card.price}
+            </div>
           </div>
-          <div className="text-gray-500 text-sm mt-2 leading-relaxed">
-            Step-by-step: server setup, OpenClaw install,
-            <br />
-            building your first agent
-          </div>
-        </div>
+        ))}
+      </div>
 
-        {/* CTA */}
-        <a
-          href="#"
-          onClick={(e) => e.stopPropagation()}
-          className="mt-2 w-full text-center font-bold text-lg py-4 px-8 rounded-xl transition-opacity hover:opacity-90 shadow-lg"
+      {/* Total line */}
+      <div className="flex flex-col items-center gap-2">
+        <div
+          className="flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-xl"
           style={{ background: CORAL, color: "#fff" }}
         >
-          Save your spot →
+          <span>=</span>
+          <span>$6/mo server + AI. 10 agents. Always on.</span>
+        </div>
+        <p className="text-sm text-gray-400 text-center max-w-sm mt-2">
+          Or swap Claude for DeepSeek → ~$5/mo. 80% of the performance.
+        </p>
+        <a
+          href="https://openclawai.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm mt-1 hover:underline"
+          style={{ color: CORAL }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          openclawai.com →
         </a>
       </div>
-
-      {/* Secondary link */}
-      <a
-        href="https://openclawai.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-base hover:underline"
-        style={{ color: CORAL }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        openclawai.com
-      </a>
     </div>
   );
 }
