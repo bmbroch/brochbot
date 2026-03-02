@@ -6,21 +6,21 @@ const PRODUCTS = [
   {
     name: "Cover Letter Copilot",
     url: "coverlettercopilot.ai",
-    logo: "/cover-letter-logo.svg",
+    favicon: "https://www.google.com/s2/favicons?domain=coverlettercopilot.ai&sz=128",
     desc: "AI-powered cover letters tailored to any job posting",
     color: "#3b82f6",
   },
   {
     name: "Interview Sidekick",
     url: "interviewsidekick.com",
-    logo: "/interview-sidekick-logo.svg",
+    favicon: "https://www.google.com/s2/favicons?domain=interviewsidekick.com&sz=128",
     desc: "Real-time AI coaching for live interviews",
     color: CORAL,
   },
   {
     name: "SalesEcho",
     url: "sales-echo.com",
-    logo: "/sales-echo-logo.svg",
+    favicon: "https://www.google.com/s2/favicons?domain=sales-echo.com&sz=128",
     desc: "Live sales call support and mock call practice",
     color: "#10b981",
   },
@@ -53,8 +53,8 @@ export default function Slide2() {
         <div>
           <div className="font-bold text-gray-900 text-lg">Ben Broch</div>
           <div className="text-sm text-gray-500 leading-relaxed mt-0.5">
-            NYC-based solopreneur — I build and run subscription software products
-            for job seekers and sales professionals. No employees. No co-founders.
+            I build and run subscription software products for job seekers and
+            sales professionals. No employees. No co-founders.
           </div>
         </div>
       </div>
@@ -67,12 +67,16 @@ export default function Slide2() {
             className="flex-1 flex flex-col items-center gap-4 rounded-2xl bg-white px-6 py-6 shadow-sm"
             style={{ border: "1.5px solid #f1f5f9", borderTop: `4px solid ${p.color}` }}
           >
-            <img
-              src={p.logo}
-              alt={p.name}
-              className="h-10 object-contain"
-              style={{ maxWidth: 140 }}
-            />
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm overflow-hidden"
+              style={{ background: "#f8fafc", border: "1px solid #e5e7eb" }}
+            >
+              <img
+                src={p.favicon}
+                alt={p.name}
+                className="w-10 h-10 object-contain"
+              />
+            </div>
             <div className="text-center">
               <div className="font-bold text-gray-900 text-sm">{p.name}</div>
               <div className="text-xs text-gray-400 mt-0.5">{p.url}</div>
