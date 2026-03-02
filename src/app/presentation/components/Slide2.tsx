@@ -6,26 +6,23 @@ const PRODUCTS = [
   {
     name: "Cover Letter Copilot",
     url: "coverlettercopilot.ai",
-    icon: "✉️",
-    desc: "AI-powered cover letters tailored to any job in seconds",
+    logo: "/cover-letter-logo.svg",
+    desc: "AI-powered cover letters tailored to any job posting",
     color: "#3b82f6",
-    stat: "19K+ users",
   },
   {
     name: "Interview Sidekick",
     url: "interviewsidekick.com",
-    icon: "🎙️",
-    desc: "Real-time AI coaching during live interviews — answers in your ear",
+    logo: "/interview-sidekick-logo.svg",
+    desc: "Real-time AI coaching for live interviews",
     color: CORAL,
-    stat: "93K+ sessions",
   },
   {
     name: "SalesEcho",
     url: "sales-echo.com",
-    icon: "📞",
-    desc: "Live sales call support and mock call practice powered by AI",
+    logo: "/sales-echo-logo.svg",
+    desc: "Live sales call support and mock call practice",
     color: "#10b981",
-    stat: "238 active subs",
   },
 ];
 
@@ -38,7 +35,7 @@ export default function Slide2() {
           A little about me
         </h2>
         <p className="mt-3 text-xl text-gray-500 font-medium">
-          Solo founder. 3 subscription products. Running it all with AI.
+          Solo founder. 3 SaaS products. Running it all with AI.
         </p>
       </div>
 
@@ -51,17 +48,13 @@ export default function Slide2() {
           src="/avatars/ben.jpg"
           alt="Ben"
           className="w-14 h-14 rounded-full object-cover flex-shrink-0"
-          onError={(e) => {
-            const el = e.target as HTMLImageElement;
-            el.style.display = "none";
-          }}
+          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
         />
         <div>
           <div className="font-bold text-gray-900 text-lg">Ben Broch</div>
           <div className="text-sm text-gray-500 leading-relaxed mt-0.5">
-            NYC-based solopreneur, 3 years in &mdash; building AI-powered SaaS products
-            for job seekers and sales professionals.
-            No employees. No co-founders. Just AI agents and good vibes.
+            NYC-based solopreneur — I build and run subscription software products
+            for job seekers and sales professionals. No employees. No co-founders.
           </div>
         </div>
       </div>
@@ -71,22 +64,19 @@ export default function Slide2() {
         {PRODUCTS.map((p) => (
           <div
             key={p.name}
-            className="flex-1 flex flex-col rounded-2xl bg-white shadow-sm overflow-hidden"
+            className="flex-1 flex flex-col items-center gap-4 rounded-2xl bg-white px-6 py-6 shadow-sm"
             style={{ border: "1.5px solid #f1f5f9", borderTop: `4px solid ${p.color}` }}
           >
-            <div className="px-5 pt-5 pb-3">
-              <div className="text-3xl mb-2">{p.icon}</div>
-              <div className="font-bold text-gray-900 text-base leading-tight">{p.name}</div>
-              <div className="text-xs text-gray-400 mt-0.5 mb-2">{p.url}</div>
-              <p className="text-sm text-gray-600 leading-relaxed">{p.desc}</p>
-            </div>
-            <div
-              className="mt-auto px-5 py-2.5 flex items-center"
-              style={{ background: `${p.color}10`, borderTop: `1px solid ${p.color}20` }}
-            >
-              <span className="text-xs font-bold" style={{ color: p.color }}>
-                {p.stat}
-              </span>
+            <img
+              src={p.logo}
+              alt={p.name}
+              className="h-10 object-contain"
+              style={{ maxWidth: 140 }}
+            />
+            <div className="text-center">
+              <div className="font-bold text-gray-900 text-sm">{p.name}</div>
+              <div className="text-xs text-gray-400 mt-0.5">{p.url}</div>
+              <p className="text-sm text-gray-500 mt-2 leading-relaxed">{p.desc}</p>
             </div>
           </div>
         ))}
