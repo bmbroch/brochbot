@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 187689772,
-    "cost": 99.9496,
-    "durationSec": 550755,
+    "tokens": 189784401,
+    "cost": 100.8034,
+    "durationSec": 551291,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -36,6 +36,18 @@
     "timestamp": "2026-02-19T19:01:14.726Z"
   },
   {
+    "id": "a9017c33-0928-4c94-a9a7-8468f27d92fc",
+    "label": "a9017c33-092",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 61646617,
+    "cost": 61.6248,
+    "durationSec": 626673,
+    "status": "success",
+    "timestamp": "2026-02-23T10:15:16.158Z"
+  },
+  {
     "id": "b60fa6af-d612-4a92-b751-12b7852aac24",
     "label": "b60fa6af-d61",
     "agent": "sam",
@@ -46,18 +58,6 @@
     "durationSec": 233320,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
-  },
-  {
-    "id": "a9017c33-0928-4c94-a9a7-8468f27d92fc",
-    "label": "a9017c33-092",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Sonnet",
-    "tokens": 58980330,
-    "cost": 60.2592,
-    "durationSec": 626053,
-    "status": "success",
-    "timestamp": "2026-02-23T10:15:16.158Z"
   },
   {
     "id": "0a558919-6ca7-4236-a577-7650f818546b",
