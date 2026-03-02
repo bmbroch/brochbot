@@ -7,7 +7,7 @@
     "model": "unknown",
     "tokens": 165515681,
     "cost": 89.3594,
-    "durationSec": 519278,
+    "durationSec": 520414,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -77,9 +77,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 10633945,
-    "cost": 31.675,
-    "durationSec": 861023,
+    "tokens": 11086742,
+    "cost": 32.2803,
+    "durationSec": 862172,
     "status": "success",
     "timestamp": "2026-02-20T08:15:42.760Z"
   },
