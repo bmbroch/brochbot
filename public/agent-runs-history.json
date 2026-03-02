@@ -3828,6 +3828,18 @@
     "timestamp": "2026-03-02T13:28:35.066Z"
   },
   {
+    "id": "af32c50b-60a6-45ad-a518-757d9c0b906a",
+    "label": "devin-legal-pages",
+    "agent": "devin",
+    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
+    "model": "Sonnet",
+    "tokens": 45465,
+    "cost": 0.1483,
+    "durationSec": 56,
+    "status": "success",
+    "timestamp": "2026-03-02T13:38:36.338Z"
+  },
+  {
     "id": "sam-daily-2026-03-02",
     "label": "Daily total",
     "agent": "sam",
@@ -3837,6 +3849,6 @@
     "cost": 0.2722,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-03-02T13:30:01Z"
+    "timestamp": "2026-03-02T13:40:02Z"
   }
 ]
