@@ -1,23 +1,23 @@
 {
-  "lastUpdated": "2026-03-01T10:00:09Z",
+  "lastUpdated": "2026-03-02T10:00:09Z",
   "payouts": [
     {
       "creator": "Nick",
-      "totalPaid": 3440.0,
-      "payments": 28,
-      "lastPayment": "2026-02-27"
+      "totalPaid": 3515.0,
+      "payments": 29,
+      "lastPayment": "2026-03-02"
     },
     {
       "creator": "Luke",
-      "totalPaid": 3250.0,
-      "payments": 24,
-      "lastPayment": "2026-02-26"
+      "totalPaid": 3400.0,
+      "payments": 25,
+      "lastPayment": "2026-03-02"
     },
     {
       "creator": "Abby",
-      "totalPaid": 1290.0,
-      "payments": 14,
-      "lastPayment": "2026-02-26"
+      "totalPaid": 1365.0,
+      "payments": 15,
+      "lastPayment": "2026-03-02"
     },
     {
       "creator": "Jake",
@@ -27,9 +27,9 @@
     },
     {
       "creator": "Bobby",
-      "totalPaid": 575.0,
-      "payments": 4,
-      "lastPayment": "2026-02-23"
+      "totalPaid": 625.0,
+      "payments": 5,
+      "lastPayment": "2026-03-02"
     },
     {
       "creator": "Sheryl",
