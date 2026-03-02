@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 172102330,
-    "cost": 92.5636,
-    "durationSec": 541743,
+    "tokens": 172361561,
+    "cost": 92.6542,
+    "durationSec": 542351,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -53,9 +53,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 54748795,
-    "cost": 57.6249,
-    "durationSec": 616914,
+    "tokens": 54810544,
+    "cost": 57.6445,
+    "durationSec": 617661,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -113,9 +113,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 2527809,
-    "cost": 4.9267,
-    "durationSec": 905540,
+    "tokens": 2591900,
+    "cost": 5.1444,
+    "durationSec": 933676,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
@@ -744,6 +744,18 @@
     "timestamp": "2026-02-23T04:00:00.031Z"
   },
   {
+    "id": "af32c50b-60a6-45ad-a518-757d9c0b906a",
+    "label": "devin-legal-pages",
+    "agent": "devin",
+    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
+    "model": "Sonnet",
+    "tokens": 115632,
+    "cost": 0.2626,
+    "durationSec": 106,
+    "status": "success",
+    "timestamp": "2026-03-02T13:38:36.338Z"
+  },
+  {
     "id": "bcd7fed5-bfb9-4273-9793-b49e6968c8c1",
     "label": "bcd7fed5-bfb",
     "agent": "sam",
@@ -922,18 +934,6 @@
     "durationSec": 30,
     "status": "success",
     "timestamp": "2026-02-20T05:30:00.081Z"
-  },
-  {
-    "id": "af32c50b-60a6-45ad-a518-757d9c0b906a",
-    "label": "devin-legal-pages",
-    "agent": "devin",
-    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-    "model": "Sonnet",
-    "tokens": 45465,
-    "cost": 0.1483,
-    "durationSec": 56,
-    "status": "success",
-    "timestamp": "2026-03-02T13:38:36.338Z"
   },
   {
     "id": "92e5110c-d7df-4b44-a8cd-9154c79ba5ec",
