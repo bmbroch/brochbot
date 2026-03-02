@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T15:10:02Z",
+  "lastUpdated": "2026-03-02T15:20:02Z",
   "activities": [
     {
       "id": "s-61c23ecd",
@@ -24,30 +24,6 @@
       "cost": 0.0333,
       "model": "Sonnet",
       "durationSec": 26
-    },
-    {
-      "id": "s-5aaf79d9",
-      "agent": "devin",
-      "title": "devin-lp-lightmode",
-      "description": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-      "status": "success",
-      "date": "2026-03-02T14:14:12.304Z",
-      "tokens": 936865,
-      "cost": 0.6035,
-      "model": "Sonnet",
-      "durationSec": 193
-    },
-    {
-      "id": "s-4ed2a116",
-      "agent": "devin",
-      "title": "devin-google-auth",
-      "description": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-      "status": "success",
-      "date": "2026-03-02T14:09:03.084Z",
-      "tokens": 1802866,
-      "cost": 1.084,
-      "model": "Sonnet",
-      "durationSec": 641
     },
     {
       "id": "s-ad1b8db3",
@@ -515,7 +491,7 @@
       "tokens": 183141506,
       "cost": 98.1721,
       "model": "unknown",
-      "durationSec": 546057
+      "durationSec": 547365
     },
     {
       "id": "s-66dde37a",
@@ -1593,7 +1569,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T15:10:02Z"
+      "lastRunAt": "2026-03-02T15:20:01Z"
     },
     {
       "id": "bash-frankie-sync",

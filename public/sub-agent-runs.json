@@ -7,7 +7,7 @@
     "model": "unknown",
     "tokens": 183141506,
     "cost": 98.1721,
-    "durationSec": 546057,
+    "durationSec": 547365,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -132,18 +132,6 @@
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
   {
-    "id": "4ed2a116-05a2-4741-a399-548150e1e4f2",
-    "label": "devin-google-auth",
-    "agent": "devin",
-    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-    "model": "Sonnet",
-    "tokens": 1802866,
-    "cost": 1.084,
-    "durationSec": 641,
-    "status": "success",
-    "timestamp": "2026-03-02T14:09:03.084Z"
-  },
-  {
     "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
     "label": "20309a2a-9ef",
     "agent": "sam",
@@ -202,18 +190,6 @@
     "durationSec": 242,
     "status": "success",
     "timestamp": "2026-03-02T03:00:00.077Z"
-  },
-  {
-    "id": "5aaf79d9-23af-4c84-80da-18892e6d4903",
-    "label": "devin-lp-lightmode",
-    "agent": "devin",
-    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-    "model": "Sonnet",
-    "tokens": 936865,
-    "cost": 0.6035,
-    "durationSec": 193,
-    "status": "success",
-    "timestamp": "2026-03-02T14:14:12.304Z"
   },
   {
     "id": "5541062c-e449-4522-9556-f6a62ad99f7d",
