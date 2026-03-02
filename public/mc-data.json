@@ -1,6 +1,18 @@
 {
-  "lastUpdated": "2026-03-02T17:00:05Z",
+  "lastUpdated": "2026-03-02T17:10:03Z",
   "activities": [
+    {
+      "id": "s-86efde0d",
+      "agent": "devin",
+      "title": "devin-hiw-mockups",
+      "description": "File: `src/app/page.tsx`",
+      "status": "success",
+      "date": "2026-03-02T17:06:11.859Z",
+      "tokens": 194992,
+      "cost": 0.3152,
+      "model": "Sonnet",
+      "durationSec": 163
+    },
     {
       "id": "s-7bed05d0",
       "agent": "devin",
@@ -476,10 +488,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 197817905,
-      "cost": 105.901,
+      "tokens": 199260832,
+      "cost": 109.2444,
       "model": "unknown",
-      "durationSec": 553757
+      "durationSec": 554138
     },
     {
       "id": "s-66dde37a",
@@ -632,10 +644,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 65148507,
-      "cost": 63.8101,
+      "tokens": 66303303,
+      "cost": 64.3941,
       "model": "Sonnet",
-      "durationSec": 629081
+      "durationSec": 629645
     },
     {
       "id": "s-5423ca5a",
@@ -1515,7 +1527,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-03-02T16:49:52.353Z",
+      "lastActive": "2026-03-02T17:06:11.859Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1543,7 +1555,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-03-02T16:39:36Z",
+      "lastActive": "2026-03-02T17:06:48Z",
       "statusText": ""
     }
   },
@@ -1557,7 +1569,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T17:00:02Z"
+      "lastRunAt": "2026-03-02T17:10:02Z"
     },
     {
       "id": "bash-frankie-sync",
