@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 211409984,
-    "cost": 122.7122,
-    "durationSec": 557358,
+    "tokens": 213160522,
+    "cost": 123.6219,
+    "durationSec": 557951,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -43,7 +43,7 @@
     "model": "Sonnet",
     "tokens": 68719487,
     "cost": 65.3805,
-    "durationSec": 632377,
+    "durationSec": 632779,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -406,18 +406,6 @@
     "durationSec": 48667,
     "status": "success",
     "timestamp": "2026-02-24T04:00:44.410Z"
-  },
-  {
-    "id": "86efde0d-2e9d-40bb-a17d-8d2f905178f0",
-    "label": "devin-hiw-mockups",
-    "agent": "devin",
-    "task": "File: `src/app/page.tsx`",
-    "model": "Sonnet",
-    "tokens": 285145,
-    "cost": 0.3601,
-    "durationSec": 269,
-    "status": "success",
-    "timestamp": "2026-03-02T17:06:11.859Z"
   },
   {
     "id": "c178666e-8d97-4d6e-9ebf-5f3a69e220cf",

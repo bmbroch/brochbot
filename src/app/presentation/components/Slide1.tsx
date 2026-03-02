@@ -11,7 +11,6 @@ export default function Slide1() {
   const [show, setShow] = useState(0);
 
   useEffect(() => {
-    // Step 0 = nothing, 1 = header, 2 = Ben msg, 3 = Sam msg
     setShow(0);
     const t1 = setTimeout(() => setShow(1), 300);
     const t2 = setTimeout(() => setShow(2), 800);
@@ -24,7 +23,7 @@ export default function Slide1() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-8 py-12 gap-10">
+    <div className="flex flex-col items-center justify-center h-full px-8 py-6 gap-5">
       {/* Heading */}
       <div
         style={{
@@ -37,6 +36,10 @@ export default function Slide1() {
         <h1 className="text-5xl font-bold tracking-tight text-gray-900">
           It started out with a text
         </h1>
+        {/* Mr. Brightside cheeky homage */}
+        <p className="mt-2 text-sm italic text-gray-400 tracking-wide">
+          how did it end up like this
+        </p>
       </div>
 
       {/* Telegram chat bubble UI */}
@@ -45,7 +48,7 @@ export default function Slide1() {
           opacity: show >= 1 ? 1 : 0,
           transition: "opacity 0.4s ease 0.3s",
           width: "100%",
-          maxWidth: 600,
+          maxWidth: 740,
         }}
         className="rounded-2xl overflow-hidden shadow-2xl flex flex-col"
         role="presentation"
@@ -53,16 +56,16 @@ export default function Slide1() {
         {/* Chat header */}
         <div
           style={{ background: "#17212b", borderBottom: "1px solid #2b3a4a" }}
-          className="flex items-center gap-3 px-4 py-3"
+          className="flex items-center gap-3 px-5 py-3"
         >
           <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold"
+            className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0"
             style={{ background: "#FF5A5F", color: "#fff" }}
           >
             S
           </div>
           <div>
-            <div className="text-white font-semibold text-sm leading-tight">Sam 🤝</div>
+            <div className="text-white font-semibold text-base leading-tight">Sam 🤝</div>
             <div className="text-xs" style={{ color: "#6b8a9e" }}>
               Chief of Staff
             </div>
@@ -74,8 +77,8 @@ export default function Slide1() {
 
         {/* Messages area */}
         <div
-          style={{ background: "#0e1621", minHeight: 220 }}
-          className="flex flex-col gap-3 px-4 py-4"
+          style={{ background: "#0e1621" }}
+          className="flex flex-col gap-4 px-5 py-5"
         >
           {/* Ben message (right) */}
           <div
@@ -86,9 +89,9 @@ export default function Slide1() {
             }}
             className="flex justify-end"
           >
-            <div className="max-w-[78%] flex flex-col items-end gap-1">
+            <div className="max-w-[80%] flex flex-col items-end gap-1">
               <div
-                className="text-sm px-4 py-3 rounded-2xl rounded-tr-sm leading-relaxed"
+                className="text-base px-5 py-4 rounded-2xl rounded-tr-sm leading-relaxed"
                 style={{ background: "#2b5278", color: "#e8f1f8" }}
               >
                 {BEN_MSG}
@@ -107,14 +110,17 @@ export default function Slide1() {
               transform: show >= 3 ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.5s ease, transform 0.5s ease",
             }}
-            className="flex justify-start"
+            className="flex justify-start items-start pb-1"
           >
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mr-2 mt-1 flex-shrink-0" style={{ background: "#FF5A5F", color: "#fff" }}>
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-1 flex-shrink-0"
+              style={{ background: "#FF5A5F", color: "#fff" }}
+            >
               S
             </div>
-            <div className="max-w-[72%] flex flex-col items-start gap-1">
+            <div className="max-w-[75%] flex flex-col items-start gap-1">
               <div
-                className="text-sm px-4 py-3 rounded-2xl rounded-tl-sm leading-relaxed"
+                className="text-base px-5 py-4 rounded-2xl rounded-tl-sm leading-relaxed"
                 style={{ background: "#182533", color: "#e8f1f8" }}
               >
                 {SAM_MSG}
