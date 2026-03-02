@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-03-02T14:30:02Z",
+  "lastUpdated": "2026-03-02T14:40:05Z",
   "activities": [
+    {
+      "id": "s-61c23ecd",
+      "agent": "devin",
+      "title": "devin-mobile-nomiddleware",
+      "description": "Vercel's Edge Middleware is currently degraded globally \u2014 every deploy fails because middleware deploys globally including the broken Dubai region. The fix: delete the middleware and move auth checkin",
+      "status": "success",
+      "date": "2026-03-02T14:39:35.827Z",
+      "tokens": 77808,
+      "cost": 0.1748,
+      "model": "Sonnet",
+      "durationSec": 26
+    },
+    {
+      "id": "s-cfae5b93",
+      "agent": "devin",
+      "title": "devin-mobile-responsive",
+      "description": "Both pages must look just as good on mobile (375px) as on desktop. Not \"functional\" \u2014 genuinely polished. Think iPhone 15 Pro viewport.",
+      "status": "success",
+      "date": "2026-03-02T14:36:17.181Z",
+      "tokens": 13638,
+      "cost": 0.0333,
+      "model": "Sonnet",
+      "durationSec": 26
+    },
     {
       "id": "s-5aaf79d9",
       "agent": "devin",
@@ -36,18 +60,6 @@
       "cost": 0.374,
       "model": "Sonnet",
       "durationSec": 199
-    },
-    {
-      "id": "s-af32c50b",
-      "agent": "devin",
-      "title": "devin-legal-pages",
-      "description": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-      "status": "success",
-      "date": "2026-03-02T13:38:36.338Z",
-      "tokens": 115632,
-      "cost": 0.2626,
-      "model": "Sonnet",
-      "durationSec": 106
     },
     {
       "id": "s-ad1b8db3",
@@ -512,10 +524,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 182614129,
-      "cost": 97.7328,
+      "tokens": 182972939,
+      "cost": 98.0658,
       "model": "unknown",
-      "durationSec": 544212
+      "durationSec": 545289
     },
     {
       "id": "s-66dde37a",
@@ -1551,7 +1563,7 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-03-02T14:14:12.304Z",
+      "lastActive": "2026-03-02T14:39:35.827Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
@@ -1593,7 +1605,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T14:30:01Z"
+      "lastRunAt": "2026-03-02T14:40:02Z"
     },
     {
       "id": "bash-frankie-sync",

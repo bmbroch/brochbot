@@ -3888,6 +3888,30 @@
     "timestamp": "2026-03-02T14:14:12.304Z"
   },
   {
+    "id": "cfae5b93-8374-4cb4-8525-c680c7387c3a",
+    "label": "devin-mobile-responsive",
+    "agent": "devin",
+    "task": "Both pages must look just as good on mobile (375px) as on desktop. Not \"functional\" \u2014 genuinely polished. Think iPhone 15 Pro viewport.",
+    "model": "Sonnet",
+    "tokens": 13638,
+    "cost": 0.0333,
+    "durationSec": 26,
+    "status": "success",
+    "timestamp": "2026-03-02T14:36:17.181Z"
+  },
+  {
+    "id": "61c23ecd-177e-427f-aaf4-858df0c39246",
+    "label": "devin-mobile-nomiddleware",
+    "agent": "devin",
+    "task": "Vercel's Edge Middleware is currently degraded globally \u2014 every deploy fails because middleware deploys globally including the broken Dubai region. The fix: delete the middleware and move auth checkin",
+    "model": "Sonnet",
+    "tokens": 77808,
+    "cost": 0.1748,
+    "durationSec": 26,
+    "status": "success",
+    "timestamp": "2026-03-02T14:39:35.827Z"
+  },
+  {
     "id": "sam-daily-2026-03-02",
     "label": "Daily total",
     "agent": "sam",
@@ -3897,6 +3921,6 @@
     "cost": 0.3297,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-03-02T14:30:02Z"
+    "timestamp": "2026-03-02T14:40:05Z"
   }
 ]
