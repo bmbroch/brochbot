@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T17:40:04Z",
+  "lastUpdated": "2026-03-02T17:50:01Z",
   "activities": [
     {
       "id": "s-ed2576ab",
@@ -24,18 +24,6 @@
       "cost": 0.3601,
       "model": "Sonnet",
       "durationSec": 269
-    },
-    {
-      "id": "s-7bed05d0",
-      "agent": "devin",
-      "title": "devin-coral-seo",
-      "description": "Add to `src/app/layout.tsx` (or the LP page if no root layout with metadata) \u2014 proper Next.js 14 metadata export:",
-      "status": "success",
-      "date": "2026-03-02T16:49:52.353Z",
-      "tokens": 1038233,
-      "cost": 0.6162,
-      "model": "Sonnet",
-      "durationSec": 292
     },
     {
       "id": "s-ad1b8db3",
@@ -500,10 +488,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 209246930,
-      "cost": 117.3142,
+      "tokens": 210140292,
+      "cost": 120.3636,
       "model": "unknown",
-      "durationSec": 556144
+      "durationSec": 556747
     },
     {
       "id": "s-66dde37a",
@@ -656,10 +644,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 67475491,
-      "cost": 64.9121,
+      "tokens": 68078948,
+      "cost": 65.1105,
       "model": "Sonnet",
-      "durationSec": 631478
+      "durationSec": 632082
     },
     {
       "id": "s-5423ca5a",
@@ -1581,7 +1569,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T17:40:02Z"
+      "lastRunAt": "2026-03-02T17:50:01Z"
     },
     {
       "id": "bash-frankie-sync",
