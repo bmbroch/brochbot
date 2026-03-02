@@ -54,7 +54,7 @@ export default function Slide2() {
           <div className="font-bold text-gray-900 text-lg">Ben Broch</div>
           <div className="text-sm text-gray-500 leading-relaxed mt-0.5">
             I build and run subscription software products for job seekers and
-            sales professionals. No employees. No co-founders.
+            sales professionals. 1 employee. No co-founders.
           </div>
         </div>
       </div>
