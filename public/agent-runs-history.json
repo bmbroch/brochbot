@@ -3936,6 +3936,18 @@
     "timestamp": "2026-03-02T16:00:04Z"
   },
   {
+    "id": "7bed05d0-0c9c-4c1c-ba36-f965f1ff5dce",
+    "label": "devin-coral-seo",
+    "agent": "devin",
+    "task": "Add to `src/app/layout.tsx` (or the LP page if no root layout with metadata) \u2014 proper Next.js 14 metadata export:",
+    "model": "Sonnet",
+    "tokens": 37179,
+    "cost": 0.0742,
+    "durationSec": 6,
+    "status": "success",
+    "timestamp": "2026-03-02T16:49:52.353Z"
+  },
+  {
     "id": "sam-daily-2026-03-02",
     "label": "Daily total",
     "agent": "sam",
@@ -3945,6 +3957,6 @@
     "cost": 0.5166,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-03-02T16:40:04Z"
+    "timestamp": "2026-03-02T16:50:04Z"
   }
 ]
