@@ -22,7 +22,7 @@ export default function Slide3() {
           How it all works
         </h2>
         <p className="mt-2 text-xl text-gray-500 font-medium">
-          One boss. Ten agents. All on Telegram.
+          One chief of staff. Ten agents. All on Telegram.
         </p>
       </div>
 
