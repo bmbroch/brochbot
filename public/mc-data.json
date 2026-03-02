@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T14:40:05Z",
+  "lastUpdated": "2026-03-02T14:50:03Z",
   "activities": [
     {
       "id": "s-61c23ecd",
@@ -8,10 +8,10 @@
       "description": "Vercel's Edge Middleware is currently degraded globally \u2014 every deploy fails because middleware deploys globally including the broken Dubai region. The fix: delete the middleware and move auth checkin",
       "status": "success",
       "date": "2026-03-02T14:39:35.827Z",
-      "tokens": 77808,
-      "cost": 0.1748,
+      "tokens": 145651,
+      "cost": 0.2665,
       "model": "Sonnet",
-      "durationSec": 26
+      "durationSec": 31
     },
     {
       "id": "s-cfae5b93",
@@ -524,10 +524,10 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 182972939,
-      "cost": 98.0658,
+      "tokens": 183141506,
+      "cost": 98.1721,
       "model": "unknown",
-      "durationSec": 545289
+      "durationSec": 545927
     },
     {
       "id": "s-66dde37a",
@@ -1605,7 +1605,7 @@
       "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T14:40:02Z"
+      "lastRunAt": "2026-03-02T14:50:03Z"
     },
     {
       "id": "bash-frankie-sync",

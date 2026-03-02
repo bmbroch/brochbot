@@ -5,9 +5,9 @@
     "agent": "sam",
     "task": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
     "model": "unknown",
-    "tokens": 182972939,
-    "cost": 98.0658,
-    "durationSec": 545289,
+    "tokens": 183141506,
+    "cost": 98.1721,
+    "durationSec": 545927,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -696,6 +696,18 @@
     "timestamp": "2026-02-20T04:00:00.087Z"
   },
   {
+    "id": "61c23ecd-177e-427f-aaf4-858df0c39246",
+    "label": "devin-mobile-nomiddleware",
+    "agent": "devin",
+    "task": "Vercel's Edge Middleware is currently degraded globally \u2014 every deploy fails because middleware deploys globally including the broken Dubai region. The fix: delete the middleware and move auth checkin",
+    "model": "Sonnet",
+    "tokens": 145651,
+    "cost": 0.2665,
+    "durationSec": 31,
+    "status": "success",
+    "timestamp": "2026-03-02T14:39:35.827Z"
+  },
+  {
     "id": "53178b2d-2376-4960-a237-110c9ac2db1e",
     "label": "53178b2d-237",
     "agent": "sam",
@@ -802,18 +814,6 @@
     "durationSec": 51,
     "status": "success",
     "timestamp": "2026-02-21T05:30:00.029Z"
-  },
-  {
-    "id": "61c23ecd-177e-427f-aaf4-858df0c39246",
-    "label": "devin-mobile-nomiddleware",
-    "agent": "devin",
-    "task": "Vercel's Edge Middleware is currently degraded globally \u2014 every deploy fails because middleware deploys globally including the broken Dubai region. The fix: delete the middleware and move auth checkin",
-    "model": "Sonnet",
-    "tokens": 77808,
-    "cost": 0.1748,
-    "durationSec": 26,
-    "status": "success",
-    "timestamp": "2026-03-02T14:39:35.827Z"
   },
   {
     "id": "c65fbc8d-3af6-4963-8840-7a30d4696588",
