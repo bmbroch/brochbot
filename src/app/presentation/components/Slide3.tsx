@@ -2,102 +2,105 @@
 
 const CORAL = "#FF5A5F";
 
-const CHATGPT = [
-  "You ask a question",
-  "It answers",
-  "You come back tomorrow",
-  "Ask again",
-  "It forgot everything",
-];
-
-const OPENCLAW = [
-  "Runs on your own server, 24/7",
-  "Executes real tasks autonomously",
-  "Sends you updates while you sleep",
-  "Has persistent memory across sessions",
-  "Works even when you're offline",
+const AGENTS = [
+  { emoji: "🛠️", name: "Devin", desc: "I tell him what to build — he ships it", color: "#f59e0b" },
+  { emoji: "📣", name: "Marco", desc: "Runs my Instagram & Google Ads", color: "#8b5cf6" },
+  { emoji: "📊", name: "Dana", desc: "Pulls revenue & analytics every morning", color: "#06b6d4" },
+  { emoji: "🚀", name: "Miles", desc: "Handles SEO & growth strategy", color: "#10b981" },
+  { emoji: "🎧", name: "Cara", desc: "Monitors Stripe & billing issues", color: "#ec4899" },
 ];
 
 export default function Slide3() {
   return (
-    <div className="flex flex-col items-center justify-center h-full px-8 py-10 gap-10">
+    <div className="flex flex-col items-center justify-center h-full px-8 py-8 gap-6">
       {/* Heading */}
       <div className="text-center">
         <h2 className="text-5xl font-bold tracking-tight text-gray-900">
-          Not ChatGPT
+          How it all works
         </h2>
         <p className="mt-2 text-xl text-gray-500 font-medium">
-          ChatGPT waits for you. OpenClaw works while you&apos;re gone.
+          One boss. Ten agents. All on Telegram.
         </p>
       </div>
 
-      {/* Comparison */}
-      <div className="flex gap-6 w-full max-w-3xl">
-        {/* ChatGPT column */}
-        <div className="flex-1 rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm">
+      {/* Two-column layout */}
+      <div className="flex gap-8 w-full max-w-5xl items-start">
+
+        {/* LEFT — Org chart */}
+        <div className="flex-1 flex flex-col items-center gap-0">
+          {/* Sam — head honcho with avatar */}
           <div
-            className="px-6 py-4 flex items-center gap-3"
-            style={{ background: "#f9fafb", borderBottom: "1px solid #f1f5f9" }}
+            className="flex items-center gap-4 px-6 py-4 rounded-2xl shadow-lg"
+            style={{ background: CORAL, color: "#fff", minWidth: 280 }}
           >
-            <span className="text-2xl">💬</span>
-            <span className="font-bold text-gray-700 text-lg">ChatGPT</span>
-            <span className="ml-auto text-xs text-gray-400 font-medium">Reactive</span>
+            <img
+              src="/avatars/sam.png"
+              alt="Sam"
+              className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+              style={{ outline: "2px solid rgba(255,255,255,0.4)" }}
+              onError={(e) => {
+                const el = e.target as HTMLImageElement;
+                el.style.display = "none";
+              }}
+            />
+            <div>
+              <div className="font-bold text-xl leading-tight">🤝 Sam</div>
+              <div className="text-sm opacity-90 font-medium">
+                Head honcho — directs &amp; orchestrates
+              </div>
+            </div>
           </div>
-          <div className="px-6 py-5 flex flex-col gap-3">
-            {CHATGPT.map((item, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <span className="mt-0.5 text-gray-300 text-lg">✕</span>
-                <span className="text-gray-600 text-sm">{item}</span>
+
+          {/* Connector line */}
+          <div style={{ width: 2, height: 24, background: "#e5e7eb" }} />
+
+          {/* Horizontal bar */}
+          <div style={{ width: "90%", height: 2, background: "#e5e7eb" }} />
+
+          {/* Agent cards row */}
+          <div className="flex gap-2 w-full justify-center">
+            {AGENTS.map((a, i) => (
+              <div key={i} className="flex flex-col items-center" style={{ flex: 1 }}>
+                <div style={{ width: 2, height: 18, background: "#e5e7eb" }} />
+                <div className="w-full flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white shadow-sm">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-lg"
+                    style={{ background: `${a.color}18` }}
+                  >
+                    {a.emoji}
+                  </div>
+                  <div className="font-bold text-gray-900 text-xs">{a.name}</div>
+                  <div className="text-xs text-gray-500 text-center leading-snug" style={{ fontSize: 10 }}>
+                    {a.desc}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* vs divider */}
-        <div className="flex items-center justify-center">
+          {/* Telegram badge */}
           <div
-            className="text-base font-black px-3 py-2 rounded-xl"
-            style={{ background: "#f1f5f9", color: "#9ca3af" }}
+            className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium mt-4"
+            style={{ background: "#e8f4fd", color: "#1a8ccd" }}
           >
-            vs
+            <svg viewBox="0 0 24 24" fill="currentColor" width={14} height={14}>
+              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.247l-2.04 9.608c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.903.613z"/>
+            </svg>
+            Most stuff just runs through Telegram chat
           </div>
         </div>
 
-        {/* OpenClaw column */}
+        {/* RIGHT — Telegram screenshot */}
         <div
-          className="flex-1 rounded-2xl overflow-hidden shadow-lg"
-          style={{ border: `2px solid ${CORAL}` }}
+          className="flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-gray-200"
+          style={{ width: 260 }}
         >
-          <div
-            className="px-6 py-4 flex items-center gap-3"
-            style={{ background: CORAL }}
-          >
-            <span className="text-2xl">🐾</span>
-            <span className="font-bold text-white text-lg">OpenClaw</span>
-            <span
-              className="ml-auto text-xs font-bold px-2 py-0.5 rounded-full"
-              style={{ background: "rgba(255,255,255,0.25)", color: "#fff" }}
-            >
-              Agentic
-            </span>
-          </div>
-          <div className="px-6 py-5 flex flex-col gap-3 bg-white">
-            {OPENCLAW.map((item, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <span className="mt-0.5 text-lg" style={{ color: CORAL }}>✓</span>
-                <span className="text-gray-800 text-sm font-medium">{item}</span>
-              </div>
-            ))}
-          </div>
+          <img
+            src="/telegram-screenshot.jpg"
+            alt="Telegram inbox showing all agent chats"
+            className="w-full block"
+          />
         </div>
-      </div>
-
-      {/* Bottom callout */}
-      <div
-        className="px-6 py-3 rounded-xl text-sm font-semibold text-center max-w-lg"
-        style={{ background: "#fff7ed", color: "#c2410c" }}
-      >
-        🌙 My agents ran 47 tasks last night while I was asleep. ChatGPT ran 0.
       </div>
     </div>
   );
