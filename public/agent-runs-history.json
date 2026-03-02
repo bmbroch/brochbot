@@ -3876,6 +3876,18 @@
     "timestamp": "2026-03-02T14:10:02Z"
   },
   {
+    "id": "5aaf79d9-23af-4c84-80da-18892e6d4903",
+    "label": "devin-lp-lightmode",
+    "agent": "devin",
+    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
+    "model": "Sonnet",
+    "tokens": 936865,
+    "cost": 0.6035,
+    "durationSec": 193,
+    "status": "success",
+    "timestamp": "2026-03-02T14:14:12.304Z"
+  },
+  {
     "id": "sam-daily-2026-03-02",
     "label": "Daily total",
     "agent": "sam",
@@ -3885,6 +3897,6 @@
     "cost": 0.3297,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-03-02T14:10:02Z"
+    "timestamp": "2026-03-02T14:20:02Z"
   }
 ]
