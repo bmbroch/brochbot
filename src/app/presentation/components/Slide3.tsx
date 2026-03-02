@@ -13,7 +13,7 @@ const CARDS = [
     icon: "🤖",
     title: "Claude Max",
     subtitle: "Best AI reasoning",
-    price: "$20/mo",
+    price: "Usage-based",
   },
   {
     icon: "🐾",
@@ -62,7 +62,7 @@ export default function Slide3() {
           style={{ background: CORAL, color: "#fff" }}
         >
           <span>=</span>
-          <span>$26/month. 10 agents. Always on.</span>
+          <span>$6/mo server + AI. 10 agents. Always on.</span>
         </div>
         <p className="text-sm text-gray-400 text-center max-w-sm mt-2">
           Or swap Claude for DeepSeek → ~$5/mo. 80% of the performance.
