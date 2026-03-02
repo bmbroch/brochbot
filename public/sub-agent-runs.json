@@ -7,7 +7,7 @@
     "model": "unknown",
     "tokens": 183141506,
     "cost": 98.1721,
-    "durationSec": 545927,
+    "durationSec": 546057,
     "status": "success",
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
@@ -310,18 +310,6 @@
     "durationSec": 213,
     "status": "success",
     "timestamp": "2026-02-25T03:00:00.093Z"
-  },
-  {
-    "id": "f62b8df2-245c-4584-b3e2-674d49d1b059",
-    "label": "devin-real-avatars",
-    "agent": "devin",
-    "task": "**Repo:** `/home/ubuntu/.openclaw/workspace/viralytics`",
-    "model": "Sonnet",
-    "tokens": 490957,
-    "cost": 0.374,
-    "durationSec": 199,
-    "status": "success",
-    "timestamp": "2026-03-02T13:55:19.015Z"
   },
   {
     "id": "4c94c8c4-9fe6-467a-95be-9b024f1eddaa",
