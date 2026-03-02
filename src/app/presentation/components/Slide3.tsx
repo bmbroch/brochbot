@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 
 const CORAL = "#FF5A5F";
 
@@ -11,6 +12,8 @@ const AGENTS = [
 ];
 
 export default function Slide3() {
+  const [lightbox, setLightbox] = useState(false);
+
   return (
     <div className="flex flex-col items-center justify-center h-full px-8 py-8 gap-6">
       {/* Heading */}
@@ -92,16 +95,49 @@ export default function Slide3() {
 
         {/* RIGHT — Telegram screenshot */}
         <div
-          className="flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-gray-200"
-          style={{ width: 260 }}
+          className="flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 cursor-zoom-in hover:shadow-3xl transition-shadow"
+          style={{ width: 360 }}
+          onClick={() => setLightbox(true)}
+          title="Click to expand"
         >
           <img
             src="/telegram-screenshot.jpg"
             alt="Telegram inbox showing all agent chats"
             className="w-full block"
           />
+          <div
+            className="flex items-center justify-center gap-1.5 py-2 text-xs font-medium"
+            style={{ background: "#f8fafc", color: "#94a3b8" }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={12} height={12}>
+              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+            </svg>
+            Click to expand
+          </div>
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ background: "rgba(0,0,0,0.85)" }}
+          onClick={() => setLightbox(false)}
+        >
+          <img
+            src="/telegram-screenshot.jpg"
+            alt="Telegram inbox"
+            className="rounded-2xl shadow-2xl max-h-[90vh] max-w-[90vw] object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={() => setLightbox(false)}
+            className="absolute top-6 right-8 text-white text-4xl leading-none hover:opacity-70"
+          >
+            ×
+          </button>
+        </div>
+      )}
     </div>
   );
 }
