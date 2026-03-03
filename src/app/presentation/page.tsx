@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Shell from "@/components/Shell";
 import Slide1 from "./components/Slide1";
 import Slide2 from "./components/Slide2";
 import Slide3 from "./components/Slide3";
@@ -59,11 +60,12 @@ export default function PresentationPage() {
   const SlideComponent = SLIDES[current];
 
   return (
+    <Shell>
     <div
-      className="relative flex flex-col"
+      className="relative flex flex-col flex-1"
       style={{
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "100%",
         background: "#ffffff",
         fontFamily: "Inter, system-ui, sans-serif",
         overflow: "hidden",
@@ -116,7 +118,7 @@ export default function PresentationPage() {
       </button>
 
       {/* Slide content */}
-      <div className="flex-1 flex flex-col" style={{ height: "calc(100vh - 64px)" }}>
+      <div className="flex-1 flex flex-col min-h-0">
         <SlideComponent key={current} />
       </div>
 
@@ -141,5 +143,6 @@ export default function PresentationPage() {
         ))}
       </div>
     </div>
+    </Shell>
   );
 }
