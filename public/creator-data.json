@@ -1,16 +1,44 @@
 {
-  "lastUpdated": "2026-03-02T10:30:01Z",
+  "lastUpdated": "2026-03-02T23:30:01Z",
   "abby": {
     "name": "Abby",
     "startDate": "2026-01-08",
-    "ttViews": 304912,
-    "igViews": 648144,
-    "posts": 52,
-    "avgPerPost": 18328,
+    "ttViews": 306600,
+    "igViews": 651820,
+    "posts": 56,
+    "avgPerPost": 17115,
     "earnings": 1365.0,
     "paymentCount": 15,
     "lastPaidAt": "2026-03-02",
     "posts_detail": [
+      {
+        "date": "2026-02-28",
+        "platform": "tiktok",
+        "views": 1114,
+        "url": "https://www.tiktok.com/@abbysellsss/video/7611715755423321374",
+        "title": null
+      },
+      {
+        "date": "2026-02-28",
+        "platform": "instagram",
+        "views": 2332,
+        "url": "https://www.instagram.com/reel/DVSFI6EgYUz/",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "tiktok",
+        "views": 574,
+        "url": "https://www.tiktok.com/@abbysellsss/video/7611370934640954638",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "instagram",
+        "views": 1344,
+        "url": "https://www.instagram.com/reel/DVPsPCPEYpN/",
+        "title": null
+      },
       {
         "date": "2026-02-26",
         "platform": "tiktok",
@@ -380,14 +408,105 @@
   "bobby": {
     "name": "Bobby",
     "startDate": "2026-01-30",
-    "ttViews": 24043,
-    "igViews": 61265,
-    "posts": 50,
-    "avgPerPost": 1706,
+    "ttViews": 30687,
+    "igViews": 68882,
+    "posts": 63,
+    "avgPerPost": 1580,
     "earnings": 625.0,
     "paymentCount": 5,
     "lastPaidAt": "2026-03-02",
     "posts_detail": [
+      {
+        "date": "2026-03-01",
+        "platform": "tiktok",
+        "views": 882,
+        "url": "https://www.tiktok.com/@bobby.salesguy/video/7611997942387363085",
+        "title": null
+      },
+      {
+        "date": "2026-03-01",
+        "platform": "instagram",
+        "views": 1474,
+        "url": "https://www.instagram.com/reel/DVUDFmlDgnK/",
+        "title": null
+      },
+      {
+        "date": "2026-03-01",
+        "platform": "tiktok",
+        "views": 1010,
+        "url": "https://www.tiktok.com/@bobby.salesguy/video/7611998322865278221",
+        "title": null
+      },
+      {
+        "date": "2026-03-01",
+        "platform": "instagram",
+        "views": 1318,
+        "url": "https://www.instagram.com/reel/DVUDHZ1jvhN/",
+        "title": null
+      },
+      {
+        "date": "2026-03-01",
+        "platform": "tiktok",
+        "views": 867,
+        "url": "https://www.tiktok.com/@bobby.salesguy/video/7611999536654929166",
+        "title": null
+      },
+      {
+        "date": "2026-03-01",
+        "platform": "instagram",
+        "views": 1466,
+        "url": "https://www.instagram.com/reel/DVUDPvCDhww/",
+        "title": null
+      },
+      {
+        "date": "2026-02-28",
+        "platform": "tiktok",
+        "views": 1191,
+        "url": "https://www.tiktok.com/@bobby.salesguy/video/7611543490241121549",
+        "title": null
+      },
+      {
+        "date": "2026-02-28",
+        "platform": "instagram",
+        "views": 1348,
+        "url": "https://www.instagram.com/reel/DVQ4v49Dsq0/",
+        "title": null
+      },
+      {
+        "date": "2026-02-28",
+        "platform": "tiktok",
+        "views": 960,
+        "url": "https://www.tiktok.com/@bobby.salesguy/video/7611589495669951775",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "tiktok",
+        "views": 1275,
+        "url": "https://www.tiktok.com/@bobby.salesguy/video/7611183641699355934",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "instagram",
+        "views": 214,
+        "url": "https://www.instagram.com/reel/DVOZCxaDiv8/",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "tiktok",
+        "views": 459,
+        "url": "https://www.tiktok.com/@bobby.salesguy/video/7611184069619010847",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "instagram",
+        "views": 1797,
+        "url": "https://www.instagram.com/reel/DVOZEGujpun/",
+        "title": null
+      },
       {
         "date": "2026-02-25",
         "platform": "tiktok",
@@ -1301,14 +1420,70 @@
   "luke": {
     "name": "Luke",
     "startDate": "2025-10-28",
-    "ttViews": 396866,
-    "igViews": 1696247,
-    "posts": 181,
-    "avgPerPost": 11564,
+    "ttViews": 399369,
+    "igViews": 1701498,
+    "posts": 189,
+    "avgPerPost": 11116,
     "earnings": 3400.0,
     "paymentCount": 25,
     "lastPaidAt": "2026-03-02",
     "posts_detail": [
+      {
+        "date": "2026-03-02",
+        "platform": "tiktok",
+        "views": 338,
+        "url": "https://www.tiktok.com/@_lukesells/video/7612438630413372703",
+        "title": null
+      },
+      {
+        "date": "2026-03-02",
+        "platform": "instagram",
+        "views": 318,
+        "url": "https://www.instagram.com/reel/DVXGMgFDhU4/",
+        "title": null
+      },
+      {
+        "date": "2026-03-01",
+        "platform": "tiktok",
+        "views": 752,
+        "url": "https://www.tiktok.com/@_lukesells/video/7612018085360405773",
+        "title": null
+      },
+      {
+        "date": "2026-03-01",
+        "platform": "instagram",
+        "views": 1026,
+        "url": "https://www.instagram.com/reel/DVULtJKDraS/",
+        "title": null
+      },
+      {
+        "date": "2026-02-28",
+        "platform": "tiktok",
+        "views": 841,
+        "url": "https://www.tiktok.com/@_lukesells/video/7611592524142103821",
+        "title": null
+      },
+      {
+        "date": "2026-02-28",
+        "platform": "instagram",
+        "views": 1994,
+        "url": "https://www.instagram.com/reel/DVROfLojoAP/",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "tiktok",
+        "views": 572,
+        "url": "https://www.tiktok.com/@_lukesells/video/7611274687582194974",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "instagram",
+        "views": 1913,
+        "url": "https://www.instagram.com/reel/DVPBSTijh12/",
+        "title": null
+      },
       {
         "date": "2026-02-25",
         "platform": "tiktok",
@@ -2581,14 +2756,28 @@
   "nick": {
     "name": "Nick",
     "startDate": "2025-12-23",
-    "ttViews": 2870282,
-    "igViews": 153704,
-    "posts": 88,
-    "avgPerPost": 34363,
+    "ttViews": 2870933,
+    "igViews": 153880,
+    "posts": 90,
+    "avgPerPost": 33609,
     "earnings": 3515.0,
     "paymentCount": 29,
     "lastPaidAt": "2026-03-02",
     "posts_detail": [
+      {
+        "date": "2026-03-01",
+        "platform": "tiktok",
+        "views": 651,
+        "url": "https://www.tiktok.com/@sell.with.nick/video/7612457147791609102",
+        "title": null
+      },
+      {
+        "date": "2026-03-01",
+        "platform": "instagram",
+        "views": 176,
+        "url": "https://www.instagram.com/reel/DVXQsXmDQtX/",
+        "title": null
+      },
       {
         "date": "2026-02-25",
         "platform": "tiktok",
@@ -3391,14 +3580,28 @@
   "sophie": {
     "name": "Sophie",
     "startDate": "2026-02-12",
-    "ttViews": 2180,
-    "igViews": 144194,
-    "posts": 16,
-    "avgPerPost": 9148,
+    "ttViews": 2556,
+    "igViews": 233194,
+    "posts": 18,
+    "avgPerPost": 13097,
     "earnings": 165.0,
     "paymentCount": 3,
     "lastPaidAt": "2026-02-27",
     "posts_detail": [
+      {
+        "date": "2026-02-27",
+        "platform": "tiktok",
+        "views": 191,
+        "url": "https://www.tiktok.com/@sophiesellss/video/7611094448998468886",
+        "title": null
+      },
+      {
+        "date": "2026-02-27",
+        "platform": "instagram",
+        "views": 49500,
+        "url": "https://www.instagram.com/reel/DVMFoyZEt_J/",
+        "title": null
+      },
       {
         "date": "2026-02-25",
         "platform": "tiktok",
@@ -3472,14 +3675,14 @@
       {
         "date": "2026-02-15",
         "platform": "tiktok",
-        "views": 391,
+        "views": 576,
         "url": "https://www.tiktok.com/@sophiesellss/video/7607129172196052246",
         "title": null
       },
       {
         "date": "2026-02-15",
         "platform": "instagram",
-        "views": 30000,
+        "views": 69500,
         "url": "https://www.instagram.com/reel/DUyQo0UEu7O/",
         "title": null
       },

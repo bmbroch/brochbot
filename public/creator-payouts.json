@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-03-02T10:00:09Z",
+  "lastUpdated": "2026-03-03T10:00:09Z",
   "payouts": [
     {
       "creator": "Nick",
-      "totalPaid": 3515.0,
-      "payments": 29,
+      "totalPaid": 3680.0,
+      "payments": 30,
       "lastPayment": "2026-03-02"
     },
     {
@@ -27,9 +27,9 @@
     },
     {
       "creator": "Bobby",
-      "totalPaid": 625.0,
-      "payments": 5,
-      "lastPayment": "2026-03-02"
+      "totalPaid": 640.0,
+      "payments": 6,
+      "lastPayment": "2026-03-03"
     },
     {
       "creator": "Sheryl",

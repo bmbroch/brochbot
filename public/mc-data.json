@@ -1,10 +1,94 @@
 {
-  "lastUpdated": "2026-03-02T19:10:01Z",
+  "lastUpdated": "2026-03-03T10:00:02Z",
   "activities": [
     {
-      "id": "s-ad1b8db3",
+      "id": "s-34edec45",
+      "agent": "devin",
+      "title": "devin-subscribe-existing-org",
+      "description": "Right now when an org is inactive (not subscribed, not in freebies), the app shows a blurred paywall overlay. That overlay currently links to `/onboarding` which creates a BRAND NEW org. That's wrong ",
+      "status": "success",
+      "date": "2026-03-03T09:17:53.942Z",
+      "tokens": 440984,
+      "cost": 0.2993,
+      "model": "Sonnet",
+      "durationSec": 191
+    },
+    {
+      "id": "s-279dd33c",
+      "agent": "devin",
+      "title": "devin-video-slider",
+      "description": "**Replace** the current per-creator pill selector modal (`TrackedVideosModal` in `src/components/Sidebar.tsx`) with a new org-level plan slider modal.",
+      "status": "success",
+      "date": "2026-03-03T09:07:08.632Z",
+      "tokens": 683764,
+      "cost": 0.4786,
+      "model": "Sonnet",
+      "durationSec": 222
+    },
+    {
+      "id": "s-429b76e4",
+      "agent": "mia",
+      "title": "Mia: Weekly UGC Performance Report",
+      "description": "You're Mia \ud83d\udcf1, Social Media Manager.",
+      "status": "success",
+      "date": "2026-03-03T06:01:00.603Z",
+      "tokens": 329010,
+      "cost": 0.4536,
+      "model": "Sonnet",
+      "durationSec": 167
+    },
+    {
+      "id": "s-8c9cc3c9",
       "agent": "dana",
       "title": "Morning Analytics Report",
+      "description": "You're Dana \ud83d\udcca, Data Analyst.",
+      "status": "success",
+      "date": "2026-03-03T06:00:00.358Z",
+      "tokens": 159899,
+      "cost": 0.144,
+      "model": "Sonnet",
+      "durationSec": 60
+    },
+    {
+      "id": "s-bdde6812",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-03-03T05:30:00.197Z",
+      "tokens": 259551,
+      "cost": 0.2225,
+      "model": "Sonnet",
+      "durationSec": 96
+    },
+    {
+      "id": "s-2f1be2c4",
+      "agent": "miles",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+      "status": "success",
+      "date": "2026-03-03T04:00:00.263Z",
+      "tokens": 70348,
+      "cost": 0.1265,
+      "model": "Sonnet",
+      "durationSec": 90
+    },
+    {
+      "id": "s-0dab6576",
+      "agent": "penny",
+      "title": "Penny Daily Check",
+      "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+      "status": "success",
+      "date": "2026-03-03T03:00:00.303Z",
+      "tokens": 662262,
+      "cost": 0.5326,
+      "model": "Sonnet",
+      "durationSec": 240
+    },
+    {
+      "id": "s-ad1b8db3",
+      "agent": "sam",
+      "title": "ad1b8db3-713",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-03-02T06:00:00.117Z",
@@ -16,7 +100,7 @@
     {
       "id": "s-581a2e00",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "581a2e00-8c4",
       "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
       "status": "success",
       "date": "2026-03-02T05:30:00.122Z",
@@ -26,9 +110,21 @@
       "durationSec": 85
     },
     {
+      "id": "s-e137c2b4",
+      "agent": "sam",
+      "title": "e137c2b4-d1e",
+      "description": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+      "status": "success",
+      "date": "2026-03-02T04:00:56.043Z",
+      "tokens": 882809,
+      "cost": 0.7409,
+      "model": "Sonnet",
+      "durationSec": 50436
+    },
+    {
       "id": "s-5477cd42",
-      "agent": "miles",
-      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "agent": "sam",
+      "title": "5477cd42-476",
       "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
       "status": "success",
       "date": "2026-03-02T04:00:00.106Z",
@@ -39,8 +135,8 @@
     },
     {
       "id": "s-04dbb623",
-      "agent": "penny",
-      "title": "Penny Daily Check",
+      "agent": "sam",
+      "title": "04dbb623-ef8",
       "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
       "status": "success",
       "date": "2026-03-02T03:00:00.077Z",
@@ -464,15 +560,15 @@
       "description": "A new session was started via /new or /reset. Execute your Session Startup sequence now - read the required files before responding to the user. Then greet the user in your configured persona, if one ",
       "status": "success",
       "date": "2026-02-24T07:10:43.159Z",
-      "tokens": 219536077,
-      "cost": 126.0045,
+      "tokens": 300815990,
+      "cost": 165.6757,
       "model": "unknown",
-      "durationSec": 559115
+      "durationSec": 614696
     },
     {
       "id": "s-66dde37a",
-      "agent": "mia",
-      "title": "Mia: Weekly UGC Performance Report",
+      "agent": "sam",
+      "title": "66dde37a-1df",
       "description": "You're Mia \ud83d\udcf1, Social Media Manager.",
       "status": "success",
       "date": "2026-02-24T06:01:08.604Z",
@@ -608,10 +704,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:40:05.669Z",
-      "tokens": 13870736,
-      "cost": 12.1433,
+      "tokens": 16067383,
+      "cost": 14.8653,
       "model": "Sonnet",
-      "durationSec": 466107
+      "durationSec": 686272
     },
     {
       "id": "s-a9017c33",
@@ -620,10 +716,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 68719487,
-      "cost": 65.3805,
+      "tokens": 68976882,
+      "cost": 66.2499,
       "model": "Sonnet",
-      "durationSec": 632779
+      "durationSec": 685813
     },
     {
       "id": "s-5423ca5a",
@@ -764,10 +860,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-20T08:15:42.760Z",
-      "tokens": 11389011,
-      "cost": 33.3174,
+      "tokens": 14582155,
+      "cost": 36.7753,
       "model": "Opus",
-      "durationSec": 873048
+      "durationSec": 938546
     },
     {
       "id": "s-a4b6f095",
@@ -851,7 +947,7 @@
       "tokens": 1833122,
       "cost": 2.8842,
       "model": "Opus",
-      "durationSec": 892526
+      "durationSec": 978918
     },
     {
       "id": "s-38288c66",
@@ -887,7 +983,7 @@
       "tokens": 2591900,
       "cost": 5.1444,
       "model": "Opus",
-      "durationSec": 933676
+      "durationSec": 991953
     },
     {
       "id": "s-aae63345",
@@ -1503,15 +1599,15 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-03-02T17:21:33.405Z",
+      "lastActive": "2026-03-03T09:17:53.942Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-03-02T06:00:00.117Z",
+      "lastActive": "2026-03-03T06:00:00.358Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
-      "lastActive": "2026-03-02T04:00:00.106Z",
+      "lastActive": "2026-03-03T04:00:00.263Z",
       "statusText": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted."
     },
     "cara": {
@@ -1519,11 +1615,11 @@
       "statusText": "\ud83d\udd34 Never been used. No churn/billing analysis done for any product."
     },
     "mia": {
-      "lastActive": "2026-02-24T06:01:08.604Z",
+      "lastActive": "2026-03-03T06:01:00.603Z",
       "statusText": "Idle. Needs recurring weekly UGC performance tracking."
     },
     "penny": {
-      "lastActive": "2026-03-02T03:00:00.077Z",
+      "lastActive": "2026-03-03T03:00:00.303Z",
       "statusText": "Active as of today. Owns daily delegation audit (6 PM CAT)."
     },
     "frankie": {
@@ -1531,7 +1627,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-03-02T18:29:27Z",
+      "lastActive": "2026-03-03T09:55:47Z",
       "statusText": ""
     }
   },
@@ -1539,13 +1635,14 @@
     {
       "id": "bash-mc-sync",
       "title": "MC Data Sync",
-      "schedule": "*/10 * * * *",
+      "schedule": "*/30 * * * *",
       "timezone": "",
       "owner": "sam",
-      "description": "The system heartbeat \u2014 reads all OpenClaw session files every 10 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant) and GitHub (triggers Vercel deploy). Skips entirely if no sessions changed since last run.",
+      "description": "The system heartbeat \u2014 reads all OpenClaw session files every 30 min, extracts agent activity, costs, and run history, then pushes to Supabase (instant). Skips entirely if no sessions changed since last run.",
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
-      "lastRunAt": "2026-03-02T19:10:01Z"
+      "notes": "Supabase-only sync (no git push). Activity-ping handles real-time MC updates.",
+      "lastRunAt": "2026-03-03T10:00:01Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -1567,7 +1664,7 @@
       "description": "Mia pulls the latest post data for all 7 creators from Google Sheets \u2014 TikTok and Instagram URLs, view counts, and post dates. Writes creator-posts.json with 267+ posts sorted newest-first per creator.",
       "script": "scripts/mia-creator-sync.sh",
       "log": "ops/mia-creator-sync.log",
-      "lastRunAt": "2026-03-01T23:00:05Z"
+      "lastRunAt": "2026-03-02T23:00:05Z"
     },
     {
       "id": "bash-creator-merge",
@@ -1578,7 +1675,7 @@
       "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log",
-      "lastRunAt": "2026-03-02T10:30:01Z"
+      "lastRunAt": "2026-03-02T23:30:01Z"
     },
     {
       "id": "bash-health-snapshot",
@@ -1589,7 +1686,7 @@
       "description": "Collects server health metrics (disk, memory, uptime, OpenClaw, Tailscale, Vercel, crons, pending updates) and writes health.json to mission-control/public/. Runs daily at 6:30 AM CAT (4:30 UTC) before morning reports.",
       "script": "scripts/health-snapshot.sh",
       "log": "ops/health-snapshot.log",
-      "lastRunAt": "2026-03-02T04:30:12Z"
+      "lastRunAt": "2026-03-03T04:30:10Z"
     }
   ]
 }

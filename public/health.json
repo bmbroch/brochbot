@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-03-02T04:30:01Z",
+  "timestamp": "2026-03-03T04:30:01Z",
   "disk": {
-    "usedPct": 79,
-    "usedGB": 22,
+    "usedPct": 84,
+    "usedGB": 24,
     "totalGB": 29
   },
   "memory": {
-    "usedPct": 48,
+    "usedPct": 64,
     "totalMB": 3814
   },
-  "uptime": "5 days, 14 hours, 13 minutes",
+  "uptime": "6 days, 14 hours, 13 minutes",
   "openclaw": {
     "running": true,
-    "pid": 83033,
+    "pid": 624012,
     "currentVersion": "2026.2.22",
-    "latestVersion": "2026.2.26",
+    "latestVersion": "2026.3.1",
     "updateAvailable": true
   },
   "tailscale": {
