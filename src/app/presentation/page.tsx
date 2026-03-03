@@ -14,12 +14,11 @@ import SlideC from "./components/SlideC";
 import SlideD from "./components/SlideD";
 import SlideE from "./components/SlideE";
 import SlideF from "./components/SlideF";
-import SlideG from "./components/SlideG";
 
 const CORAL = "#FF5A5F";
-const TOTAL = 14;
+const TOTAL = 13;
 
-const SLIDES = [Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, SlideA, SlideB, SlideF, SlideE, SlideD, SlideC, SlideG];
+const SLIDES = [Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, SlideA, SlideB, SlideF, SlideE, SlideD, SlideC];
 
 function ChevronLeft({ size = 28 }: { size?: number }) {
   return (
