@@ -2,7 +2,7 @@
   {
     "id": "ben",
     "name": "Ben",
-    "emoji": "👨‍💻",
+    "emoji": "\ud83d\udc68\u200d\ud83d\udcbb",
     "avatar": "/avatars/ben.jpg",
     "role": "Founder",
     "color": "#f59e0b",
@@ -26,7 +26,7 @@
   {
     "id": "sam",
     "name": "Sam",
-    "emoji": "🤝",
+    "emoji": "\ud83e\udd1d",
     "avatar": "/avatars/sam.png",
     "role": "Chief of Staff",
     "color": "#3b82f6",
@@ -55,7 +55,7 @@
   {
     "id": "devin",
     "name": "Devin",
-    "emoji": "🛠️",
+    "emoji": "\ud83d\udee0\ufe0f",
     "avatar": "/avatars/dev.png",
     "role": "Web Developer",
     "color": "#f59e0b",
@@ -78,9 +78,34 @@
     "sortOrder": 2
   },
   {
+    "id": "devonte",
+    "name": "Devont\u00e9",
+    "emoji": "\ud83d\udee0\ufe0f",
+    "avatar": "/avatars/devonte.png",
+    "role": "Web Developer",
+    "color": "#6366f1",
+    "gradient": "from-indigo-700/30 to-indigo-900/20",
+    "gradientDark": "from-indigo-700/30 to-indigo-900/20",
+    "gradientLight": "from-indigo-50 to-violet-100",
+    "groupId": "",
+    "deskPosition": {
+      "x": 500,
+      "y": 40,
+      "facing": "down"
+    },
+    "description": "Owns the Mission Control (brochbot) codebase. Handles all brochbot features, the presentation page, and MC improvements.",
+    "dataSources": [
+      "GitHub",
+      "Vercel"
+    ],
+    "recurringTasks": [],
+    "isAgent": true,
+    "sortOrder": 3
+  },
+  {
     "id": "cara",
     "name": "Cara",
-    "emoji": "🎧",
+    "emoji": "\ud83c\udfa7",
     "avatar": "/avatars/cara.png",
     "role": "CX",
     "color": "#a855f7",
@@ -104,7 +129,7 @@
   {
     "id": "dana",
     "name": "Dana",
-    "emoji": "📊",
+    "emoji": "\ud83d\udcca",
     "avatar": "/avatars/dana.png",
     "role": "Data Analyst",
     "color": "#22c55e",
@@ -131,7 +156,7 @@
   {
     "id": "miles",
     "name": "Miles",
-    "emoji": "🚀",
+    "emoji": "\ud83d\ude80",
     "avatar": "/avatars/miles.png",
     "role": "GTM Lead",
     "color": "#f97316",
@@ -151,7 +176,7 @@
       "SEO Tools"
     ],
     "recurringTasks": [
-      "Daily GSC Report — All Products (6 AM CAT)"
+      "Daily GSC Report \u2014 All Products (6 AM CAT)"
     ],
     "isAgent": true,
     "sortOrder": 5
@@ -159,7 +184,7 @@
   {
     "id": "penny",
     "name": "Penny",
-    "emoji": "📌",
+    "emoji": "\ud83d\udccc",
     "avatar": "/avatars/penny.png",
     "role": "Secretary",
     "color": "#f43f5e",
@@ -186,7 +211,7 @@
   {
     "id": "mia",
     "name": "Mia",
-    "emoji": "📱",
+    "emoji": "\ud83d\udcf1",
     "avatar": "/avatars/mia.png",
     "role": "UGC Lead",
     "color": "#d946ef",
@@ -213,7 +238,7 @@
   {
     "id": "frankie",
     "name": "Frankie",
-    "emoji": "💰",
+    "emoji": "\ud83d\udcb0",
     "avatar": "/avatars/frankie.png",
     "role": "Finance",
     "color": "#10b981",
@@ -239,7 +264,7 @@
   {
     "id": "jude",
     "name": "Jude",
-    "emoji": "✍️",
+    "emoji": "\u270d\ufe0f",
     "avatar": "/avatars/jude.png",
     "role": "Content Lead",
     "color": "#f472b6",
@@ -266,7 +291,7 @@
   {
     "id": "marco",
     "name": "Marco",
-    "emoji": "📣",
+    "emoji": "\ud83d\udce3",
     "avatar": "/avatars/marco.png",
     "role": "Paid Ads & Retargeting",
     "color": "#f97316",
