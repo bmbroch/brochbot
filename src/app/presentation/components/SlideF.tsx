@@ -4,38 +4,34 @@ import { useEffect, useState } from "react";
 
 const CORAL = "#FF5A5F";
 
-const VIDEOS = [
+const CREATORS = [
   {
-    id: "ISb0nrlNoKQ",
-    title: "Why Specialized Agents are Superior",
-    creator: "Riley Brown",
-    views: "48K views",
-    duration: "18:16",
-    creatorColor: "#f59e0b",
+    name: "Riley Brown",
+    handle: "@rileybrown_ai",
+    avatar: "R",
+    avatarColor: "#f59e0b",
+    tagline: "Building an AI superteam in public",
+    why: "Riley documents every step of his OpenClaw setup — from building specialized agents to giving them new skills. If you want to see what's possible, this is the channel.",
+    tags: ["agent building", "vibe coding", "creative use cases"],
+    videos: [
+      { id: "ISb0nrlNoKQ", title: "Why Specialized Agents are Superior", views: "48K views", duration: "18:16" },
+      { id: "Yt6imPC1FhA", title: "OpenClaw Replaced 1,000 Hours of Video Editing Tutorials", views: "53K views", duration: "12:06" },
+    ],
+    channelUrl: "https://www.youtube.com/@rileybrown_ai",
   },
   {
-    id: "i13XK-uUOLQ",
-    title: "Making $$$ with OpenClaw",
-    creator: "Greg Isenberg",
-    views: "138K views",
-    duration: "52:04",
-    creatorColor: "#6366f1",
-  },
-  {
-    id: "Yt6imPC1FhA",
-    title: "OpenClaw Replaced 1,000 Hours of Video Editing Tutorials",
-    creator: "Riley Brown",
-    views: "53K views",
-    duration: "12:06",
-    creatorColor: "#f59e0b",
-  },
-  {
-    id: "U8kXfk8enrY",
-    title: "Clawdbot/OpenClaw Clearly Explained",
-    creator: "Greg Isenberg",
-    views: "317K views",
-    duration: "35:14",
-    creatorColor: "#6366f1",
+    name: "Greg Isenberg",
+    handle: "@gregisenberg",
+    avatar: "G",
+    avatarColor: "#6366f1",
+    tagline: "How to actually make money with OpenClaw",
+    why: "Greg breaks down the business side — how entrepreneurs are turning OpenClaw into real revenue. If Riley shows you how to build it, Greg shows you why it matters.",
+    tags: ["business", "solopreneur", "making money"],
+    videos: [
+      { id: "i13XK-uUOLQ", title: "Making $$$ with OpenClaw", views: "138K views", duration: "52:04" },
+      { id: "U8kXfk8enrY", title: "Clawdbot / OpenClaw Clearly Explained", views: "317K views", duration: "35:14" },
+    ],
+    channelUrl: "https://www.youtube.com/@gregisenberg",
   },
 ];
 
@@ -48,93 +44,109 @@ export default function SlideF() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full px-8 py-6 gap-4">
+    <div className="flex flex-col h-full px-8 py-6 gap-5">
       {/* Heading */}
       <div
         className="text-center flex-shrink-0"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(12px)",
-          transition: "opacity 0.4s ease, transform 0.4s ease",
-        }}
+        style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.4s ease, transform 0.4s ease" }}
       >
-        <h2 className="text-4xl font-bold tracking-tight text-gray-900">
-          Learn from the best
-        </h2>
-        <p className="mt-1 text-lg text-gray-400 font-medium">
-          Real people building real things with OpenClaw.
-        </p>
+        <h2 className="text-4xl font-bold tracking-tight text-gray-900">Go deeper</h2>
+        <p className="mt-1 text-lg text-gray-400 font-medium">Two creators worth following if you want to keep learning.</p>
       </div>
 
-      {/* 2×2 grid — thumbnails fill the space */}
-      <div className="grid grid-cols-2 gap-4 flex-1 min-h-0">
-        {VIDEOS.map((video, i) => (
-          <a
-            key={i}
-            href={`https://www.youtube.com/watch?v=${video.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow"
+      {/* Creator cards */}
+      <div className="flex gap-5 flex-1 min-h-0">
+        {CREATORS.map((creator, ci) => (
+          <div
+            key={ci}
+            className="flex-1 flex flex-col bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden"
             style={{
               opacity: visible ? 1 : 0,
-              transform: visible ? "scale(1)" : "scale(0.97)",
-              transition: "opacity 0.4s ease, transform 0.4s ease, box-shadow 0.2s ease",
-              transitionDelay: `${150 + i * 70}ms`,
+              transform: visible ? "translateY(0)" : "translateY(16px)",
+              transition: "opacity 0.45s ease, transform 0.45s ease",
+              transitionDelay: `${150 + ci * 120}ms`,
             }}
-            onClick={(e) => e.stopPropagation()}
           >
-            {/* Thumbnail fills the entire card */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-              alt={video.title}
-              className="w-full h-full object-cover"
-            />
+            {/* Top accent bar */}
+            <div className="h-1 w-full flex-shrink-0" style={{ background: creator.avatarColor }} />
 
-            {/* Gradient overlay — always on at bottom */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 50%, rgba(0,0,0,0) 100%)",
-              }}
-            />
+            <div className="flex flex-col flex-1 px-5 pt-4 pb-4 gap-3 min-h-0">
+              {/* Creator identity */}
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-11 h-11 rounded-full flex items-center justify-center text-lg font-black text-white flex-shrink-0"
+                  style={{ background: creator.avatarColor }}
+                >
+                  {creator.avatar}
+                </div>
+                <div>
+                  <div className="font-bold text-gray-900 text-base">{creator.name}</div>
+                  <div className="text-xs text-gray-400">{creator.handle}</div>
+                </div>
+                <a
+                  href={creator.channelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto flex-shrink-0 text-[11px] font-bold px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
+                  style={{ background: creator.avatarColor, color: "#fff" }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Follow →
+                </a>
+              </div>
 
-            {/* Duration — top right */}
-            <span
-              className="absolute top-3 right-3 text-[11px] font-bold px-2 py-0.5 rounded-md"
-              style={{ background: "rgba(0,0,0,0.72)", color: "#fff" }}
-            >
-              {video.duration}
-            </span>
+              {/* Tagline */}
+              <p className="text-sm font-semibold text-gray-800 italic">&ldquo;{creator.tagline}&rdquo;</p>
 
-            {/* Creator badge — top left */}
-            <span
-              className="absolute top-3 left-3 text-[10px] font-bold px-2 py-0.5 rounded-full"
-              style={{ background: video.creatorColor, color: "#fff" }}
-            >
-              {video.creator}
-            </span>
+              {/* Why follow */}
+              <p className="text-xs text-gray-500 leading-relaxed">{creator.why}</p>
 
-            {/* Play button — center, shows on hover */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <div
-                className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
-                style={{ background: "rgba(255,255,255,0.92)" }}
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill={CORAL}>
-                  <polygon points="5,3 19,12 5,21" />
-                </svg>
+              {/* Tags */}
+              <div className="flex flex-wrap gap-1">
+                {creator.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                    style={{ background: `${creator.avatarColor}14`, color: creator.avatarColor }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Videos — compact list */}
+              <div className="flex flex-col gap-2 mt-auto">
+                {creator.videos.map((video, vi) => (
+                  <a
+                    key={vi}
+                    href={`https://www.youtube.com/watch?v=${video.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-gray-50 transition-colors group"
+                    style={{ border: "1px solid #f3f4f6" }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {/* Mini thumbnail */}
+                    <div className="relative rounded-lg overflow-hidden flex-shrink-0" style={{ width: 72, height: 40 }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={`https://img.youtube.com/vi/${video.id}/default.jpg`}
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "rgba(0,0,0,0.3)" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21" /></svg>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-semibold text-gray-800 leading-snug line-clamp-2">{video.title}</p>
+                      <p className="text-[10px] text-gray-400 mt-0.5">{video.views} · {video.duration}</p>
+                    </div>
+                  </a>
+                ))}
               </div>
             </div>
-
-            {/* Title + views — bottom */}
-            <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
-              <p className="text-sm font-semibold text-white leading-snug line-clamp-2 drop-shadow">
-                {video.title}
-              </p>
-              <p className="text-xs text-white/60 mt-0.5 font-medium">{video.views}</p>
-            </div>
-          </a>
+          </div>
         ))}
       </div>
     </div>
