@@ -22,11 +22,11 @@ const AGENTS: Agent[] = [
     name: "Devin",
     accentColor: "#f59e0b",
     tasks: [
-      { desc: "Built Viralytics auth system (Google OAuth modal + middleware)", date: "Feb 28" },
-      { desc: "Deployed UGC analytics dashboard with multi-creator chart selection", date: "Mar 1" },
-      { desc: "Fixed ISK transcription batching — resolved IO budget exhaustion", date: "Mar 2" },
-      { desc: "Shipped Coral Pulse brand design system + landing page", date: "Mar 1" },
-      { desc: "Stripe subscription end-to-end — checkout, webhook, confetti", date: "Mar 2" },
+      { desc: "Built login system for Viralytics — users can sign in and access their account", date: "Feb 28" },
+      { desc: "Built creator analytics dashboard — compare performance across multiple creators", date: "Mar 1" },
+      { desc: "Fixed Interview Sidekick slowdown — resolved bottleneck that was causing site outages", date: "Mar 2" },
+      { desc: "Designed and launched the Viralytics brand + homepage", date: "Mar 1" },
+      { desc: "Built full payment flow for Viralytics — sign up, pay, get access", date: "Mar 2" },
     ],
   },
   {
@@ -34,10 +34,10 @@ const AGENTS: Agent[] = [
     name: "Miles",
     accentColor: "#10b981",
     tasks: [
-      { desc: "GSC daily report — ISK 'ai interview' keyword alert, +12% WoW impressions", date: "Mar 3" },
-      { desc: "Identified CLCP cover letter generator organic traffic drift", date: "Feb 26" },
-      { desc: "Flagged GEO opportunity — chatgpt.com already sending referral traffic", date: "Feb 22" },
-      { desc: "ISK keyword cluster report — 61% of total visitor share", date: "Feb 20" },
+      { desc: "Spotted 'ai interview' keyword surge on ISK — impressions up 12% week over week", date: "Mar 3" },
+      { desc: "Flagged declining organic traffic on Cover Letter Copilot — needs attention", date: "Feb 26" },
+      { desc: "Found that ChatGPT is already sending visitors to our products — big GEO opportunity", date: "Feb 22" },
+      { desc: "Interview Sidekick drives 61% of all traffic — identified it as the biggest growth lever", date: "Feb 20" },
     ],
   },
   {
@@ -45,9 +45,9 @@ const AGENTS: Agent[] = [
     name: "Marco",
     accentColor: "#8b5cf6",
     tasks: [
-      { desc: "Meta Ads API connected — act_623789930620706 verified live", date: "Feb 24" },
-      { desc: "Non-expiring system user token generated for autonomous ad management", date: "Feb 24" },
-      { desc: "ISK Trial Win-Back campaign scoped — $15/day, 3 Supabase audiences", date: "Feb 25" },
+      { desc: "Connected to Meta Ads — ready to run and manage paid campaigns autonomously", date: "Feb 24" },
+      { desc: "Set up permanent ad access so campaigns can run without manual logins", date: "Feb 24" },
+      { desc: "Mapped out ISK win-back ad campaign for trial users — $15/day, ready to launch", date: "Feb 25" },
     ],
   },
   {
@@ -55,10 +55,10 @@ const AGENTS: Agent[] = [
     name: "Dana",
     accentColor: "#3b82f6",
     tasks: [
-      { desc: "Morning analytics — ISK 403 active subs, $2.5K/week revenue", date: "Mar 3" },
-      { desc: "Diagnosed Supabase IO budget exhaustion on ISK — traced to interview_transcripts", date: "Mar 2" },
-      { desc: "SE breakdown — 224 Radar + 14 Range = 238 active subs, $1.3K/week", date: "Mar 1" },
-      { desc: "CLCP cohort analysis — 276 active subs, $1.1K/week", date: "Feb 27" },
+      { desc: "ISK hitting $2.5K/week — 403 active subscribers tracked this morning", date: "Mar 3" },
+      { desc: "Diagnosed what was crashing Interview Sidekick — found the exact database bottleneck", date: "Mar 2" },
+      { desc: "SalesEcho at $1.3K/week — 238 active subscribers across both plans", date: "Mar 1" },
+      { desc: "Cover Letter Copilot generating $1.1K/week with 276 paid users", date: "Feb 27" },
     ],
   },
   {
@@ -66,10 +66,10 @@ const AGENTS: Agent[] = [
     name: "Penny",
     accentColor: "#64748b",
     tasks: [
-      { desc: "Daily hygiene audit — flagged ugc-assets Supabase bucket missing", date: "Mar 1" },
-      { desc: "Caught cron double-fire bug, traced to announce delivery path — fixed", date: "Feb 26" },
-      { desc: "Delegation audit — confirmed all 5 crons using CRON MODE header", date: "Feb 22" },
-      { desc: "MC drift check — agent-runs-history.json out of sync, triggered resync", date: "Feb 21" },
+      { desc: "Caught a missing storage bucket before it could cause data loss", date: "Mar 1" },
+      { desc: "Caught a bug causing automated messages to send twice — fixed before anyone noticed", date: "Feb 26" },
+      { desc: "Audited all 5 automations — confirmed they're running cleanly", date: "Feb 22" },
+      { desc: "Caught Mission Control data going stale — triggered a resync to keep it accurate", date: "Feb 21" },
     ],
   },
   {
@@ -77,9 +77,9 @@ const AGENTS: Agent[] = [
     name: "Cara",
     accentColor: "#ec4899",
     tasks: [
-      { desc: "Stripe webhook race condition diagnosed on Viralytics — stale sub deletion after new checkout", date: "Mar 3" },
-      { desc: "ISK active sub count verified — 403 subscribers across all plans", date: "Mar 1" },
-      { desc: "SE Radar product billing confirmed live — 224 active subscriptions", date: "Feb 28" },
+      { desc: "Caught a billing bug that would have cancelled new Viralytics subscribers — fixed before it hit anyone", date: "Mar 3" },
+      { desc: "Verified ISK subscriber count — 403 paying users confirmed", date: "Mar 1" },
+      { desc: "Confirmed SalesEcho Radar billing is live — 224 paying subscribers", date: "Feb 28" },
     ],
   },
   {
@@ -87,9 +87,9 @@ const AGENTS: Agent[] = [
     name: "Mia",
     accentColor: "#f97316",
     tasks: [
-      { desc: "Weekly UGC report — Flo #1 at $0.70 CPM, 78K views across SE creators", date: "Feb 25" },
-      { desc: "Synced 8 creator profiles — 478 posts, 5.8M total views tracked", date: "Mar 2" },
-      { desc: "Nick TikTok backfill — 3.2M views, highest performer in network", date: "Mar 3" },
+      { desc: "Sophie (Flo) is top performing creator — $0.70 CPM, 78K views last week", date: "Feb 25" },
+      { desc: "Tracked 478 creator posts — 5.8M total views across the network", date: "Mar 2" },
+      { desc: "Nick is our #1 creator — 3.2M TikTok views and counting", date: "Mar 3" },
     ],
   },
   {
@@ -97,10 +97,10 @@ const AGENTS: Agent[] = [
     name: "Sam",
     accentColor: "#FF5A5F",
     tasks: [
-      { desc: "Coordinated ISK production incident response — blog down, IO budget, Framer outage", date: "Mar 2" },
-      { desc: "Spun up Marco with Meta Ads API access — scoped Phase 1 pixel deployment", date: "Feb 24" },
-      { desc: "Recovered from SSH server lockout — hardened auth_keys with chattr +i", date: "Feb 25" },
-      { desc: "Launched Viralytics as standalone SaaS — onboarding, Stripe, live domain", date: "Mar 1" },
+      { desc: "Managed ISK outage — blog went down mid-day, rallied the team and got it back up", date: "Mar 2" },
+      { desc: "Brought Marco online to run paid ads — connected to Meta and mapped out the first campaign", date: "Feb 24" },
+      { desc: "Recovered from a server security incident — locked everything down so it can't happen again", date: "Feb 25" },
+      { desc: "Coordinated Viralytics launch — onboarding, payments, live at getviralytics.com", date: "Mar 1" },
     ],
   },
 ];
