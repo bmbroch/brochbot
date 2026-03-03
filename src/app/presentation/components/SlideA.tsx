@@ -4,109 +4,29 @@ import { useEffect, useState } from "react";
 
 const CORAL = "#FF5A5F";
 
-interface Service {
-  name: string;
-  color: string;
-  bg: string;
-}
+const SOURCES = [
+  { emoji: "💳", name: "Stripe", desc: "Revenue & billing", color: "#635BFF" },
+  { emoji: "🗄️", name: "Supabase", desc: "3 app databases", color: "#3ECF8E" },
+  { emoji: "📊", name: "Datafast", desc: "Web analytics", color: "#6366f1" },
+  { emoji: "🔍", name: "Search Console", desc: "SEO & keywords", color: "#4285F4" },
+  { emoji: "📋", name: "Google Sheets", desc: "Creator tracking", color: "#0F9D58" },
+  { emoji: "📣", name: "Meta Ads", desc: "Ad performance", color: "#0081FB" },
+  { emoji: "🎬", name: "Apify", desc: "TikTok / IG data", color: "#FF7518" },
+  { emoji: "🏦", name: "Mercury", desc: "Banking & payouts", color: "#6D28D9" },
+  { emoji: "💻", name: "GitHub", desc: "Code & deploys", color: "#24292e" },
+  { emoji: "💬", name: "Telegram", desc: "Commands & alerts", color: "#2AABEE" },
+  { emoji: "🚀", name: "Vercel", desc: "Frontend hosting", color: "#000000" },
+];
 
-interface Agent {
-  emoji: string;
-  name: string;
-  accentColor: string;
-  services: Service[];
-}
-
-const AGENTS: Agent[] = [
-  {
-    emoji: "🤝",
-    name: "Sam",
-    accentColor: "#FF5A5F",
-    services: [
-      { name: "Telegram", color: "#fff", bg: "#2AABEE" },
-      { name: "All Agents", color: "#fff", bg: "#6b7280" },
-    ],
-  },
-  {
-    emoji: "🛠️",
-    name: "Devin",
-    accentColor: "#f59e0b",
-    services: [
-      { name: "GitHub", color: "#fff", bg: "#24292e" },
-      { name: "Vercel", color: "#fff", bg: "#000000" },
-      { name: "Supabase", color: "#fff", bg: "#3ECF8E" },
-    ],
-  },
-  {
-    emoji: "📊",
-    name: "Dana",
-    accentColor: "#3b82f6",
-    services: [
-      { name: "Supabase (3 DBs)", color: "#fff", bg: "#3ECF8E" },
-      { name: "Datafast", color: "#fff", bg: "#6366f1" },
-      { name: "Stripe", color: "#fff", bg: "#635BFF" },
-    ],
-  },
-  {
-    emoji: "🚀",
-    name: "Miles",
-    accentColor: "#10b981",
-    services: [
-      { name: "Google Search Console", color: "#fff", bg: "#4285F4" },
-      { name: "Datafast", color: "#fff", bg: "#6366f1" },
-    ],
-  },
-  {
-    emoji: "📣",
-    name: "Marco",
-    accentColor: "#8b5cf6",
-    services: [
-      { name: "Meta Ads API", color: "#fff", bg: "#0081FB" },
-      { name: "Supabase", color: "#fff", bg: "#3ECF8E" },
-    ],
-  },
-  {
-    emoji: "🎧",
-    name: "Cara",
-    accentColor: "#ec4899",
-    services: [
-      { name: "Stripe (3 accounts)", color: "#fff", bg: "#635BFF" },
-    ],
-  },
-  {
-    emoji: "📱",
-    name: "Mia",
-    accentColor: "#f97316",
-    services: [
-      { name: "Google Sheets", color: "#fff", bg: "#0F9D58" },
-      { name: "Apify (TikTok/IG)", color: "#fff", bg: "#FF7518" },
-    ],
-  },
-  {
-    emoji: "💰",
-    name: "Frankie",
-    accentColor: "#14b8a6",
-    services: [
-      { name: "Mercury Banking", color: "#fff", bg: "#6D28D9" },
-    ],
-  },
-  {
-    emoji: "📌",
-    name: "Penny",
-    accentColor: "#64748b",
-    services: [
-      { name: "GitHub", color: "#fff", bg: "#24292e" },
-      { name: "All Ops Files", color: "#fff", bg: "#6b7280" },
-    ],
-  },
-  {
-    emoji: "✍️",
-    name: "Jude",
-    accentColor: "#a78bfa",
-    services: [
-      { name: "Ghost CMS", color: "#fff", bg: "#15171A" },
-    ],
-  },
+const AGENTS = [
+  { emoji: "📊", name: "Dana", color: "#3b82f6", gets: "Revenue + analytics" },
+  { emoji: "🚀", name: "Miles", color: "#10b981", gets: "SEO + GEO signals" },
+  { emoji: "📣", name: "Marco", color: "#8b5cf6", gets: "Ad performance" },
+  { emoji: "🎧", name: "Cara", color: "#ec4899", gets: "Billing + support" },
+  { emoji: "📱", name: "Mia", color: "#f97316", gets: "Creator data" },
+  { emoji: "💰", name: "Frankie", color: "#14b8a6", gets: "Cash flow" },
+  { emoji: "🛠️", name: "Devin", color: "#f59e0b", gets: "Code + CI/CD" },
+  { emoji: "📌", name: "Penny", color: "#64748b", gets: "Ops hygiene" },
 ];
 
 export default function SlideA() {
@@ -118,60 +38,115 @@ export default function SlideA() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-10 py-8 gap-6">
+    <div className="flex flex-col h-full px-8 py-6 gap-4">
       {/* Heading */}
       <div
-        className="text-center transition-all duration-500"
-        style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)" }}
+        className="text-center flex-shrink-0"
+        style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.4s ease, transform 0.4s ease" }}
       >
-        <h2 className="text-5xl font-bold tracking-tight text-gray-900">
-          Under the hood
-        </h2>
-        <p className="mt-2 text-xl text-gray-500 font-medium">
-          Each agent is plugged into the tools it needs. Nothing more.
-        </p>
+        <h2 className="text-4xl font-bold tracking-tight text-gray-900">Under the hood</h2>
+        <p className="mt-1 text-lg text-gray-400 font-medium">Every data source connected. Each agent only sees what it needs.</p>
       </div>
 
-      {/* Agent grid — 2 columns */}
-      <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 w-full max-w-4xl">
-        {AGENTS.map((agent, i) => (
-          <div
-            key={agent.name}
-            className="flex items-center gap-3 transition-all duration-500"
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(-12px)",
-              transitionDelay: `${120 + i * 55}ms`,
-            }}
-          >
-            {/* Agent pill */}
-            <div
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg flex-shrink-0 min-w-[110px]"
-              style={{ background: `${agent.accentColor}18`, border: `1px solid ${agent.accentColor}30` }}
-            >
-              <span className="text-base leading-none">{agent.emoji}</span>
-              <span className="text-sm font-bold text-gray-800">{agent.name}</span>
-            </div>
+      {/* 3-column flow */}
+      <div className="flex items-center gap-4 flex-1 min-h-0">
 
-            {/* Arrow */}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2.5" strokeLinecap="round" className="flex-shrink-0">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-
-            {/* Service pills */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {agent.services.map((svc) => (
-                <span
-                  key={svc.name}
-                  className="text-[11px] font-semibold px-2.5 py-1 rounded-lg leading-none"
-                  style={{ background: svc.bg, color: svc.color }}
-                >
-                  {svc.name}
-                </span>
-              ))}
-            </div>
+        {/* Left: data sources */}
+        <div
+          className="flex-1 flex flex-col gap-2 min-h-0"
+          style={{ opacity: visible ? 1 : 0, transition: "opacity 0.5s ease 0.1s" }}
+        >
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest text-center mb-1">Data Sources</p>
+          <div className="grid grid-cols-2 gap-2">
+            {SOURCES.map((src, i) => (
+              <div
+                key={src.name}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-100 bg-white shadow-sm"
+                style={{
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateX(0)" : "translateX(-10px)",
+                  transition: "opacity 0.35s ease, transform 0.35s ease",
+                  transitionDelay: `${150 + i * 40}ms`,
+                }}
+              >
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm flex-shrink-0" style={{ background: `${src.color}18` }}>
+                  {src.emoji}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-gray-800 truncate">{src.name}</div>
+                  <div className="text-[10px] text-gray-400 truncate">{src.desc}</div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Center: OpenClaw hub */}
+        <div
+          className="flex flex-col items-center gap-3 flex-shrink-0"
+          style={{ opacity: visible ? 1 : 0, transition: "opacity 0.5s ease 0.3s" }}
+        >
+          {/* Arrow left */}
+          <div className="flex items-center gap-1 text-gray-300 text-sm font-medium">
+            <svg width="48" height="12" viewBox="0 0 48 12">
+              <line x1="0" y1="6" x2="40" y2="6" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,2"/>
+              <polygon points="40,2 48,6 40,10" fill="#d1d5db"/>
+            </svg>
+          </div>
+
+          {/* OpenClaw node */}
+          <div
+            className="flex flex-col items-center justify-center rounded-2xl px-6 py-5 shadow-lg text-center"
+            style={{ background: CORAL, minWidth: 110 }}
+          >
+            <div className="text-3xl mb-1">🦞</div>
+            <div className="text-white font-bold text-sm leading-tight">OpenClaw</div>
+            <div className="text-white/70 text-[10px] mt-0.5">the hub</div>
+          </div>
+
+          {/* Arrow right */}
+          <div className="flex items-center gap-1 text-gray-300">
+            <svg width="48" height="12" viewBox="0 0 48 12">
+              <line x1="0" y1="6" x2="40" y2="6" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,2"/>
+              <polygon points="40,2 48,6 40,10" fill="#d1d5db"/>
+            </svg>
+          </div>
+        </div>
+
+        {/* Right: agents */}
+        <div
+          className="flex-1 flex flex-col gap-2"
+          style={{ opacity: visible ? 1 : 0, transition: "opacity 0.5s ease 0.45s" }}
+        >
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest text-center mb-1">Agent Team</p>
+          <div className="flex flex-col gap-2">
+            {AGENTS.map((agent, i) => (
+              <div
+                key={agent.name}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-100 bg-white shadow-sm"
+                style={{
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateX(0)" : "translateX(10px)",
+                  transition: "opacity 0.35s ease, transform 0.35s ease",
+                  transitionDelay: `${300 + i * 40}ms`,
+                }}
+              >
+                <div
+                  className="w-7 h-7 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
+                  style={{ background: `${agent.color}18` }}
+                >
+                  {agent.emoji}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-gray-800">{agent.name}</div>
+                  <div className="text-[10px] text-gray-400 truncate">{agent.gets}</div>
+                </div>
+                <div className="ml-auto w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: agent.color }} />
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </div>
   );
