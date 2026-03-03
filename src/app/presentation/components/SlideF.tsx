@@ -4,44 +4,38 @@ import { useEffect, useState } from "react";
 
 const CORAL = "#FF5A5F";
 
-const CREATORS = [
+const VIDEOS = [
   {
-    name: "Riley Brown",
-    handle: "@rileybrown_ai",
-    color: "#f59e0b",
-    videos: [
-      {
-        id: "ISb0nrlNoKQ",
-        title: "Why Specialized Agents are Superior (How I Built an OpenClaw Superteam)",
-        views: "48K views",
-        duration: "18:16",
-      },
-      {
-        id: "Yt6imPC1FhA",
-        title: "OpenClaw Just Replaced 1,000 Hours of Video Editing Tutorials",
-        views: "53K views",
-        duration: "12:06",
-      },
-    ],
+    id: "ISb0nrlNoKQ",
+    title: "Why Specialized Agents are Superior",
+    creator: "Riley Brown",
+    views: "48K views",
+    duration: "18:16",
+    creatorColor: "#f59e0b",
   },
   {
-    name: "Greg Isenberg",
-    handle: "@gregisenberg",
-    color: "#6366f1",
-    videos: [
-      {
-        id: "i13XK-uUOLQ",
-        title: "Making $$$ with OpenClaw",
-        views: "138K views",
-        duration: "52:04",
-      },
-      {
-        id: "U8kXfk8enrY",
-        title: "Clawdbot/OpenClaw Clearly Explained (and how to use it)",
-        views: "317K views",
-        duration: "35:14",
-      },
-    ],
+    id: "i13XK-uUOLQ",
+    title: "Making $$$ with OpenClaw",
+    creator: "Greg Isenberg",
+    views: "138K views",
+    duration: "52:04",
+    creatorColor: "#6366f1",
+  },
+  {
+    id: "Yt6imPC1FhA",
+    title: "OpenClaw Replaced 1,000 Hours of Video Editing Tutorials",
+    creator: "Riley Brown",
+    views: "53K views",
+    duration: "12:06",
+    creatorColor: "#f59e0b",
+  },
+  {
+    id: "U8kXfk8enrY",
+    title: "Clawdbot/OpenClaw Clearly Explained",
+    creator: "Greg Isenberg",
+    views: "317K views",
+    duration: "35:14",
+    creatorColor: "#6366f1",
   },
 ];
 
@@ -54,95 +48,93 @@ export default function SlideF() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-8 py-8 gap-6">
+    <div className="flex flex-col h-full px-8 py-6 gap-4">
       {/* Heading */}
       <div
-        className="text-center transition-all duration-500"
-        style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)" }}
+        className="text-center flex-shrink-0"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(12px)",
+          transition: "opacity 0.4s ease, transform 0.4s ease",
+        }}
       >
-        <h2 className="text-5xl font-bold tracking-tight text-gray-900">
+        <h2 className="text-4xl font-bold tracking-tight text-gray-900">
           Learn from the best
         </h2>
-        <p className="mt-2 text-xl text-gray-500 font-medium">
+        <p className="mt-1 text-lg text-gray-400 font-medium">
           Real people building real things with OpenClaw.
         </p>
       </div>
 
-      {/* Two creator columns */}
-      <div className="flex gap-6 w-full max-w-4xl">
-        {CREATORS.map((creator, ci) => (
-          <div
-            key={ci}
-            className="flex-1 flex flex-col gap-3"
+      {/* 2×2 grid — thumbnails fill the space */}
+      <div className="grid grid-cols-2 gap-4 flex-1 min-h-0">
+        {VIDEOS.map((video, i) => (
+          <a
+            key={i}
+            href={`https://www.youtube.com/watch?v=${video.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow"
             style={{
               opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(20px)",
-              transition: "opacity 0.4s ease, transform 0.4s ease",
-              transitionDelay: `${180 + ci * 120}ms`,
+              transform: visible ? "scale(1)" : "scale(0.97)",
+              transition: "opacity 0.4s ease, transform 0.4s ease, box-shadow 0.2s ease",
+              transitionDelay: `${150 + i * 70}ms`,
             }}
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Creator header */}
-            <div className="flex items-center gap-2 px-1">
+            {/* Thumbnail fills the entire card */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
+              alt={video.title}
+              className="w-full h-full object-cover"
+            />
+
+            {/* Gradient overlay — always on at bottom */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 50%, rgba(0,0,0,0) 100%)",
+              }}
+            />
+
+            {/* Duration — top right */}
+            <span
+              className="absolute top-3 right-3 text-[11px] font-bold px-2 py-0.5 rounded-md"
+              style={{ background: "rgba(0,0,0,0.72)", color: "#fff" }}
+            >
+              {video.duration}
+            </span>
+
+            {/* Creator badge — top left */}
+            <span
+              className="absolute top-3 left-3 text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{ background: video.creatorColor, color: "#fff" }}
+            >
+              {video.creator}
+            </span>
+
+            {/* Play button — center, shows on hover */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <div
-                className="w-2 h-2 rounded-full flex-shrink-0"
-                style={{ background: creator.color }}
-              />
-              <span className="font-bold text-gray-900 text-sm">{creator.name}</span>
-              <span className="text-xs text-gray-400">{creator.handle}</span>
+                className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+                style={{ background: "rgba(255,255,255,0.92)" }}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill={CORAL}>
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+              </div>
             </div>
 
-            {/* Video cards */}
-            {creator.videos.map((video, vi) => (
-              <a
-                key={vi}
-                href={`https://www.youtube.com/watch?v=${video.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-white hover:shadow-md transition-shadow"
-                style={{
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(16px)",
-                  transition: "opacity 0.4s ease, transform 0.4s ease",
-                  transitionDelay: `${220 + ci * 120 + vi * 80}ms`,
-                }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Thumbnail */}
-                <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-                    alt={video.title}
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Duration badge */}
-                  <span
-                    className="absolute bottom-2 right-2 text-[10px] font-bold px-1.5 py-0.5 rounded"
-                    style={{ background: "rgba(0,0,0,0.8)", color: "#fff" }}
-                  >
-                    {video.duration}
-                  </span>
-                  {/* Play overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity" style={{ background: "rgba(0,0,0,0.2)" }}>
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.9)" }}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill={CORAL}>
-                        <polygon points="5,3 19,12 5,21" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Info */}
-                <div className="px-3 py-2.5 flex flex-col gap-1">
-                  <p className="text-xs font-semibold text-gray-800 leading-snug line-clamp-2">{video.title}</p>
-                  <span className="text-[10px] text-gray-400 font-medium">{video.views}</span>
-                </div>
-
-                {/* Accent bottom line */}
-                <div className="h-0.5 w-full" style={{ background: creator.color }} />
-              </a>
-            ))}
-          </div>
+            {/* Title + views — bottom */}
+            <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
+              <p className="text-sm font-semibold text-white leading-snug line-clamp-2 drop-shadow">
+                {video.title}
+              </p>
+              <p className="text-xs text-white/60 mt-0.5 font-medium">{video.views}</p>
+            </div>
+          </a>
         ))}
       </div>
     </div>
