@@ -7,6 +7,7 @@ const PUBLIC_PATHS = [
   "/_next/static",
   "/_next/image",
   "/favicon",
+  "/presentation",
 ];
 
 function isPublic(pathname: string): boolean {
