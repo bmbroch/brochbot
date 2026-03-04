@@ -54,7 +54,17 @@ export default function SlideC() {
   const [cards, setCards] = useState(INITIAL_CARDS);
   const [draggingIdx, setDraggingIdx] = useState<number | null>(null);
   const [overIdx, setOverIdx] = useState<number | null>(null);
+  const [completed, setCompleted] = useState<Set<string>>(new Set());
   const dragCard = useRef<number | null>(null);
+
+  const toggleComplete = (e: React.MouseEvent, title: string) => {
+    e.stopPropagation();
+    setCompleted(prev => {
+      const next = new Set(prev);
+      next.has(title) ? next.delete(title) : next.add(title);
+      return next;
+    });
+  };
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 80);
@@ -112,6 +122,7 @@ export default function SlideC() {
         {cards.map((card, i) => {
           const isDragging = draggingIdx === i;
           const isOver = overIdx === i && draggingIdx !== i;
+          const isDone = completed.has(card.title);
           return (
             <div
               key={card.title}
@@ -128,38 +139,69 @@ export default function SlideC() {
                   : visible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.97)",
                 transition: "opacity 0.3s ease, transform 0.2s ease",
                 transitionDelay: isDragging || isOver ? "0ms" : `${150 + i * 60}ms`,
-                background: "#fff",
-                border: isOver ? `2px solid ${card.color}` : "1.5px solid #e5e7eb",
-                boxShadow: isOver
-                  ? `0 8px 24px ${card.color}30`
-                  : "0 2px 8px rgba(0,0,0,0.04)",
+                background: isDone ? "#f0fdf4" : "#fff",
+                border: isDone
+                  ? "2px solid #22c55e"
+                  : isOver ? `2px solid ${card.color}` : "1.5px solid #e5e7eb",
+                boxShadow: isDone
+                  ? "0 4px 16px rgba(34,197,94,0.15)"
+                  : isOver ? `0 8px 24px ${card.color}30` : "0 2px 8px rgba(0,0,0,0.04)",
                 cursor: "grab",
               }}
             >
-              {/* Rank badge */}
-              <div
-                className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black text-white z-10 shadow-sm"
-                style={{ background: RANK_COLORS[i] }}
+              {/* Done overlay checkmark */}
+              {isDone && (
+                <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                  <div
+                    className="text-6xl opacity-10 font-black"
+                    style={{ color: "#16a34a", transform: "rotate(-15deg)" }}
+                  >
+                    ✓
+                  </div>
+                </div>
+              )}
+
+              {/* Rank / done badge */}
+              <button
+                className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black text-white z-10 shadow-sm transition-transform hover:scale-110 active:scale-95"
+                style={{ background: isDone ? "#22c55e" : RANK_COLORS[i], cursor: "pointer" }}
+                onClick={(e) => toggleComplete(e, card.title)}
+                title={isDone ? "Mark incomplete" : "Mark complete"}
               >
-                {i + 1}
-              </div>
+                {isDone ? "✓" : i + 1}
+              </button>
 
               {/* Color top bar */}
-              <div className="h-1.5 w-full flex-shrink-0" style={{ background: card.color }} />
+              <div
+                className="h-1.5 w-full flex-shrink-0 transition-all duration-300"
+                style={{ background: isDone ? "#22c55e" : card.color }}
+              />
 
               {/* Card body */}
               <div className="flex flex-col flex-1 px-5 pt-4 pb-4 gap-2.5">
                 <div className="flex items-center gap-2.5 pr-6">
-                  <span className="text-3xl leading-none">{card.emoji}</span>
-                  <h3 className="text-base font-bold text-gray-900 leading-tight">{card.title}</h3>
+                  <span className="text-3xl leading-none" style={{ opacity: isDone ? 0.5 : 1 }}>{card.emoji}</span>
+                  <h3
+                    className="text-base font-bold leading-tight transition-all duration-300"
+                    style={{
+                      color: isDone ? "#6b7280" : "#111827",
+                      textDecoration: isDone ? "line-through" : "none",
+                    }}
+                  >
+                    {card.title}
+                  </h3>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed flex-1">{card.desc}</p>
+                <p className="text-sm leading-relaxed flex-1 transition-colors duration-300" style={{ color: isDone ? "#9ca3af" : "#4b5563" }}>{card.desc}</p>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {card.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                      style={{ background: `${card.color}14`, color: card.color }}
+                      className="text-[10px] font-semibold px-2 py-0.5 rounded-full transition-opacity duration-300"
+                      style={{
+                        background: isDone ? "#f3f4f6" : `${card.color}14`,
+                        color: isDone ? "#9ca3af" : card.color,
+                        opacity: isDone ? 0.7 : 1,
+                      }}
                     >
                       {tag}
                     </span>
