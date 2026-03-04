@@ -5,18 +5,18 @@ import { useEffect, useState } from "react";
 const CORAL = "#FF5A5F";
 
 const FEATURES = [
-  { icon: "⏰", title: "Acts without being asked", file: "HEARTBEAT", color: "#10b981", desc: "Cron jobs + heartbeats. Reports fire at 6am. Bugs get flagged before you wake up." },
-  { icon: "🎯", title: "Each agent owns a domain", file: "agents/dana.md", color: "#f59e0b", desc: "Scoped, briefed, can't go rogue. Dana does data. Miles does SEO. No overlap." },
-  { icon: "🔧", title: "Skills are learnable", file: "SKILL.md", color: "#8b5cf6", desc: "New capability = drop in a file. Web scraping, YouTube, weather — all pluggable." },
-  { icon: "🔒", title: "Your server. Your data.", file: ".env", color: "#64748b", desc: "$6/mo VPS you own. Your API keys. No vendor lock-in. Delete the sub, keep the agents." },
+  { icon: "⏰", title: "Acts without being asked", color: "#10b981", desc: "Cron jobs fire at 6am. Bugs get flagged before you wake up. No prompting required." },
+  { icon: "🎯", title: "Each agent owns a domain", color: "#f59e0b", desc: "Dana does data. Miles does SEO. Scoped, briefed, can't go rogue." },
+  { icon: "🔧", title: "Skills are learnable", color: "#8b5cf6", desc: "New capability = drop in a file. Web scraping, YouTube, weather — all pluggable." },
+  { icon: "🔒", title: "Your server. Your data.", color: "#64748b", desc: "$6/mo VPS you own. No vendor lock-in. Delete the sub, keep the agents." },
 ];
 
 const LEADERBOARD = [
-  { rank: 1, name: "OpenClaw", desc: "The AI that actually does things", tokens: "360B", highlight: true },
-  { rank: 2, name: "Kilo Code", desc: "AI coding agent for VS Code", tokens: "178B", highlight: false },
-  { rank: 3, name: "BLACKBOXAI", desc: "AI agent for builders", tokens: "85.6B", highlight: false },
-  { rank: 4, name: "liteLLM", desc: "Open-source LLM library", tokens: "79.6B", highlight: false },
-  { rank: 5, name: "Claude Code", desc: "The AI for problem solvers", tokens: "39.6B", highlight: false },
+  { rank: 1, name: "OpenClaw", tokens: "360B", highlight: true },
+  { rank: 2, name: "Kilo Code", tokens: "178B", highlight: false },
+  { rank: 3, name: "BLACKBOXAI", tokens: "85.6B", highlight: false },
+  { rank: 4, name: "liteLLM", tokens: "79.6B", highlight: false },
+  { rank: 5, name: "Claude Code", tokens: "39.6B", highlight: false },
 ];
 
 export default function SlideH2() {
@@ -32,7 +32,7 @@ export default function SlideH2() {
   const maxTokens = 360;
 
   return (
-    <div className="flex flex-col h-full px-8 py-6 gap-4">
+    <div className="flex flex-col h-full px-8 py-6 gap-5">
       {/* Heading */}
       <div
         className="text-center flex-shrink-0"
@@ -42,14 +42,14 @@ export default function SlideH2() {
         <p className="mt-1 text-lg text-gray-400 font-medium">#1 most-used app on OpenRouter. 2× more tokens than #2.</p>
       </div>
 
-      <div className="flex gap-5 flex-1 min-h-0">
+      <div className="flex gap-6 flex-1 min-h-0">
 
-        {/* Left: features */}
-        <div className="flex flex-col gap-2.5 flex-1">
+        {/* Left: 2×2 feature grid */}
+        <div className="flex-1 grid grid-cols-2 gap-3">
           {FEATURES.map((f, i) => (
             <div
               key={i}
-              className="flex items-start gap-3 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm"
+              className="flex flex-col gap-3 bg-white border border-gray-100 rounded-2xl p-5 shadow-sm"
               style={{
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateX(0)" : "translateX(-12px)",
@@ -57,45 +57,45 @@ export default function SlideH2() {
                 transitionDelay: `${120 + i * 80}ms`,
               }}
             >
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center text-base flex-shrink-0 mt-0.5" style={{ background: `${f.color}15` }}>
-                {f.icon}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-sm font-bold text-gray-900">{f.title}</span>
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md font-mono" style={{ background: `${f.color}12`, color: f.color }}>{f.file}</span>
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                  style={{ background: `${f.color}15` }}
+                >
+                  {f.icon}
                 </div>
-                <p className="text-xs text-gray-500 mt-0.5 leading-snug">{f.desc}</p>
+                <h3 className="text-sm font-bold text-gray-900 leading-snug">{f.title}</h3>
               </div>
+              <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
 
         {/* Right: OpenRouter leaderboard */}
         <div
-          className="flex flex-col gap-2.5 flex-1"
+          className="flex flex-col gap-3 flex-1"
           style={{ opacity: visible ? 1 : 0, transform: visible ? "translateX(0)" : "translateX(12px)", transition: "opacity 0.5s ease 0.2s" }}
         >
           {/* Header */}
           <div className="flex items-center justify-between px-1">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-gray-900">OpenRouter — Top Apps</span>
-              <span className="text-[10px] text-gray-400 font-medium">by token usage today</span>
+            <div>
+              <span className="text-base font-bold text-gray-900">OpenRouter — Top Apps</span>
+              <span className="text-sm text-gray-400 ml-2">by token usage today</span>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: "#f0fdf4", color: "#16a34a" }}>🔴 Live</span>
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full" style={{ background: "#f0fdf4", color: "#16a34a" }}>🔴 Live</span>
           </div>
 
-          {/* Leaderboard */}
-          <div className="flex flex-col gap-2 flex-1">
+          {/* Rows */}
+          <div className="flex flex-col gap-2.5 flex-1">
             {LEADERBOARD.map((item, i) => {
               const pct = (parseFloat(item.tokens) / maxTokens) * 100;
               return (
                 <div
                   key={i}
-                  className="flex flex-col gap-1.5 rounded-2xl px-4 py-3 shadow-sm"
+                  className="flex flex-col gap-2 rounded-2xl px-5 py-3.5 shadow-sm"
                   style={{
                     background: item.highlight ? "#0d1117" : "#fff",
-                    border: item.highlight ? `1.5px solid ${CORAL}` : "1px solid #f3f4f6",
+                    border: item.highlight ? `2px solid ${CORAL}` : "1.5px solid #f3f4f6",
                     boxShadow: item.highlight ? `0 4px 20px ${CORAL}22` : undefined,
                     opacity: visible ? 1 : 0,
                     transform: visible ? "translateY(0)" : "translateY(8px)",
@@ -103,20 +103,23 @@ export default function SlideH2() {
                     transitionDelay: `${200 + i * 70}ms`,
                   }}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold w-4 flex-shrink-0" style={{ color: item.highlight ? "#6b7280" : "#9ca3af" }}>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-bold w-5 flex-shrink-0" style={{ color: item.highlight ? "#6b7280" : "#9ca3af" }}>
                       {item.rank}.
                     </span>
-                    <span className="text-sm font-bold flex-1" style={{ color: item.highlight ? "#fff" : "#111827" }}>
+                    <span className="text-base font-bold flex-1" style={{ color: item.highlight ? "#fff" : "#111827" }}>
                       {item.name}
-                      {item.highlight && <span className="ml-2 text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: CORAL, color: "#fff" }}>YOU ARE HERE</span>}
+                      {item.highlight && (
+                        <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full align-middle" style={{ background: CORAL, color: "#fff" }}>
+                          YOU ARE HERE
+                        </span>
+                      )}
                     </span>
-                    <span className="text-sm font-black flex-shrink-0" style={{ color: item.highlight ? CORAL : "#6b7280" }}>
+                    <span className="text-lg font-black flex-shrink-0" style={{ color: item.highlight ? CORAL : "#6b7280" }}>
                       {item.tokens}
                     </span>
                   </div>
-                  {/* Bar */}
-                  <div className="h-1 w-full rounded-full overflow-hidden" style={{ background: item.highlight ? "#30363d" : "#f3f4f6" }}>
+                  <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ background: item.highlight ? "#30363d" : "#f3f4f6" }}>
                     <div
                       className="h-full rounded-full transition-all duration-700"
                       style={{
