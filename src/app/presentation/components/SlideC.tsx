@@ -4,31 +4,31 @@ import { useEffect, useState } from "react";
 
 const CARDS = [
   {
-    emoji: "📈",
-    title: "Connect Google Ads to OpenClaw",
-    desc: "Hook up the Google Ads API so an agent can monitor spend, flag underperforming campaigns, and report back daily — no dashboard required.",
-    tags: ["ads", "api", "automation"],
-    color: "#FF5A5F",
+    emoji: "💼",
+    title: "LinkedIn Post Generator",
+    desc: "Agent reads your daily work log, drafts 3 post options in different tones, and pings you on Telegram each evening. You pick one and post. Consistent content without the effort.",
+    tags: ["content", "linkedin", "daily"],
+    color: "#0077b5",
   },
   {
-    emoji: "🌊",
-    title: "WiFi Tribe Trip Alerts",
-    desc: "Scrape wifitribe.com with Brave API or a script. Auto-ping me when any trip shows 'low on spots' before it sells out.",
-    tags: ["scraping", "automation", "travel"],
+    emoji: "🤖",
+    title: "AI Search Monitor",
+    desc: "Ask ChatGPT, Perplexity, and Claude 'what's the best tool for X?' every week. Track whether your product shows up, what competitors they recommend, and how the answers shift over time.",
+    tags: ["GEO", "AI search", "competitive"],
     color: "#6366f1",
   },
   {
-    emoji: "🍕",
-    title: "Vibe Code a Client Website",
-    desc: "Pick a local business. Build them a website with their menu in 10 minutes. Walk in and pitch $20/month to run it.",
-    tags: ["freelance", "vibe coding", "hustle"],
+    emoji: "🕵️",
+    title: "Competitor Price Stalker",
+    desc: "Agent monitors your top 3 competitors' pricing pages. The second anything changes — a price, a tier, a new feature — you get a Telegram alert with a before/after diff.",
+    tags: ["scraping", "automation", "competitive"],
     color: "#f59e0b",
   },
   {
-    emoji: "📧",
-    title: "Live Customer Support",
-    desc: "I got an email from a customer earlier today. Let's handle it together — AI-assisted, start to finish.",
-    tags: ["support", "email", "real work"],
+    emoji: "⚠️",
+    title: "Churn Early Warning",
+    desc: "Query your database weekly for users who were active then suddenly went quiet. Agent drafts a personal check-in message for each one. Catch them before they cancel.",
+    tags: ["retention", "saas", "revenue"],
     color: "#10b981",
   },
 ];
@@ -84,7 +84,7 @@ export default function SlideC() {
               </div>
 
               {/* Description */}
-              <p className="text-sm text-gray-500 leading-relaxed flex-1">
+              <p className="text-sm text-gray-600 leading-relaxed flex-1">
                 {card.desc}
               </p>
 
