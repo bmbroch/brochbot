@@ -116,6 +116,7 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
     { href: "/ops", label: "Surveillance", icon: "📡" },
     { href: "/usage", label: "Usage", icon: "📊" },
     { href: "/health", label: "Health", icon: "🩺" },
+    { href: "/wifitribe", label: "WiFi Tribe", icon: "🌍" },
   ];
 
   async function handleLogout() {
