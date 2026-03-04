@@ -32,7 +32,7 @@ export default function SlideH2() {
   const maxTokens = 360;
 
   return (
-    <div className="flex flex-col h-full px-8 py-6 gap-5">
+    <div className="flex flex-col h-full px-8 py-6 gap-5" style={{ background: "#f1f5f9" }}>
       {/* Heading */}
       <div
         className="text-center flex-shrink-0"
@@ -49,7 +49,8 @@ export default function SlideH2() {
           {FEATURES.map((f, i) => (
             <div
               key={i}
-              className="flex flex-col gap-3 bg-white border border-gray-100 rounded-2xl p-5 shadow-sm"
+              className="flex flex-col gap-3 bg-white rounded-2xl p-5"
+              style={{ border: "1.5px solid #e2e8f0", boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}
               style={{
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateX(0)" : "translateX(-12px)",
@@ -95,8 +96,8 @@ export default function SlideH2() {
                   className="flex flex-col gap-2 rounded-2xl px-5 py-3.5 shadow-sm"
                   style={{
                     background: item.highlight ? "#0d1117" : "#fff",
-                    border: item.highlight ? `2px solid ${CORAL}` : "1.5px solid #f3f4f6",
-                    boxShadow: item.highlight ? `0 4px 20px ${CORAL}22` : undefined,
+                    border: item.highlight ? `2px solid ${CORAL}` : "1.5px solid #e2e8f0",
+                    boxShadow: item.highlight ? `0 4px 20px ${CORAL}22` : "0 1px 6px rgba(0,0,0,0.06)",
                     opacity: visible ? 1 : 0,
                     transform: visible ? "translateY(0)" : "translateY(8px)",
                     transition: "opacity 0.4s ease, transform 0.4s ease",
@@ -119,7 +120,7 @@ export default function SlideH2() {
                       {item.tokens}
                     </span>
                   </div>
-                  <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ background: item.highlight ? "#30363d" : "#f3f4f6" }}>
+                  <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ background: item.highlight ? "#30363d" : "#e2e8f0" }}>
                     <div
                       className="h-full rounded-full transition-all duration-700"
                       style={{
