@@ -50,8 +50,9 @@ export default function SlideH2() {
             <div
               key={i}
               className="flex flex-col gap-3 bg-white rounded-2xl p-5"
-              style={{ border: "1.5px solid #e2e8f0", boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}
               style={{
+                border: "1.5px solid #e2e8f0",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateX(0)" : "translateX(-12px)",
                 transition: "opacity 0.4s ease, transform 0.4s ease",
