@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 const CARDS = [
   {
     emoji: "📈",
-    title: "Fix My Google Ads",
-    desc: "Connect Google Ads API and find out why my customer acquisition cost sucks — then fix it.",
-    tags: ["ads", "api", "growth"],
+    title: "Connect Google Ads to OpenClaw",
+    desc: "Hook up the Google Ads API so an agent can monitor spend, flag underperforming campaigns, and report back daily — no dashboard required.",
+    tags: ["ads", "api", "automation"],
     color: "#FF5A5F",
   },
   {
