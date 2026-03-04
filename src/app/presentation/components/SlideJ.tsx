@@ -8,7 +8,7 @@ const LLM_ITEMS = [
   { icon: "✅", text: "Reasons, writes, plans", positive: true },
   { icon: "✅", text: "Understands complex instructions", positive: true },
   { icon: "✅", text: "Knows almost everything (to training cutoff)", positive: true },
-  { icon: "❌", text: "No memory between sessions", positive: false },
+  { icon: "❌", text: "Reactive only — waits to be prompted", positive: false },
   { icon: "❌", text: "Can't take actions", positive: false },
   { icon: "❌", text: "No tools, no files, no channels", positive: false },
   { icon: "❌", text: "Lives and dies in a single API call", positive: false },
