@@ -17,11 +17,12 @@ import SlideF from "./components/SlideF";
 import SlideH from "./components/SlideH";
 import SlideH2 from "./components/SlideH2";
 import SlideI from "./components/SlideI";
+import SlideJ from "./components/SlideJ";
 
 const CORAL = "#FF5A5F";
-const TOTAL = 16;
+const TOTAL = 17;
 
-const SLIDES = [Slide1, Slide2, Slide3, Slide4, SlideH, SlideH2, SlideI, Slide5, Slide6, Slide7, SlideA, SlideB, SlideC, SlideF, SlideE, SlideD];
+const SLIDES = [Slide1, Slide2, Slide3, Slide4, SlideH, SlideH2, SlideJ, SlideI, Slide5, Slide6, Slide7, SlideA, SlideB, SlideC, SlideF, SlideE, SlideD];
 
 const SLIDE_META = [
   { emoji: "💬", title: "It started with a text" },
@@ -30,6 +31,7 @@ const SLIDE_META = [
   { emoji: "⚙️", title: "How it all works" },
   { emoji: "📜", title: "It thinks like a person" },
   { emoji: "⏰", title: "Built for autonomy" },
+  { emoji: "🧠", title: "Brain meets spine" },
   { emoji: "⭐", title: "Most starred on GitHub" },
   { emoji: "🤝", title: "Meet the team" },
   { emoji: "🎬", title: "Agents in action" },
