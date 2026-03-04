@@ -57,9 +57,10 @@ export default function SlideF() {
         {CREATORS.map((c, ci) => (
           <div
             key={ci}
-            className="flex-1 flex flex-col rounded-2xl overflow-hidden shadow-lg bg-white"
+            className="flex-1 flex flex-col rounded-2xl shadow-lg bg-white"
             style={{
               border: "1px solid #e5e7eb",
+              overflow: "visible",
               opacity: visible ? 1 : 0,
               transform: visible ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.45s ease, transform 0.45s ease",
@@ -67,34 +68,36 @@ export default function SlideF() {
             }}
           >
             {/* ── Banner: blurred video thumbnail ── */}
-            <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 110 }}>
-              {/* Blurred bg */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`https://img.youtube.com/vi/${c.bannerVideoId}/maxresdefault.jpg`}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{ filter: "blur(6px) brightness(0.55) saturate(1.3)", transform: "scale(1.08)" }}
-              />
-              {/* Gradient overlay so bottom fades into white */}
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%)" }} />
+            <div className="relative flex-shrink-0" style={{ height: 110 }}>
+              {/* Inner wrapper clips image to rounded top corners only */}
+              <div className="absolute inset-0 rounded-t-2xl overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`https://img.youtube.com/vi/${c.bannerVideoId}/maxresdefault.jpg`}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ filter: "blur(6px) brightness(0.55) saturate(1.3)", transform: "scale(1.08)" }}
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%)" }} />
+              </div>
 
               {/* Subscribe button */}
               <a
                 href={c.channelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute top-3 right-3 text-xs font-bold px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
+                className="absolute top-3 right-3 text-xs font-bold px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity z-10"
                 style={{ background: "#fff", color: "#111" }}
                 onClick={(e) => e.stopPropagation()}
               >
                 Subscribe
               </a>
 
-              {/* Avatar — bottom-left, overlapping */}
+              {/* Avatar — overflows banner, not clipped */}
               <div
-                className="absolute rounded-full overflow-hidden"
-                style={{ width: 62, height: 62, bottom: -22, left: 18, border: "3px solid #fff", boxShadow: "0 2px 12px rgba(0,0,0,0.25)" }}
+                className="absolute rounded-full overflow-hidden z-10"
+                style={{ width: 62, height: 62, bottom: -24, left: 18, border: "3px solid #fff", boxShadow: "0 2px 12px rgba(0,0,0,0.25)" }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={c.avatar} alt={c.name} className="w-full h-full object-cover" />
