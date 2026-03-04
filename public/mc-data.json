@@ -1,29 +1,17 @@
 {
-  "lastUpdated": "2026-03-04T07:15:53Z",
+  "lastUpdated": "2026-03-04T10:00:01Z",
   "activities": [
     {
-      "id": "s-2b6f3f5d",
+      "id": "s-69d2f37e",
       "agent": "sam",
-      "title": "2b6f3f5d-e78",
-      "description": "**New slide: SlideJ.tsx**",
+      "title": "69d2f37e-480",
+      "description": "**Purpose:** A personal monitoring page for Ben tracking upcoming WiFi Tribe trips. WiFi Tribe (wifitribe.co) is a digital nomad community that runs month-long \"chapters\" (coliving/coworking trips) ar",
       "status": "success",
-      "date": "2026-03-04T07:15:43.760Z",
-      "tokens": 31238,
-      "cost": 0.0539,
+      "date": "2026-03-04T09:36:02.439Z",
+      "tokens": 328227,
+      "cost": 0.2801,
       "model": "Sonnet",
-      "durationSec": 5
-    },
-    {
-      "id": "s-7b26f3ef",
-      "agent": "sam",
-      "title": "7b26f3ef-b03",
-      "description": "**Bug:** Duration Analysis only shows 1-2 buckets with very low avg views. Root cause: most videos in Supabase have `duration: undefined` because the merge functions don't update duration for existing",
-      "status": "success",
-      "date": "2026-03-04T06:17:56.358Z",
-      "tokens": 200238,
-      "cost": 0.1688,
-      "model": "Sonnet",
-      "durationSec": 130
+      "durationSec": 143
     },
     {
       "id": "s-45836b28",
@@ -32,10 +20,10 @@
       "description": "[media attached: /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a913f46d.jpg (image/jpeg) | /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a91",
       "status": "success",
       "date": "2026-03-04T06:15:23.941Z",
-      "tokens": 1897068,
-      "cost": 1.1359,
+      "tokens": 19204978,
+      "cost": 17.6658,
       "model": "Sonnet",
-      "durationSec": 3628
+      "durationSec": 13288
     },
     {
       "id": "s-f23e22de",
@@ -92,10 +80,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-03-03T18:18:41.589Z",
-      "tokens": 15562887,
-      "cost": 9.8055,
+      "tokens": 22231344,
+      "cost": 15.7892,
       "model": "unknown",
-      "durationSec": 46631
+      "durationSec": 55881
     },
     {
       "id": "s-429b76e4",
@@ -800,10 +788,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 80710542,
-      "cost": 73.0763,
+      "tokens": 81619412,
+      "cost": 74.6228,
       "model": "Sonnet",
-      "durationSec": 760573
+      "durationSec": 775111
     },
     {
       "id": "s-5423ca5a",
@@ -1064,10 +1052,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T18:28:22.953Z",
-      "tokens": 2591900,
-      "cost": 5.1444,
+      "tokens": 3142610,
+      "cost": 5.624,
       "model": "Opus",
-      "durationSec": 1078349
+      "durationSec": 1092018
     },
     {
       "id": "s-aae63345",
@@ -1711,7 +1699,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-03-04T07:15:43.760Z",
+      "lastActive": "2026-03-04T09:36:02.439Z",
       "statusText": ""
     }
   },
@@ -1726,7 +1714,7 @@
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
       "notes": "Supabase-only sync (no git push). Activity-ping handles real-time MC updates.",
-      "lastRunAt": "2026-03-04T07:15:53Z"
+      "lastRunAt": "2026-03-04T10:00:01Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -1771,6 +1759,13 @@
       "script": "scripts/health-snapshot.sh",
       "log": "ops/health-snapshot.log",
       "lastRunAt": "2026-03-04T07:11:37Z"
+    },
+    {
+      "schedule": "0 7 * * *",
+      "script": "wifitribe-scraper.sh",
+      "description": "WiFi Tribe calendar monitor \u2014 diffs wifitribe.co/calendar/, alerts Sam group on changes",
+      "timezone": "UTC (7 AM = 9 AM CAT)",
+      "lastRunAt": null
     }
   ]
 }

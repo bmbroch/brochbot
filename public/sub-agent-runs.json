@@ -41,9 +41,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 80710542,
-    "cost": 73.0763,
-    "durationSec": 760573,
+    "tokens": 81619412,
+    "cost": 74.6228,
+    "durationSec": 775111,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -60,6 +60,30 @@
     "timestamp": "2026-02-20T17:25:43.608Z"
   },
   {
+    "id": "b221e10c-1e63-4b4c-aae1-9ca4a7dfbb17",
+    "label": "b221e10c-1e6",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "unknown",
+    "tokens": 22231344,
+    "cost": 15.7892,
+    "durationSec": 55881,
+    "status": "success",
+    "timestamp": "2026-03-03T18:18:41.589Z"
+  },
+  {
+    "id": "45836b28-acbe-42b4-a4e5-1e51c6144460",
+    "label": "45836b28-acb",
+    "agent": "sam",
+    "task": "[media attached: /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a913f46d.jpg (image/jpeg) | /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a91",
+    "model": "Sonnet",
+    "tokens": 19204978,
+    "cost": 17.6658,
+    "durationSec": 13288,
+    "status": "success",
+    "timestamp": "2026-03-04T06:15:23.941Z"
+  },
+  {
     "id": "0a558919-6ca7-4236-a577-7650f818546b",
     "label": "0a558919-6ca",
     "agent": "sam",
@@ -70,18 +94,6 @@
     "durationSec": 695036,
     "status": "success",
     "timestamp": "2026-02-23T10:40:05.669Z"
-  },
-  {
-    "id": "b221e10c-1e63-4b4c-aae1-9ca4a7dfbb17",
-    "label": "b221e10c-1e6",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "unknown",
-    "tokens": 15562887,
-    "cost": 9.8055,
-    "durationSec": 46631,
-    "status": "success",
-    "timestamp": "2026-03-03T18:18:41.589Z"
   },
   {
     "id": "4f751fcb-efc9-4014-ac52-3ccc00f3bf50",
@@ -125,23 +137,11 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 2591900,
-    "cost": 5.1444,
-    "durationSec": 1078349,
+    "tokens": 3142610,
+    "cost": 5.624,
+    "durationSec": 1092018,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
-  },
-  {
-    "id": "45836b28-acbe-42b4-a4e5-1e51c6144460",
-    "label": "45836b28-acb",
-    "agent": "sam",
-    "task": "[media attached: /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a913f46d.jpg (image/jpeg) | /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a91",
-    "model": "Sonnet",
-    "tokens": 1897068,
-    "cost": 1.1359,
-    "durationSec": 3628,
-    "status": "success",
-    "timestamp": "2026-03-04T06:15:23.941Z"
   },
   {
     "id": "95a02d1a-5132-4647-b35e-9b6f1b98ca0b",
@@ -456,6 +456,18 @@
     "timestamp": "2026-03-03T06:01:00.603Z"
   },
   {
+    "id": "69d2f37e-480b-4290-8381-bb7654ca578c",
+    "label": "69d2f37e-480",
+    "agent": "sam",
+    "task": "**Purpose:** A personal monitoring page for Ben tracking upcoming WiFi Tribe trips. WiFi Tribe (wifitribe.co) is a digital nomad community that runs month-long \"chapters\" (coliving/coworking trips) ar",
+    "model": "Sonnet",
+    "tokens": 328227,
+    "cost": 0.2801,
+    "durationSec": 143,
+    "status": "success",
+    "timestamp": "2026-03-04T09:36:02.439Z"
+  },
+  {
     "id": "81b9b199-e8c0-43e8-a75e-24ebf5f25b8a",
     "label": "81b9b199-e8c",
     "agent": "sam",
@@ -622,18 +634,6 @@
     "durationSec": 72,
     "status": "success",
     "timestamp": "2026-02-25T05:30:00.183Z"
-  },
-  {
-    "id": "7b26f3ef-b032-489f-989f-c00897f115f2",
-    "label": "7b26f3ef-b03",
-    "agent": "sam",
-    "task": "**Bug:** Duration Analysis only shows 1-2 buckets with very low avg views. Root cause: most videos in Supabase have `duration: undefined` because the merge functions don't update duration for existing",
-    "model": "Sonnet",
-    "tokens": 200238,
-    "cost": 0.1688,
-    "durationSec": 130,
-    "status": "success",
-    "timestamp": "2026-03-04T06:17:56.358Z"
   },
   {
     "id": "a2675bfe-fc0e-4764-b276-c45ca87acc21",
@@ -1102,18 +1102,6 @@
     "durationSec": 17,
     "status": "success",
     "timestamp": "2026-02-19T11:52:45.805Z"
-  },
-  {
-    "id": "2b6f3f5d-e78c-4f9a-9d7e-00fb41c1ab24",
-    "label": "2b6f3f5d-e78",
-    "agent": "sam",
-    "task": "**New slide: SlideJ.tsx**",
-    "model": "Sonnet",
-    "tokens": 31238,
-    "cost": 0.0539,
-    "durationSec": 5,
-    "status": "success",
-    "timestamp": "2026-03-04T07:15:43.760Z"
   },
   {
     "id": "dc7287f0-d368-45be-bb99-59e115f1ebd8",
