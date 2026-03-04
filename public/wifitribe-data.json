@@ -1,0 +1,351 @@
+{
+  "lastScraped": "2026-03-04T09:33:00Z",
+  "sourceUrl": "https://wifitribe.co/calendar/",
+  "totalTrips": 42,
+  "sections": [
+    {
+      "dateRange": "Feb 25 - Mar 4, 2026",
+      "trips": [
+        {
+          "name": "Ski Week Nozawa Onsen",
+          "url": "https://wifitribe.co/unplugged-ski-week-nozawa-onsen/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "Mar 20 - Apr 17, 2026",
+      "trips": [
+        {
+          "name": "Colombia Medellin",
+          "url": "https://wifitribe.co/colombia-medellin/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "South Africa Cape Town",
+          "url": "https://wifitribe.co/chapter-south-africa-cape-town-hout-bay/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Argentina Buenos Aires",
+          "url": "https://wifitribe.co/argentina-buenos-aires/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Australia Melbourne",
+          "url": "https://wifitribe.co/chapter-australia-melbourne/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "Apr 24 - May 22, 2026",
+      "trips": [
+        {
+          "name": "Italy Gizzeria",
+          "url": "https://wifitribe.co/chapter-gizzeria-italy/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Spain Valencia",
+          "url": "https://wifitribe.co/spain-valencia/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Seychelles",
+          "url": "https://wifitribe.co/chapter-seychelles-anse-royale/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Guatemala Antigua",
+          "url": "https://wifitribe.co/guatemala-antigua/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "May 29 - Jun 26, 2026",
+      "trips": [
+        {
+          "name": "Georgia Tbilisi",
+          "url": "https://wifitribe.co/chapter-georgia-tbilisi/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Spain Valencia",
+          "url": "https://wifitribe.co/spain-valencia/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Japan Kyoto",
+          "url": "https://wifitribe.co/japan-kyoto/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Turkey Istanbul",
+          "url": "https://wifitribe.co/turkey-istanbul/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Finland Helsinki",
+          "url": "https://wifitribe.co/chapter-finland-helsinki",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "La Paz",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=05lapaz",
+          "isTypeform": true,
+          "isAnnounced": false
+        }
+      ]
+    },
+    {
+      "dateRange": "Jul 3 - Jul 31, 2026",
+      "trips": [
+        {
+          "name": "Ireland Cork",
+          "url": "https://wifitribe.co/chapter-ireland-cork/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Norway Molde",
+          "url": "https://wifitribe.co/chapter-norway-molde/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Porto Portugal",
+          "url": "https://wifitribe.co/chapter-porto-portugal/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Grimentz Switzerland",
+          "url": "https://wifitribe.co/colive-grimentz-switzerland/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "Jul 10 - Aug 7, 2026",
+      "trips": [
+        {
+          "name": "Scotland Edinburgh",
+          "url": "https://wifitribe.co/scotland-edinburgh/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "Aug 6 - Sep 5, 2026",
+      "trips": [
+        {
+          "name": "Tromso Norway",
+          "url": "https://wifitribe.co/chapter-tromso-norway/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "Aug 7 - Sep 4, 2026",
+      "trips": [
+        {
+          "name": "Gran Canaria Agaete",
+          "url": "https://wifitribe.co/gran-canaria-agaete/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "North Macedonia Lake Ohrid",
+          "url": "https://wifitribe.co/chapter-north-macedonia-lake-ohrid/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "Aug 8 - Aug 29, 2026",
+      "trips": [
+        {
+          "name": "Edinburgh Scotland Fringe",
+          "url": "https://wifitribe.co/chapter-edinburgh-scotland-fringe/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "Sep 11 - Oct 9, 2026",
+      "trips": [
+        {
+          "name": "Panama Bocas del Toro",
+          "url": "https://wifitribe.co/chapter-bocas-del-toro-panama/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Greece Paros",
+          "url": "https://wifitribe.co/chapter-greece-paros/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Seychelles",
+          "url": "https://wifitribe.co/chapter-seychelles-anse-royale/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Biarritz",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=08biarritz",
+          "isTypeform": true,
+          "isAnnounced": false
+        },
+        {
+          "name": "Azores Sao Miguel",
+          "url": "https://wifitribe.co/chapter-the-azores-sao-miguel/",
+          "isTypeform": false,
+          "isAnnounced": true
+        },
+        {
+          "name": "Cusco",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=08cusco",
+          "isTypeform": true,
+          "isAnnounced": false
+        }
+      ]
+    },
+    {
+      "dateRange": "Oct 16 - Nov 13, 2026",
+      "trips": [
+        {
+          "name": "Oaxaca",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=09oaxaca",
+          "isTypeform": true,
+          "isAnnounced": false
+        },
+        {
+          "name": "Zanzibar",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=09zanzibar",
+          "isTypeform": true,
+          "isAnnounced": false
+        },
+        {
+          "name": "Japanese Islands",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=09japaneseislands",
+          "isTypeform": true,
+          "isAnnounced": false
+        },
+        {
+          "name": "Sri Lanka",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=09srilanka",
+          "isTypeform": true,
+          "isAnnounced": false
+        }
+      ]
+    },
+    {
+      "dateRange": "Oct 23 - Nov 20, 2026",
+      "trips": [
+        {
+          "name": "Costa Rica Santa Teresa",
+          "url": "https://wifitribe.co/costa-rica-santa-teresa/",
+          "isTypeform": false,
+          "isAnnounced": true
+        }
+      ]
+    },
+    {
+      "dateRange": "Nov 20 - Dec 18, 2026",
+      "trips": [
+        {
+          "name": "Cape Town",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=010capetown",
+          "isTypeform": true,
+          "isAnnounced": false
+        }
+      ]
+    },
+    {
+      "dateRange": "Jan 7 - Feb 6, 2027",
+      "trips": [
+        {
+          "name": "Cape Town",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=01capetown",
+          "isTypeform": true,
+          "isAnnounced": false
+        },
+        {
+          "name": "San Juan del Sur",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=01sanjuandelsur",
+          "isTypeform": true,
+          "isAnnounced": false
+        },
+        {
+          "name": "Oman",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=01oman",
+          "isTypeform": true,
+          "isAnnounced": false
+        }
+      ]
+    },
+    {
+      "dateRange": "Feb 11 - Mar 13, 2027",
+      "trips": [
+        {
+          "name": "Cape Town",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=02capetown",
+          "isTypeform": true,
+          "isAnnounced": false
+        }
+      ]
+    },
+    {
+      "dateRange": "Mar 18 - Apr 17, 2027",
+      "trips": [
+        {
+          "name": "Cape Town",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=03capetown",
+          "isTypeform": true,
+          "isAnnounced": false
+        }
+      ]
+    },
+    {
+      "dateRange": "Apr 23 - May 21, 2027",
+      "trips": [
+        {
+          "name": "Istanbul",
+          "url": "https://wifitribe.typeform.com/to/bKywykMZ#trip=04istanbul",
+          "isTypeform": true,
+          "isAnnounced": false
+        }
+      ]
+    }
+  ],
+  "changeLog": [
+    {
+      "date": "2026-03-04T09:33:00Z",
+      "type": "initial",
+      "message": "Initial snapshot captured \u2014 42 trips across 17 date ranges"
+    }
+  ]
+}
