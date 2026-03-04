@@ -18,11 +18,12 @@ import SlideH from "./components/SlideH";
 import SlideH2 from "./components/SlideH2";
 import SlideI from "./components/SlideI";
 import SlideJ from "./components/SlideJ";
+import SlideEnd from "./components/SlideEnd";
 
 const CORAL = "#FF5A5F";
-const TOTAL = 17;
+const TOTAL = 18;
 
-const SLIDES = [Slide1, Slide2, Slide3, Slide4, SlideH, SlideH2, SlideJ, SlideI, Slide5, Slide6, Slide7, SlideA, SlideB, SlideC, SlideF, SlideE, SlideD];
+const SLIDES = [Slide1, Slide2, Slide3, Slide4, SlideH, SlideH2, SlideJ, SlideI, Slide5, Slide6, Slide7, SlideA, SlideB, SlideC, SlideF, SlideE, SlideD, SlideEnd];
 
 const SLIDE_META = [
   { emoji: "💬", title: "It started with a text" },
@@ -42,6 +43,7 @@ const SLIDE_META = [
   { emoji: "▶️", title: "Go deeper" },
   { emoji: "🚀", title: "Get started tonight" },
   { emoji: "🔒", title: "Lock it down" },
+  { emoji: "🦞", title: "That's a wrap" },
 ];
 
 function ChevronLeft({ size = 28 }: { size?: number }) {
