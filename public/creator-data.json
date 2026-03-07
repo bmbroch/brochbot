@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-05T23:30:01Z",
+  "lastUpdated": "2026-03-06T23:30:02Z",
   "abby": {
     "name": "Abby",
     "startDate": "2026-01-08",
@@ -1424,9 +1424,9 @@
     "igViews": 1701498,
     "posts": 189,
     "avgPerPost": 11116,
-    "earnings": 3400.0,
-    "paymentCount": 25,
-    "lastPaidAt": "2026-03-02",
+    "earnings": 3700.0,
+    "paymentCount": 26,
+    "lastPaidAt": "2026-03-05",
     "posts_detail": [
       {
         "date": "2026-03-02",
@@ -3581,12 +3581,12 @@
     "name": "Sophie",
     "startDate": "2026-02-12",
     "ttViews": 2556,
-    "igViews": 233194,
+    "igViews": 244665,
     "posts": 18,
-    "avgPerPost": 13097,
-    "earnings": 355.0,
-    "paymentCount": 4,
-    "lastPaidAt": "2026-03-04",
+    "avgPerPost": 13734,
+    "earnings": 370.0,
+    "paymentCount": 5,
+    "lastPaidAt": "2026-03-06",
     "posts_detail": [
       {
         "date": "2026-02-27",
@@ -3668,7 +3668,7 @@
       {
         "date": "2026-02-18",
         "platform": "instagram",
-        "views": 6729,
+        "views": 18200,
         "url": "https://www.instagram.com/reel/DU3gfLBkm_c/",
         "title": null
       },
