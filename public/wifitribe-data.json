@@ -1,5 +1,5 @@
 {
-  "lastScraped": "2026-03-06T07:00:36Z",
+  "lastScraped": "2026-03-07T07:00:38Z",
   "sourceUrl": "https://wifitribe.co/calendar/",
   "totalTrips": 26,
   "trips": [
@@ -8,7 +8,7 @@
       "name": "Medellin",
       "url": "https://wifitribe.co/colombia-medellin/",
       "dates": "March 20 - April 17, 2026",
-      "availability": "Limited Spots"
+      "availability": "Last Spots"
     },
     {
       "id": "https://wifitribe.co/chapter-south-africa-cape-town-hout-bay/|March 20 - April 17, 2026",
@@ -64,7 +64,7 @@
       "name": "Seychelles Anse Royale",
       "url": "https://wifitribe.co/chapter-seychelles-anse-royale/",
       "dates": "Sept 11 - Oct 09, 2026",
-      "availability": "Last Spots"
+      "availability": "Open"
     },
     {
       "id": "https://wifitribe.co/guatemala-antigua/|April 24 - May 22, 2026",
@@ -187,6 +187,14 @@
     }
   ],
   "changeLog": [
+    {
+      "date": "2026-03-07T07:00:38Z",
+      "type": "availability_update",
+      "changes": [
+        "CHANGED|Medellin|March 20 - April 17, 2026|Limited Spots|Last Spots|https://wifitribe.co/colombia-medellin/",
+        "CHANGED|Seychelles Anse Royale|Sept 11 - Oct 09, 2026|Last Spots|Open|https://wifitribe.co/chapter-seychelles-anse-royale/"
+      ]
+    },
     {
       "date": "2026-03-04T09:56:33Z",
       "type": "availability_update",
