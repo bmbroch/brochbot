@@ -1,10 +1,58 @@
 {
-  "lastUpdated": "2026-03-07T10:00:02Z",
+  "lastUpdated": "2026-03-08T10:00:02Z",
   "activities": [
     {
-      "id": "s-0b494d0b",
+      "id": "s-5fefc14b",
       "agent": "dana",
       "title": "Morning Analytics Report",
+      "description": "You're Dana \ud83d\udcca, Data Analyst.",
+      "status": "success",
+      "date": "2026-03-08T06:00:00.084Z",
+      "tokens": 202459,
+      "cost": 0.2526,
+      "model": "Sonnet",
+      "durationSec": 106
+    },
+    {
+      "id": "s-79aa7e2a",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-03-08T05:30:00.135Z",
+      "tokens": 206744,
+      "cost": 0.2061,
+      "model": "Sonnet",
+      "durationSec": 70
+    },
+    {
+      "id": "s-885bb927",
+      "agent": "miles",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+      "status": "success",
+      "date": "2026-03-08T04:00:00.084Z",
+      "tokens": 84011,
+      "cost": 0.1857,
+      "model": "Sonnet",
+      "durationSec": 97
+    },
+    {
+      "id": "s-61ecdd4c",
+      "agent": "penny",
+      "title": "Penny Daily Check",
+      "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+      "status": "success",
+      "date": "2026-03-08T03:00:00.090Z",
+      "tokens": 486605,
+      "cost": 0.4103,
+      "model": "Sonnet",
+      "durationSec": 139
+    },
+    {
+      "id": "s-0b494d0b",
+      "agent": "sam",
+      "title": "0b494d0b-0d2",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-03-07T06:00:00.074Z",
@@ -16,7 +64,7 @@
     {
       "id": "s-377202f9",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "377202f9-a2e",
       "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
       "status": "success",
       "date": "2026-03-07T05:30:00.091Z",
@@ -26,9 +74,21 @@
       "durationSec": 63
     },
     {
+      "id": "s-a3bbe7ed",
+      "agent": "sam",
+      "title": "a3bbe7ed-005",
+      "description": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+      "status": "success",
+      "date": "2026-03-07T04:49:58.497Z",
+      "tokens": 47199,
+      "cost": 0.0984,
+      "model": "Sonnet",
+      "durationSec": 5
+    },
+    {
       "id": "s-7bce27d9",
-      "agent": "miles",
-      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "agent": "sam",
+      "title": "7bce27d9-b51",
       "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
       "status": "success",
       "date": "2026-03-07T04:00:00.085Z",
@@ -39,8 +99,8 @@
     },
     {
       "id": "s-2b6b009b",
-      "agent": "penny",
-      "title": "Penny Daily Check",
+      "agent": "sam",
+      "title": "2b6b009b-1c9",
       "description": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
       "status": "success",
       "date": "2026-03-07T03:00:00.118Z",
@@ -164,10 +224,10 @@
       "description": "[media attached: /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a913f46d.jpg (image/jpeg) | /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a91",
       "status": "success",
       "date": "2026-03-04T06:15:23.941Z",
-      "tokens": 240302334,
-      "cost": 233.8259,
+      "tokens": 297269165,
+      "cost": 294.4534,
       "model": "Sonnet",
-      "durationSec": 225046
+      "durationSec": 315637
     },
     {
       "id": "s-f23e22de",
@@ -947,7 +1007,7 @@
       "tokens": 102363896,
       "cost": 95.1986,
       "model": "Sonnet",
-      "durationSec": 1019742
+      "durationSec": 1106142
     },
     {
       "id": "s-5423ca5a",
@@ -1175,7 +1235,7 @@
       "tokens": 1833122,
       "cost": 2.8842,
       "model": "Opus",
-      "durationSec": 1324523
+      "durationSec": 1410819
     },
     {
       "id": "s-38288c66",
@@ -1211,7 +1271,7 @@
       "tokens": 3750121,
       "cost": 6.3253,
       "model": "Opus",
-      "durationSec": 1337535
+      "durationSec": 1423996
     },
     {
       "id": "s-aae63345",
@@ -1827,15 +1887,15 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-03-06T14:42:06.863Z",
+      "lastActive": "2026-03-07T18:42:56.232Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-03-07T06:00:00.074Z",
+      "lastActive": "2026-03-08T06:00:00.084Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
-      "lastActive": "2026-03-07T04:00:00.085Z",
+      "lastActive": "2026-03-08T04:00:00.084Z",
       "statusText": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted."
     },
     "cara": {
@@ -1847,7 +1907,7 @@
       "statusText": "Idle. Needs recurring weekly UGC performance tracking."
     },
     "penny": {
-      "lastActive": "2026-03-07T03:00:00.118Z",
+      "lastActive": "2026-03-08T03:00:00.090Z",
       "statusText": "Active as of today. Owns daily delegation audit (6 PM CAT)."
     },
     "frankie": {
@@ -1855,7 +1915,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-03-07T09:50:13Z",
+      "lastActive": "2026-03-08T09:58:49Z",
       "statusText": ""
     }
   },
@@ -1870,7 +1930,7 @@
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
       "notes": "Supabase-only sync (no git push). Activity-ping handles real-time MC updates.",
-      "lastRunAt": "2026-03-07T10:00:01Z"
+      "lastRunAt": "2026-03-08T10:00:02Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -1881,7 +1941,7 @@
       "description": "Frankie pulls all outgoing transactions from Mercury banking (3 accounts) and maps payments to the 7 UGC creators by name. Writes creator-payouts.json with total paid, payment count, and last payment date per creator.",
       "script": "scripts/frankie-creator-sync.sh",
       "log": "ops/frankie-creator-sync.log",
-      "lastRunAt": "2026-03-06T10:00:09Z"
+      "lastRunAt": "2026-03-07T10:00:10Z"
     },
     {
       "id": "bash-mia-sync",
@@ -1892,7 +1952,7 @@
       "description": "Mia pulls the latest post data for all 7 creators from Google Sheets \u2014 TikTok and Instagram URLs, view counts, and post dates. Writes creator-posts.json with 267+ posts sorted newest-first per creator.",
       "script": "scripts/mia-creator-sync.sh",
       "log": "ops/mia-creator-sync.log",
-      "lastRunAt": "2026-03-06T23:00:04Z"
+      "lastRunAt": "2026-03-07T23:00:04Z"
     },
     {
       "id": "bash-creator-merge",
@@ -1903,7 +1963,7 @@
       "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log",
-      "lastRunAt": "2026-03-06T23:30:02Z"
+      "lastRunAt": "2026-03-07T23:30:02Z"
     },
     {
       "id": "bash-health-snapshot",
@@ -1914,7 +1974,7 @@
       "description": "Collects server health metrics (disk, memory, uptime, OpenClaw, Tailscale, Vercel, crons, pending updates) and writes health.json to mission-control/public/. Runs daily at 6:30 AM CAT (4:30 UTC) before morning reports.",
       "script": "scripts/health-snapshot.sh",
       "log": "ops/health-snapshot.log",
-      "lastRunAt": "2026-03-07T04:30:07Z"
+      "lastRunAt": "2026-03-08T04:30:08Z"
     },
     {
       "id": "bash-wifitribe-scraper",
