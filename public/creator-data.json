@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-07T23:30:02Z",
+  "lastUpdated": "2026-03-08T23:30:01Z",
   "abby": {
     "name": "Abby",
     "startDate": "2026-01-08",
@@ -1127,8 +1127,8 @@
   "jake": {
     "name": "Jake",
     "startDate": "2026-01-23",
-    "ttViews": 31881,
-    "igViews": 82918,
+    "ttViews": 31882,
+    "igViews": 82933,
     "posts": 62,
     "avgPerPost": 1852,
     "earnings": 805.0,
@@ -1166,14 +1166,14 @@
       {
         "date": "2026-02-21",
         "platform": "tiktok",
-        "views": 12,
+        "views": 13,
         "url": "https://www.tiktok.com/@jake_sells0/video/7609093390017318175",
         "title": null
       },
       {
         "date": "2026-02-21",
         "platform": "instagram",
-        "views": 1713,
+        "views": 1728,
         "url": "https://www.instagram.com/reel/DU_4nqBkZd3/",
         "title": null
       },
@@ -1574,10 +1574,10 @@
   "luke": {
     "name": "Luke",
     "startDate": "2025-10-28",
-    "ttViews": 401440,
-    "igViews": 1708835,
+    "ttViews": 401514,
+    "igViews": 1709497,
     "posts": 195,
-    "avgPerPost": 10822,
+    "avgPerPost": 10826,
     "earnings": 3700.0,
     "paymentCount": 26,
     "lastPaidAt": "2026-03-05",
@@ -1739,14 +1739,14 @@
       {
         "date": "2026-02-21",
         "platform": "tiktok",
-        "views": 872,
+        "views": 946,
         "url": "https://www.tiktok.com/@_lukesells/video/7608986723212659999",
         "title": null
       },
       {
         "date": "2026-02-21",
         "platform": "instagram",
-        "views": 2424,
+        "views": 3086,
         "url": "https://www.instagram.com/reel/DU_JOaojgGD/",
         "title": null
       },
@@ -2952,10 +2952,10 @@
   "nick": {
     "name": "Nick",
     "startDate": "2025-12-23",
-    "ttViews": 2883313,
-    "igViews": 159209,
+    "ttViews": 2884981,
+    "igViews": 159223,
     "posts": 98,
-    "avgPerPost": 31046,
+    "avgPerPost": 31063,
     "earnings": 3680.0,
     "paymentCount": 30,
     "lastPaidAt": "2026-03-02",
@@ -3061,14 +3061,14 @@
       {
         "date": "2026-02-21",
         "platform": "tiktok",
-        "views": 1360,
+        "views": 3028,
         "url": "https://www.tiktok.com/@sell.with.nick/video/7609059779868134687",
         "title": null
       },
       {
         "date": "2026-02-21",
         "platform": "instagram",
-        "views": 292,
+        "views": 306,
         "url": "https://www.instagram.com/reel/DU_qWGXEWaF/",
         "title": null
       },
