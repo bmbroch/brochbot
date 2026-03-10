@@ -12,18 +12,6 @@
     "timestamp": "2026-02-24T07:10:43.159Z"
   },
   {
-    "id": "45836b28-acbe-42b4-a4e5-1e51c6144460",
-    "label": "45836b28-acb",
-    "agent": "sam",
-    "task": "[media attached: /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a913f46d.jpg (image/jpeg) | /home/ubuntu/.openclaw/media/inbound/file_401---53ea26c7-14e9-44e8-97dc-66d5a91",
-    "model": "Sonnet",
-    "tokens": 377488753,
-    "cost": 379.4897,
-    "durationSec": 445289,
-    "status": "success",
-    "timestamp": "2026-03-04T06:15:23.941Z"
-  },
-  {
     "id": "bfae9197-c4f1-4c44-8b65-a6c2d75531e8",
     "label": "bfae9197-c4f",
     "agent": "sam",
@@ -41,9 +29,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 102363896,
-    "cost": 95.1986,
-    "durationSec": 1192560,
+    "tokens": 103804001,
+    "cost": 99.4491,
+    "durationSec": 1290299,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -70,6 +58,18 @@
     "durationSec": 233320,
     "status": "success",
     "timestamp": "2026-02-20T17:25:43.608Z"
+  },
+  {
+    "id": "cc7d4c29-5a4f-437f-9087-4312c1b6de43",
+    "label": "cc7d4c29-5a4",
+    "agent": "sam",
+    "task": "System: [2026-03-09 16:14:49 UTC] Exec completed (clear-at, code 0) :: \u03bb (Dynamic) server-rendered on demand using Node.js \u2107 (Edge Runtime) server-rendered on demand using the Edge Runtime [main 217bd",
+    "model": "unknown",
+    "tokens": 38157360,
+    "cost": 65.1995,
+    "durationSec": 59962,
+    "status": "success",
+    "timestamp": "2026-03-09T16:34:24.351Z"
   },
   {
     "id": "b221e10c-1e63-4b4c-aae1-9ca4a7dfbb17",
@@ -108,6 +108,18 @@
     "timestamp": "2026-02-20T08:15:42.760Z"
   },
   {
+    "id": "aae63345-e753-451e-8902-32e9d6391345",
+    "label": "aae63345-e75",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Opus",
+    "tokens": 4856366,
+    "cost": 13.2786,
+    "durationSec": 1608431,
+    "status": "success",
+    "timestamp": "2026-02-19T17:32:32.089Z"
+  },
+  {
     "id": "e9dbf3b1-d271-4019-b56f-85d45329fd99",
     "label": "e9dbf3b1-d27",
     "agent": "sam",
@@ -120,26 +132,14 @@
     "timestamp": "2026-02-22T16:09:28.028Z"
   },
   {
-    "id": "aae63345-e753-451e-8902-32e9d6391345",
-    "label": "aae63345-e75",
-    "agent": "sam",
-    "task": "Conversation info (untrusted metadata):",
-    "model": "Opus",
-    "tokens": 3792353,
-    "cost": 12.224,
-    "durationSec": 63172,
-    "status": "success",
-    "timestamp": "2026-02-19T17:32:32.089Z"
-  },
-  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 3750121,
-    "cost": 6.3253,
-    "durationSec": 1510345,
+    "tokens": 3986274,
+    "cost": 7.1088,
+    "durationSec": 1599537,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
@@ -151,7 +151,7 @@
     "model": "Opus",
     "tokens": 1833122,
     "cost": 2.8842,
-    "durationSec": 1497288,
+    "durationSec": 1583732,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
   },
@@ -250,6 +250,30 @@
     "durationSec": 356,
     "status": "success",
     "timestamp": "2026-02-25T03:00:00.171Z"
+  },
+  {
+    "id": "59d4d2c9-3aa2-4869-8c74-e187016e7c54",
+    "label": "Mia: Weekly UGC Performance Report",
+    "agent": "mia",
+    "task": "You're Mia \ud83d\udcf1, Social Media Manager.",
+    "model": "Sonnet",
+    "tokens": 802144,
+    "cost": 0.7079,
+    "durationSec": 248,
+    "status": "success",
+    "timestamp": "2026-03-10T06:00:58.926Z"
+  },
+  {
+    "id": "e2ee5a04-df09-4c46-9927-b7104abce247",
+    "label": "devin-ugc-posts-audit",
+    "agent": "devin",
+    "task": "You are Devin, a web developer. Your workspace is /home/ubuntu/.openclaw/workspace/viralytics.",
+    "model": "Sonnet",
+    "tokens": 765108,
+    "cost": 0.7631,
+    "durationSec": 253,
+    "status": "success",
+    "timestamp": "2026-03-10T00:30:00.183Z"
   },
   {
     "id": "118a0b5c-837c-415e-8917-9bbb43547cd3",
@@ -360,6 +384,18 @@
     "timestamp": "2026-03-03T04:08:05.104Z"
   },
   {
+    "id": "23255ada-eeb0-4bfe-8f2a-4b01aeb3dcf9",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+    "model": "Sonnet",
+    "tokens": 552003,
+    "cost": 0.5063,
+    "durationSec": 254,
+    "status": "success",
+    "timestamp": "2026-03-10T03:00:00.159Z"
+  },
+  {
     "id": "3c4acd5c-1927-4039-b05f-a8adcc95af11",
     "label": "3c4acd5c-192",
     "agent": "sam",
@@ -409,8 +445,8 @@
   },
   {
     "id": "ee37fa1e-55c2-4e7f-a1b8-e522c7a0f6ff",
-    "label": "Penny Daily Check",
-    "agent": "penny",
+    "label": "ee37fa1e-55c",
+    "agent": "sam",
     "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
     "model": "Sonnet",
     "tokens": 498064,
@@ -418,6 +454,18 @@
     "durationSec": 211,
     "status": "success",
     "timestamp": "2026-03-09T03:00:00.075Z"
+  },
+  {
+    "id": "98472c69-6238-4dfe-9eb7-afb436e08eb2",
+    "label": "Penny Daily Check",
+    "agent": "penny",
+    "task": "Do your daily ops + hygiene check. You have **pre-approved authority** to take the actions listed below \u2014 don't just flag, fix what you can.",
+    "model": "Sonnet",
+    "tokens": 491906,
+    "cost": 0.4664,
+    "durationSec": 232,
+    "status": "success",
+    "timestamp": "2026-03-10T03:00:00.173Z"
   },
   {
     "id": "61ecdd4c-fac9-4b8e-9cf9-868772d369cf",
@@ -516,6 +564,18 @@
     "timestamp": "2026-03-01T03:00:00.124Z"
   },
   {
+    "id": "40b36703-596b-403f-8840-779c345283eb",
+    "label": "Mia: Weekly UGC Performance Report",
+    "agent": "mia",
+    "task": "You're Mia \ud83d\udcf1, Social Media Manager.",
+    "model": "Sonnet",
+    "tokens": 413671,
+    "cost": 0.4948,
+    "durationSec": 170,
+    "status": "success",
+    "timestamp": "2026-03-10T06:01:04.732Z"
+  },
+  {
     "id": "6a2ca367-e960-475b-8187-2cdb05ee92f1",
     "label": "6a2ca367-e96",
     "agent": "sam",
@@ -541,8 +601,8 @@
   },
   {
     "id": "429b76e4-6391-4f53-b0d3-9788a55c6338",
-    "label": "Mia: Weekly UGC Performance Report",
-    "agent": "mia",
+    "label": "429b76e4-639",
+    "agent": "sam",
     "task": "You're Mia \ud83d\udcf1, Social Media Manager.",
     "model": "Sonnet",
     "tokens": 329010,
@@ -562,6 +622,18 @@
     "durationSec": 212210,
     "status": "success",
     "timestamp": "2026-02-24T10:19:38.513Z"
+  },
+  {
+    "id": "dfc0c671-87c5-4adb-8c9e-b0417fbc650e",
+    "label": "dfc0c671-87c",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Sonnet",
+    "tokens": 309215,
+    "cost": 0.6253,
+    "durationSec": 41331,
+    "status": "success",
+    "timestamp": "2026-03-09T04:25:55.613Z"
   },
   {
     "id": "cc20e310-3a14-408a-8d05-c62f77a8363d",
@@ -586,6 +658,18 @@
     "durationSec": 122,
     "status": "success",
     "timestamp": "2026-03-05T05:30:00.076Z"
+  },
+  {
+    "id": "f4c3b308-0dba-458d-bd90-71f8fed7a493",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 279827,
+    "cost": 0.2798,
+    "durationSec": 115,
+    "status": "success",
+    "timestamp": "2026-03-10T05:30:00.130Z"
   },
   {
     "id": "c178666e-8d97-4d6e-9ebf-5f3a69e220cf",
@@ -649,7 +733,7 @@
   },
   {
     "id": "9816a406-6fff-465e-9f44-8d1764eb44f7",
-    "label": "Sam Morning Brief",
+    "label": "9816a406-6ff",
     "agent": "sam",
     "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
     "model": "Sonnet",
@@ -828,6 +912,18 @@
     "timestamp": "2026-02-26T06:00:00.137Z"
   },
   {
+    "id": "3f08afa0-2e69-43d0-b6fb-b19f9e6d2f23",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 183752,
+    "cost": 0.1927,
+    "durationSec": 64,
+    "status": "success",
+    "timestamp": "2026-03-10T06:00:00.206Z"
+  },
+  {
     "id": "0c04e44d-89b4-4441-8c70-5ddf6b3daca6",
     "label": "0c04e44d-89b",
     "agent": "sam",
@@ -850,6 +946,18 @@
     "durationSec": 63,
     "status": "success",
     "timestamp": "2026-03-01T06:00:00.105Z"
+  },
+  {
+    "id": "0d88d22e-a39a-417c-90ad-d7866e215d6a",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 171324,
+    "cost": 0.2143,
+    "durationSec": 91,
+    "status": "success",
+    "timestamp": "2026-03-10T05:30:00.192Z"
   },
   {
     "id": "fd10a07f-55e5-45f3-a272-2b01bdebed67",
@@ -972,6 +1080,18 @@
     "timestamp": "2026-02-20T04:00:00.087Z"
   },
   {
+    "id": "0de8251c-97e3-423e-8215-f2aa6cf0b4d8",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 149536,
+    "cost": 0.259,
+    "durationSec": 142,
+    "status": "success",
+    "timestamp": "2026-03-10T04:00:00.175Z"
+  },
+  {
     "id": "53178b2d-2376-4960-a237-110c9ac2db1e",
     "label": "53178b2d-237",
     "agent": "sam",
@@ -1008,9 +1128,21 @@
     "timestamp": "2026-03-07T06:00:00.074Z"
   },
   {
-    "id": "0682f6a0-5d27-44a8-af1c-eed8d9c59cfd",
+    "id": "773060fa-1b48-4b26-beaa-9525bc2c9f93",
     "label": "Morning Analytics Report",
     "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 132967,
+    "cost": 0.1659,
+    "durationSec": 58,
+    "status": "success",
+    "timestamp": "2026-03-10T06:00:00.133Z"
+  },
+  {
+    "id": "0682f6a0-5d27-44a8-af1c-eed8d9c59cfd",
+    "label": "0682f6a0-5d2",
+    "agent": "sam",
     "task": "You're Dana \ud83d\udcca, Data Analyst.",
     "model": "Sonnet",
     "tokens": 132877,
@@ -1045,8 +1177,8 @@
   },
   {
     "id": "16385b6d-06ad-4c72-83e1-b25be9555d6c",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "16385b6d-06a",
+    "agent": "sam",
     "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
     "model": "Sonnet",
     "tokens": 127370,
@@ -1054,6 +1186,18 @@
     "durationSec": 111,
     "status": "success",
     "timestamp": "2026-03-09T04:00:00.066Z"
+  },
+  {
+    "id": "c04df1b0-559a-476d-9de5-4f39d64a005e",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 125827,
+    "cost": 0.2154,
+    "durationSec": 124,
+    "status": "success",
+    "timestamp": "2026-03-10T04:00:00.111Z"
   },
   {
     "id": "b2ca8262-a148-4240-a625-f34d03f12c41",

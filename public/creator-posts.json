@@ -12,9 +12,9 @@
       "displayName": "Luke",
       "tabName": "Luke"
     },
-    "jake": {
-      "displayName": "Jake",
-      "tabName": "Jake"
+    "sophie": {
+      "displayName": "Sophie",
+      "tabName": "Sophie"
     },
     "bobby": {
       "displayName": "Bobby",
@@ -24,13 +24,13 @@
       "displayName": "Sheryl",
       "tabName": "Sheryl"
     },
-    "sophie": {
-      "displayName": "Sophie",
-      "tabName": "Sophie"
-    },
     "griffin": {
       "displayName": "Griffin",
       "tabName": "Griffin"
+    },
+    "jake": {
+      "displayName": "Jake",
+      "tabName": "Jake"
     }
   },
   "nick": [
@@ -723,6 +723,20 @@
   ],
   "abby": [
     {
+      "date": "2026-03-08",
+      "platform": "tiktok",
+      "views": 442,
+      "url": "https://www.tiktok.com/@abbysellsss/video/7614726853118479629",
+      "title": null
+    },
+    {
+      "date": "2026-03-08",
+      "platform": "instagram",
+      "views": 2795,
+      "url": "https://www.instagram.com/reel/DVm-ZyUDS_9/",
+      "title": null
+    },
+    {
       "date": "2026-03-06",
       "platform": "tiktok",
       "views": 1294,
@@ -1186,6 +1200,34 @@
     }
   ],
   "luke": [
+    {
+      "date": "2026-03-09",
+      "platform": "tiktok",
+      "views": 788,
+      "url": "https://www.tiktok.com/@_lukesells/video/7614925443828862222",
+      "title": null
+    },
+    {
+      "date": "2026-03-09",
+      "platform": "instagram",
+      "views": 885,
+      "url": "https://www.instagram.com/reel/DVoWjYhjnNu/",
+      "title": null
+    },
+    {
+      "date": "2026-03-08",
+      "platform": "tiktok",
+      "views": 501,
+      "url": "https://www.tiktok.com/@_lukesells/video/7614590471611911438",
+      "title": null
+    },
+    {
+      "date": "2026-03-08",
+      "platform": "instagram",
+      "views": 82,
+      "url": "https://www.instagram.com/reel/DVmBzQqDvGx/",
+      "title": null
+    },
     {
       "date": "2026-03-06",
       "platform": "tiktok",
@@ -2552,443 +2594,198 @@
       "title": null
     }
   ],
-  "jake": [
+  "sophie": [
     {
-      "date": "2026-02-23",
+      "date": "2026-03-08",
       "platform": "tiktok",
-      "views": 1030,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7609823840465685790",
+      "views": 138,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7614847176773995798",
       "title": null
     },
     {
-      "date": "2026-02-23",
-      "platform": "instagram",
-      "views": 1226,
-      "url": "https://www.instagram.com/reel/DVE8_kQEagt/",
-      "title": null
-    },
-    {
-      "date": "2026-02-22",
+      "date": "2026-03-03",
       "platform": "tiktok",
-      "views": 2413,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7609424255138237726",
+      "views": 161,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7612714892398759190",
       "title": null
     },
     {
-      "date": "2026-02-22",
+      "date": "2026-03-03",
       "platform": "instagram",
-      "views": 176,
-      "url": "https://www.instagram.com/reel/DVCLs6PEcVt/",
+      "views": 5595,
+      "url": "https://www.instagram.com/reel/DVY85u3Emt3/",
       "title": null
     },
     {
-      "date": "2026-02-21",
+      "date": "2026-02-27",
       "platform": "tiktok",
-      "views": 13,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7609093390017318175",
+      "views": 191,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7611094448998468886",
       "title": null
     },
     {
-      "date": "2026-02-21",
+      "date": "2026-02-27",
       "platform": "instagram",
-      "views": 1728,
-      "url": "https://www.instagram.com/reel/DU_4nqBkZd3/",
+      "views": 49500,
+      "url": "https://www.instagram.com/reel/DVMFoyZEt_J/",
       "title": null
     },
     {
-      "date": "2026-02-20",
+      "date": "2026-02-25",
       "platform": "tiktok",
-      "views": 1369,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7608670649137024286",
+      "views": 395,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7610640165752638742",
       "title": null
     },
     {
-      "date": "2026-02-20",
+      "date": "2026-02-25",
       "platform": "instagram",
-      "views": 2183,
-      "url": "https://www.instagram.com/reel/DU88_o2EWNU/",
+      "views": 8996,
+      "url": "https://www.instagram.com/reel/DVJSfXqEj7C/",
       "title": null
     },
     {
-      "date": "2026-02-19",
+      "date": "2026-02-24",
       "platform": "tiktok",
-      "views": 1079,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7608321290709110047",
-      "title": null
-    },
-    {
-      "date": "2026-02-19",
-      "platform": "instagram",
-      "views": 1792,
-      "url": "https://www.instagram.com/reel/DU6hzUckfwU/",
-      "title": null
-    },
-    {
-      "date": "2026-02-18",
-      "platform": "tiktok",
-      "views": 1007,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7607969217555549453",
-      "title": null
-    },
-    {
-      "date": "2026-02-18",
-      "platform": "instagram",
-      "views": 2564,
-      "url": "https://www.instagram.com/reel/DU4FYexEVn2/",
-      "title": null
-    },
-    {
-      "date": "2026-02-17",
-      "platform": "tiktok",
-      "views": 4452,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7607492708319448333",
-      "title": null
-    },
-    {
-      "date": "2026-02-17",
-      "platform": "instagram",
-      "views": 1894,
-      "url": "https://www.instagram.com/reel/DU0x2KzkXVP/",
-      "title": null
-    },
-    {
-      "date": "2026-02-16",
-      "platform": "tiktok",
-      "views": 819,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7607227125682162958",
-      "title": null
-    },
-    {
-      "date": "2026-02-16",
-      "platform": "instagram",
-      "views": 2663,
-      "url": "https://www.instagram.com/reel/DUy7147EUZE/",
-      "title": null
-    },
-    {
-      "date": "2026-02-15",
-      "platform": "tiktok",
-      "views": 941,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7606908092235730206",
-      "title": null
-    },
-    {
-      "date": "2026-02-15",
-      "platform": "instagram",
-      "views": 3673,
-      "url": "https://www.instagram.com/reel/DUwuIamDEHD/",
-      "title": null
-    },
-    {
-      "date": "2026-02-14",
-      "platform": "tiktok",
-      "views": 901,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7606450203880688926",
-      "title": null
-    },
-    {
-      "date": "2026-02-14",
-      "platform": "instagram",
-      "views": 290,
-      "url": "https://www.instagram.com/reel/DUti17jkYqq/",
-      "title": null
-    },
-    {
-      "date": "2026-02-13",
-      "platform": "tiktok",
-      "views": 860,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7606142448598846751",
-      "title": null
-    },
-    {
-      "date": "2026-02-13",
-      "platform": "instagram",
-      "views": 1894,
-      "url": "https://www.instagram.com/reel/DUrIOUeETxD/",
-      "title": null
-    },
-    {
-      "date": "2026-02-12",
-      "platform": "tiktok",
-      "views": 993,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7605606849026542879",
-      "title": null
-    },
-    {
-      "date": "2026-02-12",
-      "platform": "instagram",
-      "views": 421,
-      "url": "https://www.instagram.com/reel/DUnsWQAkXMo/",
-      "title": null
-    },
-    {
-      "date": "2026-02-11",
-      "platform": "tiktok",
-      "views": 3751,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7605374776076406047",
-      "title": null
-    },
-    {
-      "date": "2026-02-11",
-      "platform": "instagram",
-      "views": 22400,
-      "url": "https://www.instagram.com/reel/DUmFNNykebZ/",
-      "title": null
-    },
-    {
-      "date": "2026-02-09",
-      "platform": "tiktok",
-      "views": 1862,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7604901358931610910",
-      "title": null
-    },
-    {
-      "date": "2026-02-09",
-      "platform": "instagram",
-      "views": 2724,
-      "url": "https://www.instagram.com/reel/DUizBunEQ9e/",
-      "title": null
-    },
-    {
-      "date": "2026-02-08",
-      "platform": "tiktok",
-      "views": 1202,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7604194437366844702",
-      "title": null
-    },
-    {
-      "date": "2026-02-08",
-      "platform": "instagram",
-      "views": 1376,
-      "url": "https://www.instagram.com/reel/DUd5GmBkULM/",
-      "title": null
-    },
-    {
-      "date": "2026-02-08",
-      "platform": "tiktok",
-      "views": 1132,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7604616883500748063",
-      "title": null
-    },
-    {
-      "date": "2026-02-08",
-      "platform": "instagram",
-      "views": 3092,
-      "url": "https://www.instagram.com/reel/DUg1ZGakQ5Z/",
-      "title": null
-    },
-    {
-      "date": "2026-02-07",
-      "platform": "tiktok",
-      "views": 1456,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7603870402246348063",
-      "title": null
-    },
-    {
-      "date": "2026-02-07",
-      "platform": "instagram",
-      "views": 28300,
-      "url": "https://www.instagram.com/reel/DUbGvX9kYT7/",
-      "title": null
-    },
-    {
-      "date": "2026-02-06",
-      "platform": "tiktok",
-      "views": 1983,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7603487796036144415",
-      "title": null
-    },
-    {
-      "date": "2026-02-06",
-      "platform": "instagram",
-      "views": 1213,
-      "url": "https://www.instagram.com/reel/DUY_WsAEVkO/",
-      "title": null
-    },
-    {
-      "date": "2026-02-05",
-      "platform": "tiktok",
-      "views": 578,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7603174025543650591",
-      "title": null
-    },
-    {
-      "date": "2026-02-05",
-      "platform": "instagram",
-      "views": 166,
-      "url": "https://www.instagram.com/reel/DUWz5HYjBl_/",
-      "title": null
-    },
-    {
-      "date": "2026-02-04",
-      "platform": "tiktok",
-      "views": 434,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7602705334301396255",
-      "title": null
-    },
-    {
-      "date": "2026-02-04",
-      "platform": "instagram",
-      "views": 450,
-      "url": "https://www.instagram.com/reel/DUTjxXxkRG2/",
-      "title": null
-    },
-    {
-      "date": "2026-02-03",
-      "platform": "tiktok",
-      "views": 449,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7602478054564318494",
-      "title": null
-    },
-    {
-      "date": "2026-02-03",
-      "platform": "instagram",
-      "views": 171,
-      "url": "https://www.instagram.com/reel/DUR_hJMjH2Z/",
-      "title": null
-    },
-    {
-      "date": "2026-02-02",
-      "platform": "tiktok",
-      "views": 299,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7601964306959322399",
-      "title": null
-    },
-    {
-      "date": "2026-02-02",
-      "platform": "instagram",
-      "views": 150,
-      "url": "https://www.instagram.com/reel/DUOaxDckUTA/",
-      "title": null
-    },
-    {
-      "date": "2026-02-01",
-      "platform": "tiktok",
-      "views": 198,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7601726692620537119",
-      "title": null
-    },
-    {
-      "date": "2026-02-01",
-      "platform": "instagram",
-      "views": 163,
-      "url": "https://www.instagram.com/reel/DUMxKRqjHzD/",
-      "title": null
-    },
-    {
-      "date": "2026-01-31",
-      "platform": "tiktok",
-      "views": 100,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7601292251553189151",
-      "title": null
-    },
-    {
-      "date": "2026-01-31",
-      "platform": "instagram",
-      "views": 208,
-      "url": "https://www.instagram.com/reel/DUJwwCckfd7/",
-      "title": null
-    },
-    {
-      "date": "2026-01-30",
-      "platform": "tiktok",
-      "views": 556,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7600892026644679967",
-      "title": null
-    },
-    {
-      "date": "2026-01-30",
-      "platform": "instagram",
-      "views": 183,
-      "url": "https://www.instagram.com/reel/DUG-l5uEYUw/",
-      "title": null
-    },
-    {
-      "date": "2026-01-29",
-      "platform": "tiktok",
-      "views": 264,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7600625946143591710",
-      "title": null
-    },
-    {
-      "date": "2026-01-29",
-      "platform": "instagram",
-      "views": 144,
-      "url": "https://www.instagram.com/jake.sells0/reel/DUFIqWADGCo/",
-      "title": null
-    },
-    {
-      "date": "2026-01-27",
-      "platform": "tiktok",
-      "views": 506,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7600116869499981086",
-      "title": null
-    },
-    {
-      "date": "2026-01-27",
-      "platform": "instagram",
-      "views": 178,
-      "url": "https://www.instagram.com/jake.sells0/reel/DUBmO_Nkchl/",
-      "title": null
-    },
-    {
-      "date": "2026-01-25",
-      "platform": "tiktok",
-      "views": 10,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7599335893459094815",
-      "title": null
-    },
-    {
-      "date": "2026-01-25",
-      "platform": "instagram",
-      "views": 202,
-      "url": "https://www.instagram.com/jake.sells0/reel/DT8LZ5mkbfZ/",
-      "title": null
-    },
-    {
-      "date": "2026-01-25",
-      "platform": "tiktok",
-      "views": 11,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7599451906372619551",
-      "title": null
-    },
-    {
-      "date": "2026-01-25",
-      "platform": "instagram",
-      "views": 1056,
-      "url": "https://www.instagram.com/jake.sells0/reel/DT8_UWgjDZs/",
-      "title": null
-    },
-    {
-      "date": "2026-01-23",
-      "platform": "tiktok",
-      "views": 788,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7598362393286085919",
-      "title": null
-    },
-    {
-      "date": "2026-01-23",
-      "platform": "instagram",
-      "views": 126,
-      "url": "https://www.instagram.com/jake.sells0/reel/DT1bOThDNou/",
-      "title": null
-    },
-    {
-      "date": "2026-01-23",
-      "platform": "tiktok",
-      "views": 426,
-      "url": "https://www.tiktok.com/@jake_sells0/video/7598687523656731934",
-      "title": null
-    },
-    {
-      "date": "2026-01-23",
-      "platform": "instagram",
       "views": 127,
-      "url": "https://www.instagram.com/jake.sells0/reel/DT3rmEAEVRM/",
+      "url": "https://www.tiktok.com/@sophiesellss/video/7610121342553214230",
+      "title": null
+    },
+    {
+      "date": "2026-02-24",
+      "platform": "instagram",
+      "views": 18700,
+      "url": "https://www.instagram.com/reel/DVHBOwgkt9O/",
+      "title": null
+    },
+    {
+      "date": "2026-02-22",
+      "platform": "tiktok",
+      "views": 364,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7609253402802998550",
+      "title": null
+    },
+    {
+      "date": "2026-02-22",
+      "platform": "instagram",
+      "views": 3746,
+      "url": "https://www.instagram.com/reel/DVA-2zmEmhV/",
+      "title": null
+    },
+    {
+      "date": "2026-02-20",
+      "platform": "tiktok",
+      "views": 121,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7608523676895497494",
+      "title": null
+    },
+    {
+      "date": "2026-02-20",
+      "platform": "instagram",
+      "views": 20100,
+      "url": "https://www.instagram.com/reel/DU7-sEEkjtY/",
+      "title": null
+    },
+    {
+      "date": "2026-02-18",
+      "platform": "tiktok",
+      "views": 152,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7607883961053793558",
+      "title": null
+    },
+    {
+      "date": "2026-02-18",
+      "platform": "instagram",
+      "views": 18200,
+      "url": "https://www.instagram.com/reel/DU3gfLBkm_c/",
+      "title": null
+    },
+    {
+      "date": "2026-02-15",
+      "platform": "tiktok",
+      "views": 576,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7607129172196052246",
+      "title": null
+    },
+    {
+      "date": "2026-02-15",
+      "platform": "instagram",
+      "views": 69500,
+      "url": "https://www.instagram.com/reel/DUyQo0UEu7O/",
+      "title": null
+    },
+    {
+      "date": "2026-02-14",
+      "platform": "tiktok",
+      "views": 461,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7606301567674895638",
+      "title": null
+    },
+    {
+      "date": "2026-02-14",
+      "platform": "instagram",
+      "views": 58500,
+      "url": "https://www.instagram.com/reel/DUsfRFEjLZz/",
+      "title": null
+    },
+    {
+      "date": "2026-02-12",
+      "platform": "tiktok",
+      "views": 169,
+      "url": "https://www.tiktok.com/@sophiesellss/video/7606052006360337686",
+      "title": null
+    },
+    {
+      "date": "2026-02-12",
+      "platform": "instagram",
+      "views": 13200,
+      "url": "https://www.instagram.com/reel/DUqyKR_E9mB/",
       "title": null
     }
   ],
   "bobby": [
+    {
+      "date": "2026-03-09",
+      "platform": "tiktok",
+      "views": 727,
+      "url": "https://www.tiktok.com/@bobby.salesguy/video/7615002004200410382",
+      "title": null
+    },
+    {
+      "date": "2026-03-09",
+      "platform": "instagram",
+      "views": 1461,
+      "url": "https://www.instagram.com/reel/DVo4pBCDi1O/",
+      "title": null
+    },
+    {
+      "date": "2026-03-08",
+      "platform": "tiktok",
+      "views": 836,
+      "url": "https://www.tiktok.com/@bobby.salesguy/video/7614657606753258765",
+      "title": null
+    },
+    {
+      "date": "2026-03-08",
+      "platform": "instagram",
+      "views": 497,
+      "url": "https://www.instagram.com/reel/DVmfvGNjsT1/",
+      "title": null
+    },
+    {
+      "date": "2026-03-08",
+      "platform": "tiktok",
+      "views": 893,
+      "url": "https://www.tiktok.com/@bobby.salesguy/video/7615003617736543501",
+      "title": null
+    },
+    {
+      "date": "2026-03-08",
+      "platform": "instagram",
+      "views": 1900,
+      "url": "https://www.instagram.com/reel/DVo5TRbjr9_/",
+      "title": null
+    },
     {
       "date": "2026-03-07",
       "platform": "tiktok",
@@ -3685,148 +3482,6 @@
       "title": null
     }
   ],
-  "sophie": [
-    {
-      "date": "2026-03-03",
-      "platform": "tiktok",
-      "views": 161,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7612714892398759190",
-      "title": null
-    },
-    {
-      "date": "2026-03-03",
-      "platform": "instagram",
-      "views": 5595,
-      "url": "https://www.instagram.com/reel/DVY85u3Emt3/",
-      "title": null
-    },
-    {
-      "date": "2026-02-27",
-      "platform": "tiktok",
-      "views": 191,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7611094448998468886",
-      "title": null
-    },
-    {
-      "date": "2026-02-27",
-      "platform": "instagram",
-      "views": 49500,
-      "url": "https://www.instagram.com/reel/DVMFoyZEt_J/",
-      "title": null
-    },
-    {
-      "date": "2026-02-25",
-      "platform": "tiktok",
-      "views": 395,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7610640165752638742",
-      "title": null
-    },
-    {
-      "date": "2026-02-25",
-      "platform": "instagram",
-      "views": 8996,
-      "url": "https://www.instagram.com/reel/DVJSfXqEj7C/",
-      "title": null
-    },
-    {
-      "date": "2026-02-24",
-      "platform": "tiktok",
-      "views": 127,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7610121342553214230",
-      "title": null
-    },
-    {
-      "date": "2026-02-24",
-      "platform": "instagram",
-      "views": 18700,
-      "url": "https://www.instagram.com/reel/DVHBOwgkt9O/",
-      "title": null
-    },
-    {
-      "date": "2026-02-22",
-      "platform": "tiktok",
-      "views": 364,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7609253402802998550",
-      "title": null
-    },
-    {
-      "date": "2026-02-22",
-      "platform": "instagram",
-      "views": 3746,
-      "url": "https://www.instagram.com/reel/DVA-2zmEmhV/",
-      "title": null
-    },
-    {
-      "date": "2026-02-20",
-      "platform": "tiktok",
-      "views": 121,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7608523676895497494",
-      "title": null
-    },
-    {
-      "date": "2026-02-20",
-      "platform": "instagram",
-      "views": 20100,
-      "url": "https://www.instagram.com/reel/DU7-sEEkjtY/",
-      "title": null
-    },
-    {
-      "date": "2026-02-18",
-      "platform": "tiktok",
-      "views": 152,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7607883961053793558",
-      "title": null
-    },
-    {
-      "date": "2026-02-18",
-      "platform": "instagram",
-      "views": 18200,
-      "url": "https://www.instagram.com/reel/DU3gfLBkm_c/",
-      "title": null
-    },
-    {
-      "date": "2026-02-15",
-      "platform": "tiktok",
-      "views": 576,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7607129172196052246",
-      "title": null
-    },
-    {
-      "date": "2026-02-15",
-      "platform": "instagram",
-      "views": 69500,
-      "url": "https://www.instagram.com/reel/DUyQo0UEu7O/",
-      "title": null
-    },
-    {
-      "date": "2026-02-14",
-      "platform": "tiktok",
-      "views": 461,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7606301567674895638",
-      "title": null
-    },
-    {
-      "date": "2026-02-14",
-      "platform": "instagram",
-      "views": 58500,
-      "url": "https://www.instagram.com/reel/DUsfRFEjLZz/",
-      "title": null
-    },
-    {
-      "date": "2026-02-12",
-      "platform": "tiktok",
-      "views": 169,
-      "url": "https://www.tiktok.com/@sophiesellss/video/7606052006360337686",
-      "title": null
-    },
-    {
-      "date": "2026-02-12",
-      "platform": "instagram",
-      "views": 13200,
-      "url": "https://www.instagram.com/reel/DUqyKR_E9mB/",
-      "title": null
-    }
-  ],
   "griffin": [
     {
       "date": "2026-02-23",
@@ -3924,6 +3579,442 @@
       "platform": "instagram",
       "views": 1090,
       "url": "https://www.instagram.com/reel/DU07TtKEcAz/",
+      "title": null
+    }
+  ],
+  "jake": [
+    {
+      "date": "2026-02-23",
+      "platform": "tiktok",
+      "views": 1030,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7609823840465685790",
+      "title": null
+    },
+    {
+      "date": "2026-02-23",
+      "platform": "instagram",
+      "views": 1226,
+      "url": "https://www.instagram.com/reel/DVE8_kQEagt/",
+      "title": null
+    },
+    {
+      "date": "2026-02-22",
+      "platform": "tiktok",
+      "views": 2413,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7609424255138237726",
+      "title": null
+    },
+    {
+      "date": "2026-02-22",
+      "platform": "instagram",
+      "views": 176,
+      "url": "https://www.instagram.com/reel/DVCLs6PEcVt/",
+      "title": null
+    },
+    {
+      "date": "2026-02-21",
+      "platform": "tiktok",
+      "views": 13,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7609093390017318175",
+      "title": null
+    },
+    {
+      "date": "2026-02-21",
+      "platform": "instagram",
+      "views": 1728,
+      "url": "https://www.instagram.com/reel/DU_4nqBkZd3/",
+      "title": null
+    },
+    {
+      "date": "2026-02-20",
+      "platform": "tiktok",
+      "views": 1369,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7608670649137024286",
+      "title": null
+    },
+    {
+      "date": "2026-02-20",
+      "platform": "instagram",
+      "views": 2183,
+      "url": "https://www.instagram.com/reel/DU88_o2EWNU/",
+      "title": null
+    },
+    {
+      "date": "2026-02-19",
+      "platform": "tiktok",
+      "views": 1079,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7608321290709110047",
+      "title": null
+    },
+    {
+      "date": "2026-02-19",
+      "platform": "instagram",
+      "views": 1792,
+      "url": "https://www.instagram.com/reel/DU6hzUckfwU/",
+      "title": null
+    },
+    {
+      "date": "2026-02-18",
+      "platform": "tiktok",
+      "views": 1007,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7607969217555549453",
+      "title": null
+    },
+    {
+      "date": "2026-02-18",
+      "platform": "instagram",
+      "views": 2564,
+      "url": "https://www.instagram.com/reel/DU4FYexEVn2/",
+      "title": null
+    },
+    {
+      "date": "2026-02-17",
+      "platform": "tiktok",
+      "views": 4452,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7607492708319448333",
+      "title": null
+    },
+    {
+      "date": "2026-02-17",
+      "platform": "instagram",
+      "views": 1894,
+      "url": "https://www.instagram.com/reel/DU0x2KzkXVP/",
+      "title": null
+    },
+    {
+      "date": "2026-02-16",
+      "platform": "tiktok",
+      "views": 819,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7607227125682162958",
+      "title": null
+    },
+    {
+      "date": "2026-02-16",
+      "platform": "instagram",
+      "views": 2663,
+      "url": "https://www.instagram.com/reel/DUy7147EUZE/",
+      "title": null
+    },
+    {
+      "date": "2026-02-15",
+      "platform": "tiktok",
+      "views": 941,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7606908092235730206",
+      "title": null
+    },
+    {
+      "date": "2026-02-15",
+      "platform": "instagram",
+      "views": 3673,
+      "url": "https://www.instagram.com/reel/DUwuIamDEHD/",
+      "title": null
+    },
+    {
+      "date": "2026-02-14",
+      "platform": "tiktok",
+      "views": 901,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7606450203880688926",
+      "title": null
+    },
+    {
+      "date": "2026-02-14",
+      "platform": "instagram",
+      "views": 290,
+      "url": "https://www.instagram.com/reel/DUti17jkYqq/",
+      "title": null
+    },
+    {
+      "date": "2026-02-13",
+      "platform": "tiktok",
+      "views": 860,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7606142448598846751",
+      "title": null
+    },
+    {
+      "date": "2026-02-13",
+      "platform": "instagram",
+      "views": 1894,
+      "url": "https://www.instagram.com/reel/DUrIOUeETxD/",
+      "title": null
+    },
+    {
+      "date": "2026-02-12",
+      "platform": "tiktok",
+      "views": 993,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7605606849026542879",
+      "title": null
+    },
+    {
+      "date": "2026-02-12",
+      "platform": "instagram",
+      "views": 421,
+      "url": "https://www.instagram.com/reel/DUnsWQAkXMo/",
+      "title": null
+    },
+    {
+      "date": "2026-02-11",
+      "platform": "tiktok",
+      "views": 3751,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7605374776076406047",
+      "title": null
+    },
+    {
+      "date": "2026-02-11",
+      "platform": "instagram",
+      "views": 22400,
+      "url": "https://www.instagram.com/reel/DUmFNNykebZ/",
+      "title": null
+    },
+    {
+      "date": "2026-02-09",
+      "platform": "tiktok",
+      "views": 1862,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7604901358931610910",
+      "title": null
+    },
+    {
+      "date": "2026-02-09",
+      "platform": "instagram",
+      "views": 2724,
+      "url": "https://www.instagram.com/reel/DUizBunEQ9e/",
+      "title": null
+    },
+    {
+      "date": "2026-02-08",
+      "platform": "tiktok",
+      "views": 1202,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7604194437366844702",
+      "title": null
+    },
+    {
+      "date": "2026-02-08",
+      "platform": "instagram",
+      "views": 1376,
+      "url": "https://www.instagram.com/reel/DUd5GmBkULM/",
+      "title": null
+    },
+    {
+      "date": "2026-02-08",
+      "platform": "tiktok",
+      "views": 1132,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7604616883500748063",
+      "title": null
+    },
+    {
+      "date": "2026-02-08",
+      "platform": "instagram",
+      "views": 3092,
+      "url": "https://www.instagram.com/reel/DUg1ZGakQ5Z/",
+      "title": null
+    },
+    {
+      "date": "2026-02-07",
+      "platform": "tiktok",
+      "views": 1456,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7603870402246348063",
+      "title": null
+    },
+    {
+      "date": "2026-02-07",
+      "platform": "instagram",
+      "views": 28300,
+      "url": "https://www.instagram.com/reel/DUbGvX9kYT7/",
+      "title": null
+    },
+    {
+      "date": "2026-02-06",
+      "platform": "tiktok",
+      "views": 1983,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7603487796036144415",
+      "title": null
+    },
+    {
+      "date": "2026-02-06",
+      "platform": "instagram",
+      "views": 1213,
+      "url": "https://www.instagram.com/reel/DUY_WsAEVkO/",
+      "title": null
+    },
+    {
+      "date": "2026-02-05",
+      "platform": "tiktok",
+      "views": 578,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7603174025543650591",
+      "title": null
+    },
+    {
+      "date": "2026-02-05",
+      "platform": "instagram",
+      "views": 166,
+      "url": "https://www.instagram.com/reel/DUWz5HYjBl_/",
+      "title": null
+    },
+    {
+      "date": "2026-02-04",
+      "platform": "tiktok",
+      "views": 434,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7602705334301396255",
+      "title": null
+    },
+    {
+      "date": "2026-02-04",
+      "platform": "instagram",
+      "views": 450,
+      "url": "https://www.instagram.com/reel/DUTjxXxkRG2/",
+      "title": null
+    },
+    {
+      "date": "2026-02-03",
+      "platform": "tiktok",
+      "views": 449,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7602478054564318494",
+      "title": null
+    },
+    {
+      "date": "2026-02-03",
+      "platform": "instagram",
+      "views": 171,
+      "url": "https://www.instagram.com/reel/DUR_hJMjH2Z/",
+      "title": null
+    },
+    {
+      "date": "2026-02-02",
+      "platform": "tiktok",
+      "views": 299,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7601964306959322399",
+      "title": null
+    },
+    {
+      "date": "2026-02-02",
+      "platform": "instagram",
+      "views": 150,
+      "url": "https://www.instagram.com/reel/DUOaxDckUTA/",
+      "title": null
+    },
+    {
+      "date": "2026-02-01",
+      "platform": "tiktok",
+      "views": 198,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7601726692620537119",
+      "title": null
+    },
+    {
+      "date": "2026-02-01",
+      "platform": "instagram",
+      "views": 163,
+      "url": "https://www.instagram.com/reel/DUMxKRqjHzD/",
+      "title": null
+    },
+    {
+      "date": "2026-01-31",
+      "platform": "tiktok",
+      "views": 100,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7601292251553189151",
+      "title": null
+    },
+    {
+      "date": "2026-01-31",
+      "platform": "instagram",
+      "views": 208,
+      "url": "https://www.instagram.com/reel/DUJwwCckfd7/",
+      "title": null
+    },
+    {
+      "date": "2026-01-30",
+      "platform": "tiktok",
+      "views": 556,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7600892026644679967",
+      "title": null
+    },
+    {
+      "date": "2026-01-30",
+      "platform": "instagram",
+      "views": 183,
+      "url": "https://www.instagram.com/reel/DUG-l5uEYUw/",
+      "title": null
+    },
+    {
+      "date": "2026-01-29",
+      "platform": "tiktok",
+      "views": 264,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7600625946143591710",
+      "title": null
+    },
+    {
+      "date": "2026-01-29",
+      "platform": "instagram",
+      "views": 144,
+      "url": "https://www.instagram.com/jake.sells0/reel/DUFIqWADGCo/",
+      "title": null
+    },
+    {
+      "date": "2026-01-27",
+      "platform": "tiktok",
+      "views": 506,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7600116869499981086",
+      "title": null
+    },
+    {
+      "date": "2026-01-27",
+      "platform": "instagram",
+      "views": 178,
+      "url": "https://www.instagram.com/jake.sells0/reel/DUBmO_Nkchl/",
+      "title": null
+    },
+    {
+      "date": "2026-01-25",
+      "platform": "tiktok",
+      "views": 10,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7599335893459094815",
+      "title": null
+    },
+    {
+      "date": "2026-01-25",
+      "platform": "instagram",
+      "views": 202,
+      "url": "https://www.instagram.com/jake.sells0/reel/DT8LZ5mkbfZ/",
+      "title": null
+    },
+    {
+      "date": "2026-01-25",
+      "platform": "tiktok",
+      "views": 11,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7599451906372619551",
+      "title": null
+    },
+    {
+      "date": "2026-01-25",
+      "platform": "instagram",
+      "views": 1056,
+      "url": "https://www.instagram.com/jake.sells0/reel/DT8_UWgjDZs/",
+      "title": null
+    },
+    {
+      "date": "2026-01-23",
+      "platform": "tiktok",
+      "views": 788,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7598362393286085919",
+      "title": null
+    },
+    {
+      "date": "2026-01-23",
+      "platform": "instagram",
+      "views": 126,
+      "url": "https://www.instagram.com/jake.sells0/reel/DT1bOThDNou/",
+      "title": null
+    },
+    {
+      "date": "2026-01-23",
+      "platform": "tiktok",
+      "views": 426,
+      "url": "https://www.tiktok.com/@jake_sells0/video/7598687523656731934",
+      "title": null
+    },
+    {
+      "date": "2026-01-23",
+      "platform": "instagram",
+      "views": 127,
+      "url": "https://www.instagram.com/jake.sells0/reel/DT3rmEAEVRM/",
       "title": null
     }
   ]
