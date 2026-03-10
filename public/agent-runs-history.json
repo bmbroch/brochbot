@@ -5820,15 +5820,99 @@
     "timestamp": "2026-03-10T09:00:02Z"
   },
   {
+    "id": "96914aca-c390-4a50-8d99-91974aeaef02",
+    "label": "96914aca-c39",
+    "agent": "sam",
+    "task": "You are Devin, working on Viralytics (`/home/ubuntu/.openclaw/workspace/viralytics`).",
+    "model": "Sonnet",
+    "tokens": 181949,
+    "cost": 0.3741,
+    "durationSec": 190,
+    "status": "success",
+    "timestamp": "2026-03-10T10:26:42.853Z"
+  },
+  {
+    "id": "e407b232-1f3f-4f89-8644-4de42f42f287",
+    "label": "e407b232-1f3",
+    "agent": "sam",
+    "task": "You are Devin, a senior web developer. Workspace: `/home/ubuntu/.openclaw/workspace/viralytics`.",
+    "model": "Sonnet",
+    "tokens": 839113,
+    "cost": 0.937,
+    "durationSec": 447,
+    "status": "success",
+    "timestamp": "2026-03-10T10:42:47.527Z"
+  },
+  {
+    "id": "16260ff8-bcad-4d93-8dc5-9fe78779ea03",
+    "label": "16260ff8-bca",
+    "agent": "sam",
+    "task": "You are Devin, working on Viralytics (`/home/ubuntu/.openclaw/workspace/viralytics`).",
+    "model": "Sonnet",
+    "tokens": 10978104,
+    "cost": 10.9511,
+    "durationSec": 1083,
+    "status": "success",
+    "timestamp": "2026-03-10T11:11:53.918Z"
+  },
+  {
+    "id": "8ed09761-db1f-4cbb-941f-fda66e4938c5",
+    "label": "8ed09761-db1",
+    "agent": "sam",
+    "task": "You are Devin, a senior security-focused web developer. Workspace: `/home/ubuntu/.openclaw/workspace/viralytics`.",
+    "model": "Sonnet",
+    "tokens": 1805703,
+    "cost": 3.7356,
+    "durationSec": 552,
+    "status": "success",
+    "timestamp": "2026-03-10T11:13:23.701Z"
+  },
+  {
+    "id": "5f87c5d6-58c1-4e7c-b71e-25360436dffa",
+    "label": "5f87c5d6-58c",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 1432547,
+    "cost": 1.5628,
+    "durationSec": 1309,
+    "status": "success",
+    "timestamp": "2026-03-10T11:38:08.544Z"
+  },
+  {
+    "id": "f96c969c-6ad4-4a83-96ab-c7c057dc3624",
+    "label": "f96c969c-6ad",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "unknown",
+    "tokens": 321341,
+    "cost": 0.3346,
+    "durationSec": 238,
+    "status": "success",
+    "timestamp": "2026-03-10T11:54:53.970Z"
+  },
+  {
+    "id": "sam-sync-2026-03-10T17:30:02Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 48021,
+    "cost": 0.0185,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-03-10T17:30:02Z"
+  },
+  {
     "id": "sam-daily-2026-03-10",
     "label": "Daily total",
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 1160964,
-    "cost": 0.825,
+    "tokens": 1208985,
+    "cost": 0.8435,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-03-10T10:00:02Z"
+    "timestamp": "2026-03-10T19:00:02Z"
   }
 ]

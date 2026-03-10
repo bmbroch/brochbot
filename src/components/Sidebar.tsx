@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useTheme } from "./ThemeProvider";
-import { useState, useEffect, useRef } from "react";
-import { ChevronDown } from "lucide-react";
 
 interface SidebarProps {
   onSearchClick: () => void;
@@ -52,64 +50,11 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
 
-  const [orgs, setOrgs] = useState<Array<{ id: string; name: string; slug: string }>>([]);
-  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
-  const [orgDropdownOpen, setOrgDropdownOpen] = useState(false);
-  const logoAreaRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetch("/api/ugc/orgs")
-      .then((res) => res.json())
-      .then((data) => {
-        const list: Array<{ id: string; name: string; slug: string }> = Array.isArray(data)
-          ? data
-          : data?.orgs ?? [];
-        if (list.length === 0) return;
-        setOrgs(list);
-        // Prefer org_id from URL, then localStorage, then first org
-        const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-        const urlOrgId = urlParams?.get("org_id");
-        const stored = localStorage.getItem("ugc_org_id");
-        const urlMatch = list.find((o) => o.id === urlOrgId);
-        const storedMatch = list.find((o) => o.id === stored);
-        const id = urlMatch ? urlMatch.id : storedMatch ? storedMatch.id : list[0].id;
-        setSelectedOrgId(id);
-        localStorage.setItem("ugc_org_id", id);
-      })
-      .catch(() => {
-        // best-effort — silently ignore
-      });
-  }, []);
-
-  // Sync sidebar selection to current page's org_id
-  useEffect(() => {
-    if (typeof window !== "undefined" && orgs.length > 0) {
-      const params = new URLSearchParams(window.location.search);
-      const urlOrgId = params.get("org_id");
-      if (urlOrgId && orgs.some((o) => o.id === urlOrgId)) {
-        setSelectedOrgId(urlOrgId);
-        localStorage.setItem("ugc_org_id", urlOrgId);
-      }
-    }
-  }, [pathname, orgs]);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleMouseDown(e: MouseEvent) {
-      if (logoAreaRef.current && !logoAreaRef.current.contains(e.target as Node)) {
-        setOrgDropdownOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleMouseDown);
-    return () => document.removeEventListener("mousedown", handleMouseDown);
-  }, []);
-
   const navItems = [
     { href: "/", label: "Briefings", icon: "⚡" },
     { href: "/tasks", label: "Tasks", icon: "📋" },
     { href: "/automations", label: "Launchpad", icon: "🚀" },
     { href: "/changelog", label: "Changelog", icon: "🔄" },
-    { href: selectedOrgId ? `/ugc?org_id=${selectedOrgId}` : "/ugc", label: "UGC", icon: "🎬" },
     { href: "/content", label: "Content Studio", icon: "✍️" },
     { href: "/team", label: "Team", icon: "👥" },
     { href: "/office", label: "Office", icon: "🏢" },
@@ -138,55 +83,9 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/20 flex-shrink-0">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L14.5 5V11L8 15L1.5 11V5L8 1Z" fill="white" fillOpacity="0.9"/></svg>
           </div>
-          <div ref={logoAreaRef} className="min-w-0 flex-1 relative">
+          <div className="min-w-0 flex-1">
             <h1 className="text-[15px] font-semibold tracking-tight text-[var(--text-primary)]">Mission Control</h1>
-            {orgs.length > 0 ? (
-              <button
-                onClick={() => setOrgDropdownOpen((o) => !o)}
-                className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors group"
-              >
-                <span className="truncate max-w-[120px]">
-                  {orgs.find((o) => o.id === selectedOrgId)?.name ?? orgs[0]?.name}
-                </span>
-                <ChevronDown size={10} className={`flex-shrink-0 transition-transform ${orgDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-            ) : (
-              <p className="text-[11px] text-[var(--text-muted)]">BrochBot Ops</p>
-            )}
-
-            {orgDropdownOpen && orgs.length > 1 && (
-              <div className="absolute left-0 top-full mt-1 z-50 w-52 rounded-xl bg-[var(--bg-card)] border border-[var(--border-medium)] shadow-xl shadow-black/20 py-1 overflow-hidden">
-                {orgs.map((org) => (
-                  <button
-                    key={org.id}
-                    onClick={() => {
-                      setSelectedOrgId(org.id);
-                      localStorage.setItem("ugc_org_id", org.id);
-                      setOrgDropdownOpen(false);
-                      if (pathname.startsWith("/ugc")) {
-                        // Always return to /ugc overview when switching org
-                        router.push(`/ugc?org_id=${org.id}`);
-                      }
-                    }}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-[var(--bg-hover)] ${
-                      org.id === selectedOrgId
-                        ? "text-[var(--text-primary)] font-medium"
-                        : "text-[var(--text-secondary)]"
-                    }`}
-                  >
-                    <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white ${
-                      org.id === selectedOrgId ? "bg-blue-500" : "bg-gray-400 dark:bg-[#444]"
-                    }`}>
-                      {org.name.charAt(0).toUpperCase()}
-                    </div>
-                    <span className="truncate">{org.name}</span>
-                    {org.id === selectedOrgId && (
-                      <svg className="ml-auto flex-shrink-0 w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
+            <p className="text-[11px] text-[var(--text-muted)]">BrochBot Ops</p>
           </div>
         </div>
       </div>
@@ -207,9 +106,7 @@ export default function Sidebar({ onSearchClick, mobileOpen, onMobileClose }: Si
       <nav className="flex-1 p-3 space-y-0.5">
         <p className="px-3 pt-3 pb-2 text-[10px] font-medium text-[var(--text-muted)] uppercase tracking-wider">Pages</p>
         {navItems.map((item) => {
-          const isActive = item.label === "UGC"
-            ? pathname.startsWith("/ugc")
-            : pathname === item.href;
+          const isActive = pathname === item.href;
           return (
             <Link
               key={item.label}

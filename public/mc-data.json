@@ -1,6 +1,30 @@
 {
-  "lastUpdated": "2026-03-10T10:00:02Z",
+  "lastUpdated": "2026-03-10T19:00:02Z",
   "activities": [
+    {
+      "id": "s-f96c969c",
+      "agent": "sam",
+      "title": "f96c969c-6ad",
+      "description": "Conversation info (untrusted metadata):",
+      "status": "success",
+      "date": "2026-03-10T11:54:53.970Z",
+      "tokens": 321341,
+      "cost": 0.3346,
+      "model": "unknown",
+      "durationSec": 238
+    },
+    {
+      "id": "s-5f87c5d6",
+      "agent": "sam",
+      "title": "5f87c5d6-58c",
+      "description": "Conversation info (untrusted metadata):",
+      "status": "success",
+      "date": "2026-03-10T11:38:08.544Z",
+      "tokens": 1820436,
+      "cost": 1.8925,
+      "model": "Sonnet",
+      "durationSec": 8643
+    },
     {
       "id": "s-40b36703",
       "agent": "mia",
@@ -140,10 +164,10 @@
       "description": "System: [2026-03-09 16:14:49 UTC] Exec completed (clear-at, code 0) :: \u03bb (Dynamic) server-rendered on demand using Node.js \u2107 (Edge Runtime) server-rendered on demand using the Edge Runtime [main 217bd",
       "status": "success",
       "date": "2026-03-09T16:34:24.351Z",
-      "tokens": 38157360,
-      "cost": 65.1995,
+      "tokens": 41791987,
+      "cost": 79.5196,
       "model": "unknown",
-      "durationSec": 59962
+      "durationSec": 67950
     },
     {
       "id": "s-0682f6a0",
@@ -1208,10 +1232,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:40:05.669Z",
-      "tokens": 23438469,
-      "cost": 28.3904,
+      "tokens": 25359763,
+      "cost": 31.9099,
       "model": "Sonnet",
-      "durationSec": 818718
+      "durationSec": 1313971
     },
     {
       "id": "s-a9017c33",
@@ -1220,10 +1244,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 103804001,
-      "cost": 99.4491,
+      "tokens": 105128747,
+      "cost": 102.6844,
       "model": "Sonnet",
-      "durationSec": 1290299
+      "durationSec": 1301984
     },
     {
       "id": "s-5423ca5a",
@@ -1496,10 +1520,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-19T17:32:32.089Z",
-      "tokens": 4856366,
-      "cost": 13.2786,
+      "tokens": 6531406,
+      "cost": 14.8771,
       "model": "Opus",
-      "durationSec": 1608431
+      "durationSec": 1629051
     },
     {
       "id": "s-42b5ff85",
@@ -2161,7 +2185,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-03-10T09:35:41Z",
+      "lastActive": "2026-03-10T18:35:51Z",
       "statusText": ""
     }
   },
@@ -2176,7 +2200,7 @@
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
       "notes": "Supabase-only sync (no git push). Activity-ping handles real-time MC updates.",
-      "lastRunAt": "2026-03-10T10:00:02Z"
+      "lastRunAt": "2026-03-10T19:00:01Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -2187,7 +2211,7 @@
       "description": "Frankie pulls all outgoing transactions from Mercury banking (3 accounts) and maps payments to the 7 UGC creators by name. Writes creator-payouts.json with total paid, payment count, and last payment date per creator.",
       "script": "scripts/frankie-creator-sync.sh",
       "log": "ops/frankie-creator-sync.log",
-      "lastRunAt": "2026-03-09T10:00:10Z"
+      "lastRunAt": "2026-03-10T10:00:09Z"
     },
     {
       "id": "bash-mia-sync",
@@ -2209,7 +2233,7 @@
       "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log",
-      "lastRunAt": "2026-03-09T23:30:01Z"
+      "lastRunAt": "2026-03-10T10:30:01Z"
     },
     {
       "id": "bash-health-snapshot",

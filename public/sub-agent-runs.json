@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 103804001,
-    "cost": 99.4491,
-    "durationSec": 1290299,
+    "tokens": 105128747,
+    "cost": 102.6844,
+    "durationSec": 1301984,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -65,9 +65,9 @@
     "agent": "sam",
     "task": "System: [2026-03-09 16:14:49 UTC] Exec completed (clear-at, code 0) :: \u03bb (Dynamic) server-rendered on demand using Node.js \u2107 (Edge Runtime) server-rendered on demand using the Edge Runtime [main 217bd",
     "model": "unknown",
-    "tokens": 38157360,
-    "cost": 65.1995,
-    "durationSec": 59962,
+    "tokens": 41791987,
+    "cost": 79.5196,
+    "durationSec": 67950,
     "status": "success",
     "timestamp": "2026-03-09T16:34:24.351Z"
   },
@@ -89,9 +89,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 23438469,
-    "cost": 28.3904,
-    "durationSec": 818718,
+    "tokens": 25359763,
+    "cost": 31.9099,
+    "durationSec": 1313971,
     "status": "success",
     "timestamp": "2026-02-23T10:40:05.669Z"
   },
@@ -113,9 +113,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Opus",
-    "tokens": 4856366,
-    "cost": 13.2786,
-    "durationSec": 1608431,
+    "tokens": 6531406,
+    "cost": 14.8771,
+    "durationSec": 1629051,
     "status": "success",
     "timestamp": "2026-02-19T17:32:32.089Z"
   },
@@ -154,6 +154,18 @@
     "durationSec": 1583732,
     "status": "success",
     "timestamp": "2026-02-19T19:08:33.763Z"
+  },
+  {
+    "id": "5f87c5d6-58c1-4e7c-b71e-25360436dffa",
+    "label": "5f87c5d6-58c",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 1820436,
+    "cost": 1.8925,
+    "durationSec": 8643,
+    "status": "success",
+    "timestamp": "2026-03-10T11:38:08.544Z"
   },
   {
     "id": "20309a2a-9efd-4d98-9b54-f4c86a7d912b",
@@ -610,6 +622,18 @@
     "durationSec": 167,
     "status": "success",
     "timestamp": "2026-03-03T06:01:00.603Z"
+  },
+  {
+    "id": "f96c969c-6ad4-4a83-96ab-c7c057dc3624",
+    "label": "f96c969c-6ad",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "unknown",
+    "tokens": 321341,
+    "cost": 0.3346,
+    "durationSec": 238,
+    "status": "success",
+    "timestamp": "2026-03-10T11:54:53.970Z"
   },
   {
     "id": "81b9b199-e8c0-43e8-a75e-24ebf5f25b8a",
