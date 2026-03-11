@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-10T04:30:01Z",
+  "timestamp": "2026-03-11T04:30:01Z",
   "disk": {
-    "usedPct": 77,
+    "usedPct": 79,
     "usedGB": 22,
     "totalGB": 29
   },
   "memory": {
-    "usedPct": 64,
+    "usedPct": 70,
     "totalMB": 3814
   },
-  "uptime": "1 week, 6 days, 14 hours, 13 minutes",
+  "uptime": "2 weeks, 14 hours, 13 minutes",
   "openclaw": {
     "running": true,
     "pid": 1166873,
@@ -30,6 +30,6 @@
     "bashActive": 6,
     "lastFailure": null
   },
-  "pendingUpdates": 57,
+  "pendingUpdates": 52,
   "restartRequired": false
 }
