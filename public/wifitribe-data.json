@@ -1,5 +1,5 @@
 {
-  "lastScraped": "2026-03-10T07:00:27Z",
+  "lastScraped": "2026-03-11T07:00:23Z",
   "sourceUrl": "https://wifitribe.co/calendar/",
   "totalTrips": 26,
   "trips": [
@@ -134,7 +134,7 @@
       "name": "Gran Canaria \u2013 Agaete",
       "url": "https://wifitribe.co/gran-canaria-agaete/",
       "dates": "Aug 7 - Sept 4, 2026",
-      "availability": "Limited Spots"
+      "availability": "Last Spots"
     },
     {
       "id": "https://wifitribe.co/chapter-north-macedonia-lake-ohrid/|August 07 - September 04, 2026",
@@ -187,6 +187,13 @@
     }
   ],
   "changeLog": [
+    {
+      "date": "2026-03-11T07:00:23Z",
+      "type": "availability_update",
+      "changes": [
+        "CHANGED|Gran Canaria \u2013 Agaete|Aug 7 - Sept 4, 2026|Limited Spots|Last Spots|https://wifitribe.co/gran-canaria-agaete/"
+      ]
+    },
     {
       "date": "2026-03-07T07:00:38Z",
       "type": "availability_update",
