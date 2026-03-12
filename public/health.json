@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-11T04:30:01Z",
+  "timestamp": "2026-03-12T04:30:01Z",
   "disk": {
     "usedPct": 79,
     "usedGB": 22,
     "totalGB": 29
   },
   "memory": {
-    "usedPct": 70,
+    "usedPct": 74,
     "totalMB": 3814
   },
-  "uptime": "2 weeks, 14 hours, 13 minutes",
+  "uptime": "2 weeks, 1 day, 14 hours, 13 minutes",
   "openclaw": {
     "running": true,
     "pid": 1166873,
@@ -26,7 +26,7 @@
     "lastBuildTime": "null"
   },
   "crons": {
-    "aiActive": 7,
+    "aiActive": 10,
     "bashActive": 6,
     "lastFailure": null
   },
