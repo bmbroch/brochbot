@@ -24,6 +24,14 @@ const PRODUCTS = [
     desc: "Live sales call support and mock call practice",
     color: "#10b981",
   },
+  {
+    name: "Viralytics",
+    url: "getviralytics.com",
+    favicon: "https://www.google.com/s2/favicons?domain=getviralytics.com&sz=128",
+    desc: "UGC analytics platform for creator-driven brands",
+    color: "#e78468",
+    isNew: true,
+  },
 ];
 
 export default function Slide2() {
@@ -35,13 +43,13 @@ export default function Slide2() {
           A little about me
         </h2>
         <p className="mt-3 text-xl text-gray-500 font-medium">
-          Solo founder. 3 SaaS products. Running it all with AI.
+          Solo founder. 4 SaaS products. Running it all with AI.
         </p>
       </div>
 
       {/* Bio strip */}
       <div
-        className="flex items-center gap-5 px-7 py-4 rounded-2xl w-full max-w-3xl"
+        className="flex items-center gap-5 px-7 py-4 rounded-2xl w-full max-w-4xl"
         style={{ background: "#f8fafc", border: "1.5px solid #e5e7eb" }}
       >
         <img
@@ -53,34 +61,42 @@ export default function Slide2() {
         <div>
           <div className="font-bold text-gray-900 text-lg">Ben Broch</div>
           <div className="text-sm text-gray-500 leading-relaxed mt-0.5">
-            I build and run subscription software products for job seekers and
-            sales professionals. 1 employee. No co-founders.
+            I build and run subscription software products for job seekers, sales professionals, and marketing teams.
+            1 employee. No co-founders.
           </div>
         </div>
       </div>
 
-      {/* Product cards */}
-      <div className="flex gap-5 w-full max-w-3xl">
+      {/* Product cards — 4 in a row */}
+      <div className="grid grid-cols-4 gap-4 w-full max-w-5xl">
         {PRODUCTS.map((p) => (
           <div
             key={p.name}
-            className="flex-1 flex flex-col items-center gap-4 rounded-2xl bg-white px-6 py-6 shadow-sm"
+            className="relative flex flex-col items-center gap-3 rounded-2xl bg-white px-5 py-5 shadow-sm"
             style={{ border: "1.5px solid #f1f5f9", borderTop: `4px solid ${p.color}` }}
           >
+            {p.isNew && (
+              <span
+                className="absolute top-3 right-3 text-[10px] font-bold px-2 py-0.5 rounded-full"
+                style={{ background: "#e78468", color: "#fff", letterSpacing: "0.04em" }}
+              >
+                NEW
+              </span>
+            )}
             <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm overflow-hidden"
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm overflow-hidden"
               style={{ background: "#f8fafc", border: "1px solid #e5e7eb" }}
             >
               <img
                 src={p.favicon}
                 alt={p.name}
-                className="w-10 h-10 object-contain"
+                className="w-9 h-9 object-contain"
               />
             </div>
             <div className="text-center">
               <div className="font-bold text-gray-900 text-sm">{p.name}</div>
               <div className="text-xs text-gray-400 mt-0.5">{p.url}</div>
-              <p className="text-sm text-gray-500 mt-2 leading-relaxed">{p.desc}</p>
+              <p className="text-xs text-gray-500 mt-2 leading-relaxed">{p.desc}</p>
             </div>
           </div>
         ))}
