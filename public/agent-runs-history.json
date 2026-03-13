@@ -6288,6 +6288,18 @@
     "timestamp": "2026-03-12T04:00:00.304Z"
   },
   {
+    "id": "3990f1cc-1357-4ab6-a704-a466b67f9b9b",
+    "label": "3990f1cc-135",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Sonnet",
+    "tokens": 574389,
+    "cost": 0.7324,
+    "durationSec": 53125,
+    "status": "success",
+    "timestamp": "2026-03-12T04:06:48.219Z"
+  },
+  {
     "id": "ff5c213f-28d7-4af6-8fb0-3021dd50050f",
     "label": "sync-verify-mar12",
     "agent": "sam",
@@ -6432,15 +6444,171 @@
     "timestamp": "2026-03-12T10:00:02Z"
   },
   {
+    "id": "sam-sync-2026-03-12T19:00:01Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 85797,
+    "cost": 0.1849,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-03-12T19:00:01Z"
+  },
+  {
     "id": "sam-daily-2026-03-12",
     "label": "Daily total",
     "agent": "sam",
     "task": "Sam \u2194 Ben total conversation cost today",
     "model": "Opus",
-    "tokens": 317959,
-    "cost": 0.3953,
+    "tokens": 403756,
+    "cost": 0.5802,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-03-12T10:00:02Z"
+    "timestamp": "2026-03-12T23:30:02Z"
+  },
+  {
+    "id": "954e26cf-4e6d-49e6-bb05-6d9f976da9c6",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 69825,
+    "cost": 0.1698,
+    "durationSec": 84,
+    "status": "success",
+    "timestamp": "2026-03-13T04:00:00.223Z"
+  },
+  {
+    "id": "aa5e9679-2c13-4790-9b81-d119317ab971",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 190766,
+    "cost": 0.2111,
+    "durationSec": 93,
+    "status": "success",
+    "timestamp": "2026-03-13T05:30:00.164Z"
+  },
+  {
+    "id": "2f7fb356-a5ca-4fa9-8584-891b058a7e63",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 277889,
+    "cost": 0.2602,
+    "durationSec": 131,
+    "status": "success",
+    "timestamp": "2026-03-13T05:30:00.183Z"
+  },
+  {
+    "id": "64f9e1a0-8875-4feb-a731-d70127a1c21e",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 134201,
+    "cost": 0.1487,
+    "durationSec": 64,
+    "status": "success",
+    "timestamp": "2026-03-13T06:00:00.141Z"
+  },
+  {
+    "id": "96a34556-debf-41b6-afcb-29097b61d93b",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 233732,
+    "cost": 0.2066,
+    "durationSec": 87,
+    "status": "success",
+    "timestamp": "2026-03-13T06:00:00.154Z"
+  },
+  {
+    "id": "bad93dc2-af81-4567-8339-f11d000a78fb",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 84783,
+    "cost": 0.1257,
+    "durationSec": 83,
+    "status": "success",
+    "timestamp": "2026-03-13T06:01:04.534Z"
+  },
+  {
+    "id": "sam-sync-2026-03-13T07:30:04Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 52318,
+    "cost": 0.1117,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-03-13T07:30:04Z"
+  },
+  {
+    "id": "f75194b3-4efa-4a25-8335-217d4d197233",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 121397,
+    "cost": 0.2183,
+    "durationSec": 127,
+    "status": "success",
+    "timestamp": "2026-03-13T08:01:04.782Z"
+  },
+  {
+    "id": "3114b050-1576-4c1b-81d4-c39378020619",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 76148,
+    "cost": 0.1962,
+    "durationSec": 86,
+    "status": "success",
+    "timestamp": "2026-03-13T08:01:05.241Z"
+  },
+  {
+    "id": "sam-sync-2026-03-13T09:00:02Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 69870,
+    "cost": 0.1451,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-03-13T09:00:02Z"
+  },
+  {
+    "id": "sam-sync-2026-03-13T10:00:02Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 145885,
+    "cost": 0.0753,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-03-13T10:00:02Z"
+  },
+  {
+    "id": "sam-daily-2026-03-13",
+    "label": "Daily total",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben total conversation cost today",
+    "model": "Opus",
+    "tokens": 349178,
+    "cost": 0.3171,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-03-13T10:00:02Z"
   }
 ]

@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-03-12T04:30:01Z",
+  "timestamp": "2026-03-13T04:30:01Z",
   "disk": {
-    "usedPct": 79,
-    "usedGB": 22,
+    "usedPct": 82,
+    "usedGB": 23,
     "totalGB": 29
   },
   "memory": {
-    "usedPct": 74,
+    "usedPct": 68,
     "totalMB": 3814
   },
-  "uptime": "2 weeks, 1 day, 14 hours, 13 minutes",
+  "uptime": "2 weeks, 2 days, 14 hours, 13 minutes",
   "openclaw": {
     "running": true,
     "pid": 1166873,
     "currentVersion": "2026.2.22",
-    "latestVersion": "2026.3.8",
+    "latestVersion": "2026.3.12",
     "updateAvailable": true
   },
   "tailscale": {
@@ -26,10 +26,10 @@
     "lastBuildTime": "null"
   },
   "crons": {
-    "aiActive": 10,
+    "aiActive": 7,
     "bashActive": 6,
     "lastFailure": null
   },
-  "pendingUpdates": 52,
+  "pendingUpdates": 56,
   "restartRequired": false
 }
