@@ -1,5 +1,5 @@
 {
-  "lastScraped": "2026-03-13T07:00:26Z",
+  "lastScraped": "2026-03-14T07:00:28Z",
   "sourceUrl": "https://wifitribe.co/calendar/",
   "totalTrips": 26,
   "trips": [
@@ -179,14 +179,21 @@
       "availability": "Last Spots"
     },
     {
-      "id": "https://wifitribe.co/coliving-cape-town/|November 20 - December 17, 2026",
+      "id": "https://wifitribe.co/coliving-cape-town/|January 15 - February 11, 2027",
       "name": "Cape Town",
       "url": "https://wifitribe.co/coliving-cape-town/",
-      "dates": "November 20 - December 17, 2026",
+      "dates": "January 15 - February 11, 2027",
       "availability": "Open"
     }
   ],
   "changeLog": [
+    {
+      "date": "2026-03-14T07:00:28Z",
+      "type": "availability_update",
+      "changes": [
+        "NEW|Cape Town|January 15 - February 11, 2027|Open|https://wifitribe.co/coliving-cape-town/"
+      ]
+    },
     {
       "date": "2026-03-11T07:00:23Z",
       "type": "availability_update",
