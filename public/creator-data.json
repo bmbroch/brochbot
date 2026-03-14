@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-03-12T23:30:01Z",
+  "lastUpdated": "2026-03-13T23:30:02Z",
   "abby": {
     "name": "Abby",
     "startDate": "2026-01-08",
-    "ttViews": 317835,
-    "igViews": 681666,
+    "ttViews": 317839,
+    "igViews": 681681,
     "posts": 68,
     "avgPerPost": 14699,
     "earnings": 1530.0,
@@ -126,14 +126,14 @@
       {
         "date": "2026-02-26",
         "platform": "tiktok",
-        "views": 1423,
+        "views": 1427,
         "url": "https://www.tiktok.com/@abbysellsss/video/7610988435829984543",
         "title": null
       },
       {
         "date": "2026-02-26",
         "platform": "instagram",
-        "views": 4995,
+        "views": 5010,
         "url": "https://www.instagram.com/reel/DVNChcBCYXC/",
         "title": null
       },
@@ -3036,10 +3036,10 @@
   "nick": {
     "name": "Nick",
     "startDate": "2025-12-23",
-    "ttViews": 2885533,
-    "igViews": 161120,
+    "ttViews": 2887061,
+    "igViews": 159275,
     "posts": 98,
-    "avgPerPost": 31088,
+    "avgPerPost": 31085,
     "earnings": 3875.0,
     "paymentCount": 32,
     "lastPaidAt": "2026-03-09",
@@ -3117,14 +3117,14 @@
       {
         "date": "2026-02-25",
         "platform": "tiktok",
-        "views": 1851,
+        "views": 3379,
         "url": "https://www.tiktok.com/@sell.with.nick/video/7610468757655276831",
         "title": null
       },
       {
         "date": "2026-02-25",
         "platform": "instagram",
-        "views": 3279,
+        "views": 1434,
         "url": "https://www.instagram.com/reel/DVJcBTfDdTf/",
         "title": null
       },
@@ -3917,12 +3917,12 @@
     "name": "Sophie",
     "startDate": "2026-02-12",
     "ttViews": 2886,
-    "igViews": 416230,
+    "igViews": 424930,
     "posts": 22,
-    "avgPerPost": 19051,
-    "earnings": 775.0,
-    "paymentCount": 10,
-    "lastPaidAt": "2026-03-11",
+    "avgPerPost": 19446,
+    "earnings": 790.0,
+    "paymentCount": 11,
+    "lastPaidAt": "2026-03-13",
     "posts_detail": [
       {
         "date": "2026-03-08",
@@ -3962,7 +3962,7 @@
       {
         "date": "2026-02-27",
         "platform": "instagram",
-        "views": 134000,
+        "views": 141000,
         "url": "https://www.instagram.com/reel/DVMFoyZEt_J/",
         "title": null
       },
@@ -3976,7 +3976,7 @@
       {
         "date": "2026-02-25",
         "platform": "instagram",
-        "views": 29300,
+        "views": 31000,
         "url": "https://www.instagram.com/reel/DVJSfXqEj7C/",
         "title": null
       },

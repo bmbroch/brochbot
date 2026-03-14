@@ -17,9 +17,9 @@
     "agent": "sam",
     "task": "System: [2026-03-09 16:14:49 UTC] Exec completed (clear-at, code 0) :: \u03bb (Dynamic) server-rendered on demand using Node.js \u2107 (Edge Runtime) server-rendered on demand using the Edge Runtime [main 217bd",
     "model": "unknown",
-    "tokens": 152276148,
-    "cost": 226.6425,
-    "durationSec": 318622,
+    "tokens": 190348401,
+    "cost": 261.2629,
+    "durationSec": 357225,
     "status": "success",
     "timestamp": "2026-03-09T16:34:24.351Z"
   },
@@ -29,9 +29,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "Sonnet",
-    "tokens": 114337067,
-    "cost": 127.3584,
-    "durationSec": 1538208,
+    "tokens": 116442405,
+    "cost": 131.5936,
+    "durationSec": 1630121,
     "status": "success",
     "timestamp": "2026-02-23T10:15:16.158Z"
   },
@@ -77,9 +77,9 @@
     "agent": "sam",
     "task": "Conversation info (untrusted metadata):",
     "model": "unknown",
-    "tokens": 31547117,
-    "cost": 22.403,
-    "durationSec": 828169,
+    "tokens": 33843250,
+    "cost": 26.536,
+    "durationSec": 870345,
     "status": "success",
     "timestamp": "2026-03-03T18:18:41.589Z"
   },
@@ -144,6 +144,18 @@
     "timestamp": "2026-02-22T16:09:28.028Z"
   },
   {
+    "id": "8578ad22-8198-4f2b-9405-d9093d1d21e5",
+    "label": "8578ad22-819",
+    "agent": "sam",
+    "task": "[media attached: /home/ubuntu/.openclaw/media/inbound/file_843---d568c4d5-fdf1-4516-aaa1-48393df98a06.jpg (image/jpeg) | /home/ubuntu/.openclaw/media/inbound/file_843---d568c4d5-fdf1-4516-aaa1-48393df",
+    "model": "Sonnet",
+    "tokens": 4170358,
+    "cost": 2.7613,
+    "durationSec": 6693,
+    "status": "success",
+    "timestamp": "2026-03-14T07:46:37.794Z"
+  },
+  {
     "id": "7612c9b5-24cc-4586-bb94-a11764f65008",
     "label": "7612c9b5-24c",
     "agent": "sam",
@@ -151,7 +163,7 @@
     "model": "Opus",
     "tokens": 3986274,
     "cost": 7.1088,
-    "durationSec": 1855978,
+    "durationSec": 1942369,
     "status": "success",
     "timestamp": "2026-02-19T18:28:22.953Z"
   },
@@ -504,6 +516,18 @@
     "timestamp": "2026-03-09T03:00:00.075Z"
   },
   {
+    "id": "f11cd39b-da56-4457-a424-e8bf7c2a2789",
+    "label": "f11cd39b-da5",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Sonnet",
+    "tokens": 496124,
+    "cost": 0.4731,
+    "durationSec": 56533,
+    "status": "success",
+    "timestamp": "2026-03-13T04:21:52.301Z"
+  },
+  {
     "id": "98472c69-6238-4dfe-9eb7-afb436e08eb2",
     "label": "98472c69-623",
     "agent": "sam",
@@ -684,6 +708,18 @@
     "timestamp": "2026-03-12T05:30:00.113Z"
   },
   {
+    "id": "70ca4eca-dc4f-431c-9c82-3c67c575eba0",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 350871,
+    "cost": 0.2986,
+    "durationSec": 135,
+    "status": "success",
+    "timestamp": "2026-03-14T05:30:00.179Z"
+  },
+  {
     "id": "cdbe948e-6c99-4fbf-85f7-5e9328443afb",
     "label": "cdbe948e-6c9",
     "agent": "sam",
@@ -756,6 +792,30 @@
     "timestamp": "2026-02-24T04:00:44.410Z"
   },
   {
+    "id": "2fab4223-8b97-468c-a2c8-cf06292390fc",
+    "label": "2fab4223-8b9",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 308293,
+    "cost": 0.2712,
+    "durationSec": 107,
+    "status": "success",
+    "timestamp": "2026-03-14T05:32:43.160Z"
+  },
+  {
+    "id": "51b3bb22-f9e2-4daf-9930-55e3b9a35fa6",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 302080,
+    "cost": 0.2563,
+    "durationSec": 102,
+    "status": "success",
+    "timestamp": "2026-03-14T05:30:00.237Z"
+  },
+  {
     "id": "77f9f855-9ac0-4e99-a55a-a91059e5ff26",
     "label": "77f9f855-9ac",
     "agent": "sam",
@@ -781,7 +841,7 @@
   },
   {
     "id": "2f7fb356-a5ca-4fa9-8584-891b058a7e63",
-    "label": "Sam Morning Brief",
+    "label": "2f7fb356-a5c",
     "agent": "sam",
     "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
     "model": "Sonnet",
@@ -901,8 +961,8 @@
   },
   {
     "id": "96a34556-debf-41b6-afcb-29097b61d93b",
-    "label": "Morning Analytics Report",
-    "agent": "dana",
+    "label": "96a34556-deb",
+    "agent": "sam",
     "task": "You're Dana \ud83d\udcca, Data Analyst.",
     "model": "Sonnet",
     "tokens": 233732,
@@ -1093,7 +1153,7 @@
   },
   {
     "id": "aa5e9679-2c13-4790-9b81-d119317ab971",
-    "label": "Sam Morning Brief",
+    "label": "aa5e9679-2c1",
     "agent": "sam",
     "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
     "model": "Sonnet",
@@ -1198,6 +1258,18 @@
     "durationSec": 46839,
     "status": "success",
     "timestamp": "2026-02-19T14:00:00.055Z"
+  },
+  {
+    "id": "898dc9ca-77e8-4f2f-b01a-a996faac1451",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 162529,
+    "cost": 0.188,
+    "durationSec": 77,
+    "status": "success",
+    "timestamp": "2026-03-14T06:00:00.169Z"
   },
   {
     "id": "377202f9-a2e8-4f09-8ebf-f1c3b02994ab",
@@ -1333,8 +1405,8 @@
   },
   {
     "id": "64f9e1a0-8875-4feb-a731-d70127a1c21e",
-    "label": "Morning Analytics Report",
-    "agent": "dana",
+    "label": "64f9e1a0-887",
+    "agent": "sam",
     "task": "You're Dana \ud83d\udcca, Data Analyst.",
     "model": "Sonnet",
     "tokens": 134201,
@@ -1429,8 +1501,8 @@
   },
   {
     "id": "f75194b3-4efa-4a25-8335-217d4d197233",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "f75194b3-4ef",
+    "agent": "sam",
     "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
     "model": "Sonnet",
     "tokens": 121397,
@@ -1501,8 +1573,8 @@
   },
   {
     "id": "bad93dc2-af81-4567-8339-f11d000a78fb",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "bad93dc2-af8",
+    "agent": "sam",
     "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
     "model": "Sonnet",
     "tokens": 84783,
@@ -1573,8 +1645,8 @@
   },
   {
     "id": "3114b050-1576-4c1b-81d4-c39378020619",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "3114b050-157",
+    "agent": "sam",
     "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
     "model": "Sonnet",
     "tokens": 76148,
@@ -1705,8 +1777,8 @@
   },
   {
     "id": "954e26cf-4e6d-49e6-bb05-6d9f976da9c6",
-    "label": "Daily GSC Report \u2014 All Products (Miles)",
-    "agent": "miles",
+    "label": "954e26cf-4e6",
+    "agent": "sam",
     "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
     "model": "Sonnet",
     "tokens": 69825,
@@ -1740,6 +1812,18 @@
     "timestamp": "2026-03-12T07:12:00.337Z"
   },
   {
+    "id": "eb601e5d-fd49-4b05-b3fd-cc9c06d87aa0",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 55969,
+    "cost": 0.1701,
+    "durationSec": 94,
+    "status": "success",
+    "timestamp": "2026-03-14T04:00:00.226Z"
+  },
+  {
     "id": "ff5c213f-28d7-4af6-8fb0-3021dd50050f",
     "label": "ff5c213f-28d",
     "agent": "sam",
@@ -1750,6 +1834,18 @@
     "durationSec": 29,
     "status": "success",
     "timestamp": "2026-03-12T05:12:07.794Z"
+  },
+  {
+    "id": "b2217d71-462d-42cf-bd90-e0ce119f86db",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 55440,
+    "cost": 0.1586,
+    "durationSec": 84,
+    "status": "success",
+    "timestamp": "2026-03-14T04:00:00.161Z"
   },
   {
     "id": "8327937a-9da4-43b8-b448-88e72a269373",

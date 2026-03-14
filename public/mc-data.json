@@ -1,10 +1,94 @@
 {
-  "lastUpdated": "2026-03-13T10:00:02Z",
+  "lastUpdated": "2026-03-14T10:00:03Z",
   "activities": [
     {
-      "id": "s-3114b050",
+      "id": "s-8578ad22",
+      "agent": "sam",
+      "title": "8578ad22-819",
+      "description": "[media attached: /home/ubuntu/.openclaw/media/inbound/file_843---d568c4d5-fdf1-4516-aaa1-48393df98a06.jpg (image/jpeg) | /home/ubuntu/.openclaw/media/inbound/file_843---d568c4d5-fdf1-4516-aaa1-48393df",
+      "status": "success",
+      "date": "2026-03-14T07:46:37.794Z",
+      "tokens": 4170358,
+      "cost": 2.7613,
+      "model": "Sonnet",
+      "durationSec": 6693
+    },
+    {
+      "id": "s-898dc9ca",
+      "agent": "dana",
+      "title": "Morning Analytics Report",
+      "description": "You're Dana \ud83d\udcca, Data Analyst.",
+      "status": "success",
+      "date": "2026-03-14T06:00:00.169Z",
+      "tokens": 162529,
+      "cost": 0.188,
+      "model": "Sonnet",
+      "durationSec": 77
+    },
+    {
+      "id": "s-2fab4223",
+      "agent": "sam",
+      "title": "2fab4223-8b9",
+      "description": "Conversation info (untrusted metadata):",
+      "status": "success",
+      "date": "2026-03-14T05:32:43.160Z",
+      "tokens": 308293,
+      "cost": 0.2712,
+      "model": "Sonnet",
+      "durationSec": 107
+    },
+    {
+      "id": "s-51b3bb22",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-03-14T05:30:00.237Z",
+      "tokens": 302080,
+      "cost": 0.2563,
+      "model": "Sonnet",
+      "durationSec": 102
+    },
+    {
+      "id": "s-70ca4eca",
+      "agent": "sam",
+      "title": "Sam Morning Brief",
+      "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+      "status": "success",
+      "date": "2026-03-14T05:30:00.179Z",
+      "tokens": 350871,
+      "cost": 0.2986,
+      "model": "Sonnet",
+      "durationSec": 135
+    },
+    {
+      "id": "s-eb601e5d",
       "agent": "miles",
       "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+      "status": "success",
+      "date": "2026-03-14T04:00:00.226Z",
+      "tokens": 55969,
+      "cost": 0.1701,
+      "model": "Sonnet",
+      "durationSec": 94
+    },
+    {
+      "id": "s-b2217d71",
+      "agent": "miles",
+      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+      "status": "success",
+      "date": "2026-03-14T04:00:00.161Z",
+      "tokens": 55440,
+      "cost": 0.1586,
+      "model": "Sonnet",
+      "durationSec": 84
+    },
+    {
+      "id": "s-3114b050",
+      "agent": "sam",
+      "title": "3114b050-157",
       "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
       "status": "success",
       "date": "2026-03-13T08:01:05.241Z",
@@ -15,8 +99,8 @@
     },
     {
       "id": "s-f75194b3",
-      "agent": "miles",
-      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "agent": "sam",
+      "title": "f75194b3-4ef",
       "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
       "status": "success",
       "date": "2026-03-13T08:01:04.782Z",
@@ -27,8 +111,8 @@
     },
     {
       "id": "s-bad93dc2",
-      "agent": "miles",
-      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "agent": "sam",
+      "title": "bad93dc2-af8",
       "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
       "status": "success",
       "date": "2026-03-13T06:01:04.534Z",
@@ -39,8 +123,8 @@
     },
     {
       "id": "s-96a34556",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "96a34556-deb",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-03-13T06:00:00.154Z",
@@ -51,8 +135,8 @@
     },
     {
       "id": "s-64f9e1a0",
-      "agent": "dana",
-      "title": "Morning Analytics Report",
+      "agent": "sam",
+      "title": "64f9e1a0-887",
       "description": "You're Dana \ud83d\udcca, Data Analyst.",
       "status": "success",
       "date": "2026-03-13T06:00:00.141Z",
@@ -64,7 +148,7 @@
     {
       "id": "s-2f7fb356",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "2f7fb356-a5c",
       "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
       "status": "success",
       "date": "2026-03-13T05:30:00.183Z",
@@ -76,7 +160,7 @@
     {
       "id": "s-aa5e9679",
       "agent": "sam",
-      "title": "Sam Morning Brief",
+      "title": "aa5e9679-2c1",
       "description": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
       "status": "success",
       "date": "2026-03-13T05:30:00.164Z",
@@ -86,9 +170,21 @@
       "durationSec": 93
     },
     {
+      "id": "s-f11cd39b",
+      "agent": "sam",
+      "title": "f11cd39b-da5",
+      "description": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+      "status": "success",
+      "date": "2026-03-13T04:21:52.301Z",
+      "tokens": 496124,
+      "cost": 0.4731,
+      "model": "Sonnet",
+      "durationSec": 56533
+    },
+    {
       "id": "s-954e26cf",
-      "agent": "miles",
-      "title": "Daily GSC Report \u2014 All Products (Miles)",
+      "agent": "sam",
+      "title": "954e26cf-4e6",
       "description": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
       "status": "success",
       "date": "2026-03-13T04:00:00.223Z",
@@ -536,10 +632,10 @@
       "description": "System: [2026-03-09 16:14:49 UTC] Exec completed (clear-at, code 0) :: \u03bb (Dynamic) server-rendered on demand using Node.js \u2107 (Edge Runtime) server-rendered on demand using the Edge Runtime [main 217bd",
       "status": "success",
       "date": "2026-03-09T16:34:24.351Z",
-      "tokens": 152276148,
-      "cost": 226.6425,
+      "tokens": 190348401,
+      "cost": 261.2629,
       "model": "unknown",
-      "durationSec": 318622
+      "durationSec": 357225
     },
     {
       "id": "s-0682f6a0",
@@ -908,10 +1004,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-03-03T18:18:41.589Z",
-      "tokens": 31547117,
-      "cost": 22.403,
+      "tokens": 33843250,
+      "cost": 26.536,
       "model": "unknown",
-      "durationSec": 828169
+      "durationSec": 870345
     },
     {
       "id": "s-429b76e4",
@@ -1616,10 +1712,10 @@
       "description": "Conversation info (untrusted metadata):",
       "status": "success",
       "date": "2026-02-23T10:15:16.158Z",
-      "tokens": 114337067,
-      "cost": 127.3584,
+      "tokens": 116442405,
+      "cost": 131.5936,
       "model": "Sonnet",
-      "durationSec": 1538208
+      "durationSec": 1630121
     },
     {
       "id": "s-5423ca5a",
@@ -1883,7 +1979,7 @@
       "tokens": 3986274,
       "cost": 7.1088,
       "model": "Opus",
-      "durationSec": 1855978
+      "durationSec": 1942369
     },
     {
       "id": "s-aae63345",
@@ -2135,8 +2231,8 @@
       "enabled": true,
       "status": "ok",
       "lastStatus": "ok",
-      "lastRunAt": "2026-03-13T08:01:04Z",
-      "nextRunAt": "2026-03-14T04:00:00Z",
+      "lastRunAt": "2026-03-14T04:00:00Z",
+      "nextRunAt": "2026-03-15T04:00:00Z",
       "consecutiveErrors": 0,
       "description": "Miles pulls GSC data for ISK, CLCP, SE \u2014 tracked keywords, clicks, impressions, position trends. Daily 6 AM CAT."
     },
@@ -2149,8 +2245,8 @@
       "enabled": true,
       "status": "ok",
       "lastStatus": "ok",
-      "lastRunAt": "2026-03-13T05:30:00Z",
-      "nextRunAt": "2026-03-14T05:30:00Z",
+      "lastRunAt": "2026-03-14T05:30:00Z",
+      "nextRunAt": "2026-03-15T05:30:00Z",
       "consecutiveErrors": 0,
       "description": "Sam's morning coffee read \u2014 overnight results, costs, priorities. 7:30 AM CAT."
     },
@@ -2163,8 +2259,8 @@
       "enabled": true,
       "status": "ok",
       "lastStatus": "ok",
-      "lastRunAt": "2026-03-13T06:00:00Z",
-      "nextRunAt": "2026-03-14T06:00:00Z",
+      "lastRunAt": "2026-03-14T06:00:00Z",
+      "nextRunAt": "2026-03-15T06:00:00Z",
       "consecutiveErrors": 0,
       "description": "Dana pulls Datafast metrics for all 3 products \u2014 visitors, revenue, week-over-week trends. 8 AM CAT."
     },
@@ -2529,15 +2625,15 @@
   ],
   "agentStatus": {
     "devin": {
-      "lastActive": "2026-03-12T08:05:17.616Z",
+      "lastActive": "2026-03-14T08:10:57.462Z",
       "statusText": "Active, productive. Should be getting ALL code tasks from now on."
     },
     "dana": {
-      "lastActive": "2026-03-13T06:00:00.154Z",
+      "lastActive": "2026-03-14T06:00:00.169Z",
       "statusText": "Underutilized. Only running the morning report. Should be doing weekly deep dives and persistent metrics tracking."
     },
     "miles": {
-      "lastActive": "2026-03-13T08:01:05.241Z",
+      "lastActive": "2026-03-14T04:00:00.226Z",
       "statusText": "Productive but ISK-only. CLCP organic is declining with zero attention. SE growth strategy unstarted."
     },
     "cara": {
@@ -2557,7 +2653,7 @@
       "statusText": ""
     },
     "sam": {
-      "lastActive": "2026-03-13T09:59:51Z",
+      "lastActive": "2026-03-14T09:46:26Z",
       "statusText": ""
     }
   },
@@ -2572,7 +2668,7 @@
       "script": "scripts/mc-sync.sh",
       "log": "ops/mc-sync.log",
       "notes": "Supabase-only sync (no git push). Activity-ping handles real-time MC updates.",
-      "lastRunAt": "2026-03-13T10:00:01Z"
+      "lastRunAt": "2026-03-14T10:00:02Z"
     },
     {
       "id": "bash-frankie-sync",
@@ -2583,7 +2679,7 @@
       "description": "Frankie pulls all outgoing transactions from Mercury banking (3 accounts) and maps payments to the 7 UGC creators by name. Writes creator-payouts.json with total paid, payment count, and last payment date per creator.",
       "script": "scripts/frankie-creator-sync.sh",
       "log": "ops/frankie-creator-sync.log",
-      "lastRunAt": "2026-03-12T10:00:10Z"
+      "lastRunAt": "2026-03-13T10:00:09Z"
     },
     {
       "id": "bash-mia-sync",
@@ -2594,7 +2690,7 @@
       "description": "Mia pulls the latest post data for all 7 creators from Google Sheets \u2014 TikTok and Instagram URLs, view counts, and post dates. Writes creator-posts.json with 267+ posts sorted newest-first per creator.",
       "script": "scripts/mia-creator-sync.sh",
       "log": "ops/mia-creator-sync.log",
-      "lastRunAt": "2026-03-12T23:00:05Z"
+      "lastRunAt": "2026-03-13T23:00:05Z"
     },
     {
       "id": "bash-creator-merge",
@@ -2605,7 +2701,7 @@
       "description": "Merges Frankie's Mercury payouts and Mia's post data into a single creator-data.json that both the /creators page and individual creator pages read from. Runs 30 min after each source sync (12:30 PM and 1:30 AM CAT) so the data is always fresh.",
       "script": "scripts/creator-data-merge.sh",
       "log": "ops/creator-data-merge.log",
-      "lastRunAt": "2026-03-12T23:30:01Z"
+      "lastRunAt": "2026-03-13T23:30:02Z"
     },
     {
       "id": "bash-health-snapshot",
@@ -2616,7 +2712,7 @@
       "description": "Collects server health metrics (disk, memory, uptime, OpenClaw, Tailscale, Vercel, crons, pending updates) and writes health.json to mission-control/public/. Runs daily at 6:30 AM CAT (4:30 UTC) before morning reports.",
       "script": "scripts/health-snapshot.sh",
       "log": "ops/health-snapshot.log",
-      "lastRunAt": "2026-03-13T04:30:22Z"
+      "lastRunAt": "2026-03-14T04:30:14Z"
     },
     {
       "id": "bash-wifitribe-scraper",

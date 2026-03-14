@@ -6480,6 +6480,18 @@
     "timestamp": "2026-03-13T04:00:00.223Z"
   },
   {
+    "id": "f11cd39b-da56-4457-a424-e8bf7c2a2789",
+    "label": "f11cd39b-da5",
+    "agent": "sam",
+    "task": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+    "model": "Sonnet",
+    "tokens": 496124,
+    "cost": 0.4731,
+    "durationSec": 56533,
+    "status": "success",
+    "timestamp": "2026-03-13T04:21:52.301Z"
+  },
+  {
     "id": "aa5e9679-2c13-4790-9b81-d119317ab971",
     "label": "Sam Morning Brief",
     "agent": "sam",
@@ -6600,6 +6612,18 @@
     "timestamp": "2026-03-13T10:00:02Z"
   },
   {
+    "id": "sam-sync-2026-03-13T13:30:02Z",
+    "label": "Conversation",
+    "agent": "sam",
+    "task": "Sam \u2194 Ben conversation",
+    "model": "Opus",
+    "tokens": 74559,
+    "cost": 0.1542,
+    "durationSec": 0,
+    "status": "success",
+    "timestamp": "2026-03-13T13:30:02Z"
+  },
+  {
     "id": "sam-daily-2026-03-13",
     "label": "Daily total",
     "agent": "sam",
@@ -6609,6 +6633,102 @@
     "cost": 0.3171,
     "durationSec": 0,
     "status": "success",
-    "timestamp": "2026-03-13T10:00:02Z"
+    "timestamp": "2026-03-13T23:30:03Z"
+  },
+  {
+    "id": "b2217d71-462d-42cf-bd90-e0ce119f86db",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 55440,
+    "cost": 0.1586,
+    "durationSec": 84,
+    "status": "success",
+    "timestamp": "2026-03-14T04:00:00.161Z"
+  },
+  {
+    "id": "eb601e5d-fd49-4b05-b3fd-cc9c06d87aa0",
+    "label": "Daily GSC Report \u2014 All Products (Miles)",
+    "agent": "miles",
+    "task": "You're Miles \ud83d\ude80, GTM Lead. Run the daily GSC positioning report for all 3 products.",
+    "model": "Sonnet",
+    "tokens": 55969,
+    "cost": 0.1701,
+    "durationSec": 94,
+    "status": "success",
+    "timestamp": "2026-03-14T04:00:00.226Z"
+  },
+  {
+    "id": "70ca4eca-dc4f-431c-9c82-3c67c575eba0",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 350871,
+    "cost": 0.2986,
+    "durationSec": 135,
+    "status": "success",
+    "timestamp": "2026-03-14T05:30:00.179Z"
+  },
+  {
+    "id": "51b3bb22-f9e2-4daf-9930-55e3b9a35fa6",
+    "label": "Sam Morning Brief",
+    "agent": "sam",
+    "task": "You're Sam \ud83e\udd1d, Chief of Staff. Generate Ben's morning briefing.",
+    "model": "Sonnet",
+    "tokens": 302080,
+    "cost": 0.2563,
+    "durationSec": 102,
+    "status": "success",
+    "timestamp": "2026-03-14T05:30:00.237Z"
+  },
+  {
+    "id": "2fab4223-8b97-468c-a2c8-cf06292390fc",
+    "label": "2fab4223-8b9",
+    "agent": "sam",
+    "task": "Conversation info (untrusted metadata):",
+    "model": "Sonnet",
+    "tokens": 308293,
+    "cost": 0.2712,
+    "durationSec": 107,
+    "status": "success",
+    "timestamp": "2026-03-14T05:32:43.160Z"
+  },
+  {
+    "id": "898dc9ca-77e8-4f2f-b01a-a996faac1451",
+    "label": "Morning Analytics Report",
+    "agent": "dana",
+    "task": "You're Dana \ud83d\udcca, Data Analyst.",
+    "model": "Sonnet",
+    "tokens": 162529,
+    "cost": 0.188,
+    "durationSec": 77,
+    "status": "success",
+    "timestamp": "2026-03-14T06:00:00.169Z"
+  },
+  {
+    "id": "8578ad22-8198-4f2b-9405-d9093d1d21e5",
+    "label": "8578ad22-819",
+    "agent": "sam",
+    "task": "[media attached: /home/ubuntu/.openclaw/media/inbound/file_843---d568c4d5-fdf1-4516-aaa1-48393df98a06.jpg (image/jpeg) | /home/ubuntu/.openclaw/media/inbound/file_843---d568c4d5-fdf1-4516-aaa1-48393df",
+    "model": "Sonnet",
+    "tokens": 2543807,
+    "cost": 1.4469,
+    "durationSec": 768,
+    "status": "success",
+    "timestamp": "2026-03-14T07:46:37.794Z"
+  },
+  {
+    "id": "6237e7c1-1359-4682-b8f6-c5ee995cee28",
+    "label": "devin-plan-limit-enforcement",
+    "agent": "devin",
+    "task": "**Background:** The planLimit stored in org settings / freebies table is currently only used for UI display. It has zero connection to the actual Apify sync pipeline. Orgs can exceed their plan limit ",
+    "model": "Sonnet",
+    "tokens": 29297,
+    "cost": 0.0654,
+    "durationSec": 5,
+    "status": "success",
+    "timestamp": "2026-03-14T08:10:57.462Z"
   }
 ]

@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-03-13T04:30:01Z",
+  "timestamp": "2026-03-14T04:30:01Z",
   "disk": {
-    "usedPct": 82,
+    "usedPct": 81,
     "usedGB": 23,
     "totalGB": 29
   },
   "memory": {
-    "usedPct": 68,
+    "usedPct": 91,
     "totalMB": 3814
   },
-  "uptime": "2 weeks, 2 days, 14 hours, 13 minutes",
+  "uptime": "2 weeks, 3 days, 14 hours, 13 minutes",
   "openclaw": {
     "running": true,
-    "pid": 1166873,
+    "pid": 1788094,
     "currentVersion": "2026.2.22",
     "latestVersion": "2026.3.12",
     "updateAvailable": true
@@ -30,6 +30,6 @@
     "bashActive": 6,
     "lastFailure": null
   },
-  "pendingUpdates": 56,
+  "pendingUpdates": 57,
   "restartRequired": false
 }
